@@ -2,7 +2,7 @@ import os
 import subprocess
 home = os.getenv("HOME")
 if not (os.path.exists(home + "/flaskapp")):
-	subprocess.call(['wget https://github.com/JWWeatherman/how_to_store_bitcoin/files/3672255/flaskapp.zip -P ~/'],shell=True)
+	subprocess.call(['wget https://github.com/JWWeatherman/yeti/files/3698150/flaskapp.zip -P ~/'],shell=True)
 	subprocess.call(['unzip ~/flaskapp.zip -d ~/'],shell=True)
 
 subprocess.call(['sudo apt-get update'],shell=True)

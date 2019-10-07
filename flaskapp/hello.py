@@ -662,8 +662,8 @@ def displayforprint():
 def watchonly():
     global firstqrcode
     if request.method == 'GET':
-         rpc = RPC()
-            rpc.importaddress(firstqrcode)
+        rpc = RPC()
+        rpc.importaddress(firstqrcode)
     if request.method == 'POST':
         subprocess.call('gnome-terminal -- bash -c "sudo ~/flaskapp/bitcoin-0.18.1/bin/bitcoin-qt; read line"', shell=True)
         return redirect('/bitcoinqt')
@@ -773,7 +773,7 @@ def checktrans():
 @app.route("/delwallet", methods=['GET', 'POST'])
 def delwallet():
     global machine
-    if request.method == 'POST'
+    if request.method == 'POST':
         subprocess.call('gnome-terminal -- bash -c "rm ~/.bitcoin/wallet.dat; read line"', shell=True)
         subprocess.call('gnome-terminal -- bash -c "sudo ~/flaskapp/bitcoin-0.18.1/bin/bitcoind -proxy=127.0.0.1:9050; read line"', shell=True)
         machine = 2
@@ -802,7 +802,7 @@ def importprivkey():
                 newprivkey = rpc.dumpprivkey(adr)
                 print(privkeylist[i])
                 print(newprivkey)
-                if not newprivkey = privkeylist[i]:
+                if not newprivkey == privkeylist[i]:
                     privkeycount = 0
                     privkeylist = []
                     error = 'You have imported one of your keys incorrectly please try agian'
@@ -866,13 +866,13 @@ def gentrans():
         print(trans)
         amo = ((trans['amount'] / 3) - 0.00003)
         newamo = (trans['amount'] * (2 / 3))
-        transonehex = rpc.createrawtransaction('''[ { "txid": "''' + trans['txid'] + '''", "vout": ''' + trans['vout'] + ''', "scriptPubKey": "''' + trans['scriptpubkey'] + '''", "redeemScript": "''' + thirdqrcode + '''" } ]''', '''{ "''' + firstqrcode + '''": '''amo''', "'''+ trans['address'] + '''": '''+ newamo +'''}''')
+        transonehex = rpc.createrawtransaction('''[ { "txid": "''' + trans['txid'] + '''", "vout": ''' + trans['vout'] + ''', "scriptPubKey": "''' + trans['scriptpubkey'] + '''", "redeemScript": "''' + thirdqrcode + '''" } ]''', '''{ "''' + firstqrcode + '''": '''+ amo +''', "'''+ trans['address'] + '''": '''+ newamo +'''}''')
         transone = rpc.signrawtransactionwithkey(transonehex, '['+ privkeylist[0] +','+ privkeylist[1] +','+ privkeylist[2] +']', secondqrcode)
         newamo = (trans['amount'] * (1 / 3))
-        transtwohex = rpc.createrawtransaction('''[ { "txid": "''' + trans['txid'] + '''", "vout": ''' + trans['vout'] + ''', "scriptPubKey": "''' + trans['scriptpubkey'] + '''", "redeemScript": "''' + thirdqrcode + '''" } ]''', '''{ "''' + firstqrcode + '''": '''amo''', "'''+ trans['address'] + '''": '''+ newamo +'''}''')
+        transtwohex = rpc.createrawtransaction('''[ { "txid": "''' + trans['txid'] + '''", "vout": ''' + trans['vout'] + ''', "scriptPubKey": "''' + trans['scriptpubkey'] + '''", "redeemScript": "''' + thirdqrcode + '''" } ]''', '''{ "''' + firstqrcode + '''": '''+ amo +''', "'''+ trans['address'] + '''": '''+ newamo +'''}''')
         transtwo = rpc.signrawtransactionwithkey(transtwohex, '['+ privkeylist[2] +','+ privkeylist[3] +','+ privkeylist[4] +']', secondqrcode)
         newamo = 0
-        transthreehex = rpc.createrawtransaction('''[ { "txid": "''' + trans['txid'] + '''", "vout": ''' + trans['vout'] + ''', "scriptPubKey": "''' + trans['scriptpubkey'] + '''", "redeemScript": "''' + thirdqrcode + '''" } ]''', '''{ "''' + firstqrcode + '''": '''amo''', "'''+ trans['address'] + '''": '''+ newamo +'''}''')
+        transthreehex = rpc.createrawtransaction('''[ { "txid": "''' + trans['txid'] + '''", "vout": ''' + trans['vout'] + ''', "scriptPubKey": "''' + trans['scriptpubkey'] + '''", "redeemScript": "''' + thirdqrcode + '''" } ]''', '''{ "''' + firstqrcode + '''": '''+ amo +''', "'''+ trans['address'] + '''": '''+ newamo +'''}''')
         transthree = rpc.signrawtransactionwithkey(transtwohex, '['+ privkeylist[4] +','+ privkeylist[5] +','+ privkeylist[6] +']', secondqrcode)
         firstqrcode = transone
         secondqrcode = transtwo
