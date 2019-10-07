@@ -1,0 +1,25 @@
+<html>
+ <head>
+    <title>Yeti Bitcoin Storage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet", href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <nav class="form-row navbar navbar-light" style="background-color: rgb(112,196,245)!important;">
+        <img src="{{url_for('static', filename='yeti.png')}}" width="50" height="50" class="align-top" alt="">
+        <h3 style="color:white;margin:0;">Yeti Bitcoin Cold Storage</h3>
+    </nav>
+    <div class="container" style="margin-top: 3rem;">
+      <h2>Step x: Scan this qrcode from your online - danger laptop</h2>
+      <p>this is the Third qr code</p>
+      <p>This is what the qr code has encoded: {{ qrdata }}</p>
+      <img src="{{url_for('static', filename='thirdqrcode.png')}}"}>
+      <form action="" method="post">
+        <input style="display: none;" name="option" value="VALUE">
+        <input class="btn btn-primary" type="submit" id="next" value="BUTTON">
+      </form>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,33 @@
+<html>
+ <head>
+    <title>Yeti Bitcoin Storage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet", href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <nav class="form-row navbar navbar-light" style="background-color: rgb(112,196,245)!important;">
+        <img src="{{url_for('static', filename='yeti.png')}}" width="50" height="50" class="align-top" alt="">
+        <h3 style="color:white;margin:0;">Yeti Bitcoin Cold Storage</h3>
+    </nav>
+    <div class="container" style="margin-top: 3rem;">
+      <h2>Overview of Yeti Bitcoin Storage</h2>
+      <p>Yeti Bitcoin Storage is designed for long term bitcoin storage of significant amounts.</p>
+      <p>The process can be completed by non-technical users, but will require several days of passive time (waiting for computers to work) and about 4 hours of active time (writing down words, installing software or flipping coins).</p>
+      <p>It uses generic hardware to avoid supply chain attacks and bitcoin core to avoid software security flaws.</p>
+      <p>Private keys are never on an internet connected computer.</p>
+      <p>The 3 of 7 combination was selected because we believe loss is more likely than theft. By having a 3 of 7 setup four private keys can be lost due to natural disaster or errors by custodians without losing your bitcoin.</p>
+      <p>Bitcoin private keys are stored on paper in multiple geographic locations with professionals that do not know they are storing bitcoin private keys.</p>
+      <p>Private keys are written down using the NATO phonetic alphabet where every fifth word is a checksum to reduce the possibility that a private key will be unreadable when needed.</p>
+      <p>Bitcoin core does not support Bip39 due to security and recovery concerns.</p>
+      <p>Instructions for recovering the bitcoin are included with every copy of the private keys to reduce the liklihood of loss.</p>
+      <p>Private keys are generated with user provided entropy and the small amount of code used to automate the process is written in python to reduce the difficulty of security code reviews by trustworthy engineers.</p>
+      <p>Hardware modifications to disable wifi cards and microphones are not included, but can be performed for additional protection.</p>
+      <form action="" method="post">
+        <input style="display: none;" name="option" value="End">
+        <input class="btn btn-primary" type="submit" id="next" value="Next">
+      </form>
+    </div>
+  </body>
+</html>

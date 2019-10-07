@@ -1,0 +1,841 @@
+<html>
+ <head>
+    <title>Yeti Bitcoin Storage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet", href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <nav class="form-row navbar navbar-light" style="background-color: rgb(112,196,245)!important;">
+        <img src="{{url_for('static', filename='yeti.png')}}" width="50" height="50" class="align-top" alt="">
+        <h3 style="color:white;margin:0;">Yeti Bitcoin Cold Storage</h3>
+    </nav>
+    <div class="container" style="margin-top: 3rem;">
+      <form action="" method="post">
+        <h2>Step 1: Print this page</h4>
+        <p>After you print this page click next</p>
+        <input style="display: none;" name="option" value="VALUE">
+        <input class="btn btn-primary" type="submit" id="next" value="NEXT">
+      </form>
+      <div style="page-break-after: always;"></div>
+      <h4>this is your multisig address: {{ first }}</h4>
+      <img src="{{firstqr}}" width="400" height="400">
+      <h4>this is your multisig redeemScript: {{ second }}</h4>
+      <img src="{{secondqr}}" width="400" height="400">
+      <h4>this is the command we ran to get this data: {{ third }}</h4>
+      <img src="{{thirdqr}}" width="400" height="400">
+      <div style="page-break-after: always;"></div>
+      <h3>This is for your private key 1 of 7</h3>
+      <form action="" method="post" style="border: solid #f8f9fa;padding: 1.5rem;">
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">1</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row1" name="row1">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">2</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row2" name="row2">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">3</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row3" name="row3">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">4</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row4" name="row4">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">5</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row5" name="row5">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">6</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row6" name="row6">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">7</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row7" name="row7">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">8</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row8" name="row8">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">9</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row9" name="row9">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">10</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row10" name="row10">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">11</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row11" name="row11">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">12</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row12" name="row12">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">13</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row13" name="row13">
+          </div>
+        </div>
+      </form>
+    </div>
+    <div style="page-break-after: always;"></div>
+    <div class="container" style="margin-top: 3rem;">
+      <h4>this is your multisig address: {{ first }}</h4>
+      <img src="{{firstqr}}" width="400" height="400">
+      <h4>this is your multisig redeemScript: {{ second }}</h4>
+      <img src="{{secondqr}}" width="400" height="400">
+      <h4>this is the command we ran to get this data: {{ third }}</h4>
+      <img src="{{thirdqr}}" width="400" height="400">
+      <div style="page-break-after: always;"></div>
+      <h3>This is for your private key 2 of 7</h3>
+      <form action="" method="post" style="border: solid #f8f9fa;padding: 1.5rem;">
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">1</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row1" name="row1">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">2</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row2" name="row2">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">3</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row3" name="row3">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">4</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row4" name="row4">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">5</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row5" name="row5">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">6</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row6" name="row6">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">7</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row7" name="row7">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">8</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row8" name="row8">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">9</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row9" name="row9">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">10</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row10" name="row10">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">11</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row11" name="row11">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">12</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row12" name="row12">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">13</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row13" name="row13">
+          </div>
+        </div>
+      </form>
+    </div>
+    <div style="page-break-after: always;"></div>
+    <div class="container" style="margin-top: 3rem;">
+      <h4>this is your multisig address: {{ first }}</h4>
+      <img src="{{firstqr}}" width="400" height="400">
+      <h4>this is your multisig redeemScript: {{ second }}</h4>
+      <img src="{{secondqr}}" width="400" height="400">
+      <h4>this is the command we ran to get this data: {{ third }}</h4>
+      <img src="{{thirdqr}}" width="400" height="400">
+      <div style="page-break-after: always;"></div>
+      <h3>This is for your private key 3 of 7</h3>
+      <form action="" method="post" style="border: solid #f8f9fa;padding: 1.5rem;">
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">1</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row1" name="row1">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">2</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row2" name="row2">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">3</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row3" name="row3">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">4</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row4" name="row4">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">5</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row5" name="row5">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">6</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row6" name="row6">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">7</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row7" name="row7">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">8</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row8" name="row8">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">9</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row9" name="row9">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">10</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row10" name="row10">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">11</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row11" name="row11">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">12</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row12" name="row12">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">13</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row13" name="row13">
+          </div>
+        </div>
+      </form>
+    </div>
+    <div style="page-break-after: always;"></div>
+    <div class="container" style="margin-top: 3rem;">
+      <h4>this is your multisig address: {{ first }}</h4>
+      <img src="{{firstqr}}" width="400" height="400">
+      <h4>this is your multisig redeemScript: {{ second }}</h4>
+      <img src="{{secondqr}}" width="400" height="400">
+      <h4>this is the command we ran to get this data: {{ third }}</h4>
+      <img src="{{thirdqr}}" width="400" height="400">
+      <div style="page-break-after: always;"></div>
+      <h3>This is for your private key 4 of 7</h3>
+      <form action="" method="post" style="border: solid #f8f9fa;padding: 1.5rem;">
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">1</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row1" name="row1">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">2</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row2" name="row2">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">3</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row3" name="row3">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">4</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row4" name="row4">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">5</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row5" name="row5">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">6</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row6" name="row6">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">7</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row7" name="row7">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">8</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row8" name="row8">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">9</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row9" name="row9">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">10</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row10" name="row10">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">11</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row11" name="row11">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">12</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row12" name="row12">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">13</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row13" name="row13">
+          </div>
+        </div>
+      </form>
+    </div>
+    <div style="page-break-after: always;"></div>
+    <div class="container" style="margin-top: 3rem;">
+      <h4>this is your multisig address: {{ first }}</h4>
+      <img src="{{firstqr}}" width="400" height="400">
+      <h4>this is your multisig redeemScript: {{ second }}</h4>
+      <img src="{{secondqr}}" width="400" height="400">
+      <h4>this is the command we ran to get this data: {{ third }}</h4>
+      <img src="{{thirdqr}}" width="400" height="400">
+      <div style="page-break-after: always;"></div>
+      <h3>This is for your private key 5 of 7</h3>
+      <form action="" method="post" style="border: solid #f8f9fa;padding: 1.5rem;">
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">1</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row1" name="row1">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">2</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row2" name="row2">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">3</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row3" name="row3">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">4</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row4" name="row4">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">5</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row5" name="row5">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">6</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row6" name="row6">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">7</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row7" name="row7">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">8</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row8" name="row8">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">9</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row9" name="row9">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">10</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row10" name="row10">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">11</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row11" name="row11">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">12</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row12" name="row12">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">13</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row13" name="row13">
+          </div>
+        </div>
+      </form>
+    </div>
+    <div style="page-break-after: always;"></div>
+    <div class="container" style="margin-top: 3rem;">
+      <h4>this is your multisig address: {{ first }}</h4>
+      <img src="{{firstqr}}" width="400" height="400">
+      <h4>this is your multisig redeemScript: {{ second }}</h4>
+      <img src="{{secondqr}}" width="400" height="400">
+      <h4>this is the command we ran to get this data: {{ third }}</h4>
+      <img src="{{thirdqr}}" width="400" height="400">
+      <div style="page-break-after: always;"></div>
+      <h3>This is for your private key 6 of 7</h3>
+      <form action="" method="post" style="border: solid #f8f9fa;padding: 1.5rem;">
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">1</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row1" name="row1">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">2</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row2" name="row2">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">3</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row3" name="row3">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">4</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row4" name="row4">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">5</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row5" name="row5">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">6</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row6" name="row6">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">7</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row7" name="row7">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">8</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row8" name="row8">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">9</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row9" name="row9">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">10</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row10" name="row10">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">11</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row11" name="row11">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">12</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row12" name="row12">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">13</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row13" name="row13">
+          </div>
+        </div>
+      </form>
+    </div>
+    <div style="page-break-after: always;"></div>
+    <div class="container" style="margin-top: 3rem;">
+      <h4>this is your multisig address: {{ first }}</h4>
+      <img src="{{firstqr}}" width="400" height="400">
+      <h4>this is your multisig redeemScript: {{ second }}</h4>
+      <img src="{{secondqr}}" width="400" height="400">
+      <h4>this is the command we ran to get this data: {{ third }}</h4>
+      <img src="{{thirdqr}}" width="400" height="400">
+      <div style="page-break-after: always;"></div>
+      <h3>This is for your private key 7 of 7</h3>
+      <form action="" method="post" style="border: solid #f8f9fa;padding: 1.5rem;">
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">1</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row1" name="row1">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">2</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row2" name="row2">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">3</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row3" name="row3">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">4</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row4" name="row4">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">5</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row5" name="row5">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">6</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row6" name="row6">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">7</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row7" name="row7">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">8</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row8" name="row8">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">9</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row9" name="row9">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">10</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row10" name="row10">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">11</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row11" name="row11">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">12</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row12" name="row12">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">13</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row13" name="row13">
+          </div>
+        </div>
+      </form>
+    </div>
+    <div style="page-break-after: always;"></div>
+  </body>
+</html>
