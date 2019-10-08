@@ -8,6 +8,8 @@ if not (os.path.exists(home + "/flaskapp")):
 subprocess.call(['sudo apt-get update'],shell=True)
 subprocess.call(['sudo apt-get install python3-venv'],shell=True)
 subprocess.call(['sudo apt-get install python3-pip'],shell=True)
+subprocess.call(['sudo apt-get install libzbar0'],shell=True)
+subprocess.call(['sudo apt install tor'],shell=True)
 subprocess.call(['sudo pip3 install python-bitcoinrpc'],shell=True)
 subprocess.call(['sudo pip3 install flask'],shell=True)
 
@@ -22,6 +24,7 @@ if not (os.system("python3 -c 'import PIL'") == 0):
 	subprocess.call(['pip3 install pillow'],shell=True)
 if not (os.system("python3 -c 'import zbar'") == 0):
 	subprocess.call(['pip3 install zbar-py'],shell=True)
+	
 
 if not (os.path.exists(home + "/flaskapp/bitcoin-0.18.1/bin")):
 	subprocess.call(['sudo unattended-upgrade'],shell=True)
