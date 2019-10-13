@@ -25,7 +25,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text" id="basic-addon1">1</span>
             </div>
-            <input type="text" class="form-control" value="{{ PPL[0] }} {{ PPL[1] }} {{ PPL[2] }} {{ PPL[3] }}" id="row1" readonly>
+            <input type="text" class="form-control" value="alfa alfa alfa alfa" id="row1" readonly>
           </div>
         </div>
         <div class="form-row">
@@ -257,11 +257,9 @@
         var BASE58_ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
         var base_count = BASE58_ALPHABET.length
     var hashFour = (passphraselist) => {
-      console.log(PassphraseToWIF(passphraselist))
       var hash = CryptoJS.SHA256(PassphraseToWIF(passphraselist)).toString(CryptoJS.enc.Hex)
       var mod = parseInt(BigInt('0x' + hash) % BigInt(58))
       var char = BASE58_ALPHABET.charAt(mod)
-      console.log(WIFToPassphrase(char)[0])
       return WIFToPassphrase(char)[0]
     }
     var decode = (s) => {
@@ -290,12 +288,18 @@
       }
       return passphraselist
     }
+    var makechecksum = (passphraselist) => {
+      var list = PassphraseToWIF(passphraselist)
+      var listnum = decode(list)
+      mod = listnum & 58
+      var char = BASE58_ALPHABET.charAt(mod)
+      char = WIFToPassphrase(char)[0]
+      return char
+    }
     var checksum = () => {
       for (var i = 1; i < 14; i++) {
-        console.log(document.getElementById('row' + i))
         var fourwords = document.getElementById('row' + i).value.split(' ')
-        var Letter = hashFour(fourwords)
-        console.log(Letter)
+        var Letter = makechecksum(fourwords)
         document.getElementById('row' + i).value = document.getElementById('row' + i).value + ' ' + Letter
       }
     }

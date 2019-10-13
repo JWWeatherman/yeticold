@@ -252,14 +252,6 @@
         var base_count = BASE58_ALPHABET.length
         var passphraseWIFlist = ['ONE','TWO','THREE','FOUR','FIVE','SIX','SEVEN','EIGHT','NINE','alfa','bravo','charlie','delta','echo','foxtrot','golf','hotel','india','juliet','kilo','lima','mike','oscar','november','papa','quebec','romeo','sierra','tango','uniform','victor','whiskey','x-ray','yankee','zulu','ALFA','BRAVO','CHARLIE','DELTA','ECHO','FOXTROT','GOLF','HOTEL','INDIA','JULIET','KILO','LIMA','MIKE','OSCAR','NOVEMBER','PAPA','QUEBEC','ROMEO','SIERRA','TANGO','UNIFORM','VICTOR','WHISKEY','X-RAY','YANKEE','ZULU']
 
-   var hashFour = (passphraselist) => {
-      console.log(PassphraseToWIF(passphraselist))
-      var hash = CryptoJS.SHA256(PassphraseToWIF(passphraselist)).toString(CryptoJS.enc.Hex)
-      var mod = parseInt(BigInt('0x' + hash) % BigInt(58))
-      var char = BASE58_ALPHABET.charAt(mod)
-      console.log(WIFToPassphrase(char)[0])
-      return WIFToPassphrase(char)[0]
-    }
     var decode = (s) => {
       var decoded = 0
       var multi = 1
@@ -287,9 +279,13 @@
       return passphraselist
     }
     var checkSum = (passphraselist, checksum) => {
-      var hashed = hashFour(passphraselist)
-      console.log(hashed, checksum)
-      return hashed === checksum
+      var list = PassphraseToWIF(passphraselist)
+      var listnum = decode(list)
+      mod = listnum & 58
+      var char = BASE58_ALPHABET.charAt(mod)
+      char = WIFToPassphrase(char)[0]
+      console.log(char, checksum)
+      return char === checksum
     }
     var highlightrows = () => {
           var templist = []
@@ -305,7 +301,6 @@
             var checksum = templist.pop()
             if (templist.filter((el) => {return passphraseWIFlist.includes(el)}).length === 4) {
               if (checksum != '') {
-                console.log(checksum)
                 if (checkSum(templist,checksum)) {
                   numofrowsgreen++
                   document.getElementById('row' + i).style.backgroundColor = green

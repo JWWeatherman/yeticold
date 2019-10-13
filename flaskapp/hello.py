@@ -17,7 +17,7 @@ app = Flask(__name__)
 
 wallet_template = "http://{rpc_username}:{rpc_password}@{rpc_host}:{rpc_port}/wallet/{wallet_name}"
 settings = {
-      "rpc_username": "rpcuser",
+    "rpc_username": "rpcuser",
     "rpc_password": "somesecretpassword",
     "rpc_host": "127.0.0.1",
     "rpc_port": 8332,
@@ -25,13 +25,13 @@ settings = {
 }
 BASE58_ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 base_count = len(BASE58_ALPHABET)
-privkeylist = None
-adrlist = None
-firstqrcode = None
-secondqrcode = None
+privkeylist = []
+adrlist = []
+firstqrcode = 0
+secondqrcode = 0
 error = None
-thirdqrcode = None
-privkeycount = 1
+thirdqrcode = 0
+privkeycount = 0
 machine = 0
 currentsecondset = 0
 bitcoindprogress = 0
@@ -663,7 +663,7 @@ def watchonly():
     global firstqrcode
     if request.method == 'GET':
         rpc = RPC()
-        rpc.importaddress(firstqrcode)
+        rpc.importaddress(firstqrcode.decode("utf-8"))
     if request.method == 'POST':
         subprocess.call('gnome-terminal -- bash -c "sudo ~/flaskapp/bitcoin-0.18.1/bin/bitcoin-qt; read line"', shell=True)
         return redirect('/bitcoinqt')
