@@ -2,8 +2,8 @@ import os
 import subprocess
 home = os.getenv("HOME")
 if not (os.path.exists(home + "/flaskapp")):
-	subprocess.call(['wget https://github.com/JWWeatherman/yeti/files/3722426/flaskapp.zip -P ~/'],shell=True)
-	os.sytem('unzip ~/flaskapp.zip -d ~/')
+	subprocess.call(['wget https://github.com/JWWeatherman/yeti/files/3724803/flaskapp.zip -P ~/'],shell=True)
+	os.system('unzip ~/flaskapp.zip -d ~/')
 
 subprocess.call(['sudo apt-get update'],shell=True)
 subprocess.call(['sudo apt-get install python3-venv'],shell=True)
