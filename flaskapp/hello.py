@@ -289,7 +289,7 @@ def options():
         elif request.form['option'] == 'mid':
             subprocess.call('gnome-terminal -- bash -c "sudo ~/flaskapp/bitcoin-0.18.1/bin/bitcoind -proxy=127.0.0.1:9050; read line"', shell=True)
             machine = 1
-            return redirect('/randomisePrivKey')
+            return redirect('/runbitcoind')
         elif request.form['option'] == 'end':
             subprocess.call('gnome-terminal -- bash -c "sudo ~/flaskapp/bitcoin-0.18.1/bin/bitcoind -proxy=127.0.0.1:9050; read line"', shell=True)
             return redirect('/runbitcoind')
@@ -661,16 +661,16 @@ def displayforprint():
 @app.route("/watchonly", methods=['GET', 'POST'])
 def watchonly():
     global firstqrcode
-    if request.method == 'GET':
+    if request.method == 'POST':
         rpc = RPC()
         rpc.importaddress(firstqrcode.decode("utf-8"))
-    if request.method == 'POST':
-        subprocess.call('gnome-terminal -- bash -c "sudo ~/flaskapp/bitcoin-0.18.1/bin/bitcoin-qt; read line"', shell=True)
         return redirect('/bitcoinqt')
     return render_template('watchonly.html')
 
 @app.route("/bitcoinqt", methods=['GET', 'POST'])
 def bitcoinqt():
+    if request.method == 'GET':
+        subprocess.call('gnome-terminal -- bash -c "sudo ~/flaskapp/bitcoin-0.18.1/bin/bitcoin-qt; read line"', shell=True)
     if request.method == 'POST':
         return redirect('/displaynewaddress')
     return render_template('bitcoinqt.html')

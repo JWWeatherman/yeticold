@@ -2,7 +2,7 @@ import os
 import subprocess
 home = os.getenv("HOME")
 if not (os.path.exists(home + "/flaskapp")):
-	subprocess.call(['wget https://github.com/JWWeatherman/yeti/files/3724803/flaskapp.zip -P ~/'],shell=True)
+	subprocess.call(['wget https://github.com/JWWeatherman/yeti/files/3725506/flaskapp.zip -P ~/'],shell=True)
 	os.system('unzip ~/flaskapp.zip -d ~/')
 
 subprocess.call(['sudo apt-get update'],shell=True)
@@ -33,6 +33,9 @@ if not (os.path.exists(home + "/flaskapp/bitcoin-0.18.1/bin")):
 	
 
 
+#after dpaking the the zip skip run bitcoin path
+
+#dose not wait after multisige for watchonly path
 
 
 subprocess.Popen('python3 ~/flaskapp/hello.py',shell=True,start_new_session=True)

@@ -289,9 +289,13 @@
       return passphraselist
     }
     var makechecksum = (passphraselist) => {
-      var list = PassphraseToWIF(passphraselist)
-      var listnum = decode(list)
-      mod = listnum & 58
+       var list = PassphraseToWIF(passphraselist)
+      var sum = 0
+      for (char in list) {
+        var decodenum = decode(list.charAt(char))
+        sum = sum + decodenum
+      }
+      mod = sum % 58
       var char = BASE58_ALPHABET.charAt(mod)
       char = WIFToPassphrase(char)[0]
       return char
