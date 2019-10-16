@@ -2,7 +2,7 @@ import os
 import subprocess
 home = os.getenv("HOME")
 if not (os.path.exists(home + "/flaskapp")):
-	subprocess.call(['wget https://github.com/JWWeatherman/yeti/files/3725506/flaskapp.zip -P ~/'],shell=True)
+	subprocess.call(['wget https://github.com/JWWeatherman/yeti/files/3731281/flaskapp.zip -P ~/'],shell=True)
 	os.system('unzip ~/flaskapp.zip -d ~/')
 
 subprocess.call(['sudo apt-get update'],shell=True)
@@ -30,13 +30,6 @@ if not (os.path.exists(home + "/flaskapp/bitcoin-0.18.1/bin")):
 	subprocess.call(['sudo unattended-upgrade'],shell=True)
 	subprocess.call(['wget https://bitcoin.org/bin/bitcoin-core-0.18.1/bitcoin-0.18.1-x86_64-linux-gnu.tar.gz -P ~/flaskapp/'],shell=True)
 	os.system('tar xvzf ~/flaskapp/bitcoin-0.18.1-x86_64-linux-gnu.tar.gz -C ~/flaskapp')
-	
-
-
-#after dpaking the the zip skip run bitcoin path
-
-#dose not wait after multisige for watchonly path
-
 
 subprocess.Popen('python3 ~/flaskapp/hello.py',shell=True,start_new_session=True)
 subprocess.call(['xdg-open http://localhost:5000'],shell=True)

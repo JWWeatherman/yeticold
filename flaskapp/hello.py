@@ -8,6 +8,7 @@ import cv2
 from qrtools.qrtools import QR
 from pyzbar.pyzbar import decode
 from PIL import Image
+import random
 import qrcode
 import datetime
 app = Flask(__name__)
@@ -33,6 +34,7 @@ error = None
 thirdqrcode = 0
 privkeycount = 0
 machine = 0
+utxo = None
 currentsecondset = 0
 bitcoindprogress = 0
 switcher = {
@@ -661,9 +663,10 @@ def displayforprint():
 @app.route("/watchonly", methods=['GET', 'POST'])
 def watchonly():
     global firstqrcode
-    if request.method == 'POST':
+    if request.method == 'GET':
         rpc = RPC()
         rpc.importaddress(firstqrcode.decode("utf-8"))
+    if request.method == 'POST':
         return redirect('/bitcoinqt')
     return render_template('watchonly.html')
 
@@ -697,9 +700,12 @@ def displaynewaddress():
 
 @app.route("/displayutxo", methods=['GET', 'POST'])
 def displayutxo():
-    if request.method == 'POST':
+    global utxo
+    if request.method == 'GET':
         rpc = RPC()
         utxo = rpc.listunspent()
+        utxo = json.loads(utxo)
+        print(utxo)
         qr = qrcode.QRCode(
                version=1,
                error_correction=qrcode.constants.ERROR_CORRECT_L,
@@ -711,6 +717,7 @@ def displayutxo():
         img = qr.make_image(fill_color="black", back_color="white")
         home = os.getenv("HOME")
         img.save(home + '/flaskapp/static/utxoqrcode.png')
+    if request.method == 'POST':
         return redirect('/scantransqrcode')
     return render_template('displayutxo.html', qrdata=utxo)
 
@@ -784,30 +791,37 @@ def delwallet():
 def importprivkey():
     global privkeylist
     global privkeycount
-    if request.method == 'POST':
-        privkeystring = ''
+    global error
+    ####ISSUE
+    if request.method == 'GET':
+        privkeylist = ['L1tze8ayXsYb8pggdAVHF469x1ZqjamExFWHRJuE1ri3nQbwtTeK','KydUgsQedGidufUAgcn2Aa2HMxXY3z6jVXtx6e8SrUVVrr3YhquK','Ky6FdrcTGs62tGG89AEi45Fn5sR5r7pBUacL2XYNX9NyQrHen2mo','KztQF5v7Ga4iazg3ASLDLNVNq1gevY15e9mDnGsM48K9jeDrYj7o','KxuEtno4VaZZSgmRb8PcDCyxA5NwbFSNeLRrJKPgDwnXXH1D2bxe','L2CJRsqAFt3HrTGV3U6vw4kecrCCNrrCURjygBuQUmrNk7h6Ezf5','L2obcyTfbw2Syztrp9kd3amHFEgaThrVG5rVnECJtWbewZttbvAu']
+        return redirect('/scanutxo')
+    if request.method == 'POSTE':
+        privkeyphraselist = []
         for i in range(1,14):
             inputlist = request.form['row' + str(i)]
             inputlist = inputlist.split(' ')
             inputlist.pop()
-            inputlist = " ".join(inputlist)
-            privkeystring = privkeystring + ' ' + inputlist
-        privkeylist.append(privkeystring)
+            privkeyphraselist.append(inputlist[0])
+            privkeyphraselist.append(inputlist[1])
+            privkeyphraselist.append(inputlist[2])
+            privkeyphraselist.append(inputlist[3])
+        privkeylist.append(str(PassphraseToWIF(privkeyphraselist)))
         privkeycount = privkeycount + 1
         if (privkeycount == 7):
             for i in range(0,7):
                 rpc = RPC()
-                rpc.importprivkey(privkeylist[i],str(i) + 'cre', False)
-                adr = rpc.getaddressesbylabel(str(i) + 'cre')
-                newprivkey = rpc.dumpprivkey(adr)
                 print(privkeylist[i])
-                print(newprivkey)
+                key = random.randrange(0, 10000000)
+                rpc.importprivkey(privkeylist[i],str(i) + str(key), False)
+                adr = rpc.getaddressesbylabel(str(i) + str(key))
+                newprivkey = rpc.dumpprivkey(list(adr.keys())[0])
                 if not newprivkey == privkeylist[i]:
                     privkeycount = 0
                     privkeylist = []
                     error = 'You have imported one of your keys incorrectly please try agian'
                     return redirect('/importprivkey')
-            return redirect('/scanutxo') #####
+            return redirect('/scanutxo')
         else:
             return redirect('/importprivkey')
     return render_template('importprivkey.html', x=privkeycount + 1, error=error)
@@ -831,9 +845,9 @@ def scanutxo():
                 pause = 0
             if not pause == 1 :
                 ret, frame = cam.read()
-                cv2.imshow("qrcodescaner", frame)
                 if not ret:
                     break
+                cv2.imshow("qrcodescaner", frame)
                 img_counter = img_counter + 1
                 if img_counter >= 100:
                     img_counter = 0
@@ -851,19 +865,20 @@ def scanutxo():
                             thirdqrcode = decodepng[0].data
         cam.release()
         cv2.destroyAllWindows()
-        return redirect('/gentrans')
+        return redirect('/displayfirsttransqrcode')
     return render_template('scanutxo.html')
 
-@app.route("/gentrans", methods=['GET', 'POST'])
-def gentrans():
+@app.route("/displayfirsttransqrcode", methods=['GET', 'POST'])
+def displayfirsttransqrcode():
     global firstqrcode
     global secondqrcode
     global thirdqrcode
     global privkeylist
-    if request.method == 'POST':
+    if request.method == 'GET':
         rpc = RPC()
         trans = secondqrcode #### parse this
         print(trans)
+        print(trans['amount'])
         amo = ((trans['amount'] / 3) - 0.00003)
         newamo = (trans['amount'] * (2 / 3))
         transonehex = rpc.createrawtransaction('''[ { "txid": "''' + trans['txid'] + '''", "vout": ''' + trans['vout'] + ''', "scriptPubKey": "''' + trans['scriptpubkey'] + '''", "redeemScript": "''' + thirdqrcode + '''" } ]''', '''{ "''' + firstqrcode + '''": '''+ amo +''', "'''+ trans['address'] + '''": '''+ newamo +'''}''')
@@ -877,13 +892,9 @@ def gentrans():
         firstqrcode = transone
         secondqrcode = transtwo
         thirdqrcode = transthree
-        return redirect('/displayfirsttransqrcode')
-    return render_template('gentrans.html')
-
-@app.route("/displayfirsttransqrcode", methods=['GET', 'POST'])
-def displayfirsttransqrcode():
-    global firstqrcode
-    if request.method == 'GET':
+        print(firstqrcode)
+        print(secondqrcode)
+        print(thirdqrcode)
         qr = qrcode.QRCode(
                version=1,
                error_correction=qrcode.constants.ERROR_CORRECT_L,
