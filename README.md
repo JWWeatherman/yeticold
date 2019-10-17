@@ -1,4 +1,4 @@
-Yeti is currently pre-alpha. This means that not only is the code not well tested, but it isn't even funtional yet. We would love help testing and code review and hope to have something usable reasonably trustworthy within a few weeks.
+Yeti is currently pre-alpha. This means that not only is the code not well tested, but it isn't even funtional yet. We would love help testing and code review and hope to have something usable and reasonably trustworthy within a few weeks.
 
 
 Yeti is a script that installs bitcoin core and then walks the user through setup of cold storage solution that has the following advantages:
