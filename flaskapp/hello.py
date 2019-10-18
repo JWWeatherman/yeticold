@@ -11,6 +11,7 @@ from PIL import Image
 import random
 import qrcode
 import datetime
+import ast
 app = Flask(__name__)
 
 
@@ -33,6 +34,9 @@ secondqrcode = 0
 error = None
 thirdqrcode = 0
 privkeycount = 0
+firstqrname = None
+secondqrname = None
+thirdqrname = None
 machine = 0
 utxo = None
 currentsecondset = 0
@@ -424,7 +428,10 @@ def displayfirstqrcode():
     global privkeylist
     global adrlist
     global firstqrcode
+    global firsqrname
     if request.method == 'GET':
+        randomnum = str(random.randrange(0,1000000))
+        firstqrname = randomnum
         qr = qrcode.QRCode(
                version=1,
                error_correction=qrcode.constants.ERROR_CORRECT_L,
@@ -435,17 +442,21 @@ def displayfirstqrcode():
         qr.make(fit=True)
         img = qr.make_image(fill_color="black", back_color="white")
         home = os.getenv("HOME")
-        img.save(home + '/flaskapp/static/firstqrcode.png')
+        img.save(home + '/flaskapp/static/firstqrcode' + firstqrname + '.png')
+        route = url_for('static', filename='firstqrcode' + firstqrname + '.png')
     if request.method == 'POST':
         return redirect('/displaysecondqrcode')
-    return render_template('displayfirstqrcode.html', qrdata=firstqrcode)
+    return render_template('displayfirstqrcode.html', qrdata=firstqrcode, route=route)
 
 @app.route("/displaysecondqrcode", methods=['GET', 'POST'])
 def displaysecondqrcode():
     global privkeylist
     global adrlist
     global secondqrcode
+    global secondqrname
     if request.method == 'GET':
+        randomnum = str(random.randrange(0,1000000))
+        secondqrname = randomnum
         qr = qrcode.QRCode(
                version=1,
                error_correction=qrcode.constants.ERROR_CORRECT_L,
@@ -456,17 +467,21 @@ def displaysecondqrcode():
         qr.make(fit=True)
         img = qr.make_image(fill_color="black", back_color="white")
         home = os.getenv("HOME")
-        img.save(home + '/flaskapp/static/secondqrcode.png')
+        img.save(home + '/flaskapp/static/secondqrcode' + secondqrname + '.png')
+        route = url_for('static', filename='secondqrcode' + secondqrname + '.png')
     if request.method == 'POST':
         return redirect('/displaythirdqrcode')
-    return render_template('displaysecondqrcode.html', qrdata=secondqrcode)
+    return render_template('displaysecondqrcode.html', qrdata=secondqrcode, route=route)
 
 @app.route("/displaythirdqrcode", methods=['GET', 'POST'])
 def displaythirdqrcode():
     global privkeylist
     global adrlist
     global thirdqrcode
+    global thirdqrname
     if request.method == 'GET':
+        randomnum = str(random.randrange(0,1000000))
+        thirdqrname = randomnum
         qr = qrcode.QRCode(
                version=1,
                error_correction=qrcode.constants.ERROR_CORRECT_L,
@@ -477,10 +492,11 @@ def displaythirdqrcode():
         qr.make(fit=True)
         img = qr.make_image(fill_color="black", back_color="white")
         home = os.getenv("HOME")
-        img.save(home + '/flaskapp/static/thirdqrcode.png')
+        img.save(home + '/flaskapp/static/thirdqrcode' + thirdqrname + '.png')
+        route = url_for('static', filename='thirdqrcode' + thirdqrname + '.png')
     if request.method == 'POST':
         return redirect('/display')
-    return render_template('displaythirdqrcode.html', qrdata=thirdqrcode)
+    return render_template('displaythirdqrcode.html', qrdata=thirdqrcode, route=route)
 
 ## PAUSE OFFLINE COMPUTER AND CONTINUE ONLINE COMPUTER
 
@@ -616,12 +632,17 @@ def displayforprint():
     global firstqrcode
     global secondqrcode
     global thirdqrcode
+    global firstqrname
+    global secondqrname
+    global thirdqrname
     global currentsecondset
-    now = datetime.datetime.now()
-    currentsecondset = str(now.second)
-    firstqr = url_for('static', filename='firstqrcode'+currentsecondset+'.png')
-    secondqr = url_for('static', filename='secondqrcode'+currentsecondset+'.png')
-    thirdqr = url_for('static', filename='thirdqrcode'+currentsecondset+'.png')
+    randomnum = str(random.randrange(0,1000000))
+    firstqrname = randomnum
+    secondqrname = randomnum
+    thirdqrname = randomnum
+    routeone = url_for('static', filename='firstqrcode' + firstqrname + '.png')
+    routetwo = url_for('static', filename='secondqrcode' + secondqrname + '.png')
+    routethree = url_for('static', filename='thirdqrcode' + thirdqrname + '.png')
     if request.method == 'GET':
         qr = qrcode.QRCode(
                version=1,
@@ -633,7 +654,7 @@ def displayforprint():
         qr.make(fit=True)
         img = qr.make_image(fill_color="black", back_color="white")
         home = os.getenv("HOME")
-        img.save(home + '/flaskapp/static/firstqrcode' + currentsecondset + '.png')
+        img.save(home + '/flaskapp/static/firstqrcode' + firstqrname + '.png')
         qr = qrcode.QRCode(
                version=1,
                error_correction=qrcode.constants.ERROR_CORRECT_L,
@@ -644,7 +665,7 @@ def displayforprint():
         qr.make(fit=True)
         img = qr.make_image(fill_color="black", back_color="white")
         home = os.getenv("HOME")
-        img.save(home + '/flaskapp/static/secondqrcode' + currentsecondset +'.png')
+        img.save(home + '/flaskapp/static/secondqrcode' + secondqrname +'.png')
         qr = qrcode.QRCode(
                version=1,
                error_correction=qrcode.constants.ERROR_CORRECT_L,
@@ -655,10 +676,10 @@ def displayforprint():
         qr.make(fit=True)
         img = qr.make_image(fill_color="black", back_color="white")
         home = os.getenv("HOME")
-        img.save(home + '/flaskapp/static/thirdqrcode' + currentsecondset + '.png')
+        img.save(home + '/flaskapp/static/thirdqrcode' + thirdqrname + '.png')
     if request.method == 'POST':
         return redirect('/watchonly')
-    return render_template('displayforprint.html', first=firstqrcode, second=secondqrcode, third=thirdqrcode, firstqr=firstqr, secondqr=secondqr, thirdqr=thirdqr)
+    return render_template('displayforprint.html', first=firstqrcode, second=secondqrcode, third=thirdqrcode, routeone=routeone, routetwo=routetwo, routethree=routethree)
 
 @app.route("/watchonly", methods=['GET', 'POST'])
 def watchonly():
@@ -680,46 +701,56 @@ def bitcoinqt():
 
 @app.route("/displaynewaddress", methods=['GET', 'POST'])
 def displaynewaddress():
+    global firstqrcode
+    global firstqrname
     if request.method == 'GET':
         rpc = RPC()
-        adr = rpc.getnewaddress()
+        firstqrcode = rpc.getnewaddress()
         qr = qrcode.QRCode(
                version=1,
                error_correction=qrcode.constants.ERROR_CORRECT_L,
                box_size=10,
                border=4,
         )
-        qr.add_data(adr)
+        qr.add_data(firstqrcode)
         qr.make(fit=True)
         img = qr.make_image(fill_color="black", back_color="white")
         home = os.getenv("HOME")
-        img.save(home + '/flaskapp/static/adrqrcode.png')
+        img.save(home + '/flaskapp/static/adrqrcode'+firstqrname+'.png')
+        route = url_for('static', filename='adrqrcode' + firstqrname + '.png')
     if request.method == 'POST':
         return redirect('/displayutxo')
-    return render_template('displaynewaddress.html', qrdata=adr)
+    return render_template('displaynewaddress.html', qrdata=firstqrcode , route=route)
 
 @app.route("/displayutxo", methods=['GET', 'POST'])
 def displayutxo():
     global utxo
+    global secondqrname
     if request.method == 'GET':
-        rpc = RPC()
-        utxo = rpc.listunspent()
-        utxo = json.loads(utxo)
-        print(utxo)
+        utxo = subprocess.Popen(['~/flaskapp/bitcoin-0.18.1/bin/bitcoin-cli listunspent'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        utxo = json.loads(utxo[0])[0]
+        newstr = utxo['txid'] + ','
+        newstr = newstr + str(utxo['vout']) + ','
+        newstr = newstr + utxo['address'] + ','
+        newstr = newstr + utxo['scriptPubKey'] + ','
+        newstr = newstr + str(utxo['amount'])
+        randomnum = str(random.randrange(0,1000000))
+        secondqrname = randomnum
         qr = qrcode.QRCode(
                version=1,
                error_correction=qrcode.constants.ERROR_CORRECT_L,
                box_size=10,
                border=4,
         )
-        qr.add_data(utxo)
+        qr.add_data(newstr)
         qr.make(fit=True)
         img = qr.make_image(fill_color="black", back_color="white")
         home = os.getenv("HOME")
-        img.save(home + '/flaskapp/static/utxoqrcode.png')
+        img.save(home + '/flaskapp/static/utxoqrcode'+secondqrname+'.png')
+        route = url_for('static', filename='utxoqrcode' + secondqrname + '.png')
     if request.method == 'POST':
         return redirect('/scantransqrcode')
-    return render_template('displayutxo.html', qrdata=utxo)
+    return render_template('displayutxo.html', qrdata=newstr, route=route)
 
 @app.route("/scantransqrcode", methods=['GET', 'POST'])
 def scantransqrcode():
@@ -873,25 +904,40 @@ def displayfirsttransqrcode():
     global firstqrcode
     global secondqrcode
     global thirdqrcode
+    global firstqrname
+    global secondqrname
+    global thirdqrname
     global privkeylist
     if request.method == 'GET':
         rpc = RPC()
         trans = secondqrcode #### parse this
+        trans = trans.decode("utf-8")
+        trans = trans.split(",")
+        trans[4] = float(trans[4])
+        #trans[0] = txid
+        #trans[1] = vout
+        #trans[2] = address 
+        #trans[3] = scrirptPubKey
+        #trans[4] = amount
         print(trans)
-        print(trans['amount'])
-        amo = ((trans['amount'] / 3) - 0.00003)
-        newamo = (trans['amount'] * (2 / 3))
-        transonehex = rpc.createrawtransaction('''[ { "txid": "''' + trans['txid'] + '''", "vout": ''' + trans['vout'] + ''', "scriptPubKey": "''' + trans['scriptpubkey'] + '''", "redeemScript": "''' + thirdqrcode + '''" } ]''', '''{ "''' + firstqrcode + '''": '''+ amo +''', "'''+ trans['address'] + '''": '''+ newamo +'''}''')
+        print(trans[4])
+        amo = ((trans[4] / 3) - 0.00003)
+        newamo = (trans[4] * (2 / 3))
+        transonehex = rpc.createrawtransaction('''[ { "txid": "''' + trans[0] + '''", "vout": ''' + trans[1] + ''', "scriptPubKey": "''' + trans[3] + '''", "redeemScript": "''' + thirdqrcode + '''" } ]''', '''{ "''' + firstqrcode + '''": '''+ str(amo) +''', "'''+ trans[2] + '''": '''+ str(newamo) +'''}''')
         transone = rpc.signrawtransactionwithkey(transonehex, '['+ privkeylist[0] +','+ privkeylist[1] +','+ privkeylist[2] +']', secondqrcode)
-        newamo = (trans['amount'] * (1 / 3))
-        transtwohex = rpc.createrawtransaction('''[ { "txid": "''' + trans['txid'] + '''", "vout": ''' + trans['vout'] + ''', "scriptPubKey": "''' + trans['scriptpubkey'] + '''", "redeemScript": "''' + thirdqrcode + '''" } ]''', '''{ "''' + firstqrcode + '''": '''+ amo +''', "'''+ trans['address'] + '''": '''+ newamo +'''}''')
+        newamo = (trans[4] * (1 / 3))
+        transtwohex = rpc.createrawtransaction('''[ { "txid": "''' + trans[0] + '''", "vout": ''' + trans[1] + ''', "scriptPubKey": "''' + trans[3] + '''", "redeemScript": "''' + thirdqrcode + '''" } ]''', '''{ "''' + firstqrcode + '''": '''+ str(amo) +''', "'''+ trans[2] + '''": '''+ str(newamo) +'''}''')
         transtwo = rpc.signrawtransactionwithkey(transtwohex, '['+ privkeylist[2] +','+ privkeylist[3] +','+ privkeylist[4] +']', secondqrcode)
         newamo = 0
-        transthreehex = rpc.createrawtransaction('''[ { "txid": "''' + trans['txid'] + '''", "vout": ''' + trans['vout'] + ''', "scriptPubKey": "''' + trans['scriptpubkey'] + '''", "redeemScript": "''' + thirdqrcode + '''" } ]''', '''{ "''' + firstqrcode + '''": '''+ amo +''', "'''+ trans['address'] + '''": '''+ newamo +'''}''')
+        transthreehex = rpc.createrawtransaction('''[ { "txid": "''' + trans[0] + '''", "vout": ''' + trans[1] + ''', "scriptPubKey": "''' + trans[3] + '''", "redeemScript": "''' + thirdqrcode + '''" } ]''', '''{ "''' + firstqrcode + '''": '''+ str(amo) +''', "'''+ trans[2] + '''": '''+ str(newamo) +'''}''')
         transthree = rpc.signrawtransactionwithkey(transtwohex, '['+ privkeylist[4] +','+ privkeylist[5] +','+ privkeylist[6] +']', secondqrcode)
         firstqrcode = transone
         secondqrcode = transtwo
         thirdqrcode = transthree
+        randomnum = str(random.randrange(0,1000000))
+        firstqrname = randomnum
+        secondqrname = randomnum
+        thirdqrname = randomnum
         print(firstqrcode)
         print(secondqrcode)
         print(thirdqrcode)
@@ -905,14 +951,16 @@ def displayfirsttransqrcode():
         qr.make(fit=True)
         img = qr.make_image(fill_color="black", back_color="white")
         home = os.getenv("HOME")
-        img.save(home + '/flaskapp/static/firsttransqrcode.png')
+        img.save(home + '/flaskapp/static/firsttransqrcode'+firstqrname+'.png')
+        route = url_for('static', filename='firsttransqrcode' + firstqrname + '.png')
     if request.method == 'POST':
         return redirect('/displaysecondtransqrcode')
-    return render_template('displayfirsttransqrcode.html', qrdata=firstqrcode)
+    return render_template('displayfirsttransqrcode.html', qrdata=firstqrcode, route=route)
 
 @app.route("/displaysecondtransqrcode", methods=['GET', 'POST'])
 def displaysecondtransqrcode():
     global secondqrcode
+    global secondqrname
     if request.method == 'GET':
         qr = qrcode.QRCode(
                version=1,
@@ -924,14 +972,16 @@ def displaysecondtransqrcode():
         qr.make(fit=True)
         img = qr.make_image(fill_color="black", back_color="white")
         home = os.getenv("HOME")
-        img.save(home + '/flaskapp/static/secondtransqrcode.png')
+        img.save(home + '/flaskapp/static/secondtransqrcode'+secondqrname+'.png')
+        route = url_for('static', filename='secondtransqrcode' + secondqrname + '.png')
     if request.method == 'POST':
         return redirect('/displaythirdtransqrcode')
-    return render_template('displaysecondtransqrcode.html', qrdata=secondqrcode)
+    return render_template('displaysecondtransqrcode.html', qrdata=secondqrcode, route=route)
 
 @app.route("/displaythirdtransqrcode", methods=['GET', 'POST'])
 def displaythirdtransqrcode():
     global thirdqrcode
+    global thirdqrname
     if request.method == 'GET':
         qr = qrcode.QRCode(
                version=1,
@@ -943,10 +993,11 @@ def displaythirdtransqrcode():
         qr.make(fit=True)
         img = qr.make_image(fill_color="black", back_color="white")
         home = os.getenv("HOME")
-        img.save(home + '/flaskapp/static/thirdtransqrcode.png')
+        img.save(home + '/flaskapp/static/thirdtransqrcode'+thirdqrname+'.png')
+        route = url_for('static', filename='thirdtransqrcode' + thirdqrname + '.png')
     if request.method == 'POST':
         return redirect('/next')
-    return render_template('displaythirdtransqrcode.html', qrdata=thirdqrcode)
+    return render_template('displaythirdtransqrcode.html', qrdata=thirdqrcode, route=route)
 
 ### ONLINE COMPUTER START
 
