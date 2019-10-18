@@ -909,50 +909,52 @@ def displayfirsttransqrcode():
     global thirdqrname
     global privkeylist
     if request.method == 'GET':
-        rpc = RPC()
-        trans = secondqrcode #### parse this
-        trans = trans.decode("utf-8")
-        trans = trans.split(",")
-        trans[4] = float(trans[4])
-        #trans[0] = txid
-        #trans[1] = vout
-        #trans[2] = address 
-        #trans[3] = scrirptPubKey
-        #trans[4] = amount
-        print(trans)
-        print(trans[4])
-        amo = ((trans[4] / 3) - 0.00003)
-        newamo = (trans[4] * (2 / 3))
-        transonehex = rpc.createrawtransaction('''[ { "txid": "''' + trans[0] + '''", "vout": ''' + trans[1] + ''', "scriptPubKey": "''' + trans[3] + '''", "redeemScript": "''' + thirdqrcode + '''" } ]''', '''{ "''' + firstqrcode + '''": '''+ str(amo) +''', "'''+ trans[2] + '''": '''+ str(newamo) +'''}''')
-        transone = rpc.signrawtransactionwithkey(transonehex, '['+ privkeylist[0] +','+ privkeylist[1] +','+ privkeylist[2] +']', secondqrcode)
-        newamo = (trans[4] * (1 / 3))
-        transtwohex = rpc.createrawtransaction('''[ { "txid": "''' + trans[0] + '''", "vout": ''' + trans[1] + ''', "scriptPubKey": "''' + trans[3] + '''", "redeemScript": "''' + thirdqrcode + '''" } ]''', '''{ "''' + firstqrcode + '''": '''+ str(amo) +''', "'''+ trans[2] + '''": '''+ str(newamo) +'''}''')
-        transtwo = rpc.signrawtransactionwithkey(transtwohex, '['+ privkeylist[2] +','+ privkeylist[3] +','+ privkeylist[4] +']', secondqrcode)
-        newamo = 0
-        transthreehex = rpc.createrawtransaction('''[ { "txid": "''' + trans[0] + '''", "vout": ''' + trans[1] + ''', "scriptPubKey": "''' + trans[3] + '''", "redeemScript": "''' + thirdqrcode + '''" } ]''', '''{ "''' + firstqrcode + '''": '''+ str(amo) +''', "'''+ trans[2] + '''": '''+ str(newamo) +'''}''')
-        transthree = rpc.signrawtransactionwithkey(transtwohex, '['+ privkeylist[4] +','+ privkeylist[5] +','+ privkeylist[6] +']', secondqrcode)
-        firstqrcode = transone
-        secondqrcode = transtwo
-        thirdqrcode = transthree
-        randomnum = str(random.randrange(0,1000000))
-        firstqrname = randomnum
-        secondqrname = randomnum
-        thirdqrname = randomnum
-        print(firstqrcode)
-        print(secondqrcode)
-        print(thirdqrcode)
-        qr = qrcode.QRCode(
-               version=1,
-               error_correction=qrcode.constants.ERROR_CORRECT_L,
-               box_size=10,
-               border=4,
-        )
-        qr.add_data(firstqrcode)
-        qr.make(fit=True)
-        img = qr.make_image(fill_color="black", back_color="white")
-        home = os.getenv("HOME")
-        img.save(home + '/flaskapp/static/firsttransqrcode'+firstqrname+'.png')
-        route = url_for('static', filename='firsttransqrcode' + firstqrname + '.png')
+    rpc = RPC()
+    trans = secondqrcode #### parse this
+    trans = trans.decode("utf-8")
+    trans = trans.split(",")
+    trans[1] = int(trans[1])
+    trans[4] = float(trans[4])
+    #trans[0] = txid
+    #trans[1] = vout
+    #trans[2] = address
+    #trans[3] = scrirptPubKey
+    #trans[4] = amount
+    firstqrcode = firstqrcode.decode("utf-8")
+    secondqrcode = secondqrcode.decode("utf-8")
+    thirdqrcode = thirdqrcode.decode("utf-8")
+    amo = ((trans[4] / 3) - 0.00003)
+    newamo = (trans[4] * (2 / 3))
+    amo = "{:.8f}".format(float(amo))
+    newamo = "{:.8f}".format(float(newamo))
+    transonehex = rpc.createrawtransaction([{ "txid": trans[0], "vout": trans[1], "scriptPubKey": trans[3], "redeemScript": thirdqrcode}], [{firstqrcode: amo}, {trans[2] : newamo }])
+    newamo = (trans[4] * (1 / 3))
+    newamo = "{:.8f}".format(float(newamo))
+    transtwohex = rpc.createrawtransaction([{ "txid": trans[0], "vout": trans[1], "scriptPubKey": trans[3], "redeemScript": thirdqrcode}], [{firstqrcode: amo}, {trans[2] : newamo }])
+    newamo = 0
+    transthreehex = rpc.createrawtransaction([{ "txid": trans[0], "vout": trans[1], "scriptPubKey": trans[3], "redeemScript": thirdqrcode}], [{firstqrcode: amo}, {trans[2] : newamo }])
+    transone = rpc.signrawtransactionwithkey(transonehex, [privkeylist[0], privkeylist[1], privkeylist[2]], [{ "txid": trans[0], "vout": trans[1], "scriptPubKey": trans[3], "redeemScript": thirdqrcode, "amount": trans[4]}])
+    transtwo = rpc.signrawtransactionwithkey(transtwohex, [privkeylist[2], privkeylist[3], privkeylist[4]], [{ "txid": trans[0], "vout": trans[1], "scriptPubKey": trans[3], "redeemScript": thirdqrcode, "amount": trans[4]}])
+    transthree = rpc.signrawtransactionwithkey(transtwohex, [privkeylist[4], privkeylist[5], privkeylist[6]], [{ "txid": trans[0], "vout": trans[1], "scriptPubKey": trans[3], "redeemScript": thirdqrcode, "amount": trans[4]}])
+    firstqrcode = transone
+    secondqrcode = transtwo
+    thirdqrcode = transthree
+    randomnum = str(random.randrange(0,1000000))
+    firstqrname = randomnum
+    secondqrname = randomnum
+    thirdqrname = randomnum
+    qr = qrcode.QRCode(
+    version=1,
+    error_correction=qrcode.constants.ERROR_CORRECT_L,
+    box_size=10,
+    border=4,
+    )
+    qr.add_data(firstqrcode)
+    qr.make(fit=True)
+    img = qr.make_image(fill_color="black", back_color="white")
+    home = os.getenv("HOME")
+    img.save(home + '/flaskapp/static/firsttransqrcode'+firstqrname+'.png')
+    route = url_for('static', filename='firsttransqrcode' + firstqrname + '.png')
     if request.method == 'POST':
         return redirect('/displaysecondtransqrcode')
     return render_template('displayfirsttransqrcode.html', qrdata=firstqrcode, route=route)
