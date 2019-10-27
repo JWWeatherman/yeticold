@@ -28,6 +28,7 @@ settings = {
 BASE58_ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 base_count = len(BASE58_ALPHABET)
 privkeylist = []
+xprivlist = []
 adrlist = []
 firstqrcode = 0
 secondqrcode = 0
@@ -38,6 +39,8 @@ firstqrname = None
 secondqrname = None
 thirdqrname = None
 machine = 0
+amount = 0
+transnum = 0
 utxo = None
 currentsecondset = 0
 bitcoindprogress = 0
@@ -234,34 +237,6 @@ def PassphraseToWIF(passphraselist):
         Privkey += switcher.get(str(passphraselist[i]))
     return Privkey
 
-# def hashEveryFour(passphraselist):
-#     passphrasehashlist = []
-#     templist = []
-#     for i in range(len(passphraselist)):
-#         templist.append(str(passphraselist[i]))
-#         if ((i + 1) % 4) == 0:
-#             passphrasehashlist.append(hashFour(templist))
-#             templist = []
-#     return passphrasehashlist
-
-# def hashFour(passphraselist):
-#     templist = PassphraseToWIF(passphraselist)
-#     templist = decode(templist)
-#     key = hex(int(templist)).replace('0x', "")
-#     padkey = padhex(key)
-#     assert(int(padkey, 16) == int(key,16))
-#     byteslist = bytes.fromhex(padkey)
-#     hashedbyte = hashlib.sha256(byteslist).digest()
-#     num, mod = divmod(int.from_bytes(hashedbyte, 'big'), 58)
-#     checksum = ConvertToPassphrase(BASE58_ALPHABET[mod])[0]
-#     return checksum
-
-# def int_to_bytes(x: int) -> bytes:
-#     return x.to_bytes((x.bit_length() + 7) // 8, 'big')
-
-# def int_from_bytes(xbytes):
-#     return int.from_bytes(xbytes, 'big')
-
 def xor(x, y):
     return '{1:0{0}b}'.format(len(x), int(x, 2) ^ int(y, 2))
 
@@ -293,11 +268,11 @@ def options():
         if request.form['option'] == 'start':
             return redirect('/items')
         elif request.form['option'] == 'mid':
-            subprocess.call('gnome-terminal -- bash -c "sudo ~/flaskapp/bitcoin-0.18.1/bin/bitcoind -proxy=127.0.0.1:9050; read line"', shell=True)
+            subprocess.call('gnome-terminal -- bash -c "~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050; read line"', shell=True)
             machine = 1
             return redirect('/runbitcoind')
         elif request.form['option'] == 'end':
-            subprocess.call('gnome-terminal -- bash -c "sudo ~/flaskapp/bitcoin-0.18.1/bin/bitcoind -proxy=127.0.0.1:9050; read line"', shell=True)
+            subprocess.call('gnome-terminal -- bash -c "~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050; read line"', shell=True)
             return redirect('/runbitcoind')
     return render_template('options.html')
 
@@ -358,7 +333,7 @@ def runbitcoind():
     global machine
     global privkeycount
     if request.method == 'GET':
-        bitcoind = subprocess.Popen(['~/flaskapp/bitcoin-0.18.1/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        bitcoind = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         if not (len(bitcoind[0]) == 0):
             bitcoindprogress = json.loads(bitcoind[0])['verificationprogress']
             bitcoindprogress = bitcoindprogress * 100
@@ -391,11 +366,17 @@ def randomisePrivKey():
         privkeylisttemp = []
         for i in range(1,8):
             rpc = RPC()
+            print('1')
             adr = rpc.getnewaddress()
+            print('2')
             newprivkey = rpc.dumpprivkey(adr)
+            print('3')
             binary = bin(decode58(newprivkey))[2:][8:-40]
+            print('4')
             WIF = ConvertToWIF(xor(binary,request.form['binary' + str(i)]))
+            print('5')
             privkeylisttemp.append(WIF)
+            print('6')
         privkeycount = 0
         privkeylist = privkeylisttemp
         adrlist = []
@@ -408,18 +389,64 @@ def generatemultisig():
     global adrlist
     global firstqrcode
     global secondqrcode
-    global thirdqrcode
+    global xprivlist
+    ###### MULTI CREATE CODE
     if request.method == 'POST':
         for i in range(0,7):
-            rpc = RPC()
-            rpc.importprivkey(privkeylist[i],str(i) + 'cre', False)
-            adr = rpc.getaddressesbylabel(str(i) + 'cre')
-            adrlist.append(list(adr.keys())[0])
-        rpc = RPC()
-        newadr = rpc.addmultisigaddress(3, adrlist)
-        firstqrcode = str(newadr['address'])
-        secondqrcode = str(newadr['redeemScript'])
-        thirdqrcode = 'addmultisigaddress(3, '+ str(adrlist) + ')'
+            home = os.getenv('HOME')
+            pathtwo = home + '/blank' + str(i)
+            path = home + '/full' + str(i)
+            response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "full'+str(i)+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "full'+str(i)+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=full'+str(i)+' sethdseed false "'+privkeylist[i]+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=full'+str(i)+' dumpwallet "full'+str(i)+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            wallet = open(path,'r')
+            wallet.readline()
+            wallet.readline()
+            wallet.readline()
+            wallet.readline()
+            wallet.readline()
+            privkeyline = wallet.readline()
+            privkeyline = privkeyline.split(" ")[4][:-1]
+            xprivlist.append(privkeyline)
+            response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "blank'+str(i)+'" false true'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "blank'+str(i)+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=blank'+str(i)+' sethdseed false "'+privkeylist[i]+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=blank'+str(i)+' dumpwallet "blank'+str(i)+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            wallettwo = open(pathtwo,'r')
+            wallettwo.readline()
+            wallettwo.readline()
+            wallettwo.readline()
+            wallettwo.readline()
+            wallettwo.readline()
+            privkeytwoline = wallettwo.readline()
+            privkeytwoline = privkeytwoline.split(" ")[4][:-1]
+            if xprivlist[i] == privkeytwoline:
+                print("OK")
+        addresses = []
+        checksum = None
+        response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli getdescriptorinfo "wsh(multi(3,'+xprivlist[0]+'/*,'+xprivlist[1]+'/*,'+xprivlist[2]+'/*,'+xprivlist[3]+'/*,'+xprivlist[4]+'/*,'+xprivlist[5]+'/*,'+xprivlist[6]+'/*))"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        response = response[0].decode("utf-8")
+        response = json.loads(response)
+        checksum = response["checksum"]
+        desc = response["descriptor"]
+        print("Descriptor public")
+        print(desc)
+        response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli importmulti \'[{ "desc": "wsh(multi(3,'+xprivlist[0]+'/*,'+xprivlist[1]+'/*,'+xprivlist[2]+'/*,'+xprivlist[3]+'/*,'+xprivlist[4]+'/*,'+xprivlist[5]+'/*,'+xprivlist[6]+'/*))#'+ checksum +'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        for i in range(0,7):
+            response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli getdescriptorinfo "pk('+xprivlist[i]+'/*)"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            response = response[0].decode("utf-8")
+            privkeychecksum = json.loads(response)["checksum"]
+            response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli deriveaddresses "pk('+xprivlist[i]+'/*)#'+privkeychecksum+'" "[0,999]"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            response = response[0].decode("utf-8")
+            response = json.loads(response)
+            addresses.append(response)
+            for x in range(0,len(addresses[i])):
+                response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli dumpprivkey "'+addresses[i][x]+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+                response = response[0][:-1].decode("utf-8")
+                noresponse = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli importprivkey "'+response+'" "" false'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        firstqrcode = desc
+        secondqrcode = '~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli importmulti \'[{ "desc": "'+desc+'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''
         return redirect('/displayfirstqrcode')
     return render_template('generatemultisig.html')
 
@@ -470,33 +497,9 @@ def displaysecondqrcode():
         img.save(home + '/flaskapp/static/secondqrcode' + secondqrname + '.png')
         route = url_for('static', filename='secondqrcode' + secondqrname + '.png')
     if request.method == 'POST':
-        return redirect('/displaythirdqrcode')
+        return redirect('/display')
     return render_template('displaysecondqrcode.html', qrdata=secondqrcode, route=route)
 
-@app.route("/displaythirdqrcode", methods=['GET', 'POST'])
-def displaythirdqrcode():
-    global privkeylist
-    global adrlist
-    global thirdqrcode
-    global thirdqrname
-    if request.method == 'GET':
-        randomnum = str(random.randrange(0,1000000))
-        thirdqrname = randomnum
-        qr = qrcode.QRCode(
-               version=1,
-               error_correction=qrcode.constants.ERROR_CORRECT_L,
-               box_size=10,
-               border=4,
-        )
-        qr.add_data(thirdqrcode)
-        qr.make(fit=True)
-        img = qr.make_image(fill_color="black", back_color="white")
-        home = os.getenv("HOME")
-        img.save(home + '/flaskapp/static/thirdqrcode' + thirdqrname + '.png')
-        route = url_for('static', filename='thirdqrcode' + thirdqrname + '.png')
-    if request.method == 'POST':
-        return redirect('/display')
-    return render_template('displaythirdqrcode.html', qrdata=thirdqrcode, route=route)
 
 ## PAUSE OFFLINE COMPUTER AND CONTINUE ONLINE COMPUTER
 
@@ -532,6 +535,7 @@ def confirmkey():
             inputlist = " ".join(inputlist)
             privkeylisttoconfirm = privkeylisttoconfirm + ' ' + inputlist
         if PassphraseToWIF(privkeylisttoconfirm.split(' ')[1:]) == privkey:
+            print(privkey)
             error = None
             privkeycount = privkeycount + 1
             if (privkeycount == 7):
@@ -547,31 +551,6 @@ def confirmkey():
 @app.route("/next")
 def next():
     return "This page has not been added yet"
-
-@app.route("/testkeys", methods=['GET', 'POST'])
-def testkeys():
-    global privkeylist
-    global privkeycount
-    global adrlist
-    if request.method == 'GET':
-        privkeylisttemp = []
-        for i in range(1,8):
-            rpc = RPC()
-            adr = rpc.getnewaddress()
-            newprivkey = rpc.dumpprivkey(adr)
-            binary = bin(decode58(newprivkey))[2:][8:-40]
-            WIF = ConvertToWIF(xor(binary,'1010010111111000101010101101011000001001010101100101111001001111110001101111111010111011000011010100110000001011110010001101011000011111100101000000100011100101111101010110100110111000110111000010110111000000010100100110011010111111101000100100001011001100'))
-            privkeylisttemp.append(WIF)
-        privkeycount = 0
-        privkeylist = privkeylisttemp
-    if request.method == 'POST':
-        print(privkeylist)
-        print(privkeylist[0])
-        print(PassphraseToWIF(privkeylist[0]))
-        adrlist = []
-        return redirect('/confirmkey')
-    return render_template('testkeys.html')
-
 
 ### ONLINE COMPUTER START
 
@@ -589,52 +568,28 @@ def repack():
 def scanfirstqrcode():
     if request.method == 'POST':
         global firstqrcode
-        global secondqrcode
-        global thirdqrcode
-        cam = cv2.VideoCapture(0)
-        cv2.namedWindow("qrcodescaner")
-        img_counter = 0
-        qrcode_counter = 0
-        pause = 0
-        while True:
-            if qrcode_counter == 3:
-                break
-            k = cv2.waitKey(1)
-            if k == 13:
-                pause = 0
-            if not pause == 1 :
-                ret, frame = cam.read()
-                cv2.imshow("qrcodescaner", frame)
-                if not ret:
-                    break
-                img_counter = img_counter + 1
-                if img_counter >= 100:
-                    img_counter = 0
-                    img_name = "qrcodeimage.png"
-                    cv2.imwrite(img_name, frame)
-                    decodepng = decode(Image.open('qrcodeimage.png'))
-                    if decodepng:
-                        pause = 1
-                        qrcode_counter = qrcode_counter + 1
-                        if qrcode_counter == 1:
-                            firstqrcode = decodepng[0].data
-                        elif qrcode_counter == 2:
-                            secondqrcode = decodepng[0].data
-                        elif qrcode_counter == 3:
-                            thirdqrcode = decodepng[0].data
-        cam.release()
-        cv2.destroyAllWindows()
-        return redirect('/displayforprint')
+        firstqrcode = subprocess.Popen(['python3 ~/flaskapp/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+        firstqrcode = firstqrcode.decode("utf-8")
+        return redirect('/scansecondqrcode')
     return render_template('scanfirstqrcode.html')
+
+@app.route("/scansecondqrcode", methods=['GET', 'POST'])
+def scansecondqrcode():
+    if request.method == 'POST':
+        global secondqrcode
+        secondqrcode = subprocess.Popen(['python3 ~/flaskapp/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+        print(secondqrcode)
+        secondqrcode = secondqrcode.decode("utf-8")
+        print(secondqrcode)
+        return redirect('/displayforprint')
+    return render_template('scansecondqrcode.html')
 
 @app.route("/displayforprint", methods=['GET', 'POST'])
 def displayforprint():
     global firstqrcode
     global secondqrcode
-    global thirdqrcode
     global firstqrname
     global secondqrname
-    global thirdqrname
     global currentsecondset
     randomnum = str(random.randrange(0,1000000))
     firstqrname = randomnum
@@ -642,7 +597,6 @@ def displayforprint():
     thirdqrname = randomnum
     routeone = url_for('static', filename='firstqrcode' + firstqrname + '.png')
     routetwo = url_for('static', filename='secondqrcode' + secondqrname + '.png')
-    routethree = url_for('static', filename='thirdqrcode' + thirdqrname + '.png')
     if request.method == 'GET':
         qr = qrcode.QRCode(
                version=1,
@@ -666,46 +620,26 @@ def displayforprint():
         img = qr.make_image(fill_color="black", back_color="white")
         home = os.getenv("HOME")
         img.save(home + '/flaskapp/static/secondqrcode' + secondqrname +'.png')
-        qr = qrcode.QRCode(
-               version=1,
-               error_correction=qrcode.constants.ERROR_CORRECT_L,
-               box_size=10,
-               border=4,
-        )
-        qr.add_data(thirdqrcode)
-        qr.make(fit=True)
-        img = qr.make_image(fill_color="black", back_color="white")
-        home = os.getenv("HOME")
-        img.save(home + '/flaskapp/static/thirdqrcode' + thirdqrname + '.png')
     if request.method == 'POST':
         return redirect('/watchonly')
-    return render_template('displayforprint.html', first=firstqrcode, second=secondqrcode, third=thirdqrcode, routeone=routeone, routetwo=routetwo, routethree=routethree)
+    return render_template('displayforprint.html', first=firstqrcode, second=secondqrcode, routeone=routeone, routetwo=routetwo)
 
 @app.route("/watchonly", methods=['GET', 'POST'])
 def watchonly():
-    global firstqrcode
-    if request.method == 'GET':
-        rpc = RPC()
-        rpc.importaddress(firstqrcode.decode("utf-8"))
-    if request.method == 'POST':
-        return redirect('/bitcoinqt')
-    return render_template('watchonly.html')
-
-@app.route("/bitcoinqt", methods=['GET', 'POST'])
-def bitcoinqt():
-    if request.method == 'GET':
-        subprocess.call('gnome-terminal -- bash -c "sudo ~/flaskapp/bitcoin-0.18.1/bin/bitcoin-qt; read line"', shell=True)
-    if request.method == 'POST':
-        return redirect('/displaynewaddress')
-    return render_template('bitcoinqt.html')
-
-@app.route("/displaynewaddress", methods=['GET', 'POST'])
-def displaynewaddress():
+    ##### watch only code
     global firstqrcode
     global firstqrname
     if request.method == 'GET':
-        rpc = RPC()
-        firstqrcode = rpc.getnewaddress()
+        firstqrcode = firstqrcode[:-2]
+        print(firstqrcode)
+        response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli importmulti \'[{ "desc": "'+firstqrcode+'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli deriveaddresses "'+firstqrcode+'" "[0,999]"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        response = response[0].decode("utf-8")
+        response = json.loads(response)
+        randomnum = str(random.randrange(0,1000000))
+        firstqrname = randomnum
+        firstqrcode = response[0]
+        routeone = url_for('static', filename='firstqrcode' + firstqrname + '.png')
         qr = qrcode.QRCode(
                version=1,
                error_correction=qrcode.constants.ERROR_CORRECT_L,
@@ -716,24 +650,37 @@ def displaynewaddress():
         qr.make(fit=True)
         img = qr.make_image(fill_color="black", back_color="white")
         home = os.getenv("HOME")
-        img.save(home + '/flaskapp/static/adrqrcode'+firstqrname+'.png')
-        route = url_for('static', filename='adrqrcode' + firstqrname + '.png')
+        img.save(home + '/flaskapp/static/firstqrcode' + firstqrname + '.png')
+        rpc = RPC()
+        for i in range(0,999):
+            subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli importaddress "'+response[i]+'" "" false'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+    if request.method == 'POST':
+        return redirect('/bitcoinqt')
+    return render_template('watchonly.html', routeone=routeone, first=firstqrcode)
+
+@app.route("/bitcoinqt", methods=['GET', 'POST'])
+def bitcoinqt():
     if request.method == 'POST':
         return redirect('/displayutxo')
-    return render_template('displaynewaddress.html', qrdata=firstqrcode , route=route)
+    return render_template('bitcoinqt.html')
 
 @app.route("/displayutxo", methods=['GET', 'POST'])
 def displayutxo():
     global utxo
     global secondqrname
     if request.method == 'GET':
-        utxo = subprocess.Popen(['~/flaskapp/bitcoin-0.18.1/bin/bitcoin-cli listunspent'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        ##### get utxo code
+        rpc = RPC()
+        utxo = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli listunspent'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         utxo = json.loads(utxo[0])[0]
+        print(utxo)
         newstr = utxo['txid'] + ','
         newstr = newstr + str(utxo['vout']) + ','
         newstr = newstr + utxo['address'] + ','
         newstr = newstr + utxo['scriptPubKey'] + ','
-        newstr = newstr + str(utxo['amount'])
+        newstr = newstr + str(utxo['amount']) + ','
+        newstr = newstr + rpc.getnewaddress() + ','
+        newstr = newstr + utxo['witnessScript']
         randomnum = str(random.randrange(0,1000000))
         secondqrname = randomnum
         qr = qrcode.QRCode(
@@ -749,50 +696,32 @@ def displayutxo():
         img.save(home + '/flaskapp/static/utxoqrcode'+secondqrname+'.png')
         route = url_for('static', filename='utxoqrcode' + secondqrname + '.png')
     if request.method == 'POST':
-        return redirect('/scantransqrcode')
+        return redirect('/scanfirsttransqrcode')
     return render_template('displayutxo.html', qrdata=newstr, route=route)
 
-@app.route("/scantransqrcode", methods=['GET', 'POST'])
-def scantransqrcode():
+@app.route("/scanfirsttransqrcode", methods=['GET', 'POST'])
+def scanfirsttransqrcode():
     if request.method == 'POST':
         global firstqrcode
+        firstqrcode = subprocess.Popen(['python3 ~/flaskapp/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+        return redirect('/scansecondtransqrcode')
+    return render_template('scanfirsttransqrcode.html')
+
+@app.route("/scansecondtransqrcode", methods=['GET', 'POST'])
+def scansecondtransqrcode():
+    if request.method == 'POST':
         global secondqrcode
+        secondqrcode = subprocess.Popen(['python3 ~/flaskapp/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+        return redirect('/scanthirdtransqrcode')
+    return render_template('scansecondtransqrcode.html')
+
+@app.route("/scanthirdtransqrcode", methods=['GET', 'POST'])
+def scanthirdtransqrcode():
+    if request.method == 'POST':
         global thirdqrcode
-        cam = cv2.VideoCapture(0)
-        cv2.namedWindow("qrcodescaner")
-        img_counter = 0
-        qrcode_counter = 0
-        pause = 0
-        while True:
-            if qrcode_counter == 3:
-                break
-            k = cv2.waitKey(1)
-            if k == 13:
-                pause = 0
-            if not pause == 1 :
-                ret, frame = cam.read()
-                cv2.imshow("qrcodescaner", frame)
-                if not ret:
-                    break
-                img_counter = img_counter + 1
-                if img_counter >= 100:
-                    img_counter = 0
-                    img_name = "qrcodeimage.png"
-                    cv2.imwrite(img_name, frame)
-                    decodepng = decode(Image.open('qrcodeimage.png'))
-                    if decodepng:
-                        pause = 1
-                        qrcode_counter = qrcode_counter + 1
-                        if qrcode_counter == 1:
-                            firstqrcode = decodepng[0].data
-                        elif qrcode_counter == 2:
-                            secondqrcode = decodepng[0].data
-                        elif qrcode_counter == 3:
-                            thirdqrcode = decodepng[0].data
-        cam.release()
-        cv2.destroyAllWindows()
+        thirdqrcode = subprocess.Popen(['python3 ~/flaskapp/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
         return redirect('/checktrans')
-    return render_template('scantransqrcode.html')
+    return render_template('scanthirdtransqrcode.html')
 
 @app.route("/checktrans", methods=['GET', 'POST'])
 def checktrans():
@@ -800,6 +729,9 @@ def checktrans():
     global secondqrcode
     global thirdqrcode
     if request.method == 'GET':
+        firstqrcode = firstqrcode.decode("utf-8")
+        secondqrcode = secondqrcode.decode("utf-8")
+        thirdqrcode = thirdqrcode.decode("utf-8")
         rpc = RPC()
         rpc.sendrawtransaction(firstqrcode)
         rpc.sendrawtransaction(secondqrcode)
@@ -812,22 +744,56 @@ def checktrans():
 def delwallet():
     global machine
     if request.method == 'POST':
-        subprocess.call('gnome-terminal -- bash -c "rm ~/.bitcoin/wallet.dat; read line"', shell=True)
-        subprocess.call('gnome-terminal -- bash -c "sudo ~/flaskapp/bitcoin-0.18.1/bin/bitcoind -proxy=127.0.0.1:9050; read line"', shell=True)
+        subprocess.call('gnome-terminal -- bash -c "sudo python3 ~/flaskapp/deleteallwallets.py; echo "DONE"; read line"', shell=True)
+        return redirect('/openbitcoinqt')
+    return render_template('delwallet.html')
+
+@app.route("/openbitcoinqt", methods=['GET', 'POST'])
+def openbitcoinqt():
+    global machine
+    if request.method == 'POST':
+        subprocess.call('gnome-terminal -- bash -c "~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050; read line"', shell=True)
         machine = 2
         return redirect('/runbitcoind')
-    return render_template('delwallet.html')
+    return render_template('openbitcoinqt.html')
 
 @app.route('/importprivkey', methods=['GET', 'POST'])
 def importprivkey():
     global privkeylist
+    global xprivlist
     global privkeycount
-    global error
-    ####ISSUE
+    global error 
+    #####ISSUE
     if request.method == 'GET':
-        privkeylist = ['L1tze8ayXsYb8pggdAVHF469x1ZqjamExFWHRJuE1ri3nQbwtTeK','KydUgsQedGidufUAgcn2Aa2HMxXY3z6jVXtx6e8SrUVVrr3YhquK','Ky6FdrcTGs62tGG89AEi45Fn5sR5r7pBUacL2XYNX9NyQrHen2mo','KztQF5v7Ga4iazg3ASLDLNVNq1gevY15e9mDnGsM48K9jeDrYj7o','KxuEtno4VaZZSgmRb8PcDCyxA5NwbFSNeLRrJKPgDwnXXH1D2bxe','L2CJRsqAFt3HrTGV3U6vw4kecrCCNrrCURjygBuQUmrNk7h6Ezf5','L2obcyTfbw2Syztrp9kd3amHFEgaThrVG5rVnECJtWbewZttbvAu']
-        return redirect('/scanutxo')
-    if request.method == 'POSTE':
+        newxprivlist = []
+        privkeylist = []
+        xprivlist = []
+        for i in range(0,7):
+            rpc = RPC()
+            home = os.getenv('HOME')
+            path = home + '/blank' + str(i)
+            response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "blank'+str(i)+'" false true'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "blank'+str(i)+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=blank'+str(i)+' sethdseed false "'+privkeylist[i]+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=blank'+str(i)+' dumpwallet "blank'+str(i)+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            wallet = open(path,'r')
+            wallet.readline()
+            wallet.readline()
+            wallet.readline()
+            wallet.readline()
+            wallet.readline()
+            privkeyline = wallet.readline()
+            privkeyline = privkeyline.split(" ")[4][:-1]
+            newxprivlist.append(privkeyline)
+            print(i)
+            print(newxprivlist)
+            print(xprivlist)
+            if not xprivlist[i] == newxprivlist[i]:
+                privkeycount = 0
+                privkeylist = []
+                print('You have imported one of your keys incorrectly please try agian. key: ' + str(i))
+        return redirect('/scanfirstutxoqrcode')
+    if request.method == 'POST':
         privkeyphraselist = []
         for i in range(1,14):
             inputlist = request.form['row' + str(i)]
@@ -840,64 +806,67 @@ def importprivkey():
         privkeylist.append(str(PassphraseToWIF(privkeyphraselist)))
         privkeycount = privkeycount + 1
         if (privkeycount == 7):
+            newxprivlist = []
             for i in range(0,7):
                 rpc = RPC()
-                print(privkeylist[i])
-                key = random.randrange(0, 10000000)
-                rpc.importprivkey(privkeylist[i],str(i) + str(key), False)
-                adr = rpc.getaddressesbylabel(str(i) + str(key))
-                newprivkey = rpc.dumpprivkey(list(adr.keys())[0])
-                if not newprivkey == privkeylist[i]:
+                home = os.getenv('HOME')
+                path = home + '/blank' + str(i)
+                response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "blank'+str(i)+'" false true'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+                response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "blank'+str(i)+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+                response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=blank'+str(i)+' sethdseed false "'+privkeylist[i]+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+                response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=blank'+str(i)+' dumpwallet "blank'+str(i)+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+                wallet = open(path,'r')
+                wallet.readline()
+                wallet.readline()
+                wallet.readline()
+                wallet.readline()
+                wallet.readline()
+                privkeyline = wallet.readline()
+                privkeyline = privkeyline.split(" ")[4][:-1]
+                newxprivlist.append(privkeyline)
+                print(i)
+                print(newxprivlist)
+                print(xprivlist)
+                if not xprivlist[i] == newxprivlist[i]:
                     privkeycount = 0
                     privkeylist = []
                     error = 'You have imported one of your keys incorrectly please try agian'
                     return redirect('/importprivkey')
-            return redirect('/scanutxo')
+            return redirect('/scanfirstutxoqrcode')
         else:
             return redirect('/importprivkey')
     return render_template('importprivkey.html', x=privkeycount + 1, error=error)
 
-@app.route("/scanutxo", methods=['GET', 'POST'])
-def scanutxo():
+@app.route("/scanfirstutxoqrcode", methods=['GET', 'POST'])
+def scanfirstutxoqrcode():
     if request.method == 'POST':
         global firstqrcode
+        firstqrcode = subprocess.Popen(['python3 ~/flaskapp/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+        return redirect('/scansecondutxoqrcode')
+    return render_template('scanfirstutxoqrcode.html')
+
+@app.route("/scansecondutxoqrcode", methods=['GET', 'POST'])
+def scansecondutxoqrcode():
+    if request.method == 'POST':
         global secondqrcode
-        global thirdqrcode
-        cam = cv2.VideoCapture(0)
-        cv2.namedWindow("qrcodescaner")
-        img_counter = 0
-        qrcode_counter = 0
-        pause = 0
-        while True:
-            if qrcode_counter == 3:
-                break
-            k = cv2.waitKey(1)
-            if k == 13:
-                pause = 0
-            if not pause == 1 :
-                ret, frame = cam.read()
-                if not ret:
-                    break
-                cv2.imshow("qrcodescaner", frame)
-                img_counter = img_counter + 1
-                if img_counter >= 100:
-                    img_counter = 0
-                    img_name = "qrcodeimage.png"
-                    cv2.imwrite(img_name, frame)
-                    decodepng = decode(Image.open('qrcodeimage.png'))
-                    if decodepng:
-                        pause = 1
-                        qrcode_counter = qrcode_counter + 1
-                        if qrcode_counter == 1:
-                            firstqrcode = decodepng[0].data
-                        elif qrcode_counter == 2:
-                            secondqrcode = decodepng[0].data
-                        elif qrcode_counter == 3:
-                            thirdqrcode = decodepng[0].data
-        cam.release()
-        cv2.destroyAllWindows()
+        secondqrcode = subprocess.Popen(['python3 ~/flaskapp/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
         return redirect('/displayfirsttransqrcode')
-    return render_template('scanutxo.html')
+    return render_template('scansecondutxoqrcode.html')
+
+@app.route("/restartwallet", methods=['GET', 'POST'])
+def restartwallet():
+    global machine
+    global transnum
+    if request.method == 'POST':
+        subprocess.call('gnome-terminal -- bash -c "sudo python3 ~/flaskapp/deleteallwallets.py; echo "DONE"; read line"', shell=True)
+        response = subprocess.Popen(['sudo python3 ~/flaskapp/deleteallwallets.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        if transnum == 0:
+            return redirect('/displayfirsttransqrcode')
+        elif transnum == 1:
+            return redirect('/displaysecondtransqrcode')
+        else:
+            return redirect('/displaythirdtransqrcode')
+    return render_template('restartwallet.html')
 
 @app.route("/displayfirsttransqrcode", methods=['GET', 'POST'])
 def displayfirsttransqrcode():
@@ -908,83 +877,166 @@ def displayfirsttransqrcode():
     global secondqrname
     global thirdqrname
     global privkeylist
+    global xprivlist
+    global transnum
+    global amount
+    ##### GEN TRANS CODE
+    #############SPLIT THE TRANS QRCODES INTO THREE DIFFRENT SECTIONS AND DELET CURRENT WALLET.DAT .WALLETLOCK AND ALL OTHER WALLET FOLDERS
     if request.method == 'GET':
-    rpc = RPC()
-    trans = secondqrcode #### parse this
-    trans = trans.decode("utf-8")
-    trans = trans.split(",")
-    trans[1] = int(trans[1])
-    trans[4] = float(trans[4])
-    #trans[0] = txid
-    #trans[1] = vout
-    #trans[2] = address
-    #trans[3] = scrirptPubKey
-    #trans[4] = amount
-    firstqrcode = firstqrcode.decode("utf-8")
-    secondqrcode = secondqrcode.decode("utf-8")
-    thirdqrcode = thirdqrcode.decode("utf-8")
-    amo = ((trans[4] / 3) - 0.00003)
-    newamo = (trans[4] * (2 / 3))
-    amo = "{:.8f}".format(float(amo))
-    newamo = "{:.8f}".format(float(newamo))
-    transonehex = rpc.createrawtransaction([{ "txid": trans[0], "vout": trans[1], "scriptPubKey": trans[3], "redeemScript": thirdqrcode}], [{firstqrcode: amo}, {trans[2] : newamo }])
-    newamo = (trans[4] * (1 / 3))
-    newamo = "{:.8f}".format(float(newamo))
-    transtwohex = rpc.createrawtransaction([{ "txid": trans[0], "vout": trans[1], "scriptPubKey": trans[3], "redeemScript": thirdqrcode}], [{firstqrcode: amo}, {trans[2] : newamo }])
-    newamo = 0
-    transthreehex = rpc.createrawtransaction([{ "txid": trans[0], "vout": trans[1], "scriptPubKey": trans[3], "redeemScript": thirdqrcode}], [{firstqrcode: amo}, {trans[2] : newamo }])
-    transone = rpc.signrawtransactionwithkey(transonehex, [privkeylist[0], privkeylist[1], privkeylist[2]], [{ "txid": trans[0], "vout": trans[1], "scriptPubKey": trans[3], "redeemScript": thirdqrcode, "amount": trans[4]}])
-    transtwo = rpc.signrawtransactionwithkey(transtwohex, [privkeylist[2], privkeylist[3], privkeylist[4]], [{ "txid": trans[0], "vout": trans[1], "scriptPubKey": trans[3], "redeemScript": thirdqrcode, "amount": trans[4]}])
-    transthree = rpc.signrawtransactionwithkey(transtwohex, [privkeylist[4], privkeylist[5], privkeylist[6]], [{ "txid": trans[0], "vout": trans[1], "scriptPubKey": trans[3], "redeemScript": thirdqrcode, "amount": trans[4]}])
-    firstqrcode = transone
-    secondqrcode = transtwo
-    thirdqrcode = transthree
-    randomnum = str(random.randrange(0,1000000))
-    firstqrname = randomnum
-    secondqrname = randomnum
-    thirdqrname = randomnum
-    qr = qrcode.QRCode(
-    version=1,
-    error_correction=qrcode.constants.ERROR_CORRECT_L,
-    box_size=10,
-    border=4,
-    )
-    qr.add_data(firstqrcode)
-    qr.make(fit=True)
-    img = qr.make_image(fill_color="black", back_color="white")
-    home = os.getenv("HOME")
-    img.save(home + '/flaskapp/static/firsttransqrcode'+firstqrname+'.png')
-    route = url_for('static', filename='firsttransqrcode' + firstqrname + '.png')
+        response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli getdescriptorinfo "wsh(multi(3,'+xprivlist[0]+'/*,'+xprivlist[1]+'/*,'+xprivlist[2]+'/*))"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        response = response[0].decode("utf-8")
+        response = json.loads(response)
+        checksum = response["checksum"]
+        response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli importmulti \'[{ "desc": "wsh(multi(3,'+xprivlist[0]+'/*,'+xprivlist[1]+'/*,'+xprivlist[2]+'/*))#'+ checksum +'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        rpc = RPC()
+        trans = firstqrcode #### parse this
+        trans = trans.decode("utf-8")
+        trans = trans.split(",")
+        trans[1] = int(trans[1])
+        trans[4] = float(trans[4])
+        print(secondqrcode)
+        #trans[0] = txid
+        #trans[1] = vout
+        #trans[2] = changeaddress
+        #trans[3] = scrirptPubKey
+        #trans[4] = amount
+        #trans[5] = recpipentaddress
+        #trans[6] = witnessScript
+        minerfee = float(rpc.estimatesmartfee(6)["feerate"])
+        kilobytespertrans = 0.01
+        amo = ((trans[4] / 3) - (minerfee * kilobytespertrans))
+        amount = (trans[4] * (2 / 3))
+        amo = "{:.8f}".format(float(amo))
+        newamo = "{:.8f}".format(float(amount))
+        transonehex = rpc.createrawtransaction([{ "txid": trans[0], "vout": trans[1], "scriptPubKey": trans[3]}], [{trans[5] : amo}, {trans[2] : newamo }])
+        print(transonehex)
+        transone = rpc.signrawtransactionwithwallet(transonehex, [{ "txid": trans[0], "vout": trans[1], "scriptPubKey": trans[3], "witnessScript": trans[6], "amount": trans[4]}])
+        print(transone)
+        firstqrcode = transone
+        randomnum = str(random.randrange(0,1000000))
+        firstqrname = randomnum
+        qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+        )
+        qr.add_data(firstqrcode)
+        qr.make(fit=True)
+        img = qr.make_image(fill_color="black", back_color="white")
+        home = os.getenv("HOME")
+        img.save(home + '/flaskapp/static/firsttransqrcode'+firstqrname+'.png')
+        route = url_for('static', filename='firsttransqrcode' + firstqrname + '.png')
     if request.method == 'POST':
-        return redirect('/displaysecondtransqrcode')
+        transnum = 1
+        return redirect('/restartwallet')
     return render_template('displayfirsttransqrcode.html', qrdata=firstqrcode, route=route)
 
 @app.route("/displaysecondtransqrcode", methods=['GET', 'POST'])
 def displaysecondtransqrcode():
+    global firstqrcode
     global secondqrcode
+    global thirdqrcode
+    global firstqrname
     global secondqrname
+    global thirdqrname
+    global privkeylist
+    global xprivlist
+    global transnum
+    global amount
+    ##### GEN TRANS CODE
     if request.method == 'GET':
+        response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli getdescriptorinfo "wsh(multi(3,'+xprivlist[3]+'/*,'+xprivlist[4]+'/*,'+xprivlist[5]+'/*))"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        response = response[0].decode("utf-8")
+        response = json.loads(response)
+        checksum = response["checksum"]
+        response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli importmulti \'[{ "desc": "wsh(multi(3,'+xprivlist[3]+'/*,'+xprivlist[4]+'/*,'+xprivlist[5]+'/*))#'+ checksum +'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        rpc = RPC()
+        trans = firstqrcode #### parse this
+        trans = trans.decode("utf-8")
+        trans = trans.split(",")
+        trans[1] = int(trans[1])
+        trans[4] = float(trans[4])
+        #trans[0] = txid
+        #trans[1] = vout
+        #trans[2] = changeaddress
+        #trans[3] = scrirptPubKey
+        #trans[4] = amount
+        #trans[5] = recpipentaddress
+        #trans[6] = witnessScript
+        minerfee = float(rpc.estimatesmartfee(6)["feerate"])
+        kilobytespertrans = 0.01
+        amo = ((trans[4] / 3) - (minerfee * kilobytespertrans))
+        amo = "{:.8f}".format(float(amo))
+        newamo = (trans[4] * (1 / 3))
+        newamo = "{:.8f}".format(float(newamo))
+        transtwohex = rpc.createrawtransaction([{ "txid": trans[0], "vout": trans[1], "scriptPubKey": trans[3]}], [{trans[5] : amo}, {trans[2] : newamo }])
+        print(transtwohex)
+        transtwo = rpc.signrawtransactionwithwallet(transtwohex, [{ "txid": trans[0], "vout": trans[1], "scriptPubKey": trans[3], "witnessScript": trans[6], "amount": trans[4]}])
+        print(transtwo)
+        secondqrcode = transtwo
+        randomnum = str(random.randrange(0,1000000))
+        secondqrname = randomnum
         qr = qrcode.QRCode(
-               version=1,
-               error_correction=qrcode.constants.ERROR_CORRECT_L,
-               box_size=10,
-               border=4,
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
         )
         qr.add_data(secondqrcode)
         qr.make(fit=True)
         img = qr.make_image(fill_color="black", back_color="white")
         home = os.getenv("HOME")
-        img.save(home + '/flaskapp/static/secondtransqrcode'+secondqrname+'.png')
+        img.save(home + '/flaskapp/static/secondtransqrcode'+secondqrcode+'.png')
         route = url_for('static', filename='secondtransqrcode' + secondqrname + '.png')
     if request.method == 'POST':
-        return redirect('/displaythirdtransqrcode')
+        transnum = 2
+        return redirect('/restartwallet')
     return render_template('displaysecondtransqrcode.html', qrdata=secondqrcode, route=route)
 
 @app.route("/displaythirdtransqrcode", methods=['GET', 'POST'])
 def displaythirdtransqrcode():
+    global firstqrcode
+    global secondqrcode
     global thirdqrcode
+    global firstqrname
+    global secondqrname
     global thirdqrname
+    global privkeylist
+    global xprivlist
+    global transnum
+    global amount
     if request.method == 'GET':
+        response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli getdescriptorinfo "wsh(multi(3,'+xprivlist[0]+'/*,'+xprivlist[3]+'/*,'+xprivlist[6]+'/*))"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        response = response[0].decode("utf-8")
+        response = json.loads(response)
+        checksum = response["checksum"]
+        response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli importmulti \'[{ "desc": "wsh(multi(3,'+xprivlist[0]+'/*,'+xprivlist[3]+'/*,'+xprivlist[6]+'/*))#'+ checksum +'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        rpc = RPC()
+        trans = firstqrcode #### parse this
+        trans = trans.decode("utf-8")
+        trans = trans.split(",")
+        trans[1] = int(trans[1])
+        trans[4] = float(trans[4])
+        #trans[0] = txid
+        #trans[1] = vout
+        #trans[2] = changeaddress
+        #trans[3] = scrirptPubKey
+        #trans[4] = amount
+        #trans[5] = recpipentaddress
+        #trans[6] = witnessScript
+        minerfee = float(rpc.estimatesmartfee(6)["feerate"])
+        kilobytespertrans = 0.01
+        amo = ((trans[4] / 3) - (minerfee * kilobytespertrans))
+        amo = "{:.8f}".format(float(amo))
+        newamo = 0
+        transthreehex = rpc.createrawtransaction([{ "txid": trans[0], "vout": trans[1], "scriptPubKey": trans[3]}], [{trans[5] : amo}, {trans[2] : newamo }])
+        print(transthreehex)
+        transthree = rpc.signrawtransactionwithwallet(transtwohex, [{ "txid": trans[0], "vout": trans[1], "scriptPubKey": trans[3], "witnessScript": trans[6], "amount": trans[4]}])
+        print(transthree)
+        thirdqrcode = transthree
+        randomnum = str(random.randrange(0,1000000))
+        thirdqrname = randomnum
         qr = qrcode.QRCode(
                version=1,
                error_correction=qrcode.constants.ERROR_CORRECT_L,
