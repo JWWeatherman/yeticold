@@ -15,3 +15,4 @@ While we believe Yeti provides the best balance of security, ease of use and cos
 
 - Cost. You will need two computers and two external hard drives. If you need to purchase all of these items it should cost less than $500 USD, but this is not an insignificant expense.
 - Time. To complete setup you will need to invest 4 hours spread over the course of 1-2 weeks. This time includes writing down security words, copying files and scanning QR codes. 
+- Privacy. While using bitcoin core over Tor does provide signficant privacy advantages over many cold storage solutions using multisig is not very common and a 3 of 7 multisig is even less common. This means that someone could look at the blockchain and infer that the owner of the coins is probobly using yeti for cold storage. 
