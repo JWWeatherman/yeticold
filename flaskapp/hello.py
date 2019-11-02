@@ -366,17 +366,11 @@ def randomisePrivKey():
         privkeylisttemp = []
         for i in range(1,8):
             rpc = RPC()
-            print('1')
             adr = rpc.getnewaddress()
-            print('2')
             newprivkey = rpc.dumpprivkey(adr)
-            print('3')
             binary = bin(decode58(newprivkey))[2:][8:-40]
-            print('4')
             WIF = ConvertToWIF(xor(binary,request.form['binary' + str(i)]))
-            print('5')
             privkeylisttemp.append(WIF)
-            print('6')
         privkeycount = 0
         privkeylist = privkeylisttemp
         adrlist = []
@@ -409,20 +403,6 @@ def generatemultisig():
             privkeyline = wallet.readline()
             privkeyline = privkeyline.split(" ")[4][:-1]
             xprivlist.append(privkeyline)
-            response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "blank'+str(i)+'" false true'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-            response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "blank'+str(i)+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-            response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=blank'+str(i)+' sethdseed false "'+privkeylist[i]+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-            response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=blank'+str(i)+' dumpwallet "blank'+str(i)+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-            wallettwo = open(pathtwo,'r')
-            wallettwo.readline()
-            wallettwo.readline()
-            wallettwo.readline()
-            wallettwo.readline()
-            wallettwo.readline()
-            privkeytwoline = wallettwo.readline()
-            privkeytwoline = privkeytwoline.split(" ")[4][:-1]
-            if xprivlist[i] == privkeytwoline:
-                print("OK")
         addresses = []
         checksum = None
         response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli getdescriptorinfo "wsh(multi(3,'+xprivlist[0]+'/*,'+xprivlist[1]+'/*,'+xprivlist[2]+'/*,'+xprivlist[3]+'/*,'+xprivlist[4]+'/*,'+xprivlist[5]+'/*,'+xprivlist[6]+'/*))"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
@@ -430,21 +410,10 @@ def generatemultisig():
         response = json.loads(response)
         checksum = response["checksum"]
         desc = response["descriptor"]
-        print("Descriptor public")
-        print(desc)
         response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli importmulti \'[{ "desc": "wsh(multi(3,'+xprivlist[0]+'/*,'+xprivlist[1]+'/*,'+xprivlist[2]+'/*,'+xprivlist[3]+'/*,'+xprivlist[4]+'/*,'+xprivlist[5]+'/*,'+xprivlist[6]+'/*))#'+ checksum +'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        for i in range(0,7):
-            response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli getdescriptorinfo "pk('+xprivlist[i]+'/*)"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-            response = response[0].decode("utf-8")
-            privkeychecksum = json.loads(response)["checksum"]
-            response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli deriveaddresses "pk('+xprivlist[i]+'/*)#'+privkeychecksum+'" "[0,999]"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-            response = response[0].decode("utf-8")
-            response = json.loads(response)
-            addresses.append(response)
-            for x in range(0,len(addresses[i])):
-                response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli dumpprivkey "'+addresses[i][x]+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-                response = response[0][:-1].decode("utf-8")
-                noresponse = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli importprivkey "'+response+'" "" false'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli deriveaddresses "wsh(multi(3,'+xprivlist[0]+'/*,'+xprivlist[1]+'/*,'+xprivlist[2]+'/*,'+xprivlist[3]+'/*,'+xprivlist[4]+'/*,'+xprivlist[5]+'/*,'+xprivlist[6]+'/*))#'+ checksum +'" "[0,999]"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        response = response[0].decode("utf-8")
+        addresses = json.loads(response)
         firstqrcode = desc
         secondqrcode = '~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli importmulti \'[{ "desc": "'+desc+'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''
         return redirect('/displayfirstqrcode')
@@ -630,7 +599,7 @@ def watchonly():
     global firstqrcode
     global firstqrname
     if request.method == 'GET':
-        firstqrcode = firstqrcode[:-2]
+        firstqrcode = firstqrcode[:-1]
         print(firstqrcode)
         response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli importmulti \'[{ "desc": "'+firstqrcode+'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli deriveaddresses "'+firstqrcode+'" "[0,999]"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
@@ -652,8 +621,6 @@ def watchonly():
         home = os.getenv("HOME")
         img.save(home + '/flaskapp/static/firstqrcode' + firstqrname + '.png')
         rpc = RPC()
-        for i in range(0,999):
-            subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli importaddress "'+response[i]+'" "" false'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
     if request.method == 'POST':
         return redirect('/bitcoinqt')
     return render_template('watchonly.html', routeone=routeone, first=firstqrcode)
@@ -850,7 +817,7 @@ def scansecondutxoqrcode():
     if request.method == 'POST':
         global secondqrcode
         secondqrcode = subprocess.Popen(['python3 ~/flaskapp/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-        return redirect('/displayfirsttransqrcode')
+        return redirect('/restartwallet')
     return render_template('scansecondutxoqrcode.html')
 
 @app.route("/restartwallet", methods=['GET', 'POST'])
@@ -881,13 +848,14 @@ def displayfirsttransqrcode():
     global transnum
     global amount
     ##### GEN TRANS CODE
-    #############SPLIT THE TRANS QRCODES INTO THREE DIFFRENT SECTIONS AND DELET CURRENT WALLET.DAT .WALLETLOCK AND ALL OTHER WALLET FOLDERS
     if request.method == 'GET':
-        response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli getdescriptorinfo "wsh(multi(3,'+xprivlist[0]+'/*,'+xprivlist[1]+'/*,'+xprivlist[2]+'/*))"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        xpublist = secondqrcode.decode("utf-8").split(',')[1:]
+        xpublist[6] = xpublist[6].split('))')[0]
+        response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli getdescriptorinfo "wsh(multi(3,'+xprivlist[0]+'/*,'+xprivlist[1]+'/*,'+xprivlist[2]+'/*,'+xpublist[3]+','+xpublist[4]+','+xpublist[5]+','+xpublist[6]+'))"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         response = response[0].decode("utf-8")
         response = json.loads(response)
         checksum = response["checksum"]
-        response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli importmulti \'[{ "desc": "wsh(multi(3,'+xprivlist[0]+'/*,'+xprivlist[1]+'/*,'+xprivlist[2]+'/*))#'+ checksum +'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        response = subprocess.Popen(['~/flaskapp/bitcoin-0.19.0rc1/bin/bitcoin-cli importmulti \'[{ "desc": "wsh(multi(3,'+xprivlist[0]+'/*,'+xprivlist[1]+'/*,'+xprivlist[2]+'/*,'+xpublist[3]+','+xpublist[4]+','+xpublist[5]+','+xpublist[6]+'))#'+ checksum +'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         rpc = RPC()
         trans = firstqrcode #### parse this
         trans = trans.decode("utf-8")
