@@ -12,14 +12,20 @@
         <h3 style="color:white;margin:0;">Yeti Bitcoin Cold Storage</h3>
     </nav>
     <div class="container" style="margin-top: 3rem;">
-      <h2>Step 1: Provide Entropy for Private Keys</h2>
-      <p>To ensure that your private keys are truly random grab a handful of pennies after shaking them in a box and place them on the table one at a time.</p>
-      <p>For each "heads" type a 1 and for each "tails" type a 0. Each private key is 256 bits so you will need to do this 256 times.</p>
-      <p>Creating random numbers is an ongoing difficulty in cryptography. While this procedure is time consuming it will provide confidence as you learn more about past attacks that caused bitcoin losses.</p>
+      <h2>Step 12: Further Randomize Your Bitcoin Seeds</h2>
+      <ul>
+          <li>Your Bitcoin Seeds are the secret pieces of data that allow you to control the bitcoin as long as you have access to at least 3 of them.</li>
+          <li>Yeti uses Bitcoin Core to generate your seeds, but if you would like to provide additional randomness you can do so here.</li>
+          <li>This is not necissary. If there were concerns that bitcoin core was not random enough additional randomness could be added without user hassle.</li>
+          <li>This can't be harmful. You will not reduce the randomness of your seeds no matter what data you provide here.</li>
+          <li>A good way to create randomness is to shake a box of coins and type 1 for heads and 0 for tails.</li>
+          <li>We need to add a Skip button and also remove this line.</li>
+      </ul>
+
         <form action="" method="post" style="border: solid #f8f9fa;padding: 1.5rem;">
         <div class="form-row" id="row1">
             <div class="form-group col-md-10">
-              <label for="inputEmail4">Private Key One</label>
+              <label for="inputEmail4">Seed One</label>
               <input type="text" class="form-control" placeholder="256 binary numbers" name="binary1" id="binary1">
             </div>
             <div class="form-group col-md-2">
@@ -28,7 +34,7 @@
         </div>
          <div class="form-row" id="row1">
             <div class="form-group col-md-10">
-              <label for="inputEmail4">Private Key Two</label>
+              <label for="inputEmail4">Seed Two</label>
               <input type="text" class="form-control" placeholder="256 binary numbers" name="binary2" id="binary2">
             </div>
             <div class="form-group col-md-2">
@@ -36,7 +42,7 @@
             </div>
         </div><div class="form-row" id="row1">
             <div class="form-group col-md-10">
-              <label for="inputEmail4">Private Key Three</label>
+              <label for="inputEmail4">Seed Three</label>
               <input type="text" class="form-control" placeholder="256 binary numbers" name="binary3" id="binary3">
             </div>
             <div class="form-group col-md-2">
@@ -45,7 +51,7 @@
         </div>
          <div class="form-row" id="row1">
             <div class="form-group col-md-10">
-              <label for="inputEmail4">Private Key Four</label>
+              <label for="inputEmail4">Seed Four</label>
               <input type="text" class="form-control" placeholder="256 binary numbers" name="binary4" id="binary4">
             </div>
             <div class="form-group col-md-2">
@@ -54,7 +60,7 @@
         </div>
         <div class="form-row" id="row1">
             <div class="form-group col-md-10">
-              <label for="inputEmail4">Private Key Five</label>
+              <label for="inputEmail4">Seed Five</label>
               <input type="text" class="form-control" placeholder="256 binary numbers" name="binary5" id="binary5">
             </div>
             <div class="form-group col-md-2">
@@ -63,7 +69,7 @@
         </div>
         <div class="form-row" id="row1">
             <div class="form-group col-md-10">
-              <label for="inputEmail4">Private Key Six</label>
+              <label for="inputEmail4">Seed Six</label>
               <input type="text" class="form-control" placeholder="256 binary numbers" name="binary6" id="binary6">
             </div>
             <div class="form-group col-md-2">
@@ -72,7 +78,7 @@
         </div>
          <div class="form-row" id="row1">
             <div class="form-group col-md-10">
-              <label for="inputEmail4">Private Key Seven</label>
+              <label for="inputEmail4">Seed Seven</label>
               <input type="text" class="form-control" placeholder="256 binary numbers" name="binary7" id="binary7">
             </div>
             <div class="form-group col-md-2">
