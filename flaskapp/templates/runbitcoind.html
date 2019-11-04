@@ -24,15 +24,5 @@
         <input style="display: none;" class="btn btn-primary" type="submit" id="next" value="Next">
       </form>
     </div>
-    <script>
-      var enable = () => {
-        if ({{ progress }} >= 99) {
-          document.getElementById("next").style.display = ""
-        } else {
-          setTimeout(() => { document.getElementById("next").click() }, 5000)
-        }
-      }
-      enable()
-    </script>
   </body>
 </html>

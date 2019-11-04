@@ -24,21 +24,5 @@
         <input disabled class="btn btn-primary" type="submit" id="next" value="Next">
       </form>
     </div>
-    <script>
-      var enable = () => {
-        var rows = 0
-        for (var i = 1; i < 6; i++) {
-          var checkbox = document.getElementById('gridCheck' + i).checked
-          if (checkbox) { rows = rows + 1 }
-        }
-        if (rows === 5) {
-          document.getElementById("next").disabled = false
-        } else {
-          document.getElementById("next").disabled = true
-        }
-        setTimeout(() => { enable() }, 80)
-      }
-      enable()
-    </script>
   </body>
 </html>
