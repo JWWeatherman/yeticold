@@ -12,45 +12,16 @@
         <h3 style="color:white;margin:0;">Yeti Bitcoin Cold Storage</h3>
     </nav>
     <div class="container" style="margin-top: 3rem;">
-      <h2>Step 2: Label and Tape Your Laptops and Drives</h2>
-      <p>Do following steps to label your equipment:</p>
-      <form action="" method="post" style="border: solid #f8f9fa;padding: 1.5rem;">
-        <div class="form-check mb-3">
-          <input class="form-check-input" type="checkbox" id="gridCheck1">
-          <label class="form-check-label" for="gridCheck1">
-            Using a permanent marker write the word "DISCONNECTED" on both the outside and the inside of one laptop and the words "DANGER - ONLINE" on the outside and inside of the other laptop.
-          </label>
-        </div>
-        <div class="form-check mb-3">
-          <input class="form-check-input" type="checkbox" id="gridCheck2">
-          <label class="form-check-label" for="gridCheck2">
-            Use a piece of tape to cover the camera and microphone of both laptops.
-          </label>
-        </div>
-        <div class="form-check mb-3">
-          <input class="form-check-input" type="checkbox" id="gridCheck3">
-          <label class="form-check-label" for="gridCheck3">
-            Using a permanent market write the word "LARGE" on your large external hard drive and "SMALL" on your smaller external hard drive.
-          </label>
-        </div>
-        <input disabled class="btn btn-primary" type="submit" id="next" value="Next">
+      <h2>Step 2: Label Your Equipment</h2>
+      <p>Do following to label your equipment and then click next.</p>
+      <ul>
+          <li>Using masking tap and a marker write the word "DISCONNECTED" on both the outside and the inside of one laptop and the words "DANGER - ONLINE" on the outside and inside of the other laptop.</li>
+          <li>Use a piece of tape to cover the camera and microphone of both laptops.</li>
+          <li>Using a marker write the word "LARGE" on your large external hard drive and "SMALL" on your smaller external hard drive.
+      </ul>
+      <form action="" method="post">
+        <input class="btn btn-primary" type="submit" id="next" value="Next">
       </form>
     </div>
-    <script>
-      var enable = () => {
-        var rows = 0
-        for (var i = 1; i < 4; i++) {
-          var checkbox = document.getElementById('gridCheck' + i).checked
-          if (checkbox) { rows = rows + 1 }
-        }
-        if (rows === 3) {
-          document.getElementById("next").disabled = false
-        } else {
-          document.getElementById("next").disabled = true
-        }
-        setTimeout(() => { enable() }, 80)
-      }
-      enable()
-    </script>
   </body>
 </html>
