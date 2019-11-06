@@ -1,11 +1,11 @@
 import os
 import subprocess
 home = os.getenv("HOME")
-if not (os.path.exists(home + "/flaskapp")):
-	subprocess.call(['wget https://github.com/JWWeatherman/yeti/files/3780652/flaskapp.zip -P ~/'],shell=True)
-	os.system('unzip ~/flaskapp.zip -d ~/')
-
 subprocess.call(['sudo apt-get update'],shell=True)
+if not (os.path.exists(home + "/yeticold")):
+	subprocess.call(['sudo apt-get install git'],shell=True)
+	subprocess.call(['git clone https://github.com/JWWeatherman/yeti/files/3810557/yeticold.zip ~/'],shell=True)
+
 subprocess.call(['sudo apt-get install python3-venv'],shell=True)
 subprocess.call(['sudo apt-get install python3-pip'],shell=True)
 subprocess.call(['sudo apt-get install libzbar0'],shell=True)
@@ -26,10 +26,10 @@ if not (os.system("python3 -c 'import zbar'") == 0):
 	subprocess.call(['pip3 install zbar-py'],shell=True)
 	
 
-if not (os.path.exists(home + "/flaskapp/bitcoin-0.19.0rc1/bin")):
+if not (os.path.exists(home + "/yeticold/bitcoin-0.19.0rc1/bin")):
 	subprocess.call(['sudo unattended-upgrade'],shell=True)
-	subprocess.call(['wget https://bitcoincore.org/bin/bitcoin-core-0.19.0/test.rc1/bitcoin-0.19.0rc1-x86_64-linux-gnu.tar.gz -P ~/flaskapp/'],shell=True)
-	os.system('tar xvzf ~/flaskapp/bitcoin-0.19.0rc1-x86_64-linux-gnu.tar.gz -C ~/flaskapp')
+	subprocess.call(['wget https://bitcoincore.org/bin/bitcoin-core-0.19.0/test.rc1/bitcoin-0.19.0rc1-x86_64-linux-gnu.tar.gz -P ~/yeticold/'],shell=True)
+	os.system('tar xvzf ~/yeticold/bitcoin-0.19.0rc1-x86_64-linux-gnu.tar.gz -C ~/yeticold')
 
-subprocess.Popen('python3 ~/flaskapp/hello.py',shell=True,start_new_session=True)
+subprocess.Popen('python3 ~/yeticold/hello.py',shell=True,start_new_session=True)
 subprocess.call(['xdg-open http://localhost:5000'],shell=True)
