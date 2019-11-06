@@ -373,18 +373,33 @@ def randomisePrivKey():
     global privkeycount
     global adrlist
     if request.method == 'POST':
-        privkeylisttemp = []
-        for i in range(1,8):
-            rpc = RPC()
-            adr = rpc.getnewaddress()
-            newprivkey = rpc.dumpprivkey(adr)
-            binary = bin(decode58(newprivkey))[2:][8:-40]
-            WIF = ConvertToWIF(xor(binary,request.form['binary' + str(i)]))
-            privkeylisttemp.append(WIF)
-        privkeycount = 0
-        privkeylist = privkeylisttemp
-        adrlist = []
-        return redirect('/generatemultisig')
+        if request.form['skip'] == 'skip':
+            privkeylisttemp = []
+            for i in range(1,8):
+                rpc = RPC()
+                adr = rpc.getnewaddress()
+                newprivkey = rpc.dumpprivkey(adr)
+                binary = bin(decode58(newprivkey))[2:][8:-40]
+                newbinary = '0111010111000111110010111000001101111011101110100010111111011010011000001001101001001110111111100011001001111001110101111001111110101100110000100100111000011011101110111000101011100010010010000011001100100111000110110000000101100110001111011110010111110100'
+                WIF = ConvertToWIF(xor(binary,newbinary))
+                privkeylisttemp.append(WIF)
+            privkeycount = 0
+            privkeylist = privkeylisttemp
+            adrlist = []
+            return redirect('/generatemultisig')
+        else:
+            privkeylisttemp = []
+            for i in range(1,8):
+                rpc = RPC()
+                adr = rpc.getnewaddress()
+                newprivkey = rpc.dumpprivkey(adr)
+                binary = bin(decode58(newprivkey))[2:][8:-40]
+                WIF = ConvertToWIF(xor(binary,request.form['binary' + str(i)]))
+                privkeylisttemp.append(WIF)
+            privkeycount = 0
+            privkeylist = privkeylisttemp
+            adrlist = []
+            return redirect('/generatemultisig')
     return render_template('randomisePrivKey.html')
 
 @app.route("/generatemultisig", methods=['GET', 'POST'])

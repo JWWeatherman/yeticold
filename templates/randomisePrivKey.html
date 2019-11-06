@@ -19,10 +19,12 @@
           <li>This is not necissary. If there were concerns that bitcoin core was not random enough additional randomness could be added without user hassle.</li>
           <li>This can't be harmful. You will not reduce the randomness of your seeds no matter what data you provide here.</li>
           <li>A good way to create randomness is to shake a box of coins and type 1 for heads and 0 for tails.</li>
-          <li>We need to add a Skip button and also remove this line.</li>
       </ul>
-
-        <form action="" method="post" style="border: solid #f8f9fa;padding: 1.5rem;">
+        <form action="" method="post">
+          <input style="display: none;" name="skip" value="skip">
+          <input style="background-color: rgb(112,196,245)!important;color: white;" class="btn" type="submit" id="skip" value="SKIP">
+        </form>
+        <form action="" method="post">
         <div class="form-row" id="row1">
             <div class="form-group col-md-10">
               <label for="inputEmail4">Seed One</label>

@@ -1,6 +1,6 @@
 import subprocess
 
-subprocess.call(['gnome-terminal -- bash -c "sudo chmod +x ~/yeticold/dpkg-script.sh; sudo ~/yeticold/dpkg-script.sh; read line"'],shell=True)
+subprocess.call(['bash -c "sudo chmod +x ~/yeticold/dpkg-script.sh; sudo ~/yeticold/dpkg-script.sh; read line"'],shell=True)
 subprocess.call(['sudo chmod +x ~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli'],shell=True)
 subprocess.call(['sudo chmod +x ~/yeticold/bitcoin-0.19.0rc1/bin/bitcoind'],shell=True)
 subprocess.call(['sudo chmod +x ~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt'],shell=True)
