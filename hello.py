@@ -266,12 +266,16 @@ def overview():
 @app.route("/options", methods=['GET', 'POST'])
 def options():
     global machine
+    home = os.getenv('HOME')
     if request.method == 'POST':
         if request.form['option'] == 'start':
             return redirect('/items')
         elif request.form['option'] == 'mid':
-            subprocess.call('gnome-terminal -- bash -c "~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050; read line"', shell=True)
-            return redirect('/runbitcoindoffline')
+            if not (os.path.exists(home + "/yeticold/hosted.txt")):
+                subprocess.call('gnome-terminal -- bash -c "~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050; read line"', shell=True)
+                return redirect('/runbitcoindoffline')
+            else:
+                return redirect('/options')
         elif request.form['option'] == 'end':
             if not (os.path.exists(home + "/yeticold/hosted.txt")):
                 subprocess.call('gnome-terminal -- bash -c "~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050; read line"', shell=True)
