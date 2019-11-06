@@ -899,7 +899,7 @@ def displayfirsttransqrcode():
         #trans[5] = recpipentaddress
         #trans[6] = witnessScript
         minerfee = float(rpc.estimatesmartfee(6)["feerate"])
-        kilobytespertrans = 0.01
+        kilobytespertrans = 0.545
         amo = ((trans[4] / 3) - (minerfee * kilobytespertrans))
         amo = "{:.8f}".format(float(amo))
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createrawtransaction \'[{ "txid": "'+trans[0]+'", "vout": '+str(trans[1])+'}]\' \'[{"'+trans[5]+'" : '+str(amo)+'}]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
