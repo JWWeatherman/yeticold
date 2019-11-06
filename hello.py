@@ -271,12 +271,24 @@ def options():
             return redirect('/items')
         elif request.form['option'] == 'mid':
             subprocess.call('gnome-terminal -- bash -c "~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050; read line"', shell=True)
-            machine = 1
-            return redirect('/runbitcoind')
+            return redirect('/runbitcoindoffline')
         elif request.form['option'] == 'end':
-            subprocess.call('gnome-terminal -- bash -c "~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050; read line"', shell=True)
-            return redirect('/runbitcoind')
+            if not (os.path.exists(home + "/yeticold/hosted.txt")):
+                subprocess.call('gnome-terminal -- bash -c "~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050; read line"', shell=True)
+                return redirect('/runbitcoindonline')
+            else:
+                return redirect('/downloadscript')
     return render_template('options.html')
+
+@app.route("/downloadscript", methods=['GET', 'POST'])
+def downloadscript():
+    if request.method == 'POST':
+        return redirect('/startupinstructions')
+    return render_template('downloadscript.html')
+
+@app.route("/startupinstructions", methods=['GET', 'POST'])
+def startupinstructions():
+    return render_template('startupinstructions.html')
 
 ### HOSTED WEBPAGE START
 
@@ -329,8 +341,30 @@ def jfour():
 
 ### HOSTED WEBPAGE STOP
 
-@app.route("/runbitcoind", methods=['GET', 'POST'])
-def runbitcoind():
+@app.route("/runbitcoindonline", methods=['GET', 'POST'])
+def runbitcoindonline():
+    global bitcoindprogress
+    global machine
+    global privkeycount
+    global transnum
+    if request.method == 'GET':
+        bitcoind = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        if not (len(bitcoind[0]) == 0):
+            bitcoindprogress = json.loads(bitcoind[0])['verificationprogress']
+            bitcoindprogress = bitcoindprogress * 100
+            bitcoindprogress = round(bitcoindprogress, 3)
+        else:
+            bitcoindprogress = 0
+    if request.method == 'POST':
+        if bitcoindprogress >= 99:
+            return redirect('/repack')
+        else:
+            return redirect('/runbitcoindonline')
+    return render_template('runbitcoindonline.html', progress=bitcoindprogress)
+
+
+@app.route("/runbitcoindoffline", methods=['GET', 'POST'])
+def runbitcoindoffline():
     global bitcoindprogress
     global machine
     global privkeycount
@@ -358,11 +392,9 @@ def runbitcoind():
                     privkeycount = 0
                     privkeylist = []
                     return redirect('/importprivkey')
-            else:
-                return redirect('/repack')
         else:
-            return redirect('/runbitcoind')
-    return render_template('runbitcoind.html', progress=bitcoindprogress)
+            return redirect('/runbitcoindoffline')
+    return render_template('runbitcoindoffline.html', progress=bitcoindprogress)
 
 
 ### OFFLINE COMPUTER START
@@ -775,7 +807,7 @@ def openbitcoinqt():
     if request.method == 'POST':
         subprocess.call('gnome-terminal -- bash -c "~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050; read line"', shell=True)
         machine = 2
-        return redirect('/runbitcoind')
+        return redirect('/runbitcoindoffline')
     return render_template('openbitcoinqt.html')
 
 @app.route('/importprivkey', methods=['GET', 'POST'])
