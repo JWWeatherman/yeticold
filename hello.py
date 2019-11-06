@@ -733,9 +733,9 @@ def checktrans():
         firstqrcode = firstqrcode.decode("utf-8")
         secondqrcode = secondqrcode.decode("utf-8")
         thirdqrcode = thirdqrcode.decode("utf-8")
-        print(firstqrcode)
-        print(secondqrcode)
-        print(thirdqrcode)
+        firstqrcode = firstqrcode.split('\'')[3]
+        secondqrcode = secondqrcode.split('\'')[3]
+        thirdqrcode = thirdqrcode.split('\'')[3]
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli sendrawtransaction '+firstqrcode+''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli sendrawtransaction '+secondqrcode+''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
