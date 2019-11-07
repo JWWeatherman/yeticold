@@ -273,6 +273,7 @@ def options():
         elif request.form['option'] == 'mid':
             if not (os.path.exists(home + "/yeticold/hosted.txt")):
                 subprocess.call('gnome-terminal -- bash -c "~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050; read line"', shell=True)
+                machine = 1
                 return redirect('/runbitcoindoffline')
             else:
                 return redirect('/options')
