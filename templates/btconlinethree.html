@@ -3,8 +3,8 @@
     <title>Yeti Bitcoin Storage</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet", href="{{ url_for('static', filename='style.css') }}">
-    <link rel="stylesheet", href="{{ url_for('static', filename='bootstrap.min.css') }}">
-    <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
   </head>
   <body>
     <nav class="form-row navbar navbar-light" style="background-color: rgb(112,196,245)!important;">
@@ -12,16 +12,8 @@
       <h3 style="color:white;margin:0;">Yeti Bitcoin Cold Storage</h3>
     </nav>
     <div class="container" style="margin-top: 3rem;">
-      <h2>Step 8: Finish Downloading the Blockchain.</h2>
-      <div>
-          <ul>
-            <li>Yeti has opened bitcoin-qt for you. This is the graphical interface for bitcoin core and will provide more detailed status.</li>
-            <li>Once it has completed updating you will have a bitcoin core full node.</li>
-            <li>This step can take as little as 4 hours if you have an SSD and a fast internet connection or as long as a couple of weeks if you do not.</li>
-            <li>When bitcoin finished the "initial block download" it will show your balance in bitcoin-qt and the Next button will be enabled."</li>
-            <li>Click Next when this is complete. You will see a new terminal window opened that asks for your password so that it can package your installed software to transfer to you DISCONNETED laptap."
-          </ul>
-      </div>
+      <h2>Step 43: Finish Opening Bitcoin.</h2>
+      <div>Once Bitcoin is fully opened click Next.</div>
       <div class="progress mb-3">
         <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:{{ progress }}%">
     {{ progress }}% Done
