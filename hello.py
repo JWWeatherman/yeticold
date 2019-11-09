@@ -262,61 +262,61 @@ def options():
     home = os.getenv('HOME')
     if request.method == 'POST':
         if request.form['option'] == 'start':
-            return redirect('/step1')
+            return redirect('/step01')
         elif request.form['option'] == 'mid':
             subprocess.call('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050', shell=True)
             return redirect('/step11')
         elif request.form['option'] == 'end':
             subprocess.call('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050', shell=True)
-            return redirect('/step7')
+            return redirect('/step07')
     return render_template('options.html')
 
 ### START HOSTED GETTING STARTED
-@app.route("/step1", methods=['GET', 'POST'])
-def step1():
+@app.route("/step01", methods=['GET', 'POST'])
+def step01():
     if request.method == 'POST':
-        return redirect('/step2')
-    return render_template('step1.html')
+        return redirect('/step02')
+    return render_template('step01.html')
 
-@app.route("/step2", methods=['GET', 'POST'])
-def step2():
+@app.route("/step02", methods=['GET', 'POST'])
+def step02():
     if request.method == 'POST':
-        return redirect('/step3')
-    return render_template('step2.html')
+        return redirect('/step03')
+    return render_template('step02.html')
 
-@app.route("/step3", methods=['GET', 'POST'])
-def step3():
+@app.route("/step03", methods=['GET', 'POST'])
+def step03():
     if request.method == 'POST':
-        return redirect('/step4')
-    return render_template('step3.html')
+        return redirect('/step04')
+    return render_template('step03.html')
 
-@app.route("/step4", methods=['GET', 'POST'])
-def step4():
-    return render_template('step4.html')
+@app.route("/step04", methods=['GET', 'POST'])
+def step04():
+    return render_template('step04.html')
 ##STOP
 
 ###START HOSTED ONLINE
-@app.route("/step5", methods=['GET', 'POST'])
-def step5():
+@app.route("/step05", methods=['GET', 'POST'])
+def step05():
     if request.method == 'POST':
-        return redirect('/step6')
-    return render_template('step5.html')
+        return redirect('/step06')
+    return render_template('step05.html')
 
-@app.route("/step6", methods=['GET', 'POST'])
-def step6():
-    return render_template('step6.html')
+@app.route("/step06", methods=['GET', 'POST'])
+def step06():
+    return render_template('step06.html')
 ##STOP
 
 ### START ONLINE
-@app.route("/step7", methods=['GET', 'POST'])
-def step7():
+@app.route("/step07", methods=['GET', 'POST'])
+def step07():
     if request.method == 'POST':
         subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        return redirect('/step8')
-    return render_template('step7.html')
+        return redirect('/step08')
+    return render_template('step07.html')
 
-@app.route("/step8", methods=['GET', 'POST'])
-def step8():
+@app.route("/step08", methods=['GET', 'POST'])
+def step08():
     if request.method == 'GET':
         bitcoind = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         if not (len(bitcoind[0]) == 0):
@@ -327,16 +327,16 @@ def step8():
             bitcoindprogress = 0
     if request.method == 'POST':
         if bitcoindprogress >= 100:
-            return redirect('/step9')
-    return render_template('step8.html')
+            return redirect('/step09')
+    return render_template('step08.html')
 
-@app.route("/step9", methods=['GET', 'POST'])
-def step9():
+@app.route("/step09", methods=['GET', 'POST'])
+def step09():
     if request.method == 'GET':
-        subprocess.call(['bash -c "sudo chmod +x ~/yeticold/rpkg-script.sh; sudo ~/yeticold/rpkg-script.sh"'],shell=True)
+        subprocess.call(['gnome-terminal -- bash -c "sudo chmod +x ~/yeticold/rpkg-script.sh; sudo ~/yeticold/rpkg-script.sh"'],shell=True)
     if request.method == 'POST':
         return redirect('/step10')
-    return render_template('step9.html')
+    return render_template('step09.html')
 
 @app.route("/step10", methods=['GET', 'POST'])
 def step10():
@@ -690,7 +690,7 @@ def step38():
         global utxoresponse
         firstqrcode = subprocess.Popen(['python3 ~/yeticold/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
         utxoresponse = firstqrcode
-        return redirect('/step')
+        return redirect('/step40')
     return render_template('step38.html')
 ##SWITCH TO ONLINE
 
@@ -1145,6 +1145,7 @@ def step56():
         return redirect('/step')
     return render_template('step56.html', qrdata=firstqrcode, route=route)
 ##SWITCH TO ONLINE
+### END OF OFFLINE
 
 
 @app.route("/step57", methods=['GET', 'POST'])
@@ -1199,7 +1200,7 @@ def step61():
     if request.method == 'POST':
         return redirect('/step')
     return render_template('step61.html')
-### END OF CURRENT FLOW
+### END OF ONLINE
 
 
 
