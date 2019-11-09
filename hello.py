@@ -309,7 +309,7 @@ def step06():
 @app.route("/step07", methods=['GET', 'POST'])
 def step07():
     if request.method == 'POST':
-        subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         return redirect('/step08')
     return render_template('step07.html')
 
@@ -347,7 +347,7 @@ def step10():
 @app.route("/step11", methods=['GET', 'POST'])
 def step11():
     if request.method == 'POST':
-        subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         return redirect('/step12')
     return render_template('step11.html')
 
@@ -609,7 +609,7 @@ def step28():
 @app.route("/step29", methods=['GET', 'POST'])
 def step29():
     if request.method == 'POST':
-        subprocess.call('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050', shell=True)
+        subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         return redirect('/step30')
     return render_template('step29.html')
 
@@ -772,7 +772,7 @@ def step41():
 @app.route("/step42", methods=['GET', 'POST'])
 def step42():
     if request.method == 'POST':
-        subprocess.call('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050', shell=True)
+        subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         return redirect('/step43')
     return render_template('step42.html')
 
@@ -906,7 +906,7 @@ def step47():
 @app.route("/step48", methods=['GET', 'POST'])
 def step48():
     if request.method == 'POST':
-        subprocess.call('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050', shell=True)
+        subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         return redirect('/step49')
     return render_template('step48.html')
 
@@ -1040,7 +1040,7 @@ def step53():
 @app.route("/step54", methods=['GET', 'POST'])
 def step54():
     if request.method == 'POST':
-        subprocess.call('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050', shell=True)
+        subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         return redirect('/step55')
     return render_template('step54.html')
 
