@@ -264,10 +264,8 @@ def options():
         if request.form['option'] == 'start':
             return redirect('/step01')
         elif request.form['option'] == 'mid':
-            subprocess.call('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050', shell=True)
             return redirect('/step11')
         elif request.form['option'] == 'end':
-            subprocess.call('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050', shell=True)
             return redirect('/step07')
     return render_template('options.html')
 
@@ -349,6 +347,7 @@ def step10():
 @app.route("/step11", methods=['GET', 'POST'])
 def step11():
     if request.method == 'POST':
+        subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         return redirect('/step12')
     return render_template('step11.html')
 
