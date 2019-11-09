@@ -3,8 +3,8 @@
     <title>Yeti Bitcoin Storage</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet", href="{{ url_for('static', filename='style.css') }}">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
+    <link rel="stylesheet", href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
   </head>
   <body>
     <nav class="form-row navbar navbar-light" style="background-color: rgb(112,196,245)!important;">
@@ -25,7 +25,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text" id="basic-addon1">1</span>
             </div>
-            <input type="text" class="form-control" value="{{ PPL[0] }} {{ PPL[1] }} {{ PPL[2] }} {{ PPL[3] }}" id="row1" readonly>
+            <input type="text" class="form-control" value="{{ PPL[0] }} {{ PPL[1] }} {{ PPL[2] }} {{ PPL[3] }}" id="displayrow1" readonly>
           </div>
         </div>
         <div class="form-row">
@@ -33,7 +33,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text" id="basic-addon1">2</span>
             </div>
-            <input type="text" class="form-control" value="{{ PPL[4] }} {{ PPL[5] }} {{ PPL[6] }} {{ PPL[7] }}" id="row2" readonly>
+            <input type="text" class="form-control" value="{{ PPL[4] }} {{ PPL[5] }} {{ PPL[6] }} {{ PPL[7] }}" id="displayrow2" readonly>
           </div>
         </div>
         <div class="form-row">
@@ -41,7 +41,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text" id="basic-addon1">3</span>
             </div>
-            <input type="text" class="form-control" value="{{ PPL[8] }} {{ PPL[9] }} {{ PPL[10] }} {{ PPL[11] }}" id="row3" readonly>
+            <input type="text" class="form-control" value="{{ PPL[8] }} {{ PPL[9] }} {{ PPL[10] }} {{ PPL[11] }}" id="displayrow3" readonly>
           </div>
         </div>
         <div class="form-row">
@@ -49,7 +49,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text" id="basic-addon1">4</span>
             </div>
-            <input type="text" class="form-control" value="{{ PPL[12] }} {{ PPL[13] }} {{ PPL[14] }} {{ PPL[15] }}" id="row4" readonly>
+            <input type="text" class="form-control" value="{{ PPL[12] }} {{ PPL[13] }} {{ PPL[14] }} {{ PPL[15] }}" id="displayrow4" readonly>
           </div>
         </div>
         <div class="form-row">
@@ -57,7 +57,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text" id="basic-addon1">5</span>
             </div>
-            <input type="text" class="form-control" value="{{ PPL[16] }} {{ PPL[17] }} {{ PPL[18] }} {{ PPL[19] }}" id="row5" readonly>
+            <input type="text" class="form-control" value="{{ PPL[16] }} {{ PPL[17] }} {{ PPL[18] }} {{ PPL[19] }}" id="displayrow5" readonly>
           </div>
         </div>
         <div class="form-row">
@@ -65,7 +65,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text" id="basic-addon1">6</span>
             </div>
-            <input type="text" class="form-control" value="{{ PPL[20] }} {{ PPL[21] }} {{ PPL[22] }} {{ PPL[23] }}" id="row6" readonly>
+            <input type="text" class="form-control" value="{{ PPL[20] }} {{ PPL[21] }} {{ PPL[22] }} {{ PPL[23] }}" id="displayrow6" readonly>
           </div>
         </div>
         <div class="form-row">
@@ -73,7 +73,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text" id="basic-addon1">7</span>
             </div>
-            <input type="text" class="form-control" value="{{ PPL[24] }} {{ PPL[25] }} {{ PPL[26] }} {{ PPL[27] }}" id="row7" readonly>
+            <input type="text" class="form-control" value="{{ PPL[24] }} {{ PPL[25] }} {{ PPL[26] }} {{ PPL[27] }}" id="displayrow7" readonly>
           </div>
         </div>
         <div class="form-row">
@@ -81,7 +81,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text" id="basic-addon1">8</span>
             </div>
-            <input type="text" class="form-control" value="{{ PPL[28] }} {{ PPL[29] }} {{ PPL[30] }} {{ PPL[31] }}" id="row8" readonly>
+            <input type="text" class="form-control" value="{{ PPL[28] }} {{ PPL[29] }} {{ PPL[30] }} {{ PPL[31] }}" id="displayrow8" readonly>
           </div>
         </div>
         <div class="form-row">
@@ -89,7 +89,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text" id="basic-addon1">9</span>
             </div>
-            <input type="text" class="form-control" value="{{ PPL[32] }} {{ PPL[33] }} {{ PPL[34] }} {{ PPL[35] }}" id="row9" readonly>
+            <input type="text" class="form-control" value="{{ PPL[32] }} {{ PPL[33] }} {{ PPL[34] }} {{ PPL[35] }}" id="displayrow9" readonly>
           </div>
         </div>
         <div class="form-row">
@@ -97,7 +97,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text" id="basic-addon1">10</span>
             </div>
-            <input type="text" class="form-control" value="{{ PPL[36] }} {{ PPL[37] }} {{ PPL[38] }} {{ PPL[39] }}" id="row10" readonly>
+            <input type="text" class="form-control" value="{{ PPL[36] }} {{ PPL[37] }} {{ PPL[38] }} {{ PPL[39] }}" id="displayrow10" readonly>
           </div>
         </div>
         <div class="form-row">
@@ -105,7 +105,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text" id="basic-addon1">11</span>
             </div>
-            <input type="text" class="form-control" value="{{ PPL[40] }} {{ PPL[41] }} {{ PPL[42] }} {{ PPL[43] }}" id="row11" readonly>
+            <input type="text" class="form-control" value="{{ PPL[40] }} {{ PPL[41] }} {{ PPL[42] }} {{ PPL[43] }}" id="displayrow11" readonly>
           </div>
         </div>
         <div class="form-row">
@@ -113,7 +113,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text" id="basic-addon1">12</span>
             </div>
-            <input type="text" class="form-control" value="{{ PPL[44] }} {{ PPL[45] }} {{ PPL[46] }} {{ PPL[47] }}" id="row12" readonly>
+            <input type="text" class="form-control" value="{{ PPL[44] }} {{ PPL[45] }} {{ PPL[46] }} {{ PPL[47] }}" id="displayrow12" readonly>
           </div>
         </div>
         <div class="form-row">
@@ -121,7 +121,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text" id="basic-addon1">13</span>
             </div>
-            <input type="text" class="form-control" value="{{ PPL[48] }} {{ PPL[49] }} {{ PPL[50] }} {{ PPL[51] }}" id="row13" readonly>
+            <input type="text" class="form-control" value="{{ PPL[48] }} {{ PPL[49] }} {{ PPL[50] }} {{ PPL[51] }}" id="displayrow13" readonly>
           </div>
         </div>
 
@@ -302,9 +302,9 @@
     }
     var checksum = () => {
       for (var i = 1; i < 14; i++) {
-        var fourwords = document.getElementById('row' + i).value.split(' ')
+        var fourwords = document.getElementById('displayrow' + i).value.split(' ')
         var Letter = makechecksum(fourwords)
-        document.getElementById('row' + i).value = document.getElementById('row' + i).value + ' ' + Letter
+        document.getElementById('displayrow' + i).value = document.getElementById('displayrow' + i).value + ' ' + Letter
       }
     }
     checksum()
