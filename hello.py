@@ -326,7 +326,7 @@ def step08():
     if request.method == 'POST':
         if bitcoindprogress >= 100:
             return redirect('/step09')
-    return render_template('step08.html')
+    return render_template('step08.html', progress=bitcoindprogress)
 
 @app.route("/step09", methods=['GET', 'POST'])
 def step09():
@@ -364,7 +364,7 @@ def step12():
     if request.method == 'POST':
         if bitcoindprogress >= 99:
             return redirect('/step13')
-    return render_template('step12.html')
+    return render_template('step12.html', progress=bitcoindprogress)
 
 @app.route("/step13", methods=['GET', 'POST'])
 def step13():
@@ -626,7 +626,7 @@ def step30():
     if request.method == 'POST':
         if bitcoindprogress >= 99:
             return redirect('/step3137')
-    return render_template('step30.html')
+    return render_template('step30.html', progress=bitcoindprogress)
 
 @app.route('/step3137', methods=['GET', 'POST'])
 def step3137():
@@ -789,7 +789,7 @@ def step43():
     if request.method == 'POST':
         if bitcoindprogress >= 99:
             return redirect('/step44')
-    return render_template('step43.html')
+    return render_template('step43.html', progress=bitcoindprogress)
 
 @app.route("/step44", methods=['GET', 'POST'])
 def step44():
@@ -923,7 +923,7 @@ def step49():
     if request.method == 'POST':
         if bitcoindprogress >= 99:
             return redirect('/step50')
-    return render_template('step49.html')
+    return render_template('step49.html', progress=bitcoindprogress)
 
 @app.route("/step50", methods=['GET', 'POST'])
 def step50():
@@ -1057,7 +1057,7 @@ def step55():
     if request.method == 'POST':
         if bitcoindprogress >= 99:
             return redirect('/step56')
-    return render_template('step55.html')
+    return render_template('step55.html', progress=bitcoindprogress)
 
 @app.route("/step56", methods=['GET', 'POST'])
 def step56():
