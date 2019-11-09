@@ -315,6 +315,7 @@ def step07():
 
 @app.route("/step08", methods=['GET', 'POST'])
 def step08():
+    global bitcoindprogress
     if request.method == 'GET':
         bitcoind = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         if not (len(bitcoind[0]) == 0):
@@ -353,6 +354,7 @@ def step11():
 
 @app.route('/step12', methods=['GET', 'POST'])
 def step12():
+    global bitcoindprogress
     if request.method == 'GET':
         bitcoind = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         if not (len(bitcoind[0]) == 0):
@@ -615,6 +617,7 @@ def step29():
 
 @app.route('/step30', methods=['GET', 'POST'])
 def step30():
+    global bitcoindprogress
     if request.method == 'GET':
         bitcoind = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         if not (len(bitcoind[0]) == 0):
@@ -778,6 +781,7 @@ def step42():
 
 @app.route('/step43', methods=['GET', 'POST'])
 def step43():
+    global bitcoindprogress
     if request.method == 'GET':
         bitcoind = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         if not (len(bitcoind[0]) == 0):
@@ -912,6 +916,7 @@ def step48():
 
 @app.route('/step49', methods=['GET', 'POST'])
 def step49():
+    global bitcoindprogress
     if request.method == 'GET':
         bitcoind = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         if not (len(bitcoind[0]) == 0):
@@ -1046,6 +1051,7 @@ def step54():
 
 @app.route('/step55', methods=['GET', 'POST'])
 def step55():
+    global bitcoindprogress
     if request.method == 'GET':
         bitcoind = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         if not (len(bitcoind[0]) == 0):
