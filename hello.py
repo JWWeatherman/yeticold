@@ -771,7 +771,7 @@ def step40():
 def step41():
     global transnum
     if request.method == 'POST':
-        subprocess.call('gnome-terminal -- bash -c "sudo python3 ~/yeticold/deleteallwallets.py; echo "DONE"; read line"', shell=True)
+        subprocess.call('gnome-terminal -- bash -c "sudo python3 ~/yeticold/deleteallwallets.py; echo "DONE""', shell=True)
         return redirect('/step42')
     return render_template('step41.html')
 
@@ -902,7 +902,7 @@ def step46():
 def step47():
     global transnum
     if request.method == 'POST':
-        subprocess.call('gnome-terminal -- bash -c "sudo python3 ~/yeticold/deleteallwallets.py; echo "DONE"; read line"', shell=True)
+        subprocess.call('gnome-terminal -- bash -c "sudo python3 ~/yeticold/deleteallwallets.py; echo "DONE""', shell=True)
         return redirect('/step48')
     return render_template('step47.html')
 
@@ -974,7 +974,7 @@ def step50():
         #trans[5] = recpipentaddress
         #trans[6] = witnessScript
         minerfee = float(rpc.estimatesmartfee(6)["feerate"])
-        kilobytespertrans = 0.01
+        kilobytespertrans = 0.545
         amo = ((trans[4] / 3) - (minerfee * kilobytespertrans))
         amo = "{:.8f}".format(float(amo))
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createrawtransaction \'[{ "txid": "'+trans[0]+'", "vout": '+str(trans[1])+'}]\' \'[{"'+trans[5]+'" : '+str(amo)+'}]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
@@ -1033,7 +1033,7 @@ def step52():
 def step53():
     global transnum
     if request.method == 'POST':
-        subprocess.call('gnome-terminal -- bash -c "sudo python3 ~/yeticold/deleteallwallets.py; echo "DONE"; read line"', shell=True)
+        subprocess.call('gnome-terminal -- bash -c "sudo python3 ~/yeticold/deleteallwallets.py; echo "DONE""', shell=True)
         return redirect('/step54')
     return render_template('step53.html')
 
@@ -1105,7 +1105,7 @@ def step56():
         #trans[5] = recpipentaddress
         #trans[6] = witnessScript
         minerfee = float(rpc.estimatesmartfee(6)["feerate"])
-        kilobytespertrans = 0.01
+        kilobytespertrans = 0.545
         amo = (trans[4] - (minerfee * kilobytespertrans))
         amo = "{:.8f}".format(float(amo))
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createrawtransaction \'[{ "txid": "'+trans[0]+'", "vout": '+str(trans[1])+'}]\' \'[{"'+trans[5]+'" : '+str(amo)+'}]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
