@@ -331,7 +331,7 @@ def step08():
         progress = BTCprogress()
     if request.method == 'POST':
         progress = BTCprogress()
-        if progress >= 100:
+        if progress >= 99.9:
             return redirect('/step09')
     return render_template('step08.html', progress=progress)
 
