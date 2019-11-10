@@ -638,15 +638,20 @@ def step3137():
     if request.method == 'POST':
         privkey = privkeylist[privkeycount]
         passphraselist = ConvertToPassphrase(privkey)
-        privkeylisttoconfirm = ''
+        privkeylisttoconfirm = []
         for i in range(1,14):
             inputlist = request.form['row' + str(i)]
             inputlist = inputlist.split(' ')
-            inputlist.pop()
-            inputlist = " ".join(inputlist)
-            privkeylisttoconfirm = privkeylisttoconfirm + ' ' + inputlist
-        if PassphraseToWIF(privkeylisttoconfirm.split(' ')[1:]) == privkey:
-            print(privkey)
+            inputlist = inputlist[0:4]
+            privkeylisttoconfirm.append(inputlist[0])
+            privkeylisttoconfirm.append(inputlist[1])
+            privkeylisttoconfirm.append(inputlist[2])
+            privkeylisttoconfirm.append(inputlist[3])
+        print("privkeylisttoconfirm")
+        print(privkeylisttoconfirm)
+        print("passphraselist")
+        print(passphraselist)
+        if privkeylisttoconfirm == passphraselist:
             error = None
             privkeycount = privkeycount + 1
             if (privkeycount == 7):
@@ -1202,7 +1207,52 @@ def step61():
 
 
 
+# @app.route("/debug")
+# def debug():
+#     global wallet_template
+#     global settings
+#     global BASE58_ALPHABET
+#     global base_count
+#     global privkeylist
+#     global xprivlist
+#     global firstqrcode
+#     global secondqrcode
+#     global error
+#     global thirdqrcode
+#     global privkeycount
+#     global firstqrname
+#     global secondqrname
+#     global thirdqrname
+#     global utxoresponse
+#     global pubdesc
+#     global adrlist
+#     global transnum
+#     global progress
+#     global utxo
+#     global logs
 
+#     globalvariables = []
+#     globalvariables.append(wallet_template)
+#     globalvariables.append(settings)
+#     globalvariables.append(BASE58_ALPHABET)
+#     globalvariables.append(base_count)
+#     globalvariables.append(privkeylist)
+#     globalvariables.append(xprivlist)
+#     globalvariables.append(firstqrcode)
+#     globalvariables.append(secondqrcode)
+#     globalvariables.append(error)
+#     globalvariables.append(thirdqrcode)
+#     globalvariables.append(privkeycount)
+#     globalvariables.append(firstqrname)
+#     globalvariables.append(secondqrname)
+#     globalvariables.append(thirdqrname)
+#     globalvariables.append(utxoresponse)
+#     globalvariables.append(pubdesc)
+#     globalvariables.append(adrlist)
+#     globalvariables.append(transnum)
+#     globalvariables.append(progress)
+#     globalvariables.append(utxo)
+#     return render_template('debug.html', gb=globalvariables, logs=logs)
 
 
 @app.route("/step")
