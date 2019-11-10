@@ -330,7 +330,6 @@ def step08():
     if request.method == 'GET':
         progress = BTCprogress()
     if request.method == 'POST':
-        progress = BTCprogress()
         if progress >= 99.9:
             return redirect('/step09')
     return render_template('step08.html', progress=progress)
@@ -363,7 +362,6 @@ def step12():
     if request.method == 'GET':
         progress = BTCprogress()
     if request.method == 'POST':
-        progress = BTCprogress()
         if progress >= 99:
             return redirect('/step13')
     return render_template('step12.html', progress=progress)
@@ -620,7 +618,6 @@ def step30():
     if request.method == 'GET':
         progress = BTCprogress()
     if request.method == 'POST':
-        progress = BTCprogress()
         if progress >= 99:
             return redirect('/step3137')
     return render_template('step30.html', progress=progress)
@@ -778,7 +775,6 @@ def step43():
     if request.method == 'GET':
         progress = BTCprogress()
     if request.method == 'POST':
-        progress = BTCprogress()
         if progress >= 99:
             return redirect('/step44')
     return render_template('step43.html', progress=progress)
@@ -907,7 +903,6 @@ def step49():
     if request.method == 'GET':
         progress = BTCprogress()
     if request.method == 'POST':
-        progress = BTCprogress()
         if progress >= 99:
             return redirect('/step50')
     return render_template('step49.html', progress=progress)
@@ -1036,7 +1031,6 @@ def step55():
     if request.method == 'GET':
         progress = BTCprogress()
     if request.method == 'POST':
-        progress = BTCprogress()
         if progress >= 99:
             return redirect('/step56')
     return render_template('step55.html', progress=progress)
