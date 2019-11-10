@@ -37,6 +37,7 @@ secondqrname = None
 thirdqrname = None
 utxoresponse = None
 pubdesc = None
+adrlist = []
 transnum = 0
 utxo = None
 switcher = {
@@ -497,15 +498,17 @@ def step17():
     global firstqrcode
     global firstqrname
     global pubdesc
+    global adrlist
     if request.method == 'GET':
         pubdesc = firstqrcode[:-1]
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli importmulti \'[{ "desc": "'+pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli deriveaddresses "'+pubdesc+'" "[0,999]"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         response = response[0].decode("utf-8")
         response = json.loads(response)
+        adrlist = response
         randomnum = str(random.randrange(0,1000000))
         firstqrname = randomnum
-        firstqrcode = response[0]
+        firstqrcode = adrlist[0]
         routeone = url_for('static', filename='firstqrcode' + firstqrname + '.png')
         qr = qrcode.QRCode(
                version=1,
@@ -525,13 +528,11 @@ def step17():
 @app.route("/step18", methods=['GET', 'POST'])
 def step18():
     global pubdesc
+    global adrlist
     if request.method == 'GET':
-        response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli deriveaddresses "'+pubdesc+'" "[0,999]"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        response = response[0].decode("utf-8")
-        response = json.loads(response)
         randomnum = str(random.randrange(0,1000000))
         firstqrname = randomnum
-        firstqrcode = response[0]
+        firstqrcode = adrlist[1]
         routeone = url_for('static', filename='firstqrcode' + firstqrname + '.png')
         qr = qrcode.QRCode(
                version=1,
@@ -551,13 +552,11 @@ def step18():
 @app.route("/step19", methods=['GET', 'POST'])
 def step19():
     global pubdesc
+    global adrlist
     if request.method == 'GET':
-        response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli deriveaddresses "'+pubdesc+'" "[0,999]"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        response = response[0].decode("utf-8")
-        response = json.loads(response)
         randomnum = str(random.randrange(0,1000000))
         firstqrname = randomnum
-        firstqrcode = response[0]
+        firstqrcode = adrlist[2]
         routeone = url_for('static', filename='firstqrcode' + firstqrname + '.png')
         qr = qrcode.QRCode(
                version=1,
