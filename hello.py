@@ -37,9 +37,10 @@ secondqrname = None
 thirdqrname = None
 utxoresponse = None
 pubdesc = None
+adrlist = []
 transnum = 0
+progress = 0
 utxo = None
-bitcoindprogress = 0
 switcher = {
     "1": "ONE",
     "2": "TWO",
@@ -168,6 +169,19 @@ switcher = {
 
 
 ### FUNCTIONS START
+
+def BTCprogress():
+    response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+    if not (len(response[0]) == 0):
+        bitcoinprogress = json.loads(response[0])['verificationprogress']
+        bitcoinprogress = bitcoinprogress * 100
+        bitcoinprogress = round(bitcoinprogress, 3)
+    else:
+        print("error response: "+ str(response[1]))
+        bitcoinprogress = 0
+    return bitcoinprogress
+
+
 def RPC():
     name = 'username'
     wallet_name = ''
@@ -315,19 +329,15 @@ def step07():
 
 @app.route("/step08", methods=['GET', 'POST'])
 def step08():
-    global bitcoindprogress
+    global progress
     if request.method == 'GET':
-        bitcoind = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        if not (len(bitcoind[0]) == 0):
-            bitcoindprogress = json.loads(bitcoind[0])['verificationprogress']
-            bitcoindprogress = bitcoindprogress * 100
-            bitcoindprogress = round(bitcoindprogress, 3)
-        else:
-            bitcoindprogress = 0
+        progress = BTCprogress()
     if request.method == 'POST':
-        if bitcoindprogress >= 100:
+        if progress >= 99.9:
             return redirect('/step09')
-    return render_template('step08.html', progress=bitcoindprogress)
+        else:
+            return redirect('/step08')
+    return render_template('step08.html', progress=progress)
 
 @app.route("/step09", methods=['GET', 'POST'])
 def step09():
@@ -354,19 +364,15 @@ def step11():
 
 @app.route('/step12', methods=['GET', 'POST'])
 def step12():
-    global bitcoindprogress
+    global progress
     if request.method == 'GET':
-        bitcoind = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        if not (len(bitcoind[0]) == 0):
-            bitcoindprogress = json.loads(bitcoind[0])['verificationprogress']
-            bitcoindprogress = bitcoindprogress * 100
-            bitcoindprogress = round(bitcoindprogress, 3)
-        else:
-            bitcoindprogress = 0
+        progress = BTCprogress()
     if request.method == 'POST':
-        if bitcoindprogress >= 99:
+        if progress >= 99:
             return redirect('/step13')
-    return render_template('step12.html', progress=bitcoindprogress)
+        else:
+            return redirect('/step12')
+    return render_template('step12.html', progress=progress)
 
 @app.route("/step13", methods=['GET', 'POST'])
 def step13():
@@ -499,15 +505,17 @@ def step17():
     global firstqrcode
     global firstqrname
     global pubdesc
+    global adrlist
     if request.method == 'GET':
         pubdesc = firstqrcode[:-1]
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli importmulti \'[{ "desc": "'+pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli deriveaddresses "'+pubdesc+'" "[0,999]"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         response = response[0].decode("utf-8")
         response = json.loads(response)
+        adrlist = response
         randomnum = str(random.randrange(0,1000000))
         firstqrname = randomnum
-        firstqrcode = response[0]
+        firstqrcode = adrlist[0]
         routeone = url_for('static', filename='firstqrcode' + firstqrname + '.png')
         qr = qrcode.QRCode(
                version=1,
@@ -527,14 +535,11 @@ def step17():
 @app.route("/step18", methods=['GET', 'POST'])
 def step18():
     global pubdesc
+    global adrlist
     if request.method == 'GET':
-        response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli importmulti \'[{ "desc": "'+pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli deriveaddresses "'+pubdesc+'" "[0,999]"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        response = response[0].decode("utf-8")
-        response = json.loads(response)
         randomnum = str(random.randrange(0,1000000))
         firstqrname = randomnum
-        firstqrcode = response[0]
+        firstqrcode = adrlist[1]
         routeone = url_for('static', filename='firstqrcode' + firstqrname + '.png')
         qr = qrcode.QRCode(
                version=1,
@@ -554,14 +559,11 @@ def step18():
 @app.route("/step19", methods=['GET', 'POST'])
 def step19():
     global pubdesc
+    global adrlist
     if request.method == 'GET':
-        response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli importmulti \'[{ "desc": "'+pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli deriveaddresses "'+pubdesc+'" "[0,999]"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        response = response[0].decode("utf-8")
-        response = json.loads(response)
         randomnum = str(random.randrange(0,1000000))
         firstqrname = randomnum
-        firstqrcode = response[0]
+        firstqrcode = adrlist[2]
         routeone = url_for('static', filename='firstqrcode' + firstqrname + '.png')
         qr = qrcode.QRCode(
                version=1,
@@ -617,19 +619,15 @@ def step29():
 
 @app.route('/step30', methods=['GET', 'POST'])
 def step30():
-    global bitcoindprogress
+    global progress
     if request.method == 'GET':
-        bitcoind = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        if not (len(bitcoind[0]) == 0):
-            bitcoindprogress = json.loads(bitcoind[0])['verificationprogress']
-            bitcoindprogress = bitcoindprogress * 100
-            bitcoindprogress = round(bitcoindprogress, 3)
-        else:
-            bitcoindprogress = 0
+        progress = BTCprogress()
     if request.method == 'POST':
-        if bitcoindprogress >= 99:
+        if progress >= 99:
             return redirect('/step3137')
-    return render_template('step30.html', progress=bitcoindprogress)
+        else:
+            return redirect('/step30')
+    return render_template('step30.html', progress=progress)
 
 @app.route('/step3137', methods=['GET', 'POST'])
 def step3137():
@@ -781,19 +779,15 @@ def step42():
 
 @app.route('/step43', methods=['GET', 'POST'])
 def step43():
-    global bitcoindprogress
+    global progress
     if request.method == 'GET':
-        bitcoind = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        if not (len(bitcoind[0]) == 0):
-            bitcoindprogress = json.loads(bitcoind[0])['verificationprogress']
-            bitcoindprogress = bitcoindprogress * 100
-            bitcoindprogress = round(bitcoindprogress, 3)
-        else:
-            bitcoindprogress = 0
+        progress = BTCprogress()
     if request.method == 'POST':
-        if bitcoindprogress >= 99:
+        if progress >= 99:
             return redirect('/step44')
-    return render_template('step43.html', progress=bitcoindprogress)
+        else:
+            return redirect('/step43')
+    return render_template('step43.html', progress=progress)
 
 @app.route("/step44", methods=['GET', 'POST'])
 def step44():
@@ -916,19 +910,15 @@ def step48():
 
 @app.route('/step49', methods=['GET', 'POST'])
 def step49():
-    global bitcoindprogress
+    global progress
     if request.method == 'GET':
-        bitcoind = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        if not (len(bitcoind[0]) == 0):
-            bitcoindprogress = json.loads(bitcoind[0])['verificationprogress']
-            bitcoindprogress = bitcoindprogress * 100
-            bitcoindprogress = round(bitcoindprogress, 3)
-        else:
-            bitcoindprogress = 0
+        progress = BTCprogress()
     if request.method == 'POST':
-        if bitcoindprogress >= 99:
+        if progress >= 99:
             return redirect('/step50')
-    return render_template('step49.html', progress=bitcoindprogress)
+        else:
+            return redirect('/step49')
+    return render_template('step49.html', progress=progress)
 
 @app.route("/step50", methods=['GET', 'POST'])
 def step50():
@@ -1051,19 +1041,15 @@ def step54():
 
 @app.route('/step55', methods=['GET', 'POST'])
 def step55():
-    global bitcoindprogress
+    global progress
     if request.method == 'GET':
-        bitcoind = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        if not (len(bitcoind[0]) == 0):
-            bitcoindprogress = json.loads(bitcoind[0])['verificationprogress']
-            bitcoindprogress = bitcoindprogress * 100
-            bitcoindprogress = round(bitcoindprogress, 3)
-        else:
-            bitcoindprogress = 0
+        progress = BTCprogress()
     if request.method == 'POST':
-        if bitcoindprogress >= 99:
+        if progress >= 99:
             return redirect('/step56')
-    return render_template('step55.html', progress=bitcoindprogress)
+        else:
+            return redirect('/step55')
+    return render_template('step55.html', progress=progress)
 
 @app.route("/step56", methods=['GET', 'POST'])
 def step56():
