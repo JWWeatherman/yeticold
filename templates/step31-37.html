@@ -308,13 +308,12 @@ var decode = (s) => {
             Privatekey.concat(document.getElementById('row' + i).value.toString().split(' '))
             templist = templist.splice(0, 5)
             var checksum = templist.pop()
+            if (document.getElementById('row' + i).value) document.getElementById('row' + i).style.backgroundColor = red
             if (templist.filter((el) => {return passphraseWIFlist.includes(el)}).length === 4) {
               if (checksum != '') {
                 if (checkSum(templist,checksum)) {
                   numofrowsgreen++
                   document.getElementById('row' + i).style.backgroundColor = green
-                } else {
-                  document.getElementById('row' + i).style.backgroundColor = red
                 }
               }
               templist = []
