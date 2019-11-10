@@ -175,7 +175,7 @@ def BTCprogress():
         bitcoinprogress = bitcoinprogress * 100
         bitcoinprogress = round(bitcoinprogress, 3)
     else:
-        print("error response: "+response)
+        print("error response: "+ str(response[1]))
         bitcoinprogress = 0
     return bitcoinprogress
 
