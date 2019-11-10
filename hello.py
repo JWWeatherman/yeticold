@@ -39,6 +39,7 @@ utxoresponse = None
 pubdesc = None
 adrlist = []
 transnum = 0
+progress = 0
 utxo = None
 switcher = {
     "1": "ONE",
@@ -328,6 +329,7 @@ def step07():
 
 @app.route("/step08", methods=['GET', 'POST'])
 def step08():
+    global progress
     if request.method == 'GET':
         progress = BTCprogress()
     if request.method == 'POST':
@@ -360,6 +362,7 @@ def step11():
 
 @app.route('/step12', methods=['GET', 'POST'])
 def step12():
+    global progress
     if request.method == 'GET':
         progress = BTCprogress()
     if request.method == 'POST':
@@ -612,6 +615,7 @@ def step29():
 
 @app.route('/step30', methods=['GET', 'POST'])
 def step30():
+    global progress
     if request.method == 'GET':
         progress = BTCprogress()
     if request.method == 'POST':
@@ -769,6 +773,7 @@ def step42():
 
 @app.route('/step43', methods=['GET', 'POST'])
 def step43():
+    global progress
     if request.method == 'GET':
         progress = BTCprogress()
     if request.method == 'POST':
@@ -897,6 +902,7 @@ def step48():
 
 @app.route('/step49', methods=['GET', 'POST'])
 def step49():
+    global progress
     if request.method == 'GET':
         progress = BTCprogress()
     if request.method == 'POST':
@@ -1025,6 +1031,7 @@ def step54():
 
 @app.route('/step55', methods=['GET', 'POST'])
 def step55():
+    global progress
     if request.method == 'GET':
         progress = BTCprogress()
     if request.method == 'POST':
