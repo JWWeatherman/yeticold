@@ -335,6 +335,8 @@ def step08():
     if request.method == 'POST':
         if progress >= 99.9:
             return redirect('/step09')
+        else:
+            return redirect('/step08')
     return render_template('step08.html', progress=progress)
 
 @app.route("/step09", methods=['GET', 'POST'])
@@ -368,6 +370,8 @@ def step12():
     if request.method == 'POST':
         if progress >= 99:
             return redirect('/step13')
+        else:
+            return redirect('/step12')
     return render_template('step12.html', progress=progress)
 
 @app.route("/step13", methods=['GET', 'POST'])
@@ -621,6 +625,8 @@ def step30():
     if request.method == 'POST':
         if progress >= 99:
             return redirect('/step3137')
+        else:
+            return redirect('/step30')
     return render_template('step30.html', progress=progress)
 
 @app.route('/step3137', methods=['GET', 'POST'])
@@ -779,6 +785,8 @@ def step43():
     if request.method == 'POST':
         if progress >= 99:
             return redirect('/step44')
+        else:
+            return redirect('/step43')
     return render_template('step43.html', progress=progress)
 
 @app.route("/step44", methods=['GET', 'POST'])
@@ -908,6 +916,8 @@ def step49():
     if request.method == 'POST':
         if progress >= 99:
             return redirect('/step50')
+        else:
+            return redirect('/step49')
     return render_template('step49.html', progress=progress)
 
 @app.route("/step50", methods=['GET', 'POST'])
@@ -1037,6 +1047,8 @@ def step55():
     if request.method == 'POST':
         if progress >= 99:
             return redirect('/step56')
+        else:
+            return redirect('/step55')
     return render_template('step55.html', progress=progress)
 
 @app.route("/step56", methods=['GET', 'POST'])
