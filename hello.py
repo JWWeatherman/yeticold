@@ -1163,17 +1163,14 @@ def step58():
     global secondqrcode
     global thirdqrcode
     if request.method == 'GET':
-        firstqrcode = firstqrcode.decode("utf-8")
-        secondqrcode = secondqrcode.decode("utf-8")
-        thirdqrcode = thirdqrcode.decode("utf-8")
-        firstqrcode = firstqrcode.split('\'')[3]
-        secondqrcode = secondqrcode.split('\'')[3]
-        thirdqrcode = thirdqrcode.split('\'')[3]
-        response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli sendrawtransaction '+firstqrcode+''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        parsedfirstqrcode = firstqrcode.decode("utf-8").split('\'')[3]
+        parsedsecondqrcode = secondqrcode.decode("utf-8").split('\'')[3]
+        parsedthirdqrcode = thirdqrcode.decode("utf-8").split('\'')[3]
+        response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli sendrawtransaction '+parsedfirstqrcode+''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
-        response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli sendrawtransaction '+secondqrcode+''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli sendrawtransaction '+parsedsecondqrcode+''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
-        response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli sendrawtransaction '+thirdqrcode+''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli sendrawtransaction '+parsedthirdqrcode+''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
     if request.method == 'POST':
         return redirect('/step59')
@@ -1194,8 +1191,46 @@ def step60():
 @app.route("/step61", methods=['GET', 'POST'])
 def step61():
     if request.method == 'POST':
-        return redirect('/step')
+        return redirect('/step62')
     return render_template('step61.html')
+
+@app.route("/step62", methods=['GET', 'POST'])
+def step62():
+    global adrlist
+    global color
+    addresses = []
+    if request.method == 'GET':
+        for i in range(0, len(adrlist)):
+            randomnum = str(random.randrange(0,1000000))
+            route = url_for('static', filename='address'+randomnum+'.png')
+            rpc = RPC()
+            bal = rpc.getreceivedbyaddress(adrlist[i])
+            bal = "{:.8f}".format(float(bal))
+            address = {}
+            address['address'] = adrlist[i]
+            address['balance'] = bal
+            address['route'] = route
+            addresses.append(address)
+        addresses.sort(key=lambda x: x['balance'], reverse=True)
+        for i in range(0, len(addresses)):
+            qr = qrcode.QRCode(
+                version=1,
+                error_correction=qrcode.constants.ERROR_CORRECT_L,
+                box_size=10,
+                border=4,
+            )
+            qr.add_data(addresses[i]['address'])
+            qr.make(fit=True)
+            color = '#b8daff'
+            if (i % 2) == 0:
+                color = 'white'
+            img = qr.make_image(fill_color="black", back_color=color)
+            home = os.getenv("HOME")
+            print(addresses[i]['route'])
+            img.save(home + '/yeticold/'+addresses[i]['route'])
+    if request.method == 'POST':
+        return redirect('/step')
+    return render_template('step62.html', addresses=addresses, len=len(addresses))
 ### END OF ONLINE
 
 
