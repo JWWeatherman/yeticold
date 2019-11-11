@@ -8,19 +8,33 @@
   </head>
   <body>
     <nav class="form-row navbar navbar-light" style="background-color: rgb(112,196,245)!important;">
-        <img src="{{url_for('static', filename='yeti.png')}}" width="50" height="50" class="align-top" alt="">
-        <h3 style="color:white;margin:0;">Yeti Bitcoin Cold Storage</h3>
+      <img src="{{url_for('static', filename='yeti.png')}}" width="50" height="50" class="align-top" alt="">
+      <h3 style="color:white;margin:0;">Yeti Bitcoin Cold Storage</h3>
     </nav>
     <div class="container" style="margin-top: 3rem;">
-      <h2>Step 47: Restart Bitcoin</h2>
-      <ol>
-          <li>Close Bitcoin by clicking the red x in the upper right hand corner of the Bitcoin window."</li>
-          <li>Enter your password in the Terminal window that opens.</li>
-          <li>Yeti will now delete your wallet and will verify that only the second 3 seeds are needed for spending by spending from the second test funds address.</li>
-      <form action="" method="post">
-        <input style="display: none;" name="option" value="VALUE">
-        <input class="btn btn-primary" type="submit" id="next" value="Next">
-      </form>
+      <h2>Step 47: Finish Opening Bitcoin.</h2>
+      <div>Once Bitcoin is fully opened click Next.</div>
+      <div class="progress mb-3">
+        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:{{ progress }}%">
+    {{ progress }}% Done
+        </div>
+      </div>
+      <div>
+        <form action="" method="post">
+          <input style="display: none;" name="option" value="VALUE">
+          <input style="display: none;" class="btn btn-primary" type="submit" id="next" value="Next">
+        </form>
+      </div>
     </div>
+    <script>
+      var enable = () => {
+        if ({{ progress }} >= 99) {
+          document.getElementById("next").style.display = ""
+        } else {
+          setTimeout(() => { document.getElementById("next").click() }, 5000)
+        }
+      }
+      enable()
+    </script>
   </body>
 </html>
