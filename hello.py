@@ -680,10 +680,6 @@ def step3541():
             privkeylisttoconfirm.append(inputlist[1])
             privkeylisttoconfirm.append(inputlist[2])
             privkeylisttoconfirm.append(inputlist[3])
-        print("privkeylisttoconfirm")
-        print(privkeylisttoconfirm)
-        print("passphraselist")
-        print(passphraselist)
         if privkeylisttoconfirm == passphraselist:
             error = None
             privkeycount = privkeycount + 1
@@ -706,9 +702,6 @@ def step3541():
                     privkeyline = wallet.readline()
                     privkeyline = privkeyline.split(" ")[4][:-1]
                     newxprivlist.append(privkeyline)
-                    print(i)
-                    print(newxprivlist)
-                    print(xprivlist)
                     if not xprivlist[i] == newxprivlist[i]:
                         privkeycount = 0
                         privkeylist = []
@@ -742,7 +735,6 @@ def step43():
         utxo = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli listunspent'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         utxos = json.loads(utxo[0])
         utxo = utxos[0]
-        print(utxo)
         newstr = utxo['txid'] + ','
         newstr = newstr + str(utxo['vout']) + ','
         newstr = newstr + utxo['address'] + ','
@@ -751,7 +743,6 @@ def step43():
         newstr = newstr + rpc.getnewaddress() + ','
         newstr = newstr + utxo['witnessScript'] + '&'
         utxoone = utxos[1]
-        print(utxoone)
         newstr = newstr + utxoone['txid'] + ','
         newstr = newstr + str(utxoone['vout']) + ','
         newstr = newstr + utxoone['address'] + ','
@@ -760,7 +751,6 @@ def step43():
         newstr = newstr + rpc.getnewaddress() + ','
         newstr = newstr + utxoone['witnessScript'] + '&'
         utxotwo = utxos[2]
-        print(utxotwo)
         newstr = newstr + utxotwo['txid'] + ','
         newstr = newstr + str(utxotwo['vout']) + ','
         newstr = newstr + utxotwo['address'] + ','
@@ -843,56 +833,26 @@ def step48():
     ##### GEN TRANS CODE
     if request.method == 'GET':
         xpublist = pubdesc.decode("utf-8").split(',')[1:]
-        print(xpublist)
         xpublist[6] = xpublist[6].split('))')[0]
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli getdescriptorinfo "wsh(multi(3,'+xprivlist[0]+'/*,'+xprivlist[1]+'/*,'+xprivlist[2]+'/*,'+xpublist[3]+','+xpublist[4]+','+xpublist[5]+','+xpublist[6]+'))"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        print('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli getdescriptorinfo "wsh(multi(3,'+xprivlist[0]+'/*,'+xprivlist[1]+'/*,'+xprivlist[2]+'/*,'+xpublist[3]+','+xpublist[4]+','+xpublist[5]+','+xpublist[6]+'))"')
-        print("getdescriptorinfo")
-        print(response)
         response = response[0].decode("utf-8")
         response = json.loads(response)
         checksum = response["checksum"]
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli importmulti \'[{ "desc": "wsh(multi(3,'+xprivlist[0]+'/*,'+xprivlist[1]+'/*,'+xprivlist[2]+'/*,'+xpublist[3]+','+xpublist[4]+','+xpublist[5]+','+xpublist[6]+'))#'+ checksum +'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        print('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli importmulti \'[{ "desc": "wsh(multi(3,'+xprivlist[0]+'/*,'+xprivlist[1]+'/*,'+xprivlist[2]+'/*,'+xpublist[3]+','+xpublist[4]+','+xpublist[5]+','+xpublist[6]+'))#'+ checksum +'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\'')
-        print("importmulti")
-        print(response)
         rpc = RPC()
         trans = utxoresponse
-        print("trans start")
-        print(trans)
         trans = trans.decode("utf-8")
-        print("trans mid")
-        print(trans)
         trans = trans.split("&")[0].split(",")
-        print("trans end")
-        print(trans)
         trans[1] = int(trans[1])
         trans[4] = float(trans[4])
-        #trans[0] = txid
-        #trans[1] = vout
-        #trans[2] = changeaddress
-        #trans[3] = scrirptPubKey
-        #trans[4] = amount
-        #trans[5] = recpipentaddress
-        #trans[6] = witnessScript
         minerfee = float(rpc.estimatesmartfee(6)["feerate"])
         kilobytespertrans = 0.545
         amo = ((trans[4] / 3) - (minerfee * kilobytespertrans))
         amo = "{:.8f}".format(float(amo))
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createrawtransaction \'[{ "txid": "'+trans[0]+'", "vout": '+str(trans[1])+'}]\' \'[{"'+trans[5]+'" : '+str(amo)+'}]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        print()
-        print('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createrawtransaction \'[{ "txid": "'+trans[0]+'", "vout": '+str(trans[1])+'}]\' \'[{"'+trans[5]+'" : '+str(amo)+'}]\'')
-        print(response)
-        print("create raw transaction")
         transonehex = response[0].decode("utf-8")[:-1]
-        print(transonehex)
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli signrawtransactionwithwallet '+transonehex+' \'[{ "txid": "'+trans[0]+'", "vout": '+str(trans[1])+', "scriptPubKey": "'+trans[3]+'", "witnessScript": "'+trans[6][:-1]+'", "amount": "'+str(trans[4])+'" }]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        print('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli signrawtransactionwithwallet '+transonehex+' \'[{ "txid": "'+trans[0]+'", "vout": '+str(trans[1])+', "scriptPubKey": "'+trans[3]+'", "witnessScript": "'+trans[6][:-1]+'", "amount": "'+str(trans[4])+'" }]\'')
-        print("signrawtrans")
-        print(response)
-        print("result")
         transone = json.loads(response[0].decode("utf-8"))
-        print(transone)
         firstqrcode = transone
         randomnum = str(random.randrange(0,1000000))
         firstqrname = randomnum
@@ -901,7 +861,7 @@ def step48():
             error_correction=qrcode.constants.ERROR_CORRECT_L,
             box_size=10,
             border=4,
-            )####DISPLAYING THE ADDRESS IS NOT COMPLEATED ON THE HTML SIDE
+            )
         qr.add_data(firstqrcode)
         qr.make(fit=True)
         img = qr.make_image(fill_color="black", back_color="white")
@@ -971,59 +931,28 @@ def step54():
     global transnum
     global utxoresponse
     global pubdesc
-    ##### GEN TRANS CODE
     if request.method == 'GET':
         xpublist = pubdesc.decode("utf-8").split(',')[1:]
-        print(xpublist)
         xpublist[6] = xpublist[6].split('))')[0]
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli getdescriptorinfo "wsh(multi(3,'+xpublist[0]+','+xpublist[1]+','+xprivlist[2]+'/*,'+xprivlist[3]+'/*,'+xprivlist[4]+'/*,'+xpublist[5]+','+xpublist[6]+'))"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        print('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli getdescriptorinfo "wsh(multi(3,'+xpublist[0]+','+xpublist[1]+','+xprivlist[2]+'/*,'+xprivlist[3]+'/*,'+xprivlist[4]+'/*,'+xpublist[5]+','+xpublist[6]+'))"')
-        print("getdescriptorinfo")
-        print(response)
         response = response[0].decode("utf-8")
         response = json.loads(response)
         checksum = response["checksum"]
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli importmulti \'[{ "desc": "wsh(multi(3,'+xpublist[0]+','+xpublist[1]+','+xprivlist[2]+'/*,'+xprivlist[3]+'/*,'+xprivlist[4]+'/*,'+xpublist[5]+','+xpublist[6]+'))#'+ checksum +'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        print('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli importmulti \'[{ "desc": "wsh(multi(3,'+xpublist[0]+','+xpublist[1]+','+xprivlist[2]+'/*,'+xprivlist[3]+'/*,'+xprivlist[4]+'/*,'+xpublist[5]+','+xpublist[6]+'))#'+ checksum +'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\'')
-        print("importmulti")
-        print(response)
         rpc = RPC()
         trans = utxoresponse #### parse this
-        print("trans start")
-        print(trans)
         trans = trans.decode("utf-8")
-        print("trans mid")
-        print(trans)
         trans = trans.split("&")[1].split(",")
-        print("trans end")
-        print(trans)
         trans[1] = int(trans[1])
         trans[4] = float(trans[4])
-        #trans[0] = txid
-        #trans[1] = vout
-        #trans[2] = changeaddress
-        #trans[3] = scrirptPubKey
-        #trans[4] = amount
-        #trans[5] = recpipentaddress
-        #trans[6] = witnessScript
         minerfee = float(rpc.estimatesmartfee(6)["feerate"])
         kilobytespertrans = 0.545
         amo = ((trans[4] / 3) - (minerfee * kilobytespertrans))
         amo = "{:.8f}".format(float(amo))
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createrawtransaction \'[{ "txid": "'+trans[0]+'", "vout": '+str(trans[1])+'}]\' \'[{"'+trans[5]+'" : '+str(amo)+'}]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        print()
-        print('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createrawtransaction \'[{ "txid": "'+trans[0]+'", "vout": '+str(trans[1])+'}]\' \'[{"'+trans[5]+'" : '+str(amo)+'}]\'')
-        print(response)
-        print("create raw transaction")
         transtwohex = response[0].decode("utf-8")[:-1]
-        print(transtwohex)
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli signrawtransactionwithwallet '+transtwohex+' \'[{ "txid": "'+trans[0]+'", "vout": '+str(trans[1])+', "scriptPubKey": "'+trans[3]+'", "witnessScript": "'+trans[6][:-1]+'", "amount": "'+str(trans[4])+'" }]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        print('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli signrawtransactionwithwallet '+transtwohex+' \'[{ "txid": "'+trans[0]+'", "vout": '+str(trans[1])+', "scriptPubKey": "'+trans[3]+'", "witnessScript": "'+trans[6][:-1]+'", "amount": "'+str(trans[4])+'" }]\'')
-        print("signrawtrans")
-        print(response)
-        print("result")
         transtwo = json.loads(response[0].decode("utf-8"))
-        print(transtwo)
         secondqrcode = transtwo
         randomnum = str(random.randrange(0,1000000))
         secondqrname = randomnum
@@ -1105,56 +1034,26 @@ def step60():
     ##### GEN TRANS CODE
     if request.method == 'GET':
         xpublist = pubdesc.decode("utf-8").split(',')[1:]
-        print(xpublist)
         xpublist[6] = xpublist[6].split('))')[0]
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli getdescriptorinfo "wsh(multi(3,'+xpublist[0]+','+xpublist[1]+','+xpublist[2]+','+xpublist[3]+','+xprivlist[4]+'/*,'+xprivlist[5]+'/*,'+xprivlist[6]+'/*))"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        print('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli getdescriptorinfo "wsh(multi(3,'+xpublist[0]+','+xpublist[1]+','+xpublist[2]+','+xpublist[3]+','+xprivlist[4]+'/*,'+xprivlist[5]+'/*,'+xprivlist[6]+'/*))"')
-        print("getdescriptorinfo")
-        print(response)
         response = response[0].decode("utf-8")
         response = json.loads(response)
         checksum = response["checksum"]
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli importmulti \'[{ "desc": "wsh(multi(3,'+xpublist[0]+','+xpublist[1]+','+xpublist[2]+','+xpublist[3]+','+xprivlist[4]+'/*,'+xprivlist[5]+'/*,'+xprivlist[6]+'/*))#'+ checksum +'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        print('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli importmulti \'[{ "desc": "wsh(multi(3,'+xpublist[0]+','+xpublist[1]+','+xpublist[2]+','+xpublist[3]+','+xprivlist[4]+'/*,'+xprivlist[5]+'/*,'+xprivlist[6]+'/*))#'+ checksum +'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\'')
-        print("importmulti")
-        print(response)
         rpc = RPC()
         trans = utxoresponse #### parse this
-        print("trans start")
-        print(trans)
         trans = trans.decode("utf-8")
-        print("trans mid")
-        print(trans)
         trans = trans.split("&")[2].split(",")
-        print("trans end")
-        print(trans)
         trans[1] = int(trans[1])
         trans[4] = float(trans[4])
-        #trans[0] = txid
-        #trans[1] = vout
-        #trans[2] = changeaddress
-        #trans[3] = scrirptPubKey
-        #trans[4] = amount
-        #trans[5] = recpipentaddress
-        #trans[6] = witnessScript
         minerfee = float(rpc.estimatesmartfee(6)["feerate"])
         kilobytespertrans = 0.545
         amo = (trans[4] - (minerfee * kilobytespertrans))
         amo = "{:.8f}".format(float(amo))
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createrawtransaction \'[{ "txid": "'+trans[0]+'", "vout": '+str(trans[1])+'}]\' \'[{"'+trans[5]+'" : '+str(amo)+'}]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        print()
-        print('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createrawtransaction \'[{ "txid": "'+trans[0]+'", "vout": '+str(trans[1])+'}]\' \'[{"'+trans[5]+'" : '+str(amo)+'}]\'')
-        print(response)
-        print("create raw transaction")
         transthreehex = response[0].decode("utf-8")[:-1]
-        print(transthreehex)
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli signrawtransactionwithwallet '+transthreehex+' \'[{ "txid": "'+trans[0]+'", "vout": '+str(trans[1])+', "scriptPubKey": "'+trans[3]+'", "witnessScript": "'+trans[6][:-1]+'", "amount": "'+str(trans[4])+'" }]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        print('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli signrawtransactionwithwallet '+transthreehex+' \'[{ "txid": "'+trans[0]+'", "vout": '+str(trans[1])+', "scriptPubKey": "'+trans[3]+'", "witnessScript": "'+trans[6][:-1]+'", "amount": "'+str(trans[4])+'" }]\'')
-        print("signrawtrans")
-        print(response)
-        print("result")
         transthree = json.loads(response[0].decode("utf-8"))
-        print(transthree)
         thirdqrcode = transthree
         randomnum = str(random.randrange(0,1000000))
         thirdqrname = randomnum
@@ -1184,9 +1083,6 @@ def step61():
         global secondqrcode
         global thirdqrcode
         thirdqrcode = subprocess.Popen(['python3 ~/yeticold/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-        print(firstqrcode)
-        print(secondqrcode)
-        print(thirdqrcode)
         return redirect('/step62')
     return render_template('step61.html')
 
@@ -1200,11 +1096,8 @@ def step62():
         parsedsecondqrcode = secondqrcode.decode("utf-8").split('\'')[3]
         parsedthirdqrcode = thirdqrcode.decode("utf-8").split('\'')[3]
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli sendrawtransaction '+parsedfirstqrcode+''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        print(response)
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli sendrawtransaction '+parsedsecondqrcode+''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        print(response)
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli sendrawtransaction '+parsedthirdqrcode+''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        print(response)
     if request.method == 'POST':
         return redirect('/step63')
     return render_template('step62.html')
@@ -1259,7 +1152,6 @@ def step66():
                 color = 'white'
             img = qr.make_image(fill_color="black", back_color=color)
             home = os.getenv("HOME")
-            print(addresses[i]['route'])
             img.save(home + '/yeticold/'+addresses[i]['route'])
     if request.method == 'POST':
         return redirect('/step')
