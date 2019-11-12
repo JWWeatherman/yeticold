@@ -60,7 +60,7 @@ switcher = {
     "G": "GOLF",
     "H": "HOTEL",
     "I": "INDIA",
-    "J": "JULIET",
+    "J": "JULIETT",
     "K": "KILO",
     "L": "LIMA",
     "M": "MIKE",
@@ -86,7 +86,7 @@ switcher = {
     "g": "golf",
     "h": "hotel",
     "i": "india",
-    "j": "juliet",
+    "j": "juliett",
     "k": "kilo",
     "l": "lima",
     "m": "mike",
@@ -239,7 +239,7 @@ def ConvertToPassphrase(privkeywif):
     passphraselist = []
     for i in range(len(privkeywif)):
         passphraselist.append(switcher.get(str(privkeywif[i])))
-    return passphraselist 
+    return passphraselist
 
 def PassphraseToWIF(passphraselist):
     Privkey = ''
@@ -667,7 +667,7 @@ def step3541():
     global privkeylist
     global xprivlist
     global privkeycount
-    global error 
+    global error
     if request.method == 'POST':
         privkey = privkeylist[privkeycount]
         passphraselist = ConvertToPassphrase(privkey)
