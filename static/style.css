@@ -10,7 +10,18 @@
 *::after {
   box-sizing: border-box;
 }
+@media print{ 
+  html {
+     size: auto;
+    margin: 5000mm;
+  }
+} 
 
+body  
+{ 
+    /* this affects the margin on the content before sending to printer */ 
+    margin: 0px;  
+} 
 html {
   font-family: sans-serif;
   line-height: 1.15;
