@@ -637,7 +637,7 @@ def step2531():
         subprocess.call('touch '+path+'/seeds/seed'+str(privkeycount + 1)+'.txt', shell=True)
         file = ''
         for i in range(0,13):
-            file = file + request.form['row' + str(i+1)] + '\n'
+            file = file + request.form['displayrow' + str(i+1)] + '\n'
         subprocess.call('echo "'+file+'" >> '+path+'/seeds/seed'+str(privkeycount + 1)+'.txt', shell=True)
         privkeycount = privkeycount + 1
         if (privkeycount == 7):
