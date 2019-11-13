@@ -16,15 +16,15 @@
       <div>Once Bitcoin is fully opened click Next.</div>
       <form action="" method="post">
         <input style="display: none;" name="option" value="VALUE">
-        <input class="btn btn-primary" type="submit" id="next" value="Next">
+        <input disabled class="btn btn-primary" type="submit" id="next" value="Next">
       </form>
     </div>
     <script>
       var enable = () => {
         if ({{ progress }} >= 99) {
-          document.getElementById("next").style.display = ""
+          document.getElementById("next").disabled = false
         } else {
-          setTimeout(() => { document.getElementById("next").click() }, 5000)
+          setTimeout(() => { document.getElementById("next").disabled = false; document.getElementById("next").click() }, 5000)
         }
       }
       enable()

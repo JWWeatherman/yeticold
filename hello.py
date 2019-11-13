@@ -616,7 +616,7 @@ def step23():
 @app.route("/step24", methods=['GET', 'POST'])
 def step24():
     if request.method == 'POST':
-        return redirect('/step41')
+        return redirect('/step43')
     return render_template('step24.html')
 ##SWITCH TO OFFLINE
 
@@ -625,9 +625,20 @@ def step24():
 def step2531():
     global privkeylist
     global privkeycount
-    privkey = privkeylist[privkeycount]
-    passphraselist = ConvertToPassphrase(privkey)
+    if request.method == 'GET':
+        privkey = privkeylist[privkeycount]
+        passphraselist = ConvertToPassphrase(privkey)
     if request.method == 'POST':
+        home = os.getenv('HOME')
+        path = home + '/Documents'
+        if not (os.path.exists(path + "/seeds")):
+            subprocess.call('mkdir '+path+'/seeds', shell=True)
+        subprocess.call('rm '+path+'/seeds/seed'+str(privkeycount + 1)+'.txt', shell=True)
+        subprocess.call('touch '+path+'/seeds/seed'+str(privkeycount + 1)+'.txt', shell=True)
+        file = ''
+        for i in range(0,13):
+            file = file + request.form['row' + str(i+1)] + '\n'
+        subprocess.call('echo "'+file+'" >> '+path+'/seeds/seed'+str(privkeycount + 1)+'.txt', shell=True)
         privkeycount = privkeycount + 1
         if (privkeycount == 7):
             privkeycount = 0
@@ -712,7 +723,7 @@ def step3541():
             else:
                 return redirect('/step3541')
         else:
-            error = 'You enterd the private key incorrectly but the checksums are correct please try agian. This means you probably inputed a valid seed, but not your seed ' +str(privkeycount + 1)+'.'
+            error = 'You enterd the private key incorrectly but the checksums are correct please try agian. This means you probably inputed a valid seed, but not your seed ' +str(privkeycount + 1)+' seed.'
     return render_template('step3541.html', x=privkeycount + 1, error=error,i=privkeycount + 35 )
 
 @app.route("/step42", methods=['GET', 'POST'])

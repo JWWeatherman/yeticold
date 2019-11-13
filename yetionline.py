@@ -11,6 +11,8 @@ subprocess.call(['sudo apt-get install python3-pip'],shell=True)
 subprocess.call(['sudo apt-get install libzbar0'],shell=True)
 subprocess.call(['sudo apt install tor'],shell=True)
 
+subprocess.call('sudo rm ~/.bitcoin/wallet.dat', shell=True)
+subprocess.call('sudo rm ~/.bitcoin/.walletlock', shell=True)
 
 subprocess.call(['sudo pip3 install python-bitcoinrpc'],shell=True)
 subprocess.call(['pip3 install opencv-python'],shell=True)
