@@ -983,7 +983,7 @@ def step54():
     if request.method == 'POST':
         transnum = 3
         return redirect('/step57')
-    return render_template('step50.html', qrdata=firstqrcode, route=route)
+    return render_template('step54.html', qrdata=firstqrcode, route=route)
 ##SWITCH TO ONLINE
 
 
