@@ -10,10 +10,14 @@ subprocess.call(['sudo apt-get install python3-venv'],shell=True)
 subprocess.call(['sudo apt-get install python3-pip'],shell=True)
 subprocess.call(['sudo apt-get install libzbar0'],shell=True)
 subprocess.call(['sudo apt install tor'],shell=True)
-subprocess.call(['sudo pip3 install python-bitcoinrpc'],shell=True)
-subprocess.call(['sudo pip3 install flask'],shell=True)
 
+
+subprocess.call(['sudo pip3 install python-bitcoinrpc'],shell=True)
 subprocess.call(['pip3 install opencv-python'],shell=True)
+if not (os.system("python3 -c 'import flask'") == 0):
+	subprocess.call(['pip3 install flask'],shell=True)
+if not (os.system("python3 -c 'import qrtools'") == 0):
+	subprocess.call(['pip3 install qrtools'],shell=True)
 if not (os.system("python3 -c 'import qrtools'") == 0):
 	subprocess.call(['pip3 install qrtools'],shell=True)
 if not (os.system("python3 -c 'import qrcode'") == 0):

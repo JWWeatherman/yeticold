@@ -683,7 +683,8 @@ def step3541():
         if privkeylisttoconfirm == passphraselist:
             error = None
             privkeycount = privkeycount + 1
-            if (privkeycount == 7):
+            if (privkeycount >= 7):
+                privkeycount = 7
                 newxprivlist = []
                 for i in range(0,7):
                     rpc = RPC()
@@ -705,13 +706,13 @@ def step3541():
                     if not xprivlist[i] == newxprivlist[i]:
                         privkeycount = 0
                         privkeylist = []
-                        error = 'You have imported your seeds correctly but your xprivs do not match'
+                        error = 'You have imported your seeds correctly but your xprivs do not match: This means that you either do not have bitcoin running or its initial block download mode. Another issue is that you have a wallet folder or wallet dump file that was not deleted before starting this step.'
                         return redirect('/step3541')
                 return redirect('/step42')
             else:
                 return redirect('/step3541')
         else:
-            error = 'You enterd the private key incorrectly but the checksums checked out please try agian'
+            error = 'You enterd the private key incorrectly but the checksums are correct please try agian. This means you probably inputed a valid seed, but not your seed ' +str(privkeycount + 1)+'.'
     return render_template('step3541.html', x=privkeycount + 1, error=error,i=privkeycount + 35 )
 
 @app.route("/step42", methods=['GET', 'POST'])

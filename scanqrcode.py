@@ -14,7 +14,10 @@ while True:
     decodepng = decode(Image.open('qrcodeimage.png'))
     if decodepng:
         firstqrcode = decodepng[0].data
-        break
+        if len(firstqrcode) >= 7:
+            break
+        else:
+            decodepng = None
 cam.release()
 cv2.destroyAllWindows()
 print(firstqrcode.decode("utf-8"))
