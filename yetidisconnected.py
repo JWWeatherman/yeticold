@@ -1,4 +1,5 @@
 import subprocess
+import os
 
 if not (os.system("python3 -c 'import flask'") == 0):
 	subprocess.call(['bash -c "sudo chmod +x ~/yeticold/dpkg-script.sh; sudo ~/yeticold/dpkg-script.sh"'],shell=True)
