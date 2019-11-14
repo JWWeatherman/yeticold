@@ -342,7 +342,7 @@ def step08():
 @app.route("/step09", methods=['GET', 'POST'])
 def step09():
     if request.method == 'GET':
-        subprocess.call(['gnome-terminal -- bash -c "sudo chmod +x ~/yeticold/rpkg-script.sh; sudo ~/yeticold/rpkg-script.sh"'],shell=True)
+        subprocess.call(['gnome-terminal -- bash -c "sudo chmod +x ~/yeticold/scripts/rpkg-script.sh; sudo ~/yeticold/scripts/rpkg-script.sh"'],shell=True)
     if request.method == 'POST':
         return redirect('/step10')
     return render_template('step09.html')
@@ -501,7 +501,7 @@ def step18():
 def step19():
     global firstqrcode
     if request.method == 'POST':
-        firstqrcode = subprocess.Popen(['python3 ~/yeticold/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+        firstqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
         firstqrcode = firstqrcode.decode("utf-8")
         return redirect('/step20')
     return render_template('step19.html')
@@ -631,14 +631,12 @@ def step2531():
     if request.method == 'POST':
         home = os.getenv('HOME')
         path = home + '/Documents'
-        if not (os.path.exists(path + "/seeds")):
-            subprocess.call('mkdir '+path+'/seeds', shell=True)
-        subprocess.call('rm '+path+'/seeds/seed'+str(privkeycount + 1)+'.txt', shell=True)
-        subprocess.call('touch '+path+'/seeds/seed'+str(privkeycount + 1)+'.txt', shell=True)
+        subprocess.call('rm '+path+'/seed'+str(privkeycount + 1)+'.txt', shell=True)
+        subprocess.call('touch '+path+'/seed'+str(privkeycount + 1)+'.txt', shell=True)
         file = ''
         for i in range(0,13):
             file = file + request.form['displayrow' + str(i+1)] + '\n'
-        subprocess.call('echo "'+file+'" >> '+path+'/seeds/seed'+str(privkeycount + 1)+'.txt', shell=True)
+        subprocess.call('echo "'+file+'" >> '+path+'/seed'+str(privkeycount + 1)+'.txt', shell=True)
         privkeycount = privkeycount + 1
         if (privkeycount == 7):
             privkeycount = 0
@@ -650,7 +648,7 @@ def step2531():
 @app.route("/step32", methods=['GET', 'POST'])
 def step32():
     if request.method == 'POST':
-        subprocess.call('gnome-terminal -- bash -c "sudo python3 ~/yeticold/deleteallwallets.py; echo "DONE, Close this window.""', shell=True)
+        subprocess.call('gnome-terminal -- bash -c "sudo python3 ~/yeticold/utils/deleteallwallets.py; echo "DONE, Close this window.""', shell=True)
         return redirect('/step33')
     return render_template('step32.html')
 
@@ -731,7 +729,7 @@ def step42():
     if request.method == 'POST':
         global firstqrcode
         global utxoresponse
-        firstqrcode = subprocess.Popen(['python3 ~/yeticold/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+        firstqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
         utxoresponse = firstqrcode
         return redirect('/step44')
     return render_template('step42.html')
@@ -796,7 +794,7 @@ def step44():
         global secondqrcode
         global pubdesc
         global transnum
-        secondqrcode = subprocess.Popen(['python3 ~/yeticold/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+        secondqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
         pubdesc = secondqrcode
         transnum = 1
         return redirect('/step45')
@@ -806,7 +804,7 @@ def step44():
 def step45():
     global transnum
     if request.method == 'POST':
-        subprocess.call('gnome-terminal -- bash -c "sudo python3 ~/yeticold/deleteallwallets.py; echo "DONE""', shell=True)
+        subprocess.call('gnome-terminal -- bash -c "sudo python3 ~/yeticold/utils/deleteallwallets.py; echo "DONE""', shell=True)
         return redirect('/step46')
     return render_template('step45.html')
 
@@ -891,7 +889,7 @@ def step48():
 def step49():
     if request.method == 'POST':
         global firstqrcode
-        firstqrcode = subprocess.Popen(['python3 ~/yeticold/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+        firstqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
         return redirect('/step50')
     return render_template('step49.html')
 
@@ -907,7 +905,7 @@ def step50():
 def step51():
     global transnum
     if request.method == 'POST':
-        subprocess.call('gnome-terminal -- bash -c "sudo python3 ~/yeticold/deleteallwallets.py; echo "DONE""', shell=True)
+        subprocess.call('gnome-terminal -- bash -c "sudo python3 ~/yeticold/utils/deleteallwallets.py; echo "DONE""', shell=True)
         return redirect('/step52')
     return render_template('step51.html')
 
@@ -991,14 +989,14 @@ def step54():
 def step55():
     if request.method == 'POST':
         global secondqrcode
-        secondqrcode = subprocess.Popen(['python3 ~/yeticold/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+        secondqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
         return redirect('/step56')
     return render_template('step55.html')
 
 @app.route("/step56", methods=['GET', 'POST'])
 def step56():
     if request.method == 'POST':
-        return redirect('/step31')
+        return redirect('/step61')
     return render_template('step56.html')
 ##SWITCH TO OFFLINE
 
@@ -1007,7 +1005,7 @@ def step56():
 def step57():
     global transnum
     if request.method == 'POST':
-        subprocess.call('gnome-terminal -- bash -c "sudo python3 ~/yeticold/deleteallwallets.py; echo "DONE""', shell=True)
+        subprocess.call('gnome-terminal -- bash -c "sudo python3 ~/yeticold/utils/deleteallwallets.py; echo "DONE""', shell=True)
         return redirect('/step58')
     return render_template('step57.html')
 
@@ -1094,7 +1092,7 @@ def step61():
         global thirdqrcode
         global secondqrcode
         global thirdqrcode
-        thirdqrcode = subprocess.Popen(['python3 ~/yeticold/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+        thirdqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
         return redirect('/step62')
     return render_template('step61.html')
 
