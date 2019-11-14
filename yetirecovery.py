@@ -321,6 +321,7 @@ def step10():
             address = {}
             address['address'] = adrlist[i]
             address['balance'] = bal
+            address['numbal'] = float(bal)
             address['route'] = route
             addresses.append(address)
         addresses.sort(key=lambda x: x['balance'], reverse=True)
