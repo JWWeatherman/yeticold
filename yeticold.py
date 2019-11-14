@@ -1127,11 +1127,17 @@ def step64():
 @app.route("/step65", methods=['GET', 'POST'])
 def step65():
     if request.method == 'POST':
-        return redirect('/')
+        return redirect('/step66')
     return render_template('step65.html')
 
 @app.route("/step66", methods=['GET', 'POST'])
 def step66():
+    if request.method == 'POST':
+        return redirect('/step67')
+    return render_template('step66.html')
+
+@app.route("/step67", methods=['GET', 'POST'])
+def step67():
     global adrlist
     global color
     addresses = []
@@ -1165,7 +1171,7 @@ def step66():
             img.save(home + '/yeticold/'+addresses[i]['route'])
     if request.method == 'POST':
         return redirect('/step')
-    return render_template('step66.html', addresses=addresses, len=len(addresses))
+    return render_template('step67.html', addresses=addresses, len=len(addresses))
 ### END OF ONLINE
 
 @app.route("/step")
