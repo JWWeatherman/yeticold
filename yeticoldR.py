@@ -365,6 +365,8 @@ def step12():
 #repackage everything
 @app.route("/step13", methods=['GET', 'POST'])
 def step13():
+    if request.method == 'GET':
+        subprocess.call(['gnome-terminal -- bash -c "sudo chmod +x ~/yeticold/scripts/rpkg-script.sh; sudo ~/yeticold/scripts/rpkg-script.sh"'],shell=True)
     if request.method == 'POST':
         return redirect('/step14')
     return render_template('YCRstep13.html')
