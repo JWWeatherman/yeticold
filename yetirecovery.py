@@ -266,23 +266,10 @@ def decode58(s):
 ### FUNCTIONS STOP
 
 @app.route("/", methods=['GET', 'POST'])
-def redirect():
+def step01():
     if request.method == 'GET':
-        return redirect('/step01')
+        return redirect('/step07')
     return render_template('redirect.html')
-
-@app.route("/options", methods=['GET', 'POST'])
-def options():
-    home = os.getenv('HOME')
-    if request.method == 'POST':
-        if request.form['option'] == 'start':
-            return redirect('/step01')
-        elif request.form['option'] == 'mid':
-            return redirect('/step17')
-        elif request.form['option'] == 'end':
-            return redirect('/step07')
-    return render_template('options.html')
-
 
 @app.route("/step07", methods=['GET', 'POST'])
 def step07():
@@ -319,7 +306,7 @@ def step10():
     global color
     addresses = []
     if request.method == 'GET':
-        pubdesc = firstqrcode[:-1]
+        pubdesc = firstqrcode[:-2]
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli importmulti \'[{ "desc": "'+pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli deriveaddresses "'+pubdesc+'" "[0,999]"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         response = response[0].decode("utf-8")
