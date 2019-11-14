@@ -266,23 +266,10 @@ def decode58(s):
 ### FUNCTIONS STOP
 
 @app.route("/", methods=['GET', 'POST'])
-def redirect():
+def step01():
     if request.method == 'GET':
-        return redirect('/step01')
+        return redirect('/step07')
     return render_template('redirect.html')
-
-@app.route("/options", methods=['GET', 'POST'])
-def options():
-    home = os.getenv('HOME')
-    if request.method == 'POST':
-        if request.form['option'] == 'start':
-            return redirect('/step01')
-        elif request.form['option'] == 'mid':
-            return redirect('/step17')
-        elif request.form['option'] == 'end':
-            return redirect('/step07')
-    return render_template('options.html')
-
 
 @app.route("/step07", methods=['GET', 'POST'])
 def step07():
