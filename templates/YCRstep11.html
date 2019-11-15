@@ -13,6 +13,9 @@
     </nav>
     <div class="container" style="margin-top: 3rem;">
       <h2>Step 11: Scan Receipent from Paper</h2>
+      {% if error %}
+        <p style="color:red;">{{ error }}</p>
+      {% endif %}
       <div>Click Scan to open the webcam and scan the Descriptor from your paper packet. Each packet contains an identical copy of the Descriptor.</div>
       <form action="" method="post">
         <input style="display: none;" name="option" value="VALUE">

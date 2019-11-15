@@ -349,12 +349,25 @@ def step10():
 @app.route("/step11", methods=['GET', 'POST'])
 def step11():
     global secondqrcode
+    global error
     if request.method == 'POST':
+        error = None
         secondqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
         secondqrcode = secondqrcode.decode("utf-8")
-        #####CHECK FOR VALID ADDRESS
+        if (secondqrcode.split(':')[0] == 'bitcoin'):
+            secondqrcode = secondqrcode.split(':')[1].split('?')[0]
+        if (secondqrcode.split('1')[0] == 'bc'):
+            if len(secondqrcode) != 42:
+                error = secondqrcode + ' is not a valid bitcoin address'
+        elif (secondqrcode[1:] == '3') or (secondqrcode[1:] == '1'):
+            if len(secondqrcode) != 34:
+                error = secondqrcode + ' is not a valid bitcoin address'
+        else: 
+            error = secondqrcode + ' is not a valid bitcoin address'
+        if error:
+            return redirect('/step11')
         return redirect('/step12')
-    return render_template('YCRstep11.html')
+    return render_template('YCRstep11.html', error=error)
 
 #close bitcoin
 @app.route("/step12", methods=['GET', 'POST'])
