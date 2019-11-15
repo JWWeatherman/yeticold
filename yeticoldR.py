@@ -452,7 +452,7 @@ def step20():
     if request.method == 'POST':
         firstqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
         firstqrcode = firstqrcode.decode("utf-8")
-        return redirect('/step21')
+        return redirect('/step22')
     return render_template('YCRstep20.html')
 ###SWITCH TO ONLINE
 
@@ -498,7 +498,7 @@ def step22():
         global secondqrcode
         global pubdesc
         secondqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-        pubdesc = secondqrcode[:-2]
+        pubdesc = secondqrcode.decode("utf-8")[:-2]
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli importmulti \'[{ "desc": "'+pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         return redirect('/step23')
     return render_template('YCRstep22.html')
