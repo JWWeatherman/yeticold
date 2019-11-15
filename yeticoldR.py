@@ -356,11 +356,8 @@ def step11():
         secondqrcode = secondqrcode.decode("utf-8")
         if (secondqrcode.split(':')[0] == 'bitcoin'):
             secondqrcode = secondqrcode.split(':')[1].split('?')[0]
-        if (secondqrcode.split('1')[0] == 'bc'):
-            if len(secondqrcode) != 42:
-                error = secondqrcode + ' is not a valid bitcoin address'
-        elif (secondqrcode[:1] == '3') or (secondqrcode[:1] == '1'):
-            if len(secondqrcode) != 34:
+        if (secondqrcode.split('1')[0] == 'bc') or (secondqrcode[:1] == '3') or (secondqrcode[:1] == '1'):
+            if (len(secondqrcode) >= 26) or (len(secondqrcode) <= 35):
                 error = secondqrcode + ' is not a valid bitcoin address'
         else: 
             error = secondqrcode + ' is not a valid bitcoin address'
