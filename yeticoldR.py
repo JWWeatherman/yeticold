@@ -631,7 +631,7 @@ def step29():
             xpub = newxpublist[i] + '/*'
             for x in range(0,7):
                 oldxpub = xpublist[x]
-                if xpub = oldxpub:
+                if xpub == oldxpub:
                     descriptorlist[x] = (xprivlist[i] + '/*')
                     break
         desc = '"wsh(multi(3,'+descriptorlist[0]+','+descriptorlist[1]+','+descriptorlist[2]+','+descriptorlist[3]+','+descriptorlist[4]+','+descriptorlist[5]+','+descriptorlist[6]+'))'
