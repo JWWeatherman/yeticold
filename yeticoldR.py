@@ -37,6 +37,8 @@ secondqrname = None
 thirdqrname = None
 utxoresponse = None
 pubdesc = None
+sourceaddress = None
+receipentaddress = None
 adrlist = []
 transnum = 0
 progress = 0
@@ -304,6 +306,7 @@ def step09():
 def step10():
     global adrlist
     global color
+    global sourceaddress
     addresses = []
     if request.method == 'GET':
         pubdesc = firstqrcode[:-2]
@@ -341,6 +344,7 @@ def step10():
             home = os.getenv("HOME")
             img.save(home + '/yeticold/'+addresses[i]['route'])
     if request.method == 'POST':
+        sourceaddress = request.form['address']
         return redirect('/step11')
     return render_template('YCRstep10.html', addresses=addresses, len=len(addresses))
 
@@ -350,6 +354,7 @@ def step10():
 def step11():
     global secondqrcode
     global error
+    global receipentaddress
     if request.method == 'POST':
         error = None
         secondqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
@@ -363,6 +368,7 @@ def step11():
             error = secondqrcode + ' is not a valid bitcoin address, address should have started with bc1, 3 or 1 instead of ' + secondqrcode[:1] + ', or' + secondqrcode[:3] + '.'
         if error:
             return redirect('/step11')
+        receipentaddress = secondqrcode
         return redirect('/step12')
     return render_template('YCRstep11.html', error=error)
 
@@ -413,7 +419,7 @@ def step16():
 @app.route("/step17", methods=['GET', 'POST'])
 def step17():
     if request.method == 'POST':
-        return redirect('/step19')
+        return redirect('/step21')
     return render_template('YCRstep17.html')
 ###SWITCH TO OFFLINE
 
@@ -454,12 +460,17 @@ def step20():
 #display Recipient, source, and balance qr code Then switch to the offline
 @app.route("/step21", methods=['GET', 'POST'])
 def step21():
-    global sourceqrcode
+    global sourceaddress
+    global receipentaddress
     if request.method == 'GET':
         rpc = RPC()
-        bal = rpc.getreceivedbyaddress(firstqrcode)
+        response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli getreceivedbyaddress "'+sourceaddress+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        print('getrecivedbyaddress')
+        print(sourceaddress)
+        bal = response[0].decode("utf-8")
         bal = "{:.8f}".format(float(bal))
-        thirdqrcode = firstqrcode + '&' + sourceqrcode + '&' + str(bal)
+        thirdqrcode = receipentaddress + '&' + sourceaddress + '&' + str(bal)
+        print(thirdqrcode)
         randomnum = str(random.randrange(0,1000000))
         thirdqrname = randomnum
         qr = qrcode.QRCode(
