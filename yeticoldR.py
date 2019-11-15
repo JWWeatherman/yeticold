@@ -353,11 +353,11 @@ def step11():
     if request.method == 'POST':
         error = None
         secondqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-        secondqrcode = secondqrcode.decode("utf-8")
+        secondqrcode = secondqrcode.decode("utf-8")[:1]
         if (secondqrcode.split(':')[0] == 'bitcoin'):
             secondqrcode = secondqrcode.split(':')[1].split('?')[0]
         if (secondqrcode.split('1')[0] == 'bc') or (secondqrcode[:1] == '3') or (secondqrcode[:1] == '1'):
-            if not (len(secondqrcode) >= 26) or (len(secondqrcode) <= 35):
+            if not (len(secondqrcode) >= 26) and (len(secondqrcode) <= 35):
                 error = secondqrcode + ' is not a valid bitcoin address'
         else: 
             error = secondqrcode + ' is not a valid bitcoin address'
