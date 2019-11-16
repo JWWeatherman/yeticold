@@ -490,7 +490,14 @@ def step21():
     global receipentaddress
     if request.method == 'GET':
         rpc = RPC()
-        listofunspent = rpc.listunspent(0, 9999999, [sourceaddress])[0]
+        response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli listunspent 0 9999999 \'["'+sourceaddress+'"]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        print('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli listunspent 0 9999999 \'["'+sourceaddress+'"]\'')
+        print(response)
+        listofunspent = ''
+        if len(response[1]) == 0:
+            listofunspent = response[0].decode("utf-8")
+        else:
+            print("error response from listunspent: " + str(response[1]))
         txid = listofunspent['txid']
         vout = listofunspent['vout']
         bal = listofunspent['amount']
