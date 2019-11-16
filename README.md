@@ -1,6 +1,6 @@
 <template>
     <div class="container" style="margin-top: 3rem;">
-      <h2>Yeti Bitcoin Storage</h2>
+      <h2>YetiCold.com Bitcoin Storage</h2>
       <p>Yeti is currently pre-alpha. This means that not only is the code not well tested, but it isn't even functional yet. We would love help testing and code review and hope to have something usable and reasonably trustworthy within a few weeks.</p>
       <p>Yeti is a script that installs bitcoin core and then walks the user through setup of cold storage solution that has the following advantages:</p>
       <ul>
