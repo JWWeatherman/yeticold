@@ -304,9 +304,13 @@ def step08():
 @app.route("/step09", methods=['GET', 'POST'])
 def step09():
     global firstqrcode
+    global pubdesc
     if request.method == 'POST':
         firstqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
         firstqrcode = firstqrcode.decode("utf-8")
+        pubdesc = firstqrcode[:-2]
+        response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli importmulti \'[{ "desc": "'+pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli rescanblockchain'],shell=True)
         return redirect('/step10')
     return render_template('YCRstep09.html')
 
@@ -318,10 +322,7 @@ def step10():
     global sourceaddress
     addresses = []
     if request.method == 'GET':
-        pubdesc = firstqrcode[:-2]
         subprocess.call(['rm -r ~/yeticold/static/address*'],shell=True)
-        response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli importmulti \'[{ "desc": "'+pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli rescanblockchain'],shell=True)
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli deriveaddresses "'+pubdesc+'" "[0,999]"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         response = response[0].decode("utf-8")
         response = json.loads(response)
