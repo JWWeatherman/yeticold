@@ -18,7 +18,6 @@
           <li>Private keys are written down using the NATO phonetic alphabet where every fifth word is a checksum to reduce the possibility that a private key will be unreadable when needed.</li>
           <li>Instructions for recovering the bitcoin are included with every copy of the private keys to reduce the likelihood of loss.</li>
       </ul>
-
       <p>While we believe Yeti provides the best balance of security, ease of use and cost when storing significant sums of bitcoin, it has the following disadvantages that might not be expected:</p>
       <ul>
           <li>Cost. You will need two computers and two external hard drives. If you need to purchase all of these items it should cost less than $500 USD, but this is not an insignificant expense.</li>
@@ -31,27 +30,3 @@
     </div>
 </template>
 
-<script>
-export default {
-  mounted () {
-  },
-  methods: {
-    click () {
-      this.$router.push({path: '/options'})
-    }
-  },
-  computed: {
-  },
-  name: 'overview',
-  data () {
-    return {
-      msg: 'Convert your passphrase key to a WIF private key'
-    }
-  }
-}
-</script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-
-</style>
