@@ -11,8 +11,7 @@ from PIL import Image
 import random
 import qrcode
 app = Flask(__name__)
-
-
+home = os.getenv("HOME")
 rpcpsw = str(random.randrange(0,1000000))
 subprocess.call(['sudo apt-get update'],shell=True)
 if not (os.path.exists(home + "/.bitcoin")):
@@ -21,7 +20,7 @@ else:
     subprocess.call(['rm ~/.bitcoin/bitcoin.conf'],shell=True)
 subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
 
-
+### VARIBALES START
 settings = {
     "rpc_username": "rpcuser",
     "rpc_password": rpcpsw,
@@ -29,7 +28,6 @@ settings = {
     "rpc_port": 8332,
     "address_chunk": 100
 }
-### VARIBALES START
 wallet_template = "http://{rpc_username}:{rpc_password}@{rpc_host}:{rpc_port}/wallet/{wallet_name}"
 BASE58_ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 base_count = len(BASE58_ALPHABET)
