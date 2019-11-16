@@ -386,7 +386,7 @@ def step11():
             if not (len(secondqrcode) >= 26) and (len(secondqrcode) <= 35):
                 error = secondqrcode + ' is not a valid bitcoin address, address should have a length from 26 to 35 instead of ' + str(len(secondqrcode)) + '.'
         else: 
-            error = secondqrcode + ' is not a valid bitcoin address, address should have started with bc1, 3 or 1 instead of ' + secondqrcode[:1] + ', or' + secondqrcode[:3] + '.'
+            error = secondqrcode + ' is not a valid bitcoin address, address should have started with bc1, 3 or 1 instead of ' + secondqrcode[:1] + ', or ' + secondqrcode[:3] + '.'
         if error:
             return redirect('/step11')
         receipentaddress = secondqrcode
@@ -500,7 +500,7 @@ def step21():
     if request.method == 'GET':
         rpc = RPC()
         testlist = []
-        testlist.append(adrlist[i])
+        testlist.append(sourceaddress)
         response = rpc.listunspent(0, 9999999, testlist)
         txid = response[0]['txid']
         vout = str(response[0]['vout'])
