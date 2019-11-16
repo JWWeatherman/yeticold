@@ -38,10 +38,5 @@ subprocess.call('sudo rm ~/blank3', shell=True)
 subprocess.call('sudo rm ~/blank4', shell=True)
 subprocess.call('sudo rm ~/blank5', shell=True)
 subprocess.call('sudo rm ~/blank6', shell=True)
-if not (os.path.exists(home + "/.bitcoin")):
-	subprocess.call(['mkdir ~/.bitcoin'],shell=True)
-else:
-	subprocess.call(['rm ~/.bitcoin/bitcoin.conf'],shell=True)
-subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword=somesecretpassword" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
 subprocess.Popen('python3 ~/yeticold/yeticold.py',shell=True,start_new_session=True)
 subprocess.call(['xdg-open http://localhost:5000/step15'],shell=True)

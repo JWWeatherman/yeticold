@@ -1,11 +1,8 @@
 import os
 import subprocess
 home = os.getenv("HOME")
-if not (os.path.exists(home + "/.bitcoin")):
-	subprocess.call(['mkdir ~/.bitcoin'],shell=True)
-else:
-	subprocess.call(['rm ~/.bitcoin/bitcoin.conf'],shell=True)
-subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword=somesecretpassword" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
+subprocess.call(['sudo apt-get update'],shell=True)
+
 
 
 subprocess.call(['sudo apt-get install python3-venv'],shell=True)

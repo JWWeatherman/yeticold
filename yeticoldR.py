@@ -13,16 +13,24 @@ import qrcode
 app = Flask(__name__)
 
 
-### VARIBALES START
+rpcpsw = str(random.randrange(0,1000000))
+subprocess.call(['sudo apt-get update'],shell=True)
+if not (os.path.exists(home + "/.bitcoin")):
+    subprocess.call(['mkdir ~/.bitcoin'],shell=True)
+else:
+    subprocess.call(['rm ~/.bitcoin/bitcoin.conf'],shell=True)
+subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
 
-wallet_template = "http://{rpc_username}:{rpc_password}@{rpc_host}:{rpc_port}/wallet/{wallet_name}"
+
 settings = {
     "rpc_username": "rpcuser",
-    "rpc_password": "somesecretpassword",
+    "rpc_password": rpcpsw,
     "rpc_host": "127.0.0.1",
     "rpc_port": 8332,
     "address_chunk": 100
 }
+### VARIBALES START
+wallet_template = "http://{rpc_username}:{rpc_password}@{rpc_host}:{rpc_port}/wallet/{wallet_name}"
 BASE58_ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
 base_count = len(BASE58_ALPHABET)
 privkeylist = []
