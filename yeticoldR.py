@@ -331,7 +331,10 @@ def step10():
             randomnum = str(random.randrange(0,1000000))
             route = url_for('static', filename='address'+randomnum+'.png')
             rpc = RPC()
-            bal = rpc.getreceivedbyaddress(adrlist[i])
+            response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli listunspent 0 9999999 \'["'+adrlist[i]+'"]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            response = response[0].decode("utf-8")
+            print(response)
+            print(adrlist[i])
             bal = "{:.8f}".format(float(bal))
             address = {}
             address['address'] = adrlist[i]
