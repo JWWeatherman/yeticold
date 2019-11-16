@@ -331,8 +331,9 @@ def step10():
             randomnum = str(random.randrange(0,1000000))
             route = url_for('static', filename='address'+randomnum+'.png')
             rpc = RPC()
-            response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli listunspent 0 9999999 \'["'+adrlist[i]+'"]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-            response = response[0].decode("utf-8")
+            testlist = []
+            testlist.append(adrlist[i])
+            response = rpc.listunspent(0, 9999999, testlist)
             print(response)
             print(adrlist[i])
             bal = "{:.8f}".format(float(bal))
