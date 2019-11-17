@@ -534,42 +534,13 @@ def step22():
     global pubdesc
     if request.method == 'POST':
         secondqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-        pubdesc = secondqrcode.decode("utf-8")[:-2]
+        pubdesc = secondqrcode
         return redirect('/step23')
     return render_template('YCRstep22.html')
 
-#stop bitocin qt and delete wallet
-@app.route("/step23", methods=['GET', 'POST'])
-def step23():
-    if request.method == 'POST':
-        subprocess.call('gnome-terminal -- bash -c "sudo python3 ~/yeticold/utils/deleteallwallets.py; echo "DONE, Close this window.""', shell=True)
-        return redirect('/step24')
-    return render_template('YCRstep23.html')
-
-#reopen bitcoin
-@app.route("/step24", methods=['GET', 'POST'])
-def step24():
-    if request.method == 'POST':
-        subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
-        return redirect('/step25')
-    return render_template('YCRstep24.html')
-
-#finish reopen bitcoin
-@app.route('/step25', methods=['GET', 'POST'])
-def step25():
-    global progress
-    if request.method == 'GET':
-        progress = BTCprogress()
-    if request.method == 'POST':
-        if progress >= 99:
-            return redirect('/step2628')
-        else:
-            return redirect('/step25')
-    return render_template('YCRstep25.html', progress=progress)
-
 #import 3 seeds
-@app.route('/step2628', methods=['GET', 'POST'])
-def step2628():
+@app.route('/step2325', methods=['GET', 'POST'])
+def step2325():
     global privkeylist
     global xprivlist
     global newxpublist
@@ -588,7 +559,8 @@ def step2628():
         privkeylist.append(PassphraseToWIF(privkey))
         error = None
         privkeycount = privkeycount + 1
-        if (privkeycount == 3):
+        if (privkeycount >= 3):
+            newxpublist = []
             for i in range(0,3):
                 rpc = RPC()
                 home = os.getenv('HOME')
@@ -616,8 +588,37 @@ def step2628():
                 privkeycount = 0
             return redirect('/step29')
         else:
-            return redirect('/step2628')
-    return render_template('YCRstep2628.html', x=privkeycount + 1, error=error,i=privkeycount + 26 )
+            return redirect('/step2325')
+    return render_template('YCRstep2325.html', x=privkeycount + 1, error=error,i=privkeycount + 26 )
+
+#stop bitocin qt and delete wallet
+@app.route("/step26", methods=['GET', 'POST'])
+def step26():
+    if request.method == 'POST':
+        subprocess.call('gnome-terminal -- bash -c "sudo python3 ~/yeticold/utils/deleteallwallets.py; echo "DONE, Close this window.""', shell=True)
+        return redirect('/step27')
+    return render_template('YCRstep26.html')
+
+#reopen bitcoin
+@app.route("/step27", methods=['GET', 'POST'])
+def step27():
+    if request.method == 'POST':
+        subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
+        return redirect('/step28')
+    return render_template('YCRstep27.html')
+
+#finish reopen bitcoin
+@app.route('/step28', methods=['GET', 'POST'])
+def step28():
+    global progress
+    if request.method == 'GET':
+        progress = BTCprogress()
+    if request.method == 'POST':
+        if progress >= 99:
+            return redirect('/step29')
+        else:
+            return redirect('/step28')
+    return render_template('YCRstep28.html', progress=progress)
 
 #GEN trans qr code
 @app.route("/step29", methods=['GET', 'POST'])
