@@ -728,7 +728,7 @@ def step3541():
                 return redirect('/step3541')
         else:
             error = 'You enterd the private key incorrectly but the checksums are correct please try agian. This means you probably inputed a valid seed, but not your seed ' +str(privkeycount + 1)+' seed.'
-    return render_template('step3541.html', x=privkeycount + 1, error=error,i=privkeycount + 35 )
+    return render_template('YCstep3541.html', x=privkeycount + 1, error=error,i=privkeycount + 35 )
 
 @app.route("/step42", methods=['GET', 'POST'])
 def step42():

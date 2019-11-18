@@ -748,7 +748,7 @@ def step32():
         print(parsedfirstqrcode)
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli sendrawtransaction '+parsedfirstqrcode+''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         return redirect('/step33')
-    return render_template('YCRstep32.html', amount=amount, minerfee=minerfee, recipient=receipentaddress)
+    return render_template('YCRstep32.html', amount=amount, minerfee=minerfee, recipent=receipentaddress)
 
 #confirm trans
 @app.route("/step33", methods=['GET', 'POST'])
