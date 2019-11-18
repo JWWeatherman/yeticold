@@ -73,7 +73,7 @@ switcher = {
     "G": "GOLF",
     "H": "HOTEL",
     "I": "INDIA",
-    "J": "JULIET",
+    "J": "JULIETT",
     "K": "KILO",
     "L": "LIMA",
     "M": "MIKE",
@@ -99,7 +99,7 @@ switcher = {
     "g": "golf",
     "h": "hotel",
     "i": "india",
-    "j": "juliet",
+    "j": "juliett",
     "k": "kilo",
     "l": "lima",
     "m": "mike",
@@ -134,7 +134,7 @@ switcher = {
     "GOLF": "G",
     "HOTEL": "H",
     "INDIA": "I",
-    "JULIET": "J",
+    "JULIETT": "J",
     "KILO": "K",
     "LIMA": "L",
     "MIKE": "M",
@@ -160,7 +160,7 @@ switcher = {
     "golf": "g",
     "hotel": "h",
     "india": "i",
-    "juliet": "j",
+    "juliett": "j",
     "kilo": "k",
     "lima": "l",
     "mike": "m",
@@ -510,6 +510,7 @@ def step21():
 def step22():
     global sourceaddress
     global receipentaddress
+    global balance
     if request.method == 'GET':
         rpc = RPC()
         testlist = []
@@ -518,6 +519,7 @@ def step22():
         txid = response[0]['txid']
         vout = str(response[0]['vout'])
         bal = response[0]['amount']
+        balance = bal
         thirdqrcode = receipentaddress + '&' + sourceaddress + '&' + str(bal) + '&' + txid + '&' + vout
         print(thirdqrcode)
         randomnum = str(random.randrange(0,1000000))
@@ -721,6 +723,7 @@ def step31():
     global receipentaddress
     global minerfee
     global amount
+    global balance
     if request.method == 'POST':
         firstqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
         minerfee = float(rpc.estimatesmartfee(6)["feerate"])
