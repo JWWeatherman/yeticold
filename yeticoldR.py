@@ -729,7 +729,7 @@ def step31():
         minerfee = float(rpc.estimatesmartfee(6)["feerate"])
         kilobytespertrans = 0.200
         amount = (float(balance) - (minerfee * kilobytespertrans))
-        amount = "{:.8f}".format(float(amo))
+        amount = "{:.8f}".format(float(amount))
         minerfee = (minerfee * kilobytespertrans)
         minerfee = "{:.8f}".format(minerfee)
         return redirect('/step32')
