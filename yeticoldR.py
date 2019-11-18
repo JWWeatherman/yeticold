@@ -725,6 +725,7 @@ def step31():
     global amount
     global balance
     if request.method == 'POST':
+        rpc = RPC()
         firstqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
         minerfee = float(rpc.estimatesmartfee(6)["feerate"])
         kilobytespertrans = 0.545
