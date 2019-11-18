@@ -681,9 +681,8 @@ def step30():
         print(response)
         rpc = RPC()
         minerfee = float(rpc.estimatesmartfee(6)["feerate"])
-        kilobytespertrans = 0.545
-        amo = ((float(balance) / 3) - (minerfee * kilobytespertrans))
-        amount = amo
+        kilobytespertrans = 0.200
+        amo = (float(balance) - (minerfee * kilobytespertrans))
         minerfee = (minerfee * kilobytespertrans)
         amo = "{:.8f}".format(float(amo))
         ##### GET TRANS INFO LIST UNSPENT OR GET ADDRESS INFO 
@@ -728,9 +727,11 @@ def step31():
         rpc = RPC()
         firstqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
         minerfee = float(rpc.estimatesmartfee(6)["feerate"])
-        kilobytespertrans = 0.545
-        amount = ((float(balance) / 3) - (minerfee * kilobytespertrans))
+        kilobytespertrans = 0.200
+        amount = (float(balance) - (minerfee * kilobytespertrans))
+        amount = "{:.8f}".format(float(amount))
         minerfee = (minerfee * kilobytespertrans)
+        minerfee = "{:.8f}".format(minerfee)
         return redirect('/step32')
     return render_template('YCRstep31.html')
 
@@ -740,6 +741,7 @@ def step32():
     global receipentaddress
     global minerfee
     global amount
+    global balance
     global firstqrcode
     if request.method == 'POST':
         parsedfirstqrcode = firstqrcode.decode("utf-8").split('\'')[3]
