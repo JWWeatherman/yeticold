@@ -649,7 +649,7 @@ def step2531():
             return redirect('/step32')
         else:
             return redirect('/step2531')
-    return render_template('step2531.html', PPL=passphraselist, x=privkeycount + 1, i=privkeycount + 25)
+    return render_template('YCstep2531.html', PPL=passphraselist, x=privkeycount + 1, i=privkeycount + 25)
 
 @app.route("/step32", methods=['GET', 'POST'])
 def step32():
