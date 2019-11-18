@@ -681,9 +681,8 @@ def step30():
         print(response)
         rpc = RPC()
         minerfee = float(rpc.estimatesmartfee(6)["feerate"])
-        kilobytespertrans = 0.545
+        kilobytespertrans = 0.200
         amo = ((float(balance) / 3) - (minerfee * kilobytespertrans))
-        amount = amo
         minerfee = (minerfee * kilobytespertrans)
         amo = "{:.8f}".format(float(amo))
         ##### GET TRANS INFO LIST UNSPENT OR GET ADDRESS INFO 
@@ -728,7 +727,7 @@ def step31():
         rpc = RPC()
         firstqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
         minerfee = float(rpc.estimatesmartfee(6)["feerate"])
-        kilobytespertrans = 0.545
+        kilobytespertrans = 0.200
         amount = ((float(balance) / 3) - (minerfee * kilobytespertrans))
         minerfee = (minerfee * kilobytespertrans)
         return redirect('/step32')
@@ -740,13 +739,14 @@ def step32():
     global receipentaddress
     global minerfee
     global amount
+    global balance
     global firstqrcode
     if request.method == 'POST':
         parsedfirstqrcode = firstqrcode.decode("utf-8").split('\'')[3]
         print(parsedfirstqrcode)
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli sendrawtransaction '+parsedfirstqrcode+''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         return redirect('/step33')
-    return render_template('YCRstep32.html', amount=amount, minerfee=minerfee, recipient=receipentaddress)
+    return render_template('YCRstep32.html', balance=balance, amount=amount, minerfee=minerfee, recipient=receipentaddress)
 
 #confirm trans
 @app.route("/step33", methods=['GET', 'POST'])
