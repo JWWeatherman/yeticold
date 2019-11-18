@@ -320,7 +320,7 @@ def step10():
     global pubdesc
     if request.method == 'GET':
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli importmulti \'[{ "desc": "'+pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli rescanblockchain'],shell=True)
+        subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli rescanblockchain 600000',shell=True,start_new_session=True)
         return redirect('/step11')
     return render_template('YCRstep10.html')
 
