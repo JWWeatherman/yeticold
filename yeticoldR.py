@@ -467,7 +467,7 @@ def step19():
 
 #finish opening
 @app.route('/step20', methods=['GET', 'POST'])
-def step19():
+def step20():
     global progress
     if request.method == 'GET':
         progress = BTCprogress()
