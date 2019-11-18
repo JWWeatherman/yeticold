@@ -685,7 +685,7 @@ def step29():
         print("signrawtransactionwithwallet")
         print(response)
         transone = json.loads(response[0].decode("utf-8"))
-        firstqrcode = transone
+        firstqrcode = transone + '&' + str(amount) + '&' + str(minerfee) + '&' + receipentaddress
         randomnum = str(random.randrange(0,1000000))
         firstqrname = randomnum
         qr = qrcode.QRCode(
@@ -710,8 +710,18 @@ def step29():
 @app.route("/step30", methods=['GET', 'POST'])
 def step30():
     global firstqrcode
+    global receipentaddress
+    global minerfee
+    global amount
     if request.method == 'POST':
         firstqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+        firstqrcode = firstqrcode.split('&')
+        print(firstqrcode)
+        transhex = firstqrcode[0]
+        amount = firstqrcode[1]
+        minerfee = firstqrcode[2]
+        receipentaddress = firstqrcode[3]
+        firstqrcode = transhex
         return redirect('/step31')
     return render_template('YCRstep30.html')
 
@@ -723,7 +733,8 @@ def step31():
     global amount
     global firstqrcode
     if request.method == 'POST':
-        parsedfirstqrcode = firstqrcode.decode("utf-8").split('\'')[3]
+        parsedfirstqrcode = firstqrcode.split('\'')[3]
+        print(parsedfirstqrcode)
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli sendrawtransaction '+parsedfirstqrcode+''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         return redirect('/step32')
     return render_template('YCRstep31.html', amount=amount, minerfee=minerfee, recipient=receipentaddress)
