@@ -340,11 +340,13 @@ def step10():
                 bal = "0.0000000"
             else:
                 bal = str(response[0]['amount'])
+            utxocount = len(response)
             print(response)
             print(adrlist[i])
             print(bal)
             bal = "{:.8f}".format(float(bal))
             address = {}
+            address['utxocount'] = utxocount
             address['address'] = adrlist[i]
             address['balance'] = bal
             address['numbal'] = float(bal)
