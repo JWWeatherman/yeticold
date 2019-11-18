@@ -52,6 +52,8 @@ balance = 0
 txid = None
 vout = 0
 utxo = None
+amount = 0
+minerfee = 0
 switcher = {
     "1": "ONE",
     "2": "TWO",
@@ -535,7 +537,7 @@ def step22():
     if request.method == 'POST':
         secondqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
         pubdesc = secondqrcode
-        return redirect('/step23')
+        return redirect('/step2325')
     return render_template('YCRstep22.html')
 
 #import 3 seeds
@@ -586,7 +588,7 @@ def step2325():
                 print(xpub)
                 newxpublist.append(xpub)
                 privkeycount = 0
-            return redirect('/step29')
+            return redirect('/step26')
         else:
             return redirect('/step2325')
     return render_template('YCRstep2325.html', x=privkeycount + 1, error=error,i=privkeycount + 26 )
@@ -640,6 +642,8 @@ def step29():
     global balance
     global txid
     global vout
+    global minerfee
+    global amount
     if request.method == 'GET':
         xpublist = pubdesc.decode("utf-8").split(',')[1:]
         xpublist[6] = xpublist[6].split('))')[0]
@@ -667,6 +671,8 @@ def step29():
         minerfee = float(rpc.estimatesmartfee(6)["feerate"])
         kilobytespertrans = 0.545
         amo = ((float(balance) / 3) - (minerfee * kilobytespertrans))
+        amount = amo
+        minerfee = (minerfee * kilobytespertrans)
         amo = "{:.8f}".format(float(amo))
         ##### GET TRANS INFO LIST UNSPENT OR GET ADDRESS INFO 
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createrawtransaction \'[{ "txid": "'+txid+'", "vout": '+vout+'}]\' \'[{"'+receipentaddress+'" : '+str(amo)+'}]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
@@ -710,12 +716,15 @@ def step30():
 #confirm send qr code give extra data
 @app.route("/step31", methods=['GET', 'POST'])
 def step31():
+    global receipentaddress
+    global minerfee
+    global amount
     global firstqrcode
     if request.method == 'POST':
         parsedfirstqrcode = firstqrcode.decode("utf-8").split('\'')[3]
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli sendrawtransaction '+parsedfirstqrcode+''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         return redirect('/step32')
-    return render_template('YCRstep31.html')
+    return render_template('YCRstep31.html', amount=amount, minerfee=minerfee, recipient=receipentaddress)
 
 #confirm trans
 @app.route("/step32", methods=['GET', 'POST'])
