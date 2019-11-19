@@ -744,9 +744,7 @@ def step32():
         parsedfirstqrcode = firstqrcode.decode("utf-8").split('\'')[3]
         print(parsedfirstqrcode)
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli sendrawtransaction '+parsedfirstqrcode+''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        if not (len(response[0]) == 0): 
-            response = json.loads(response[0].decode("utf-8"))
-        else:
+        if not (len(response[1]) == 0): 
             return "error response from sendrawtransaction: " + response[1]
         return redirect('/step33')
     return render_template('YCRstep32.html', amount=amount, minerfee=minerfee, recipent=receipentaddress)
