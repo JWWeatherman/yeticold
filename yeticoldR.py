@@ -336,9 +336,9 @@ def step11():
         subprocess.call(['rm -r ~/yeticold/static/address*'],shell=True)
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli deriveaddresses "'+pubdesc+'" "[0,999]"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         if not (len(response[0]) == 0): 
-                response = json.loads(response[0].decode("utf-8"))
-            else:
-                return "error response from deriveaddresses: " + response[1]
+            response = json.loads(response[0].decode("utf-8"))
+        else:
+            return "error response from deriveaddresses: " + response[1]
         adrlist = response
         for i in range(0, len(adrlist)):
             randomnum = str(random.randrange(0,1000000))
