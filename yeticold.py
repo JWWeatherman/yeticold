@@ -1197,7 +1197,7 @@ def step64():
 def step65():
     if request.method == 'POST':
         return redirect('/step66')
-    return render_template('ycYCstep65.html')
+    return render_template('YCstep65.html')
 
 @app.route("/step66", methods=['GET', 'POST'])
 def step66():
