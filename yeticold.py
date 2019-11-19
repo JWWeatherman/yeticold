@@ -183,7 +183,7 @@ def BTCprogress():
         bitcoinprogress = bitcoinprogress * 100
         bitcoinprogress = round(bitcoinprogress, 3)
     else:
-        print("error response: "+ response[1].decode("utf-8"))
+        print("error response: "+ str(response[1]))
         bitcoinprogress = 0
     return bitcoinprogress
 
@@ -454,7 +454,7 @@ def step17():
             if not (len(response[0]) == 0): 
                 response = json.loads(response[0].decode("utf-8"))
             else:
-                return "error response from sethdseed: " + response[1].decode("utf-8")
+                return "error response from sethdseed: " + str(response[1])
             response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=full'+str(i)+' dumpwallet "full'+str(i)+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
             wallet = open(path,'r')
             wallet.readline()
@@ -471,7 +471,7 @@ def step17():
         if not (len(response[0]) == 0): 
             response = json.loads(response[0].decode("utf-8"))
         else:
-            return "error response from getdescriptorinfo: " + response[1].decode("utf-8")
+            return "error response from getdescriptorinfo: " + str(response[1])
         checksum = response["checksum"]
         desc = response["descriptor"]
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli importmulti \'[{ "desc": "wsh(multi(3,'+xprivlist[0]+'/*,'+xprivlist[1]+'/*,'+xprivlist[2]+'/*,'+xprivlist[3]+'/*,'+xprivlist[4]+'/*,'+xprivlist[5]+'/*,'+xprivlist[6]+'/*))#'+ checksum +'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
@@ -479,7 +479,7 @@ def step17():
         if not (len(response[0]) == 0): 
             response = json.loads(response[0].decode("utf-8"))
         else:
-            return "error response from deriveaddresses: " + response[1].decode("utf-8")
+            return "error response from deriveaddresses: " + str(response[1])
         addresses = response
         firstqrcode = desc
         secondqrcode = '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli importmulti \'[{ "desc": "'+desc+'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''
@@ -720,7 +720,7 @@ def step3541():
                     if not (len(response[0]) == 0): 
                         response = json.loads(response[0].decode("utf-8"))
                     else:
-                        return "error response from sethdseed: " + response[1].decode("utf-8")
+                        return "error response from sethdseed: " + str(response[1])
                     response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=blank'+str(i)+' dumpwallet "blank'+str(i)+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
                     wallet = open(path,'r')
                     wallet.readline()
@@ -866,7 +866,7 @@ def step48():
         if not (len(response[0]) == 0): 
             response = json.loads(response[0].decode("utf-8"))
         else:
-            return "error response from getdescriptorinfo: " + response[1].decode("utf-8")
+            return "error response from getdescriptorinfo: " + str(response[1])
         checksum = response["checksum"]
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli importmulti \'[{ "desc": "wsh(multi(3,'+xprivlist[0]+'/*,'+xprivlist[1]+'/*,'+xprivlist[2]+'/*,'+xpublist[3]+','+xpublist[4]+','+xpublist[5]+','+xpublist[6]+'))#'+ checksum +'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         rpc = RPC()
@@ -883,13 +883,13 @@ def step48():
         if not (len(response[0]) == 0): 
             response = response[0].decode("utf-8")
         else:
-            return "error response from createrawtransaction: " + response[1].decode("utf-8")
+            return "error response from createrawtransaction: " + str(response[1])
         transonehex = response[:-1]
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli signrawtransactionwithwallet '+transonehex+' \'[{ "txid": "'+trans[0]+'", "vout": '+str(trans[1])+', "scriptPubKey": "'+trans[3]+'", "witnessScript": "'+trans[6][:-1]+'", "amount": "'+str(trans[4])+'" }]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         if not (len(response[0]) == 0): 
             response = json.loads(response[0].decode("utf-8"))
         else:
-            return "error response from signrawtransactionwithwallet: " + response[1].decode("utf-8")
+            return "error response from signrawtransactionwithwallet: " + str(response[1])
         transone = response
         firstqrcode = transone
         randomnum = str(random.randrange(0,1000000))
@@ -976,7 +976,7 @@ def step54():
         if not (len(response[0]) == 0): 
             response = json.loads(response[0].decode("utf-8"))
         else:
-            return "error response from getdescriptorinfo: " + response[1].decode("utf-8")
+            return "error response from getdescriptorinfo: " + str(response[1])
         checksum = response["checksum"]
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli importmulti \'[{ "desc": "wsh(multi(3,'+xpublist[0]+','+xpublist[1]+','+xprivlist[2]+'/*,'+xprivlist[3]+'/*,'+xprivlist[4]+'/*,'+xpublist[5]+','+xpublist[6]+'))#'+ checksum +'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         rpc = RPC()
@@ -993,13 +993,13 @@ def step54():
         if not (len(response[0]) == 0): 
             response = response[0].decode("utf-8")
         else:
-            return "error response from createrawtransaction: " + response[1].decode("utf-8")
+            return "error response from createrawtransaction: " + str(response[1])
         transtwohex = response[:-1]
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli signrawtransactionwithwallet '+transtwohex+' \'[{ "txid": "'+trans[0]+'", "vout": '+str(trans[1])+', "scriptPubKey": "'+trans[3]+'", "witnessScript": "'+trans[6][:-1]+'", "amount": "'+str(trans[4])+'" }]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         if not (len(response[0]) == 0): 
             response = json.loads(response[0].decode("utf-8"))
         else:
-            return "error response from signrawtransactionwithwallet: " + response[1].decode("utf-8")
+            return "error response from signrawtransactionwithwallet: " + str(response[1])
         transtwo = response
         secondqrcode = transtwo
         randomnum = str(random.randrange(0,1000000))
@@ -1086,7 +1086,7 @@ def step60():
         if not (len(response[0]) == 0): 
             response = json.loads(response[0].decode("utf-8"))
         else:
-            return "error response from getdescriptorinfo: " + response[1].decode("utf-8")
+            return "error response from getdescriptorinfo: " + str(response[1])
         checksum = response["checksum"]
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli importmulti \'[{ "desc": "wsh(multi(3,'+xpublist[0]+','+xpublist[1]+','+xpublist[2]+','+xpublist[3]+','+xprivlist[4]+'/*,'+xprivlist[5]+'/*,'+xprivlist[6]+'/*))#'+ checksum +'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         rpc = RPC()
@@ -1103,13 +1103,13 @@ def step60():
         if not (len(response[0]) == 0): 
             response = response[0].decode("utf-8")
         else:
-            return "error response from createrawtransaction: " + response[1].decode("utf-8")
+            return "error response from createrawtransaction: " + str(response[1])
         transthreehex = response[:-1]
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli signrawtransactionwithwallet '+transthreehex+' \'[{ "txid": "'+trans[0]+'", "vout": '+str(trans[1])+', "scriptPubKey": "'+trans[3]+'", "witnessScript": "'+trans[6][:-1]+'", "amount": "'+str(trans[4])+'" }]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         if not (len(response[0]) == 0): 
             response = json.loads(response[0].decode("utf-8"))
         else:
-            return "error response from signrawtransactionwithwallet: " + response[1].decode("utf-8")
+            return "error response from signrawtransactionwithwallet: " + str(response[1])
         transthree = response
         thirdqrcode = transthree
         randomnum = str(random.randrange(0,1000000))
@@ -1155,17 +1155,17 @@ def step62():
         if not (len(response[0]) == 0): 
             response = json.loads(response[0].decode("utf-8"))
         else:
-            return "error response from sendrawtransaction: " + response[1].decode("utf-8")
+            return "error response from sendrawtransaction: " + str(response[1])
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli sendrawtransaction '+parsedsecondqrcode+''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         if not (len(response[0]) == 0): 
             response = json.loads(response[0].decode("utf-8"))
         else:
-            return "error response from sendrawtransaction: " + response[1].decode("utf-8")
+            return "error response from sendrawtransaction: " + str(response[1])
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli sendrawtransaction '+parsedthirdqrcode+''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         if not (len(response[0]) == 0): 
             response = json.loads(response[0].decode("utf-8"))
         else:
-            return "error response from sendrawtransaction: " + response[1].decode("utf-8")
+            return "error response from sendrawtransaction: " + str(response[1])
     if request.method == 'POST':
         return redirect('/step64')
     return render_template('YCstep62.html')
