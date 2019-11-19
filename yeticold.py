@@ -1215,11 +1215,18 @@ def step67():
             randomnum = str(random.randrange(0,1000000))
             route = url_for('static', filename='address'+randomnum+'.png')
             rpc = RPC()
-            bal = rpc.getreceivedbyaddress(adrlist[i])
+            testlist = []
+            testlist.append(adrlist[i])
+            response = rpc.listunspent(0, 9999999, testlist)
+            if response == []:
+                bal = "0.0000000"
+            else:
+                bal = str(response[0]['amount'])
+            utxocount = len(response)
             bal = "{:.8f}".format(float(bal))
-            address = {}
             address['address'] = adrlist[i]
             address['balance'] = bal
+            address['numbal'] = float(bal)
             address['route'] = route
             addresses.append(address)
         addresses.sort(key=lambda x: x['balance'], reverse=True)
