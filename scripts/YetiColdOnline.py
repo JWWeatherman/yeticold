@@ -1,9 +1,6 @@
 import os
 import subprocess
 home = os.getenv("HOME")
-subprocess.call(['sudo apt-get update'],shell=True)
-
-
 
 subprocess.call(['sudo apt-get install python3-venv'],shell=True)
 subprocess.call(['sudo apt-get install python3-pip'],shell=True)
@@ -30,6 +27,7 @@ if not (os.system("python3 -c 'import zbar'") == 0):
 	
 
 if not (os.path.exists(home + "/yeticold/bitcoin-0.19.0rc1/bin")):
+	subprocess.call(['sudo apt-get update'],shell=True)
 	subprocess.call(['echo "Installing updates. This could take an hour without feedback."'],shell=True)
 	subprocess.call(['sudo unattended-upgrade'],shell=True)
 	subprocess.call(['wget https://bitcoincore.org/bin/bitcoin-core-0.19.0/test.rc1/bitcoin-0.19.0rc1-x86_64-linux-gnu.tar.gz -P ~/yeticold/'],shell=True)
