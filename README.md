@@ -23,9 +23,7 @@
           <li>Cost. You will need two computers and two external hard drives. If you need to purchase all of these items it should cost less than $500 USD, but this is not an insignificant expense.</li>
           <li>Time. To complete setup you will need to invest 4 hours spread over the course of 1-2 weeks. This time includes writing down security words, copying files and scanning QR codes.</li>
           <li>Privacy. While using bitcoin core over Tor does provide significant privacy advantages over many cold storage solutions using multisig is not very common and a 3 of 7 multisig is even less common. This means that someone could look at the blockchain and infer that the owner of the coins is probably using yeti for cold storage. This will eventually be fixed through changes to bitcoin and it is worth the security and recovery benefit to use multisig.</li>
-      </ul>
-      <a href="https://github.com/JWWeatherman/yetihosted" >The source code for the website that covers the first few steps can be found here:</a>
-      <a href="https://github.com/JWWeatherman/yeticold" >The source code for the code that is downloaded to the online and offline laptops can be found here:</a>
+        </ul>
       <input v-on:click="click" style="margin-bottom:50px;" class="btn btn-primary" type="submit" id="next" value="Next">
     </div>
 </template>
