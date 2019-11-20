@@ -19,8 +19,6 @@ if not (os.system("python3 -c 'import flask'") == 0):
 	subprocess.call(['pip3 install flask'],shell=True)
 if not (os.system("python3 -c 'import qrtools'") == 0):
 	subprocess.call(['pip3 install qrtools'],shell=True)
-if not (os.system("python3 -c 'import qrtools'") == 0):
-	subprocess.call(['pip3 install qrtools'],shell=True)
 if not (os.system("python3 -c 'import qrcode'") == 0):
 	subprocess.call(['pip3 install qrcode'],shell=True)
 if not (os.system("python3 -c 'import pyzbar'") == 0): 
