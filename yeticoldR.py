@@ -428,6 +428,8 @@ def Altstep13():
     global oldaddresses
     if request.method == 'GET':
         change = False
+        if len(oldaddresses) != len(addresses):
+            change = True
         for i in range(0, len(oldaddresses)):
             if oldaddresses[i]['address'] != addresses[i]['address']:
                 change = True
@@ -495,7 +497,10 @@ def step17():
 #COPY TO THE OFFLINE
 @app.route("/step18", methods=['GET', 'POST'])
 def step18():
+    global oldaddresses
+    global addresses
     if request.method == 'POST':
+        oldaddresses = addresses
         return redirect('/step22')
     return render_template('YCRstep18.html')
 ###SWITCH TO OFFLINE
@@ -820,7 +825,10 @@ def step32():
 def step33():
     global firstqrcode
     if request.method == 'POST':
-        return redirect('/step')
+        if request.form['option'] == 'olddesc':
+            return redirect('/step11')
+        else:
+            return redirect('/step09')
     return render_template('YCRstep33.html')
 
 
