@@ -363,7 +363,7 @@ def step11():
             if response == 0:
                 totalbal = "0.0000000"
             else:
-                totalbal = str(response[0]['amount'])
+                totalbal = str(response)
             utxocount = len(response)
             bal = "{:.8f}".format(float(bal))
             address = {}
@@ -371,8 +371,8 @@ def step11():
             address['address'] = adrlist[i]
             address['balance'] = bal
             address['numbal'] = float(bal)
-            address['totalbal'] = bal
-            address['totalnumbal'] = float(bal)
+            address['totalbal'] = totalbal
+            address['totalnumbal'] = float(totalbal)
             address['route'] = route
             addresses.append(address)
         addresses.sort(key=lambda x: x['balance'], reverse=True)
