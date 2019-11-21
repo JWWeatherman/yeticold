@@ -359,7 +359,7 @@ def step11():
                 bal = "0.0000000"
             else:
                 bal = str(response[0]['amount'])
-            response = rpc.getrecivedbyaddress(adrlist[i])
+            response = rpc.getreceivedbyaddress(adrlist[i])
             if response == 0:
                 totalbal = "0.0000000"
             else:
