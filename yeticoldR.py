@@ -54,6 +54,8 @@ vout = 0
 utxo = None
 amount = 0
 minerfee = 0
+addresses = []
+oldaddresses = []
 switcher = {
     "1": "ONE",
     "2": "TWO",
@@ -335,7 +337,7 @@ def step11():
     global adrlist
     global color
     global sourceaddress
-    addresses = []
+    global addresses
     if request.method == 'GET':
         subprocess.call(['rm -r ~/yeticold/static/address*'],shell=True)
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli deriveaddresses "'+pubdesc+'" "[0,999]"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
@@ -357,6 +359,11 @@ def step11():
                 bal = "0.0000000"
             else:
                 bal = str(response[0]['amount'])
+            response = rpc.getrecivedbyaddress(adrlist[i])
+            if response == 0:
+                totalbal = "0.0000000"
+            else:
+                totalbal = str(response[0]['amount'])
             utxocount = len(response)
             bal = "{:.8f}".format(float(bal))
             address = {}
@@ -364,6 +371,8 @@ def step11():
             address['address'] = adrlist[i]
             address['balance'] = bal
             address['numbal'] = float(bal)
+            address['totalbal'] = bal
+            address['totalnumbal'] = float(bal)
             address['route'] = route
             addresses.append(address)
         addresses.sort(key=lambda x: x['balance'], reverse=True)
@@ -408,8 +417,37 @@ def step12():
         if error:
             return redirect('/step12')
         receipentaddress = secondqrcode
-        return redirect('/step13')
+        return redirect('/YCRAstep13')
     return render_template('YCRstep12.html', error=error)
+    
+
+#copy bitcoin blockchain?
+@app.route("/Altstep13", methods=['GET', 'POST'])
+def Altstep13():
+    global addresses
+    global oldaddresses
+    if request.method == 'GET':
+        change = False
+        for i in range(0, len(oldaddresses)):
+            if oldaddresses[i]['address'] != addresses[i]['address']:
+                change = True
+            if oldaddresses[i]['totalbal'] < addresses[i]['totalbal']:
+                change = True
+        if change:
+            return redirect('/step13')
+    if request.method == 'POST':
+        if request.form['option'] == 'Recopy':
+            return redirect('/step13')
+        else:
+            return redirect('/Altstep14')
+    return render_template('YCRAstep13.html')
+
+#restart offline laptop
+@app.route("/Altstep14", methods=['GET', 'POST'])
+def Altstep14():
+    if request.method == 'POST':
+        return redirect('/step22')
+    return render_template('YCRAstep14.html')
 
 #close bitcoin
 @app.route("/step13", methods=['GET', 'POST'])
