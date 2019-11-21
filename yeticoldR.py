@@ -347,6 +347,7 @@ def step11():
         else:
             print(response)
             return "error response from deriveaddresses: " + str(response[1]) + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli deriveaddresses "'+pubdesc+'" "[0,999]"'
+        addresses = []
         adrlist = response
         for i in range(0, len(adrlist)):
             randomnum = str(random.randrange(0,1000000))
@@ -829,8 +830,37 @@ def step33():
         if request.form['option'] == 'olddesc':
             return redirect('/step11')
         else:
-            return redirect('/step09')
+            return redirect('/step34')
     return render_template('YCRstep33.html')
+
+#stop bitocin qt and delete wallet
+@app.route("/step34", methods=['GET', 'POST'])
+def step34():
+    if request.method == 'POST':
+        subprocess.call('gnome-terminal -- bash -c "sudo python3 ~/yeticold/utils/deleteallwallets.py; echo "DONE, Close this window.""', shell=True)
+        return redirect('/step35')
+    return render_template('YCRstep34.html')
+
+#reopen bitcoin
+@app.route("/step35", methods=['GET', 'POST'])
+def step35():
+    if request.method == 'POST':
+        subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
+        return redirect('/step36')
+    return render_template('YCRstep35.html')
+
+#finish reopen bitcoin
+@app.route('/step36', methods=['GET', 'POST'])
+def step36():
+    global progress
+    if request.method == 'GET':
+        progress = BTCprogress()
+    if request.method == 'POST':
+        if progress >= 99:
+            return redirect('/step09')
+        else:
+            return redirect('/step36')
+    return render_template('YCRstep36.html', progress=progress)
 
 
 
