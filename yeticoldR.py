@@ -359,12 +359,13 @@ def step11():
                 bal = "0.0000000"
             else:
                 bal = str(response[0]['amount'])
+            utxocount = len(response)
             response = rpc.getreceivedbyaddress(adrlist[i])
             if response == 0:
                 totalbal = "0.0000000"
             else:
                 totalbal = str(response)
-            utxocount = len(response)
+            
             bal = "{:.8f}".format(float(bal))
             address = {}
             address['utxocount'] = utxocount
