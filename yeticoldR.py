@@ -418,7 +418,7 @@ def step12():
         if error:
             return redirect('/step12')
         receipentaddress = secondqrcode
-        return redirect('/YCRAstep13')
+        return redirect('/Altstep13')
     return render_template('YCRstep12.html', error=error)
     
 
