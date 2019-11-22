@@ -358,7 +358,7 @@ def step09():
             return "error response from getdescriptorinfo: " + str(response[1]) + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli getdescriptorinfo "wsh(multi(3,'+xprivlist[0]+'/*,'+xprivlist[1]+'/*,'+xprivlist[2]+'/*,'+xprivlist[3]+'/*,'+xprivlist[4]+'/*,'+xprivlist[5]+'/*,'+xprivlist[6]+'/*))"'
         checksum = response["checksum"]
         pubdesc = response["descriptor"]
-       return redirect('/step10')
+        return redirect('/step10')
     return render_template('YWstep09.html')
 
 #display for print
