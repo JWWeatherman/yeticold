@@ -383,7 +383,7 @@ def step10():
         route = url_for('static', filename='firstqrcode' + firstqrname + '.png')
     if request.method == 'POST':
         return redirect('/step11')
-    return render_template('YWstep10.html', qrdata=firstqrcode, route=route)
+    return render_template('YWstep10.html', qrdata=pubdesc, route=route)
 
 #get addresses and display one
 @app.route("/step11", methods=['GET', 'POST'])
