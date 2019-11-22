@@ -283,7 +283,7 @@ def step07():
     if request.method == 'POST':
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         return redirect('/step08')
-    return render_template('YCstep07.html')
+    return render_template('YWstep07.html')
 #finish open bitcoin
 @app.route("/step08", methods=['GET', 'POST'])
 def step08():
@@ -295,11 +295,11 @@ def step08():
             return redirect('/step09')
         else:
             return redirect('/step08')
-    return render_template('YCstep08.html', progress=progress)
+    return render_template('YWstep08.html', progress=progress)
 
 #randomise priv key and get xprivs
-@app.route("/step17", methods=['GET', 'POST'])
-def step17():
+@app.route("/step09", methods=['GET', 'POST'])
+def step09():
     global privkeylist
     global privkeycount
     global xprivlist
@@ -373,12 +373,36 @@ def step17():
         if not (len(response[1]) == 0): 
             print(response)
             return "error response from importmulti: " + str(response[1]) + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli importmulti \'[{ "desc": "'+pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''
-        return redirect('/step18')
-    return render_template('YCstep17.html')
+        return redirect('/step10')
+    return render_template('YWstep09.html')
+
+#display for print
+@app.route("/step10", methods=['GET', 'POST'])
+def step10():
+    global firstqrcode
+    global pubdesc
+    if request.method == 'GET':
+        randomnum = str(random.randrange(0,1000000))
+        firstqrname = randomnum
+        qr = qrcode.QRCode(
+               version=1,
+               error_correction=qrcode.constants.ERROR_CORRECT_L,
+               box_size=10,
+               border=4,
+        )
+        qr.add_data(pubdesc)
+        qr.make(fit=True)
+        img = qr.make_image(fill_color="black", back_color="white")
+        home = os.getenv("HOME")
+        img.save(home + '/yeticold/static/firstqrcode' + firstqrname + '.png')
+        route = url_for('static', filename='firstqrcode' + firstqrname + '.png')
+    if request.method == 'POST':
+        return redirect('/step11')
+    return render_template('YWstep10.html', qrdata=firstqrcode, route=route)
 
 #get addresses and display one
-@app.route("/step21", methods=['GET', 'POST'])
-def step21():
+@app.route("/step11", methods=['GET', 'POST'])
+def step11():
     global pubdesc
     global adrlist
     if request.method == 'GET':
@@ -406,12 +430,12 @@ def step21():
         home = os.getenv("HOME")
         img.save(home + '/yeticold/static/firstqrcode' + firstqrname + '.png')
     if request.method == 'POST':
-        return redirect('/step22')
-    return render_template('YCstep21.html', routeone=routeone, first=firstqrcode)
+        return redirect('/step12')
+    return render_template('YWstep11.html', routeone=routeone, first=firstqrcode)
 
 #display address for test amount
-@app.route("/step22", methods=['GET', 'POST'])
-def step22():
+@app.route("/step12", methods=['GET', 'POST'])
+def step12():
     global pubdesc
     global adrlist
     if request.method == 'GET':
@@ -431,12 +455,12 @@ def step22():
         home = os.getenv("HOME")
         img.save(home + '/yeticold/static/firstqrcode' + firstqrname + '.png')
     if request.method == 'POST':
-        return redirect('/step23')
-    return render_template('YCstep22.html', routeone=routeone, first=firstqrcode)
+        return redirect('/step13')
+    return render_template('YWstep12.html', routeone=routeone, first=firstqrcode)
 
 #display address for test amount
-@app.route("/step23", methods=['GET', 'POST'])
-def step23():
+@app.route("/step13", methods=['GET', 'POST'])
+def step13():
     global pubdesc
     global adrlist
     if request.method == 'GET':
@@ -456,19 +480,19 @@ def step23():
         home = os.getenv("HOME")
         img.save(home + '/yeticold/static/firstqrcode' + firstqrname + '.png')
     if request.method == 'POST':
-        return redirect('/step24')
-    return render_template('YCstep23.html', routeone=routeone, first=firstqrcode)
+        return redirect('/step14')
+    return render_template('YWstep13.html', routeone=routeone, first=firstqrcode)
 
 #confirm test funds
-@app.route("/step24", methods=['GET', 'POST'])
-def step24():
+@app.route("/step14", methods=['GET', 'POST'])
+def step14():
     if request.method == 'POST':
-        return redirect('/step43')
-    return render_template('YCstep24.html')
+        return redirect('/step1521')
+    return render_template('YWstep14.html')
 
 #display seeds
-@app.route('/step2531', methods=['GET', 'POST'])
-def step2531():
+@app.route('/step1521', methods=['GET', 'POST'])
+def step1521():
     global privkeylist
     global privkeycount
     if request.method == 'GET':
@@ -486,43 +510,43 @@ def step2531():
         privkeycount = privkeycount + 1
         if (privkeycount == 7):
             privkeycount = 0
-            return redirect('/step32')
+            return redirect('/step22')
         else:
-            return redirect('/step2531')
-    return render_template('YCstep2531.html', PPL=passphraselist, x=privkeycount + 1, i=privkeycount + 25)
+            return redirect('/step1521')
+    return render_template('YWstep1521.html', PPL=passphraselist, x=privkeycount + 1, i=privkeycount + 25)
 
 #delete wallet
-@app.route("/step32", methods=['GET', 'POST'])
-def step32():
+@app.route("/step22", methods=['GET', 'POST'])
+def step22():
     if request.method == 'POST':
         subprocess.call('gnome-terminal -- bash -c "sudo python3 ~/yeticold/utils/deleteallwallets.py; echo "DONE, Close this window.""', shell=True)
-        return redirect('/step33')
-    return render_template('YCstep32.html')
+        return redirect('/step23')
+    return render_template('YWstep22.html')
 
 #reopen bitcoin
-@app.route("/step33", methods=['GET', 'POST'])
-def step33():
+@app.route("/step23", methods=['GET', 'POST'])
+def step23():
     if request.method == 'POST':
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
-        return redirect('/step34')
-    return render_template('YCstep33.html')
+        return redirect('/step24')
+    return render_template('YWstep23.html')
 
 #finished reopen bitcoin
-@app.route('/step34', methods=['GET', 'POST'])
-def step34():
+@app.route('/step24', methods=['GET', 'POST'])
+def step24():
     global progress
     if request.method == 'GET':
         progress = BTCprogress()
     if request.method == 'POST':
         if progress >= 99:
-            return redirect('/step3541')
+            return redirect('/step2430')
         else:
-            return redirect('/step34')
-    return render_template('YCstep34.html', progress=progress)
+            return redirect('/step24')
+    return render_template('YWstep24.html', progress=progress)
 
 #confirm privkey
-@app.route('/step3541', methods=['GET', 'POST'])
-def step3541():
+@app.route('/step2430', methods=['GET', 'POST'])
+def step2430():
     global privkeylist
     global xprivlist
     global privkeycount
@@ -569,44 +593,44 @@ def step3541():
                         privkeycount = 0
                         privkeylist = []
                         error = 'You have imported your seeds correctly but your xprivs do not match: This means that you either do not have bitcoin running or its initial block download mode. Another issue is that you have a wallet folder or wallet dump file that was not deleted before starting this step.'
-                        return redirect('/step3541')
-                return redirect('/step42')
+                        return redirect('/step2430')
+                return redirect('/step31')
             else:
-                return redirect('/step3541')
+                return redirect('/step2430')
         else:
             error = 'You enterd the private key incorrectly but the checksums are correct please try agian. This means you probably inputed a valid seed, but not your seed ' +str(privkeycount + 1)+' seed.'
-    return render_template('YCstep3541.html', x=privkeycount + 1, error=error,i=privkeycount + 35 )
+    return render_template('YWstep2430.html', x=privkeycount + 1, error=error,i=privkeycount + 35 )
 
 #delete wallet
-@app.route("/step45", methods=['GET', 'POST'])
-def step45():
+@app.route("/step31", methods=['GET', 'POST'])
+def step31():
     global transnum
     if request.method == 'POST':
         subprocess.call('gnome-terminal -- bash -c "sudo python3 ~/yeticold/utils/deleteallwallets.py; echo "DONE""', shell=True)
-        return redirect('/step46')
-    return render_template('YCstep45.html')
+        return redirect('/step32')
+    return render_template('YWstep31.html')
 # open bitcoin
-@app.route("/step46", methods=['GET', 'POST'])
-def step46():
+@app.route("/step32", methods=['GET', 'POST'])
+def step32():
     if request.method == 'POST':
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
-        return redirect('/step47')
-    return render_template('YCstep46.html')
+        return redirect('/step33')
+    return render_template('YWstep32.html')
 #finish open bitcoin
-@app.route('/step47', methods=['GET', 'POST'])
-def step47():
+@app.route('/step33', methods=['GET', 'POST'])
+def step33():
     global progress
     if request.method == 'GET':
         progress = BTCprogress()
     if request.method == 'POST':
         if progress >= 99:
-            return redirect('/step48')
+            return redirect('/step34')
         else:
-            return redirect('/step47')
-    return render_template('YCstep47.html', progress=progress)
+            return redirect('/step33')
+    return render_template('YWstep33.html', progress=progress)
 #create first trans qr code
-@app.route("/step48", methods=['GET', 'POST'])
-def step48():
+@app.route("/step34", methods=['GET', 'POST'])
+def step34():
     global firstqrcode
     global secondqrcode
     global thirdqrcode
@@ -679,49 +703,49 @@ def step48():
             print(response)
             return "error response from createrawtransaction: " + str(response[1]) + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createrawtransaction \'[{ "txid": "'+trans[0]+'", "vout": '+str(trans[1])+'}]\' \'[{"'+trans[5]+'" : '+str(amo)+'}]\''
         transonehex = response[:-1]
-        response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli signrawtransactionwithwallet '+transonehex+' \'[{ "txid": "'+trans[0]+'", "vout": '+str(trans[1])+', "scriptPubKey": "'+trans[3]+'", "witnessScript": "'+trans[6][:-1]+'", "amount": "'+str(trans[4])+'" }]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli signrawtransactionwithwallet '+transonehex+' \'[{ "txid": "'+trans[0]+'", "vout": '+str(trans[1])+'}]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         if not (len(response[0]) == 0): 
             response = json.loads(response[0].decode("utf-8"))
         else:
             print(response)
-            return "error response from signrawtransactionwithwallet: " + str(response[1]) + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli signrawtransactionwithwallet '+transonehex+' \'[{ "txid": "'+trans[0]+'", "vout": '+str(trans[1])+', "scriptPubKey": "'+trans[3]+'", "witnessScript": "'+trans[6][:-1]+'", "amount": "'+str(trans[4])+'" }]\''
+            return "error response from signrawtransactionwithwallet: " + str(response[1]) + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli signrawtransactionwithwallet '+transonehex+' \'[{ "txid": "'+trans[0]+'", "vout": '+str(trans[1])+'}]\''
         transone = response
         firstqrcode = transone
         randomnum = str(random.randrange(0,1000000))
         firstqrname = randomnum
     if request.method == 'POST':
-        return redirect('/step51')
-    return render_template('YCstep48.html')
+        return redirect('/step35')
+    return render_template('YWstep34.html')
 
 #delete wallet
-@app.route("/step51", methods=['GET', 'POST'])
-def step51():
+@app.route("/step35", methods=['GET', 'POST'])
+def step35():
     if request.method == 'POST':
         subprocess.call('gnome-terminal -- bash -c "sudo python3 ~/yeticold/utils/deleteallwallets.py; echo "DONE""', shell=True)
-        return redirect('/step52')
-    return render_template('YCstep51.html')
+        return redirect('/step36')
+    return render_template('YWstep35.html')
 #open bitcoin
-@app.route("/step52", methods=['GET', 'POST'])
-def step52():
+@app.route("/step36", methods=['GET', 'POST'])
+def step36():
     if request.method == 'POST':
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
-        return redirect('/step53')
-    return render_template('YCstep52.html')
+        return redirect('/step37')
+    return render_template('YWstep36.html')
 #finish open bitcoin
-@app.route('/step53', methods=['GET', 'POST'])
-def step53():
+@app.route('/step37', methods=['GET', 'POST'])
+def step37():
     global progress
     if request.method == 'GET':
         progress = BTCprogress()
     if request.method == 'POST':
         if progress >= 99:
-            return redirect('/step54')
+            return redirect('/step38')
         else:
-            return redirect('/step53')
-    return render_template('YCstep53.html', progress=progress)
+            return redirect('/step37')
+    return render_template('YWstep37.html', progress=progress)
 #create second transaction
-@app.route("/step54", methods=['GET', 'POST'])
-def step54():
+@app.route("/step38", methods=['GET', 'POST'])
+def step38():
     global firstqrcode
     global secondqrcode
     global thirdqrcode
@@ -764,47 +788,47 @@ def step54():
             print(response)
             return "error response from createrawtransaction: " + str(response[1]) + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createrawtransaction \'[{ "txid": "'+trans[0]+'", "vout": '+str(trans[1])+'}]\' \'[{"'+trans[5]+'" : '+str(amo)+'}]\''
         transtwohex = response[:-1]
-        response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli signrawtransactionwithwallet '+transtwohex+' \'[{ "txid": "'+trans[0]+'", "vout": '+str(trans[1])+', "scriptPubKey": "'+trans[3]+'", "witnessScript": "'+trans[6][:-1]+'", "amount": "'+str(trans[4])+'" }]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli signrawtransactionwithwallet '+transtwohex+' \'[{ "txid": "'+trans[0]+'", "vout": '+str(trans[1])+'}]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         if not (len(response[0]) == 0): 
             response = json.loads(response[0].decode("utf-8"))
         else:
             print(response)
-            return "error response from signrawtransactionwithwallet: " + str(response[1]) + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli signrawtransactionwithwallet '+transtwohex+' \'[{ "txid": "'+trans[0]+'", "vout": '+str(trans[1])+', "scriptPubKey": "'+trans[3]+'", "witnessScript": "'+trans[6][:-1]+'", "amount": "'+str(trans[4])+'" }]\''
+            return "error response from signrawtransactionwithwallet: " + str(response[1]) + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli signrawtransactionwithwallet '+transtwohex+' \'[{ "txid": "'+trans[0]+'", "vout": '+str(trans[1])+'}]\''
         transtwo = response
         secondqrcode = transtwo
     if request.method == 'POST':
-        return redirect('/step57')
-    return render_template('YCstep54.html')
+        return redirect('/step39')
+    return render_template('YWstep38.html')
 ##SWITCH TO ONLINE
 #delete wallet
-@app.route("/step57", methods=['GET', 'POST'])
-def step57():
+@app.route("/step39", methods=['GET', 'POST'])
+def step39():
     if request.method == 'POST':
         subprocess.call('gnome-terminal -- bash -c "sudo python3 ~/yeticold/utils/deleteallwallets.py; echo "DONE""', shell=True)
-        return redirect('/step58')
-    return render_template('YCstep57.html')
+        return redirect('/step40')
+    return render_template('YWstep39.html')
 #open bitcoin
-@app.route("/step58", methods=['GET', 'POST'])
-def step58():
+@app.route("/step40", methods=['GET', 'POST'])
+def step40():
     if request.method == 'POST':
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
-        return redirect('/step59')
-    return render_template('YCstep58.html')
+        return redirect('/step41')
+    return render_template('YWstep40.html')
 #finish open bitcoin
-@app.route('/step59', methods=['GET', 'POST'])
-def step59():
+@app.route('/step41', methods=['GET', 'POST'])
+def step41():
     global progress
     if request.method == 'GET':
         progress = BTCprogress()
     if request.method == 'POST':
         if progress >= 99:
-            return redirect('/step60')
+            return redirect('/step42')
         else:
-            return redirect('/step59')
-    return render_template('YCstep59.html', progress=progress)
+            return redirect('/step41')
+    return render_template('YWstep41.html', progress=progress)
 #create third trans
-@app.route("/step60", methods=['GET', 'POST'])
-def step60():
+@app.route("/step42", methods=['GET', 'POST'])
+def step42():
     global firstqrcode
     global secondqrcode
     global thirdqrcode
@@ -847,20 +871,20 @@ def step60():
             print(response)
             return "error response from createrawtransaction: " + str(response[1]) + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createrawtransaction \'[{ "txid": "'+trans[0]+'", "vout": '+str(trans[1])+'}]\' \'[{"'+trans[5]+'" : '+str(amo)+'}]\''
         transthreehex = response[:-1]
-        response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli signrawtransactionwithwallet '+transthreehex+' \'[{ "txid": "'+trans[0]+'", "vout": '+str(trans[1])+', "scriptPubKey": "'+trans[3]+'", "witnessScript": "'+trans[6][:-1]+'", "amount": "'+str(trans[4])+'" }]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli signrawtransactionwithwallet '+transthreehex+' \'[{ "txid": "'+trans[0]+'", "vout": '+str(trans[1])+'}]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         if not (len(response[0]) == 0): 
             response = json.loads(response[0].decode("utf-8"))
         else:
             print(response)
-            return "error response from signrawtransactionwithwallet: " + str(response[1]) + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli signrawtransactionwithwallet '+transthreehex+' \'[{ "txid": "'+trans[0]+'", "vout": '+str(trans[1])+', "scriptPubKey": "'+trans[3]+'", "witnessScript": "'+trans[6][:-1]+'", "amount": "'+str(trans[4])+'" }]\''
+            return "error response from signrawtransactionwithwallet: " + str(response[1]) + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli signrawtransactionwithwallet '+transthreehex+' \'[{ "txid": "'+trans[0]+'", "vout": '+str(trans[1])+'}]\''
         transthree = response
         thirdqrcode = transthree
     if request.method == 'POST':
-        return redirect('/step63')
-    return render_template('YCstep60.html')
+        return redirect('/step43')
+    return render_template('YWstep42.html')
 
-@app.route("/step62", methods=['GET', 'POST'])
-def step62():
+@app.route("/step43", methods=['GET', 'POST'])
+def step43():
     global firstqrcode
     global secondqrcode
     global thirdqrcode
@@ -881,40 +905,19 @@ def step62():
             print(response)
             return "error response from sendrawtransaction: " + str(response[1]) + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli sendrawtransaction '+parsedthirdqrcode+''
     if request.method == 'POST':
-        return redirect('/step64')
-    return render_template('YCstep62.html')
-###SWITCH TO OFFLINE
+        return redirect('/step44')
+    return render_template('YWstep43.html')
 
-
-@app.route("/step63", methods=['GET', 'POST'])
-def step63():
+## extra pages
+@app.route("/step44", methods=['GET', 'POST'])
+def step44():
     if request.method == 'POST':
-        return redirect('/step')
-    return render_template('YCstep63.html')
-###SWITCH TO ONLINE
-### END OF OFFLINE
+        return redirect('/step45')
+    return render_template('YWstep44.html')
 
-
-@app.route("/step64", methods=['GET', 'POST'])
-def step64():
-    if request.method == 'POST':
-        return redirect('/step65')
-    return render_template('YCstep64.html')
-
-@app.route("/step65", methods=['GET', 'POST'])
-def step65():
-    if request.method == 'POST':
-        return redirect('/step66')
-    return render_template('YCstep65.html')
-
-@app.route("/step66", methods=['GET', 'POST'])
-def step66():
-    if request.method == 'POST':
-        return redirect('/step67')
-    return render_template('YCstep66.html')
-
-@app.route("/step67", methods=['GET', 'POST'])
-def step67():
+#dispaly qr codes
+@app.route("/step45", methods=['GET', 'POST'])
+def step45():
     global adrlist
     global color
     addresses = []
@@ -955,7 +958,7 @@ def step67():
             img.save(home + '/yeticold/'+addresses[i]['route'])
     if request.method == 'POST':
         return redirect('/step')
-    return render_template('YCstep67.html', addresses=addresses, len=len(addresses))
+    return render_template('YWstep45.html', addresses=addresses, len=len(addresses))
 ### END OF ONLINE
 
 @app.route("/step")
