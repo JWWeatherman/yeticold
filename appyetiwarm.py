@@ -722,7 +722,7 @@ def Recovery_step18():
             return redirect('/Recovery/step19')
         else:
             return redirect('/Recovery/step18')
-    return render_template('YCRstep18.html', progress=progress)
+    return render_template('YWRstep18.html', progress=progress)
 
 #GEN trans qr code
 @app.route("/Recovery/step19", methods=['GET', 'POST'])
@@ -734,7 +734,7 @@ def Recovery_step19():
     global receipentaddress
     global minerfee
     if request.method == 'GET':
-        xpublist = pubdesc.decode("utf-8").split(',')[1:]
+        xpublist = pubdesc.split(',')[1:]
         xpublist[6] = xpublist[6].split('))')[0]
         descriptorlist = xpublist
         for i in range(0,3):
