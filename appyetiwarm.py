@@ -543,14 +543,14 @@ def Recovery_step10():
     global sourceaddress
     if request.method == 'GET':
         subprocess.call(['rm -r ~/yeticold/static/address*'],shell=True)
-        addresses = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm deriveaddresses "'+pubdesc+'" "[0,999]"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        print(addresses)
-        if not (len(addresses[0]) == 0): 
-            addresses = json.loads(addresses[0].decode("utf-8"))
+        adrlist = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm deriveaddresses "'+pubdesc+'" "[0,999]"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        print(adrlist)
+        if not (len(adrlist[0]) == 0): 
+            adrlist = json.loads(adrlist[0].decode("utf-8"))
         else:
-            print(addresses)
-            return "error response from deriveaddresses: " + str(addresses[1]) + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm deriveaddresses "'+pubdesc+'" "[0,999]"'
-        for i in range(0, len(addresses)):
+            print(adrlist)
+            return "error response from deriveaddresses: " + str(adrlist[1]) + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm deriveaddresses "'+pubdesc+'" "[0,999]"'
+        for i in range(0, len(adrlist)):
             randomnum = str(random.randrange(0,1000000))
             route = url_for('static', filename='address'+randomnum+'.png')
             rpc = RPC()
