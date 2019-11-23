@@ -41,9 +41,7 @@ privkeycount = 0
 firstqrname = None
 secondqrname = None
 thirdqrname = None
-firsttrans = None
-secondtrans = None
-thirdtrans = None
+transnum = None
 utxoresponse = None
 receipentaddress = None
 pubdesc = None
@@ -735,6 +733,7 @@ def Recovery_step19():
     global sourceaddress
     global receipentaddress
     global minerfee
+    global transnum
     if request.method == 'GET':
         xpublist = pubdesc.split(',')[1:]
         xpublist[6] = xpublist[6].split('))')[0]
@@ -781,12 +780,12 @@ def Recovery_step19():
         else:
             print(response)
             return "error response from signrawtransactionwithwallet: " + str(response[1]) + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm signrawtransactionwithwallet '+transonehex
-        transone = response
+        transnum = response
     if request.method == 'POST':
-        response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm sendrawtransaction '+transone+''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm sendrawtransaction '+transnum+''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
         if not (len(response[1]) == 0): 
-            return "error response from sendrawtransaction: " + response[1] + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm sendrawtransaction '+transone+''
+            return "error response from sendrawtransaction: " + response[1] + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm sendrawtransaction '+transnum+''
         return redirect('/menu')
     return render_template('YWRstep19.html', amount=amo, minerfee=minerfee, recipent=receipentaddress)
 
