@@ -193,7 +193,7 @@ def BTCprogress():
 
 def RPC():
     name = 'username'
-    wallet_name = ''
+    wallet_name = 'yetiwarm'
     uri = wallet_template.format(**settings, wallet_name=wallet_name)
     rpc = AuthServiceProxy(uri, timeout=600)  # 1 minute timeout
     return rpc
