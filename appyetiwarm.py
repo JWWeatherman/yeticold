@@ -510,7 +510,7 @@ def Recovery_step06():
             firstqrcode = firstqrcode.decode("utf-8")
             pubdesc = firstqrcode[:-2]
         return redirect('/Recovery/step07')
-    return render_template('YWRstep06.html')
+    return render_template('YWRstep06.html', pubdesc=pubdesc)
 
 @app.route("/Recovery/step07", methods=['GET', 'POST'])
 def Recovery_step07():

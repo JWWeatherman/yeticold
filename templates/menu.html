@@ -12,20 +12,17 @@
         <h3 style="color:white;margin:0;">Yeti Bitcoin Cold Storage</h3>
     </nav>
     <div class="container" style="margin-top: 3rem;">
-      <h2>Step 9: Scan Descriptor from Paper</h2>
-      <div>Click Scan to open the webcam and scan the Descriptor from your paper packet. Each packet contains an identical copy of the Descriptor.</div>
-      {%if pubdesc%}
-      <div>This is your current descriptor: {{pubdesc}}</div>
+      <h2>Chose to option</h2>
+      <div>We have detected no change to your addresses in your descriptor.</div>
+      <div>If you currently have a working version of yeticold and the .bitcoin folder that was copyed prevously on your Disconnected laptop you can skip the recopy.</div>
+      <form action="" method="post">
+        <input style="display: none;" name="option" value="recovery">
+        <input class="btn btn-primary" type="submit" id="next" value="Recovery wallet">
+      </form>
       <form action="" method="post">
         <input style="display: none;" name="option" value="VALUE">
-        <input class="btn btn-primary" type="submit" id="next" value="Use current one">
+        <input class="btn btn-primary" type="submit" id="next" value="Create wallet">
       </form>
-      {%endif%}
-      <form action="" method="post">
-        <input style="display: none;" name="option" value="scannewdesc">
-        <input class="btn btn-primary" type="submit" id="next" value="Scan a new descriptor">
-      </form>
-      
     </div>
   </body>
 </html>
