@@ -782,6 +782,7 @@ def Recovery_step19():
             return "error response from signrawtransactionwithwallet: " + str(response[1]) + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm signrawtransactionwithwallet '+transonehex
         transnum = response
     if request.method == 'POST':
+        print(transnum)
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm sendrawtransaction '+transnum+''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
         if not (len(response[1]) == 0): 

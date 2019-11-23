@@ -18,8 +18,17 @@
       {% endif %}
       <div>Click Scan to open the webcam and scan the Descriptor from your paper packet. Each packet contains an identical copy of the Descriptor.</div>
       <form action="" method="post">
-        <input style="display: none;" name="option" value="VALUE">
+        <input style="display: none;" name="option" value="scan">
         <input class="btn btn-primary" type="submit" id="next" value="Scan">
+      </form>
+      <form action="" method="post">
+        <div class="form-row" id="row1">
+          <div class="form-group col-md-10">
+            <label for="inputEmail4">Recipent</label>
+            <input type="text" class="form-control" placeholder="256 binary numbers" name="option" id="option">
+          </div>
+        </div>
+        <input class="btn btn-primary" type="submit" id="next" value="Submit recipent">
       </form>
     </div>
   </body>
