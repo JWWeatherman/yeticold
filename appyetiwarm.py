@@ -45,6 +45,7 @@ firsttrans = None
 secondtrans = None
 thirdtrans = None
 utxoresponse = None
+receipentaddress = None
 pubdesc = None
 adrlist = []
 transnum = 0
@@ -542,7 +543,7 @@ def Recovery_step10():
     global color
     global sourceaddress
     if request.method == 'GET':
-        addresses = []
+        gaddresses = []
         subprocess.call(['rm -r ~/yeticold/static/address*'],shell=True)
         adrlist = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm deriveaddresses "'+pubdesc+'" "[0,999]"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(adrlist)
