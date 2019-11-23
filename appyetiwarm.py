@@ -762,7 +762,7 @@ def Recovery_step19():
         minerfee = float(rpc.estimatesmartfee(6)["feerate"])
         kilobytespertrans = 0.200
         minerfee = (minerfee * kilobytespertrans)
-        amo = (sourceaddress['numbal'] - minerfee)
+        amo = (float(sourceaddress['numbal']) - minerfee)
         amo = "{:.8f}".format(float(amo))
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm createrawtransaction \'[{ "txid": "'+sourceaddress['txid']+'", "vout": '+sourceaddress['vout']+'}]\' \'[{"'+receipentaddress+'" : '+str(amo)+'}]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
