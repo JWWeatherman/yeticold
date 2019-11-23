@@ -543,7 +543,7 @@ def Recovery_step10():
     global color
     global sourceaddress
     if request.method == 'GET':
-        addresses = []
+        gaddresses = []
         subprocess.call(['rm -r ~/yeticold/static/address*'],shell=True)
         adrlist = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm deriveaddresses "'+pubdesc+'" "[0,999]"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(adrlist)
@@ -612,7 +612,7 @@ def Recovery_step11():
     global receipentaddress
     if request.method == 'POST':
         error = None
-        if request.method['option'] == 'scan':
+        if request.form['option'] == 'scan':
             receipentaddress = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
             receipentaddress = receipentaddress.decode("utf-8").replace('\n', '')
         else:
