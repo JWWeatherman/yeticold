@@ -49,6 +49,7 @@ pubdesc = None
 adrlist = []
 transnum = 0
 progress = 0
+samedesc = False
 utxo = None
 switcher = {
     "1": "ONE",
@@ -505,12 +506,17 @@ def step26():
 def Recovery_step08():
     global firstqrcode
     global pubdesc
+    global samedesc
     if request.method == 'POST':
         if request.form['option'] == 'scannewdesc':
             firstqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
             firstqrcode = firstqrcode.decode("utf-8")
             pubdesc = firstqrcode[:-2]
-        return redirect('/Recovery/step09')
+            samedesc = False
+            return redirect('/Recovery/step09')
+        else:
+            samedesc = True
+        return redirect('/Recovery/step10')
     return render_template('YWRstep08.html', pubdesc=pubdesc)
 
 @app.route("/Recovery/step09", methods=['GET', 'POST'])
@@ -601,6 +607,8 @@ def Recovery_step11():
     global error
     global receipentaddress
     if request.method == 'POST':
+        if request.form['samerecipent'] == 'samerecipent':
+            return redirect('/Recovery/step1215')
         error = None
         receipentaddress = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
         receipentaddress = receipentaddress.decode("utf-8").replace('\n', '')
@@ -614,7 +622,7 @@ def Recovery_step11():
         if error:
             return redirect('/Recovery/step11')
         return redirect('/Recovery/step1215')
-    return render_template('YWRstep11.html', error=error)
+    return render_template('YWRstep11.html', error=error, recipent=receipentaddress)
 
 @app.route('/Recovery/step1215', methods=['GET', 'POST'])
 def Recovery_step1215():
@@ -623,6 +631,10 @@ def Recovery_step1215():
     global newxpublist
     global privkeycount
     global error 
+    global samedesc
+    if request.method == 'GET':
+        if samedesc:
+            return redirect('/Recovery/step19')
     if request.method == 'POST':
         privkey = []
         for i in range(1,14):
@@ -675,7 +687,7 @@ def Recovery_step1215():
             return redirect('/Recovery/step16')
         else:
             return redirect('/Recovery/step1215')
-    return render_template('YWRstep1215.html', x=privkeycount + 1, error=error,i=privkeycount + 26 )
+    return render_template('YWRstep1215.html', x=privkeycount + 1, error=error,i=privkeycount + 12 )
 
 #stop bitocin qt and delete wallet
 @app.route("/Recovery/step16", methods=['GET', 'POST'])

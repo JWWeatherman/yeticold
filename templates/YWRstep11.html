@@ -17,9 +17,16 @@
         <p style="color:red;">{{ error }}</p>
       {% endif %}
       <div>Click Scan to open the webcam and scan the Descriptor from your paper packet. Each packet contains an identical copy of the Descriptor.</div>
+      {%if recipent%}
+      <div>This is your current recipent: {{samerecipent}}</div>
       <form action="" method="post">
         <input style="display: none;" name="option" value="VALUE">
-        <input class="btn btn-primary" type="submit" id="next" value="Scan">
+        <input class="btn btn-primary" type="submit" id="next" value="Use current one">
+      </form>
+      {%endif%}
+      <form action="" method="post">
+        <input style="display: none;" name="option" value="VALUE">
+        <input class="btn btn-primary" type="submit" id="next" value="Scan new recipent">
       </form>
     </div>
   </body>
