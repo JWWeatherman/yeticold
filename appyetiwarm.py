@@ -602,7 +602,9 @@ def Recovery_step10():
             home = os.getenv("HOME")
             img.save(home + '/yeticold/'+addresses[i]['route'])
     if request.method == 'POST':
-        sourceaddress = request.form['address']
+        for i in range(0, len(addresses)):
+            if addresses[i]['address'] = request.form['address']:
+                sourceaddress = addresses[i]
         return redirect('/Recovery/step11')
     return render_template('YWRstep10.html', addresses=addresses, len=len(addresses))
 
