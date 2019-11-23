@@ -17,16 +17,18 @@
         <p style="color:red;">{{ error }}</p>
       {% endif %}
       <div>Click Scan to open the webcam and scan the Descriptor from your paper packet. Each packet contains an identical copy of the Descriptor.</div>
-      {%if recipent%}
-      <div>This is your current recipent: {{samerecipent}}</div>
       <form action="" method="post">
-        <input style="display: none;" name="option" value="VALUE">
-        <input class="btn btn-primary" type="submit" id="next" value="Use current one">
+        <input style="display: none;" name="option" value="scan">
+        <input class="btn btn-primary" type="submit" id="next" value="Scan recipent from qr code">
       </form>
-      {%endif%}
       <form action="" method="post">
-        <input style="display: none;" name="option" value="VALUE">
-        <input class="btn btn-primary" type="submit" id="next" value="Scan new recipent">
+        <div class="form-row" id="row1">
+          <div class="form-group col-md-10">
+            <label for="inputEmail4">Recipent</label>
+            <input type="text" class="form-control" placeholder="256 binary numbers" name="option" id="option">
+          </div>
+        </div>
+        <input class="btn btn-primary" type="submit" id="next" value="Submit recipent">
       </form>
     </div>
   </body>
