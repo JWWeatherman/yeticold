@@ -266,12 +266,12 @@ def xor(x, y):
 @app.route("/", methods=['GET', 'POST'])
 def step01():
     if request.method == 'GET':
-        return redirect('/step07')
+        return redirect('/menu')
     return render_template('redirect.html')
 
 @app.route("/menu", methods=['GET', 'POST'])
 def menu():
-    if request.method == 'GET':
+    if request.method == 'POST':
         if request.form['option'] == 'recovery':
             return redirect('/Recovery/step06')
         else:
