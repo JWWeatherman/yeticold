@@ -61,5 +61,5 @@ if not (os.path.exists(home + "/yeticold/bitcoin-0.19.0rc1/bin")):
 	subprocess.call(['wget https://bitcoincore.org/bin/bitcoin-core-0.19.0/test.rc1/bitcoin-0.19.0rc1-x86_64-linux-gnu.tar.gz -P ~/yeticold/'],shell=True)
 	os.system('tar xvzf ~/yeticold/bitcoin-0.19.0rc1-x86_64-linux-gnu.tar.gz -C ~/yeticold')
 
-subprocess.Popen('python3 ~/yeticold/yeticoldR.py',shell=True,start_new_session=True)
+subprocess.Popen('python3 ~/yeticold/appyeticoldR.py',shell=True,start_new_session=True)
 subprocess.call(['xdg-open http://localhost:5000/step07'],shell=True)
