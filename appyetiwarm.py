@@ -269,15 +269,6 @@ def step01():
         return redirect('/menu')
     return render_template('redirect.html')
 
-@app.route("/menu", methods=['GET', 'POST'])
-def menu():
-    if request.method == 'POST':
-        if request.form['option'] == 'recovery':
-            return redirect('/Recovery/step06')
-        else:
-            return redirect('/step06')
-    return render_template('menu.html')
-
 ### open bitcoin
 @app.route("/step06", methods=['GET', 'POST'])
 def step06():
@@ -293,10 +284,20 @@ def step07():
         progress = BTCprogress()
     if request.method == 'POST':
         if progress >= 99.9:
-            return redirect('/step08')
+            return redirect('/menu')
         else:
             return redirect('/step07')
     return render_template('YWstep07.html', progress=progress)
+
+@app.route("/menu", methods=['GET', 'POST'])
+def menu():
+    if request.method == 'POST':
+        if request.form['option'] == 'recovery':
+            return redirect('/Recovery/step08')
+        else:
+            return redirect('/step08')
+    return render_template('menu.html')
+
 #randomise priv key and get xprivs
 @app.route("/step08", methods=['GET', 'POST'])
 def step08():
@@ -500,8 +501,8 @@ def step26():
 
 #### start recovery
 
-@app.route("/Recovery/step06", methods=['GET', 'POST'])
-def Recovery_step06():
+@app.route("/Recovery/step08", methods=['GET', 'POST'])
+def Recovery_step08():
     global firstqrcode
     global pubdesc
     if request.method == 'POST':
@@ -509,11 +510,11 @@ def Recovery_step06():
             firstqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
             firstqrcode = firstqrcode.decode("utf-8")
             pubdesc = firstqrcode[:-2]
-        return redirect('/Recovery/step07')
-    return render_template('YWRstep06.html', pubdesc=pubdesc)
+        return redirect('/Recovery/step09')
+    return render_template('YWRstep08.html', pubdesc=pubdesc)
 
-@app.route("/Recovery/step07", methods=['GET', 'POST'])
-def Recovery_step07():
+@app.route("/Recovery/step09", methods=['GET', 'POST'])
+def Recovery_step09():
     global firstqrcode
     global pubdesc
     if request.method == 'GET':
@@ -524,11 +525,11 @@ def Recovery_step07():
             return "error response from importmulti: " + str(response[1]) + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli importmulti \'[{ "desc": "'+pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli rescanblockchain 600000',shell=True,start_new_session=True)
     if request.method == 'POST':
-        return redirect('/Recovery/step08')
-    return render_template('YWRstep07.html')
+        return redirect('/Recovery/step10')
+    return render_template('YWRstep09.html')
 
-@app.route("/Recovery/step08", methods=['GET', 'POST'])
-def Recovery_step08():
+@app.route("/Recovery/step10", methods=['GET', 'POST'])
+def Recovery_step10():
     global addresses
     global color
     global sourceaddress
@@ -592,11 +593,11 @@ def Recovery_step08():
             img.save(home + '/yeticold/'+addresses[i]['route'])
     if request.method == 'POST':
         sourceaddress = request.form['address']
-        return redirect('/Recovery/step09')
-    return render_template('YWRstep08.html', addresses=addresses, len=len(addresses))
+        return redirect('/Recovery/step11')
+    return render_template('YWRstep10.html', addresses=addresses, len=len(addresses))
 
-@app.route("/Recovery/step09", methods=['GET', 'POST'])
-def Recovery_step09():
+@app.route("/Recovery/step11", methods=['GET', 'POST'])
+def Recovery_step11():
     global error
     global receipentaddress
     if request.method == 'POST':
@@ -611,12 +612,12 @@ def Recovery_step09():
         else: 
             error = receipentaddress + ' is not a valid bitcoin address, address should have started with bc1, 3 or 1 instead of ' + receipentaddress[:1] + ', or ' + receipentaddress[:3] + '.'
         if error:
-            return redirect('/Recovery/step09')
-        return redirect('/Recovery/step1013')
-    return render_template('YWRstep09.html', error=error)
+            return redirect('/Recovery/step11')
+        return redirect('/Recovery/step1215')
+    return render_template('YWRstep11.html', error=error)
 
-@app.route('/Recovery/step1013', methods=['GET', 'POST'])
-def Recovery_step1013():
+@app.route('/Recovery/step1215', methods=['GET', 'POST'])
+def Recovery_step1215():
     global privkeylist
     global xprivlist
     global newxpublist
@@ -671,43 +672,43 @@ def Recovery_step1013():
                 xpub = response.split('(')[1].split(')')[0]
                 newxpublist.append(xpub)
                 privkeycount = 0
-            return redirect('/Recovery/step14')
+            return redirect('/Recovery/step16')
         else:
-            return redirect('/Recovery/step1013')
-    return render_template('YWRstep1013.html', x=privkeycount + 1, error=error,i=privkeycount + 26 )
+            return redirect('/Recovery/step1215')
+    return render_template('YWRstep1215.html', x=privkeycount + 1, error=error,i=privkeycount + 26 )
 
 #stop bitocin qt and delete wallet
-@app.route("/Recovery/step14", methods=['GET', 'POST'])
-def Recovery_step14():
+@app.route("/Recovery/step16", methods=['GET', 'POST'])
+def Recovery_step16():
     if request.method == 'POST':
         subprocess.call('gnome-terminal -- bash -c "sudo python3 ~/yeticold/utils/deleteallwallets.py; echo "DONE, Close this window.""', shell=True)
-        return redirect('/Recovery/step15')
-    return render_template('YWRstep14.html')
+        return redirect('/Recovery/step17')
+    return render_template('YWRstep16.html')
 
 #reopen bitcoin
-@app.route("/Recovery/step15", methods=['GET', 'POST'])
-def Recovery_step15():
+@app.route("/Recovery/step17", methods=['GET', 'POST'])
+def Recovery_step17():
     if request.method == 'POST':
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
-        return redirect('/Recovery/step16')
-    return render_template('YWRstep15.html')
+        return redirect('/Recovery/step18')
+    return render_template('YWRstep17.html')
 
 #finish reopen bitcoin
-@app.route('/Recovery/step16', methods=['GET', 'POST'])
-def Recovery_step16():
+@app.route('/Recovery/step18', methods=['GET', 'POST'])
+def Recovery_step18():
     global progress
     if request.method == 'GET':
         progress = BTCprogress()
     if request.method == 'POST':
         if progress >= 99:
-            return redirect('/Recovery/step17')
+            return redirect('/Recovery/step19')
         else:
-            return redirect('/Recovery/step16')
-    return render_template('YCRstep16.html', progress=progress)
+            return redirect('/Recovery/step18')
+    return render_template('YCRstep18.html', progress=progress)
 
 #GEN trans qr code
-@app.route("/Recovery/step17", methods=['GET', 'POST'])
-def Recovery_step17():
+@app.route("/Recovery/step19", methods=['GET', 'POST'])
+def Recovery_step19():
     global xprivlist
     global newxpublist
     global pubdesc
@@ -767,7 +768,7 @@ def Recovery_step17():
         if not (len(response[1]) == 0): 
             return "error response from sendrawtransaction: " + response[1] + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli sendrawtransaction '+transone+''
         return redirect('/menu')
-    return render_template('YWRstep17.html', amount=amo, minerfee=minerfee, recipent=receipentaddress)
+    return render_template('YWRstep19.html', amount=amo, minerfee=minerfee, recipent=receipentaddress)
 
 
 
