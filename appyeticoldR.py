@@ -437,9 +437,14 @@ def Altstep13():
         if len(oldaddresses) != len(addresses):
             change = True
         for i in range(0, len(oldaddresses)):
-            if oldaddresses[i]['address'] != addresses[i]['address']:
-                change = True
-            if oldaddresses[i]['totalbal'] < addresses[i]['totalbal']:
+            tempchange = True
+            for x in range(0, len(addresses)):
+                if oldaddresses[i]['address'] == addresses[x]['address']:
+                    if oldaddresses[i]['totalbal'] <= addresses[i]['totalbal']:
+                        tempchange = False
+                if not tempchange:
+                    break
+            if tempchange:
                 change = True
         if change:
             return redirect('/step13')
@@ -826,7 +831,6 @@ def step32():
         return redirect('/step33')
     return render_template('YCRstep32.html', amount=amount, minerfee=minerfee, recipent=receipentaddress)
 
-#confirm trans
 @app.route("/step33", methods=['GET', 'POST'])
 def step33():
     global firstqrcode
