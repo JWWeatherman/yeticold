@@ -490,7 +490,6 @@ def step25():
 @app.route("/step26", methods=['GET', 'POST'])
 def step26():
     if request.method == 'POST':
-        subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         return redirect('/menu')
     return render_template('YWstep26.html')
 
