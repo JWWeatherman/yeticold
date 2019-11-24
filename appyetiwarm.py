@@ -514,8 +514,7 @@ def Recovery_step08():
             return redirect('/Recovery/step10')
     if request.method == 'POST':
         firstqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-        firstqrcode = firstqrcode.decode("utf-8")
-        pubdesc = firstqrcode[:-1]
+        pubdesc = firstqrcode.decode("utf-8").replace('\n', '')
         samedesc = False
         return redirect('/Recovery/step09')
     return render_template('YWRstep08.html', pubdesc=pubdesc)
