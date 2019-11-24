@@ -412,7 +412,7 @@ def step12():
             secondqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
             secondqrcode = secondqrcode.decode("utf-8").replace('\n', '')
         else:
-            secondqrcode = request.method['option']
+            secondqrcode = request.form['option']
         if (secondqrcode.split(':')[0] == 'bitcoin'):
             secondqrcode = secondqrcode.split(':')[1].split('?')[0]
         if (secondqrcode[:3] == 'bc1') or (secondqrcode[:1] == '3') or (secondqrcode[:1] == '1'):
