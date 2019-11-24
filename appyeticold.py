@@ -292,7 +292,7 @@ def step08():
         progress = BTCprogress()
     if request.method == 'POST':
         if progress >= 99.9:
-            subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticold"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticold"','~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yeticold"'],shell=True)
             return redirect('/step09')
         else:
             return redirect('/step08')
@@ -332,8 +332,7 @@ def step13():
         progress = BTCprogress()
     if request.method == 'POST':
         if progress >= 99:
-            subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticold"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-            return redirect('/step14')
+            subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticold"','~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yeticold"'],shell=True)            return redirect('/step14')
         else:
             return redirect('/step13')
     return render_template('YCstep13.html', progress=progress)
@@ -362,7 +361,7 @@ def step16():
         progress = BTCprogress()
     if request.method == 'POST':
         if progress >= 99:
-            subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticold"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticold"','~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yeticold"'],shell=True)
             return redirect('/step17')
         else:
             return redirect('/step16')
@@ -403,8 +402,7 @@ def step17():
             home = os.getenv('HOME')
             pathtwo = home + '/yeticoldwallet' + str(i)
             path = home + '/yeticoldwallettwo' + str(i)
-            response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticoldwallettwo'+str(i)+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-            # response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yeticoldwallettwo'+str(i)+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticoldwallettwo'+str(i)+'"','~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yeticoldwallettwo'+str(i)+'"'],shell=True)
             response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yeticoldwallettwo'+str(i)+' sethdseed false "'+privkeylist[i]+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
             if not (len(response[1]) == 0): 
                 print(response)
@@ -631,7 +629,7 @@ def step34():
         progress = BTCprogress()
     if request.method == 'POST':
         if progress >= 99:
-            subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticold"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticold"','~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yeticold"'],shell=True)
             return redirect('/step3541')
         else:
             return redirect('/step34')
@@ -665,8 +663,7 @@ def step3541():
                     rpc = RPC()
                     home = os.getenv('HOME')
                     path = home + '/yeticoldwallet' + str(i)
-                    response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticoldwallet'+str(i)+'" false true'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-                    # response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yeticoldwallet'+str(i)+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+                    subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticoldwallet'+str(i)+'" false true','~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yeticoldwallet'+str(i)+'"'],shell=True)
                     response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yeticoldwallet'+str(i)+' sethdseed false "'+privkeylist[i]+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
                     if not (len(response[1]) == 0): 
                         print(response)
@@ -791,7 +788,7 @@ def step47():
         progress = BTCprogress()
     if request.method == 'POST':
         if progress >= 99:
-            subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticold"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticold"','~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yeticold"'],shell=True)
             return redirect('/step48')
         else:
             return redirect('/step47')
@@ -908,7 +905,7 @@ def step53():
         progress = BTCprogress()
     if request.method == 'POST':
         if progress >= 99:
-            subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticold"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticold"','~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yeticold"'],shell=True)
             return redirect('/step54')
         else:
             return redirect('/step53')
@@ -1025,7 +1022,7 @@ def step59():
         progress = BTCprogress()
     if request.method == 'POST':
         if progress >= 99:
-            subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticold"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticold"','~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yeticold"'],shell=True)
             return redirect('/step60')
         else:
             return redirect('/step59')
