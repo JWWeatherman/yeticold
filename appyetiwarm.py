@@ -50,6 +50,7 @@ transnum = 0
 progress = 0
 samedesc = False
 utxo = None
+rescan = False
 switcher = {
     "1": "ONE",
     "2": "TWO",
@@ -505,7 +506,10 @@ def Recovery_step08():
     if request.method == 'GET':
         if pubdesc:
             samedesc = True
-            return redirect('/Recovery/step10')
+            if rescan:
+                return redirect('/Recovery/step10')
+            else:
+                return redirect('/Recovery/step09')
     if request.method == 'POST':
         firstqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
         pubdesc = firstqrcode.decode("utf-8").replace('\n', '')
@@ -517,10 +521,12 @@ def Recovery_step08():
 def Recovery_step09():
     global firstqrcode
     global pubdesc
+    global rescan
     if request.method == 'GET':
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm importmulti \'[{ "desc": "'+pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm rescanblockchain 600000',shell=True,start_new_session=True)
+        rescan = True
     if request.method == 'POST':
         return redirect('/Recovery/step10')
     return render_template('YWRstep09.html')
@@ -532,7 +538,6 @@ def Recovery_step10():
     global sourceaddress
     if request.method == 'GET':
         addresses = []
-        subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yetiwarm"'],shell=True)
         subprocess.call(['rm -r ~/yeticold/static/address*'],shell=True)
         adrlist = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm deriveaddresses "'+pubdesc+'" "[0,999]"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(adrlist)
