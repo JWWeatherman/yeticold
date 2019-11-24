@@ -11,5 +11,8 @@ subprocess.call(['sudo chmod +x ~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-tx'],sh
 subprocess.call('sudo rm -r ~/.bitcoin/yeticold*', shell=True)
 subprocess.call('sudo rm -r ~/.bitcoin/yetiwarm*', shell=True)
 subprocess.call('sudo rm -r ~/.bitcoin/yetihot*', shell=True)
+subprocess.call('sudo rm -r ~/.bitcoin/yeticoldwallet*', shell=True)
+subprocess.call('sudo rm -r ~/.bitcoin/yetiwarmwallet*', shell=True)
+subprocess.call('sudo rm -r ~/.bitcoin/yetihotwallet*', shell=True)
 subprocess.Popen('python3 ~/yeticold/appyeticoldR.py',shell=True,start_new_session=True)
 subprocess.call(['xdg-open http://localhost:5000/step19'],shell=True)
