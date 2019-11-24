@@ -335,12 +335,10 @@ def step08():
             pathtwo = home + '/yetiwarmwallet' + str(i)
             path = home + '/yetiwarmwallettwo' + str(i)
             subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yetiwarmwallettwo'+str(i)+'"','~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yetiwarmwallettwo'+str(i)+'"'],shell=True)
-            # response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yetiwarmwallettwo'+str(i)+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
             response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarmwallettwo'+str(i)+' sethdseed false "'+privkeylist[i]+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-            if not (len(response[1]) == 0): 
-                print(response)
-                return "error response from sethdseed: " + str(response[1]) + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarmwallettwo'+str(i)+' sethdseed false "'+privkeylist[i]+'"'
+            print(response)
             response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarmwallettwo'+str(i)+' dumpwallet "yetiwarmwallettwo'+str(i)+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            print(response)
             wallet = open(path,'r')
             wallet.readline()
             wallet.readline()
@@ -353,11 +351,8 @@ def step08():
         addresses = []
         checksum = None
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm getdescriptorinfo "wsh(multi(3,'+xprivlist[0]+'/*,'+xprivlist[1]+'/*,'+xprivlist[2]+'/*,'+xprivlist[3]+'/*,'+xprivlist[4]+'/*,'+xprivlist[5]+'/*,'+xprivlist[6]+'/*))"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        if (len(response[1]) == 0): 
-            response = json.loads(response[0].decode("utf-8"))
-        else:
-            print(response)
-            return "error response from getdescriptorinfo: " + str(response[1]) + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm getdescriptorinfo "wsh(multi(3,'+xprivlist[0]+'/*,'+xprivlist[1]+'/*,'+xprivlist[2]+'/*,'+xprivlist[3]+'/*,'+xprivlist[4]+'/*,'+xprivlist[5]+'/*,'+xprivlist[6]+'/*))"'
+        print(response)
+        response = json.loads(response[0].decode("utf-8"))
         checksum = response["checksum"]
         pubdesc = response["descriptor"]
         return redirect('/step0915')
@@ -416,12 +411,10 @@ def step1521():
                     home = os.getenv('HOME')
                     path = home + '/yetiwarmwallettwo' + str(i)
                     subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yetiwarmwallettwo'+str(i)+'" false true','~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yetiwarmwallettwo'+str(i)+'"'],shell=True)
-                    # response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yetiwarmwallettwo'+str(i)+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
                     response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarmwallettwo'+str(i)+' sethdseed false "'+privkeylist[i]+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-                    if not (len(response[1]) == 0): 
-                        print(response)
-                        return "error response from sethdseed: " + str(response[1]) + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarmwallettwo'+str(i)+' sethdseed false "'+privkeylist[i]+'"'
+                    print(response)
                     response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarmwallettwo'+str(i)+' dumpwallet "yetiwarmwallettwo'+str(i)+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+                    print(response)
                     wallet = open(path,'r')
                     wallet.readline()
                     wallet.readline()
@@ -526,9 +519,6 @@ def Recovery_step09():
     if request.method == 'GET':
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm importmulti \'[{ "desc": "'+pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
-        if not (len(response[1]) == 0): 
-            print(response)
-            return "error response from importmulti: " + str(response[1]) + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm importmulti \'[{ "desc": "'+pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm rescanblockchain 600000',shell=True,start_new_session=True)
     if request.method == 'POST':
         return redirect('/Recovery/step10')
@@ -544,11 +534,7 @@ def Recovery_step10():
         subprocess.call(['rm -r ~/yeticold/static/address*'],shell=True)
         adrlist = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm deriveaddresses "'+pubdesc+'" "[0,999]"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(adrlist)
-        if not (len(adrlist[0]) == 0): 
-            adrlist = json.loads(adrlist[0].decode("utf-8"))
-        else:
-            print(adrlist)
-            return "error response from deriveaddresses: " + str(adrlist[1]) + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm deriveaddresses "'+pubdesc+'" "[0,999]"'
+        adrlist = json.loads(adrlist[0].decode("utf-8"))
         for i in range(0, len(adrlist)):
             randomnum = str(random.randrange(0,1000000))
             route = url_for('static', filename='address'+randomnum+'.png')
@@ -556,6 +542,7 @@ def Recovery_step10():
             testlist = []
             testlist.append(adrlist[i])
             response = rpc.listunspent(0, 9999999, testlist)
+            print(response)
             if response == []:
                 bal = "0.0000000"
                 txid = ''
@@ -566,6 +553,7 @@ def Recovery_step10():
                 vout = str(response[0]['vout'])
             utxocount = len(response)
             response = rpc.getreceivedbyaddress(adrlist[i])
+            print(response)
             if response == 0:
                 totalbal = "0.0000000"
             else:
@@ -660,13 +648,8 @@ def Recovery_step1215():
                 path = home + '/yetiwarmwallet' + str(i)
                 subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yetiwarmwallet'+str(i)+'" false true','~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yetiwarmwallet'+str(i)+'"'],shell=True)
                 print(response)
-                # response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yetiwarmwallet'+str(i)+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-                # print(response)
                 response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarmwallet'+str(i)+' sethdseed false "'+privkeylist[i]+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
                 print(response)
-                if not (len(response[1]) == 0): 
-                    print(response)
-                    return "error response from sethdseed: " + str(response[1]) + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarmwallet'+str(i)+' sethdseed false "'+privkeylist[i]+'"'
                 response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarmwallet'+str(i)+' dumpwallet "yetiwarmwallet'+str(i)+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
                 print(response)
                 wallet = open(path,'r')
@@ -680,11 +663,7 @@ def Recovery_step1215():
                 xprivlist.append(privkeyline)
                 response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm getdescriptorinfo "pk('+privkeyline+')"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
                 print(response)
-                if not (len(response[0]) == 0): 
-                    response = response[0].decode("utf-8")
-                else:
-                    print(response)
-                    return "error response from getdescriptorinfo: " + str(response[1]) + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm getdescriptorinfo "pk('+privkeyline+')"'
+                response = response[0].decode("utf-8")
                 xpub = response.split('(')[1].split(')')[0]
                 newxpublist.append(xpub)
                 privkeycount = 0
@@ -747,17 +726,10 @@ def Recovery_step19():
         desc = '"wsh(multi(3,'+descriptorlist[0]+','+descriptorlist[1]+','+descriptorlist[2]+','+descriptorlist[3]+','+descriptorlist[4]+','+descriptorlist[5]+','+descriptorlist[6]+'))'
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm getdescriptorinfo '+desc+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
-        if not (len(response[0]) == 0): 
-            response = json.loads(response[0].decode("utf-8"))
-        else:
-            print(response)
-            return "error response from getdescriptorinfo: " + str(response[1]) + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm getdescriptorinfo '+desc+'"'
+        response = json.loads(response[0].decode("utf-8"))
         checksum = response["checksum"]
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm importmulti \'[{ "desc": '+desc+'#'+ checksum +'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
-        if not (len(response[1]) == 0): 
-            print(response)
-            return "error response from importmulti: " + str(response[1]) + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm importmulti \'[{ "desc": '+desc+'#'+ checksum +'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''
         rpc = RPC()
         minerfee = float(rpc.estimatesmartfee(6)["feerate"])
         kilobytespertrans = 0.200
@@ -766,26 +738,15 @@ def Recovery_step19():
         amo = "{:.8f}".format(float(amo))
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm createrawtransaction \'[{ "txid": "'+sourceaddress['txid']+'", "vout": '+sourceaddress['vout']+'}]\' \'[{"'+receipentaddress+'" : '+str(amo)+'}]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
-        if not (len(response[0]) == 0): 
-            response = response[0].decode("utf-8")
-        else:
-            print(response)
-            return "error response from createrawtransaction: " + str(response[1]) + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm createrawtransaction \'[{ "txid": "'+sourceaddress['txid']+'", "vout": '+sourceaddress['vout']+'}]\' \'[{"'+receipentaddress+'" : '+str(amo)+'}]\''
+        response = response[0].decode("utf-8")
         transonehex = response[:-1]
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm signrawtransactionwithwallet '+transonehex],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
-        if not (len(response[0]) == 0): 
-            response = json.loads(response[0].decode("utf-8"))
-        else:
-            print(response)
-            return "error response from signrawtransactionwithwallet: " + str(response[1]) + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm signrawtransactionwithwallet '+transonehex
+        response = json.loads(response[0].decode("utf-8"))
         transnum = response
     if request.method == 'POST':
-        print(transnum)
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm sendrawtransaction '+transnum['hex']+''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
-        if not (len(response[1]) == 0): 
-            return "error response from sendrawtransaction: " + response[1] + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm sendrawtransaction '+transnum['hex']+''
         return redirect('/menu')
     return render_template('YWRstep19.html', amount=amo, minerfee=minerfee, recipent=receipentaddress)
 
