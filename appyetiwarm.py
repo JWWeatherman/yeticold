@@ -360,7 +360,7 @@ def step08():
             return "error response from getdescriptorinfo: " + str(response[1]) + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm getdescriptorinfo "wsh(multi(3,'+xprivlist[0]+'/*,'+xprivlist[1]+'/*,'+xprivlist[2]+'/*,'+xprivlist[3]+'/*,'+xprivlist[4]+'/*,'+xprivlist[5]+'/*,'+xprivlist[6]+'/*))"'
         checksum = response["checksum"]
         pubdesc = response["descriptor"]
-        return redirect('/step09')
+        return redirect('/step0915')
     return render_template('YWstep08.html')
 #display seeds
 @app.route('/step0915', methods=['GET', 'POST'])
