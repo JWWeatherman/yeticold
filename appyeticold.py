@@ -332,7 +332,8 @@ def step13():
         progress = BTCprogress()
     if request.method == 'POST':
         if progress >= 99:
-            subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticold"','~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yeticold"'],shell=True)            return redirect('/step14')
+            subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticold"','~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yeticold"'],shell=True)
+            return redirect('/step14')
         else:
             return redirect('/step13')
     return render_template('YCstep13.html', progress=progress)
