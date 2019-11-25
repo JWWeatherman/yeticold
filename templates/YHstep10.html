@@ -1,0 +1,333 @@
+<html>
+<head>
+    <title>Yeti Bitcoin Storage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet", href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet", href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+  </head>
+  <body>
+    <div class="container" style="margin-top: 3rem;">
+        <h2>Step 10: Check Private Key</h2>
+        <ul>
+            <li>If you lose access to more than 4 of your private keys your bitcoin will be permanently lost.</li>
+            <li>Enter your seed phrases below to ensure you wrote them down correctly.</li>
+        </ul>
+      {% if error %}
+        <p style="color:red;">{{ error }}</p>
+      {% endif %}
+        <form action="" method="post" style="border: solid #f8f9fa;padding: 1.5rem;">
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">1</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row1" name="row1" placeholder="Phrase One">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">2</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row2" name="row2" placeholder="Phrase Two">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">3</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row3" name="row3" placeholder="Phrase Three">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">4</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row4" name="row4" placeholder="Phrase Four">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">5</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row5" name="row5" placeholder="Phrase Five">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">6</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row6" name="row6" placeholder="Phrase Six">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">7</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row7" name="row7" placeholder="Phrase Seven">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">8</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row8" name="row8" placeholder="Phrase Eight">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">9</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row9" name="row9" placeholder="Phrase Nine">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">10</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row10" name="row10" placeholder="Phrase Ten">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">11</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row11" name="row11" placeholder="Phrase Eleven">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">12</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row12" name="row12" placeholder="Phrase Twelve">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">13</span>
+            </div>
+            <input type="text" class="form-control" value="" id="row13" name="row13" placeholder="Phrase Thirteen">
+          </div>
+        </div>
+        <input disabled class="btn btn-default" type="submit" id="nextkey" value="Next">
+      </form>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+<script>   
+  var switcher = {
+  "1": "ONE",
+  "2": "TWO",
+  "3": "THREE",
+  "4": "FOUR",
+  "5": "FIVE",
+  "6": "SIX",
+  "7": "SEVEN",
+  "8": "EIGHT",
+  "9": "NINE",
+  "A": "ALFA",
+  "B": "BRAVO",
+  "C": "CHARLIE",
+  "D": "DELTA",
+  "E": "ECHO",
+  "F": "FOXTROT",
+  "G": "GOLF",
+  "H": "HOTEL",
+  "I": "INDIA",
+  "J": "JULIETT",
+  "K": "KILO",
+  "L": "LIMA",
+  "M": "MIKE",
+  "N": "NOVEMBER",
+  "O": "OSCAR",
+  "P": "PAPA",
+  "Q": "QUEBEC",
+  "R": "ROMEO",
+  "S": "SIERRA",
+  "T": "TANGO",
+  "U": "UNIFORM",
+  "V": "VICTOR",
+  "W": "WHISKEY",
+  "X": "X-RAY",
+  "Y": "YANKEE",
+  "Z": "ZULU",
+  "a": "alfa",
+  "b": "bravo",
+  "c": "charlie",
+  "d": "delta",
+  "e": "echo",
+  "f": "foxtrot",
+  "g": "golf",
+  "h": "hotel",
+  "i": "india",
+  "j": "juliett",
+  "k": "kilo",
+  "l": "lima",
+  "m": "mike",
+  "n": "november",
+  "o": "oscar",
+  "p": "papa",
+  "q": "quebec",
+  "r": "romeo",
+  "s": "sierra",
+  "t": "tango",
+  "u": "uniform",
+  "v": "victor",
+  "w": "whiskey",
+  "x": "x-ray",
+  "y": "yankee",
+  "z": "zulu",
+  "ONE": "1",
+  "TWO": "2",
+  "THREE": "3",
+  "FOUR": "4",
+  "FIVE": "5",
+  "SIX": "6",
+  "SEVEN": "7",
+  "EIGHT": "8",
+  "NINE": "9",
+  "ALFA": "A",
+  "BRAVO": "B",
+  "CHARLIE": "C",
+  "DELTA": "D",
+  "ECHO": "E",
+  "FOXTROT": "F",
+  "GOLF": "G",
+  "HOTEL": "H",
+  "INDIA": "I",
+  "JULIETT": "J",
+  "KILO": "K",
+  "LIMA": "L",
+  "MIKE": "M",
+  "NOVEMBER": "N",
+  "OSCAR": "O",
+  "PAPA": "P",
+  "QUEBEC": "Q",
+  "ROMEO": "R",
+  "SIERRA": "S",
+  "TANGO": "T",
+  "UNIFORM": "U",
+  "VICTOR": "V",
+  "WHISKEY": "W",
+  "X-RAY": "X",
+  "YANKEE": "Y",
+  "ZULU": "Z",
+  "alfa": "a",
+  "bravo": "b",
+  "charlie": "c",
+  "delta": "d",
+  "echo": "e",
+  "foxtrot": "f",
+  "golf": "g",
+  "hotel": "h",
+  "india": "i",
+  "juliett": "j",
+  "kilo": "k",
+  "lima": "l",
+  "mike": "m",
+  "november": "n",
+  "oscar": "o",
+  "papa": "p",
+  "quebec": "q",
+  "romeo": "r",
+  "sierra": "s",
+  "tango": "t",
+  "uniform": "u",
+  "victor": "v",
+  "whiskey": "w",
+  "x-ray": "x",
+  "yankee": "y",
+  "zulu": "z"
+        }
+        var BASE58_ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
+        var base_count = BASE58_ALPHABET.length
+        var passphraseWIFlist = ['ONE','TWO','THREE','FOUR','FIVE','SIX','SEVEN','EIGHT','NINE','alfa','bravo','charlie','delta','echo','foxtrot','golf','hotel','india','juliett','kilo','lima','mike','oscar','november','papa','quebec','romeo','sierra','tango','uniform','victor','whiskey','x-ray','yankee','zulu','ALFA','BRAVO','CHARLIE','DELTA','ECHO','FOXTROT','GOLF','HOTEL','INDIA','JULIETT','KILO','LIMA','MIKE','OSCAR','NOVEMBER','PAPA','QUEBEC','ROMEO','SIERRA','TANGO','UNIFORM','VICTOR','WHISKEY','X-RAY','YANKEE','ZULU']
+var decode = (s) => {
+      var decoded = 0
+      var multi = 1
+      var news = s.split('').reverse().join().replace(',','').replace(',','').replace(',','').replace(',','')
+      for (char in news) {
+        decoded = decoded + (multi * BASE58_ALPHABET.indexOf(news.charAt(char)))
+        multi = multi * base_count
+      }
+      return decoded
+    }
+    var PassphraseToWIF = (passphraselist) => {
+      var WIFlist = ''
+      for(var i = 0; i < passphraselist.length; i++) {
+        var WIF = switcher[passphraselist[i]]
+        WIFlist = WIFlist + WIF
+      }
+      return WIFlist
+    }
+    var WIFToPassphrase = (WIFString) => {
+      var passphraselist = []
+      for(var i = 0; i < WIFString.length; i++) {
+        var passphrase = switcher[WIFString.charAt(i)]
+        passphraselist.push(passphrase)
+      }
+      return passphraselist
+    }
+    var checkSum = (passphraselist, checksum) => {
+      var list = PassphraseToWIF(passphraselist)
+      console.log(list)
+      var sum = 0
+      for (char in list) {
+        var decodenum = decode(list.charAt(char))
+        console.log(decodenum, char)
+        sum = sum + decodenum
+      }
+      console.log(sum)
+      mod = sum % 58
+      console.log(mod)
+      var char = BASE58_ALPHABET.charAt(mod)
+      char = WIFToPassphrase(char)[0]
+      console.log(char, checksum)
+      return char === checksum
+    }
+    var highlightrows = () => {
+          var templist = []
+          var Privatekey = []
+          var numofrowsgreen = 0
+          var red = "rgba(255, 0, 0, 0.4)"
+          var green = "rgba(0, 151, 19, 0.4)"
+          for(var i = 1;i < 14; i++) {
+            document.getElementById('row' + i).style.backgroundColor = ""
+            templist = document.getElementById('row' + i).value.toString().split(' ')
+            Privatekey.concat(document.getElementById('row' + i).value.toString().split(' '))
+            templist = templist.splice(0, 5)
+            var checksum = templist.pop()
+            if (document.getElementById('row' + i).value) document.getElementById('row' + i).style.backgroundColor = red
+            if (templist.filter((el) => {return passphraseWIFlist.includes(el)}).length === 4) {
+              if (checksum != '') {
+                if (checkSum(templist,checksum)) {
+                  numofrowsgreen++
+                  document.getElementById('row' + i).style.backgroundColor = green
+                }
+              }
+              templist = []
+            }
+          }
+          var ConvertKey = numofrowsgreen === 13
+          if (ConvertKey) {
+            document.getElementById("nextkey").disabled = false
+          } else {
+            document.getElementById("nextkey").disabled = true
+          }
+          setTimeout(() => { highlightrows() }, 80)
+        }
+        highlightrows()
+    </script>
+  </body>
+</html>

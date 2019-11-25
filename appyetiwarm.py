@@ -298,7 +298,7 @@ def menu():
             return redirect('/Recovery/step08')
         else:
             return redirect('/step08')
-    return render_template('menu.html')
+    return render_template('YWmenu.html')
 
 #randomise priv key and get xprivs
 @app.route("/step08", methods=['GET', 'POST'])

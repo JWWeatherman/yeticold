@@ -276,7 +276,7 @@ def step06():
     if request.method == 'POST':
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         return redirect('/step07')
-    return render_template('YWstep06.html')
+    return render_template('YHstep06.html')
 #finish open bitcoin
 @app.route("/step07", methods=['GET', 'POST'])
 def step07():
@@ -288,7 +288,7 @@ def step07():
             return redirect('/menu')
         else:
             return redirect('/step07')
-    return render_template('YWstep07.html', progress=progress)
+    return render_template('YHstep07.html', progress=progress)
 
 @app.route("/menu", methods=['GET', 'POST'])
 def menu():
@@ -297,7 +297,7 @@ def menu():
             return redirect('/Recovery/step08')
         else:
             return redirect('/step08')
-    return render_template('menu.html')
+    return render_template('YHmenu.html')
 
 #randomise priv key and get xprivs
 @app.route("/step08", methods=['GET', 'POST'])
@@ -319,11 +319,11 @@ def step08():
         path = home + '/yetihotwallet'
         subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yetihot" false true','~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yetihot"'],shell=True)
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetihot sethdseed false "'+privkey+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        return redirect('/step0915')
-    return render_template('YWstep08.html')
+        return redirect('/step09')
+    return render_template('YHstep08.html')
 #display seeds
-@app.route('/step0915', methods=['GET', 'POST'])
-def step0915():
+@app.route('/step09', methods=['GET', 'POST'])
+def step09():
     global privkey
     global privkeycount
     if request.method == 'GET':
@@ -337,11 +337,11 @@ def step0915():
         for i in range(0,13):
             file = file + request.form['displayrow' + str(i+1)] + '\n'
         subprocess.call('echo "'+file+'" >> '+path+'/seed.txt', shell=True)
-        return redirect('/step1521')
-    return render_template('YWstep0915.html', PPL=passphraselist)
+        return redirect('/step10')
+    return render_template('YHstep09.html', PPL=passphraselist)
 #confirm privkey
-@app.route('/step1521', methods=['GET', 'POST'])
-def step1521():
+@app.route('/step10', methods=['GET', 'POST'])
+def step10():
     global privkey
     global xpriv
     global error
@@ -357,49 +357,46 @@ def step1521():
             privkeylisttoconfirm.append(inputlist[2])
             privkeylisttoconfirm.append(inputlist[3])
         if privkeylisttoconfirm == passphraselist:
-            return redirect('/step22')
+            return redirect('/step11')
         else:
             error = 'You enterd the private key incorrectly but the checksums are correct please try agian. This means you probably inputed a valid seed, but not your seed.'
-    return render_template('YWstep1521.html', x=privkeycount + 1, error=error,i=privkeycount + 35 )
-
-@app.route("/step26", methods=['GET', 'POST'])
-def step26():
+    return render_template('YHstep10.html', x=privkeycount + 1, error=error,i=privkeycount + 35 )
+#store USB drives
+@app.route("/step11", methods=['GET', 'POST'])
+def step11():
     if request.method == 'POST':
         return redirect('/menu')
-    return render_template('YWstep26.html')
+    return render_template('YHstep11.html')
 #STOP SET UP-----------------------------------------------------------------------------------------------------------------------------------------------------
 
 #reopen bitcoin
-@app.route("/Recovery/step17", methods=['GET', 'POST'])
-def Recovery_step17():
+@app.route("/Recovery/step08", methods=['GET', 'POST'])
+def Recovery_step08():
     if request.method == 'POST':
         subprocess.call('fuser -k 8332/tcp', shell=True)
         subprocess.call('sudo rm -r ~/.bitcoin/yetihot*', shell=True)
         subprocess.call('sudo rm -r ~/yetihotwallet*', shell=True)
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
-        return redirect('/Recovery/step18')
-    return render_template('YWRstep17.html')
+        return redirect('/Recovery/step09')
+    return render_template('YHRstep08.html')
 
 #finish reopen bitcoin
-@app.route('/Recovery/step18', methods=['GET', 'POST'])
-def Recovery_step18():
+@app.route('/Recovery/step09', methods=['GET', 'POST'])
+def Recovery_step09():
     global progress
     if request.method == 'GET':
         progress = BTCprogress()
     if request.method == 'POST':
         if progress >= 99:
             subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yetihot"','~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yetihot"'],shell=True)
-            return redirect('/Recovery/step19')
+            return redirect('/Recovery/step10')
         else:
-            return redirect('/Recovery/step18')
-    return render_template('YWRstep18.html', progress=progress)
+            return redirect('/Recovery/step09')
+    return render_template('YHRstep09.html', progress=progress)
 
-@app.route('/Recovery/step1215', methods=['GET', 'POST'])
-def Recovery_step1215():
+@app.route('/Recovery/step10', methods=['GET', 'POST'])
+def Recovery_step10():
     global error 
-    if request.method == 'GET':
-        if samedesc:
-            return redirect('/Recovery/step19')
     if request.method == 'POST':
         privkey = []
         for i in range(1,14):
@@ -416,8 +413,8 @@ def Recovery_step1215():
         subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yetihot" false true','~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yetihot"'],shell=True)
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetihot sethdseed false "'+privkey+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
-        return redirect('/Recovery/step16')
-    return render_template('YWRstep1215.html', x=privkeycount + 1, error=error,i=privkeycount + 12 )
+        return redirect('/step')
+    return render_template('YHRstep10.html', error=error)
 
 
 
