@@ -580,7 +580,7 @@ def step23():
 @app.route("/step24", methods=['GET', 'POST'])
 def step24():
     if request.method == 'POST':
-        return redirect('/step43')
+        return redirect('/step42')
     return render_template('YCstep24.html')
 ##SWITCH TO OFFLINE
 
@@ -609,36 +609,33 @@ def step2531():
             return redirect('/step2531')
     return render_template('YCstep2531.html', PPL=passphraselist, x=privkeycount + 1, i=privkeycount + 25)
 
+
+
 @app.route("/step32", methods=['GET', 'POST'])
 def step32():
     if request.method == 'POST':
-        return redirect('/step33')
-    return render_template('YCstep32.html')
-
-@app.route("/step33", methods=['GET', 'POST'])
-def step33():
-    if request.method == 'POST':
+        subprocess.call('fuser -k 8332/tcp', shell=True)
         subprocess.call('sudo rm -r ~/.bitcoin/yeticold*', shell=True)
         subprocess.call('sudo rm -r ~/yeticoldwallet*', shell=True)
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
-        return redirect('/step34')
-    return render_template('YCstep33.html')
+        return redirect('/step33')
+    return render_template('YCstep32.html')
 
-@app.route('/step34', methods=['GET', 'POST'])
-def step34():
+@app.route('/step33', methods=['GET', 'POST'])
+def step33():
     global progress
     if request.method == 'GET':
         progress = BTCprogress()
     if request.method == 'POST':
         if progress >= 99:
             subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticold"','~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yeticold"'],shell=True)
-            return redirect('/step3541')
+            return redirect('/step3440')
         else:
             return redirect('/step34')
-    return render_template('YCstep34.html', progress=progress)
+    return render_template('YCstep33.html', progress=progress)
 
-@app.route('/step3541', methods=['GET', 'POST'])
-def step3541():
+@app.route('/step3440', methods=['GET', 'POST'])
+def step3440():
     global privkeylist
     global xprivlist
     global privkeycount
@@ -684,28 +681,28 @@ def step3541():
                         privkeycount = 0
                         privkeylist = []
                         error = 'You have imported your seeds correctly but your xprivs do not match: This means that you either do not have bitcoin running or its initial block download mode. Another issue is that you have a wallet folder or wallet dump file that was not deleted before starting this step.'
-                        return redirect('/step3541')
-                return redirect('/step42')
+                        return redirect('/step3440')
+                return redirect('/step41')
             else:
-                return redirect('/step3541')
+                return redirect('/step3440')
         else:
             error = 'You enterd the private key incorrectly but the checksums are correct please try agian. This means you probably inputed a valid seed, but not your seed ' +str(privkeycount + 1)+' seed.'
-    return render_template('YCstep3541.html', x=privkeycount + 1, error=error,i=privkeycount + 35 )
+    return render_template('YCstep3440.html', x=privkeycount + 1, error=error,i=privkeycount + 35 )
 
-@app.route("/step42", methods=['GET', 'POST'])
-def step42():
+@app.route("/step41", methods=['GET', 'POST'])
+def step41():
     if request.method == 'POST':
         global firstqrcode
         global utxoresponse
         firstqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
         utxoresponse = firstqrcode
-        return redirect('/step44')
-    return render_template('YCstep42.html')
+        return redirect('/step43')
+    return render_template('YCstep41.html')
 ##SWITCH TO ONLINE
 
 
-@app.route("/step43", methods=['GET', 'POST'])
-def step43():
+@app.route("/step42", methods=['GET', 'POST'])
+def step42():
     global utxo
     global secondqrname
     if request.method == 'GET':
@@ -751,13 +748,13 @@ def step43():
         img.save(home + '/yeticold/static/utxoqrcode'+secondqrname+'.png')
         route = url_for('static', filename='utxoqrcode' + secondqrname + '.png')
     if request.method == 'POST':
-        return redirect('/step49')
-    return render_template('YCstep43.html', qrdata=newstr, route=route)
+        return redirect('/step47')
+    return render_template('YCstep42.html', qrdata=newstr, route=route)
 ##SWITCH TO OFFLINE
 
 
-@app.route("/step44", methods=['GET', 'POST'])
-def step44():
+@app.route("/step43", methods=['GET', 'POST'])
+def step43():
     if request.method == 'POST':
         global secondqrcode
         global pubdesc
@@ -765,40 +762,34 @@ def step44():
         secondqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
         pubdesc = secondqrcode
         transnum = 1
-        return redirect('/step45')
-    return render_template('YCstep44.html')
+        return redirect('/step44')
+    return render_template('YCstep43.html')
 
-@app.route("/step45", methods=['GET', 'POST'])
-def step45():
-    global transnum
+@app.route("/step44", methods=['GET', 'POST'])
+def step44():
     if request.method == 'POST':
-        return redirect('/step46')
-    return render_template('YCstep45.html')
-
-@app.route("/step46", methods=['GET', 'POST'])
-def step46():
-    if request.method == 'POST':
+        subprocess.call('fuser -k 8332/tcp', shell=True)
         subprocess.call('sudo rm -r ~/.bitcoin/yeticold*', shell=True)
         subprocess.call('sudo rm -r ~/yeticoldwallet*', shell=True)
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
-        return redirect('/step47')
-    return render_template('YCstep46.html')
+        return redirect('/step45')
+    return render_template('YCstep44.html')
 
-@app.route('/step47', methods=['GET', 'POST'])
-def step47():
+@app.route('/step45', methods=['GET', 'POST'])
+def step45():
     global progress
     if request.method == 'GET':
         progress = BTCprogress()
     if request.method == 'POST':
         if progress >= 99:
             subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticold"','~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yeticold"'],shell=True)
-            return redirect('/step48')
+            return redirect('/step46')
         else:
-            return redirect('/step47')
-    return render_template('YCstep47.html', progress=progress)
+            return redirect('/step45')
+    return render_template('YCstep45.html', progress=progress)
 
-@app.route("/step48", methods=['GET', 'POST'])
-def step48():
+@app.route("/step46", methods=['GET', 'POST'])
+def step46():
     global firstqrcode
     global secondqrcode
     global thirdqrcode
@@ -865,58 +856,59 @@ def step48():
         route = url_for('static', filename='firsttransqrcode' + firstqrname + '.png')
     if request.method == 'POST':
         transnum = 2
-        return redirect('/step51')
-    return render_template('YCstep48.html', qrdata=firstqrcode, route=route)
+        return redirect('/step49')
+    return render_template('YCstep46.html', qrdata=firstqrcode, route=route)
 ##SWITCH TO ONLINE
+
+
+@app.route("/step47", methods=['GET', 'POST'])
+def step47():
+    if request.method == 'POST':
+        global firstqrcode
+        firstqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+        return redirect('/step48')
+    return render_template('YCstep47.html')
+
+@app.route("/step48", methods=['GET', 'POST'])
+def step48():
+    if request.method == 'POST':
+        return redirect('/step53')
+    return render_template('YCstep48.html')
+##SWITCH TO OFFLINE
 
 
 @app.route("/step49", methods=['GET', 'POST'])
 def step49():
+    global transnum
     if request.method == 'POST':
-        global firstqrcode
-        firstqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
         return redirect('/step50')
     return render_template('YCstep49.html')
 
 @app.route("/step50", methods=['GET', 'POST'])
 def step50():
     if request.method == 'POST':
-        return redirect('/step55')
-    return render_template('YCstep50.html')
-##SWITCH TO OFFLINE
-
-
-@app.route("/step51", methods=['GET', 'POST'])
-def step51():
-    global transnum
-    if request.method == 'POST':
-        return redirect('/step52')
-    return render_template('YCstep51.html')
-
-@app.route("/step52", methods=['GET', 'POST'])
-def step52():
-    if request.method == 'POST':
+        subprocess.call('fuser -k 8332/tcp', shell=True)
         subprocess.call('sudo rm -r ~/.bitcoin/yeticold*', shell=True)
         subprocess.call('sudo rm -r ~/yeticoldwallet*', shell=True)
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
-        return redirect('/step53')
-    return render_template('YCstep52.html')
+        return redirect('/step51')
+    return render_template('YCstep50.html')
 
-@app.route('/step53', methods=['GET', 'POST'])
-def step53():
+@app.route('/step51', methods=['GET', 'POST'])
+def step51():
     global progress
     if request.method == 'GET':
         progress = BTCprogress()
     if request.method == 'POST':
         if progress >= 99:
             subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticold"','~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yeticold"'],shell=True)
-            return redirect('/step54')
+            return redirect('/step52')
         else:
-            return redirect('/step53')
-    return render_template('YCstep53.html', progress=progress)
+            return redirect('/step51')
+    return render_template('YCstep51.html', progress=progress)
 
-@app.route("/step54", methods=['GET', 'POST'])
-def step54():
+@app.route("/step52", methods=['GET', 'POST'])
+def step52():
     global firstqrcode
     global secondqrcode
     global thirdqrcode
@@ -983,58 +975,51 @@ def step54():
         route = url_for('static', filename='secondtransqrcode' + secondqrname + '.png')
     if request.method == 'POST':
         transnum = 3
-        return redirect('/step57')
-    return render_template('YCstep54.html', qrdata=firstqrcode, route=route)
+        return redirect('/step55')
+    return render_template('YCstep52.html', qrdata=firstqrcode, route=route)
 ##SWITCH TO ONLINE
 
+
+@app.route("/step53", methods=['GET', 'POST'])
+def step53():
+    if request.method == 'POST':
+        global secondqrcode
+        secondqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+        return redirect('/step54')
+    return render_template('YCstep53.html')
+
+@app.route("/step54", methods=['GET', 'POST'])
+def step54():
+    if request.method == 'POST':
+        return redirect('/step59')
+    return render_template('YCstep54.html')
+##SWITCH TO OFFLINE
 
 @app.route("/step55", methods=['GET', 'POST'])
 def step55():
     if request.method == 'POST':
-        global secondqrcode
-        secondqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-        return redirect('/step56')
-    return render_template('YCstep55.html')
-
-@app.route("/step56", methods=['GET', 'POST'])
-def step56():
-    if request.method == 'POST':
-        return redirect('/step61')
-    return render_template('YCstep56.html')
-##SWITCH TO OFFLINE
-
-
-@app.route("/step57", methods=['GET', 'POST'])
-def step57():
-    global transnum
-    if request.method == 'POST':
-        return redirect('/step58')
-    return render_template('YCstep57.html')
-
-@app.route("/step58", methods=['GET', 'POST'])
-def step58():
-    if request.method == 'POST':
+        subprocess.call('fuser -k 8332/tcp', shell=True)
         subprocess.call('sudo rm -r ~/.bitcoin/yeticold*', shell=True)
         subprocess.call('sudo rm -r ~/yeticoldwallet*', shell=True)
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
-        return redirect('/step59')
-    return render_template('YCstep58.html')
+        return redirect('/step56')
+    return render_template('YCstep55.html')
 
-@app.route('/step59', methods=['GET', 'POST'])
-def step59():
+@app.route('/step56', methods=['GET', 'POST'])
+def step56():
     global progress
     if request.method == 'GET':
         progress = BTCprogress()
     if request.method == 'POST':
         if progress >= 99:
             subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticold"','~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yeticold"'],shell=True)
-            return redirect('/step60')
+            return redirect('/step57')
         else:
-            return redirect('/step59')
-    return render_template('YCstep59.html', progress=progress)
+            return redirect('/step56')
+    return render_template('YCstep56.html', progress=progress)
 
-@app.route("/step60", methods=['GET', 'POST'])
-def step60():
+@app.route("/step57", methods=['GET', 'POST'])
+def step57():
     global firstqrcode
     global secondqrcode
     global thirdqrcode
@@ -1100,23 +1085,23 @@ def step60():
         img.save(home + '/yeticold/static/thirdtransqrcode'+thirdqrname+'.png')
         route = url_for('static', filename='thirdtransqrcode' + thirdqrname + '.png')
     if request.method == 'POST':
-        return redirect('/step63')
-    return render_template('YCstep60.html', qrdata=firstqrcode, route=route)
+        return redirect('/step60')
+    return render_template('YCstep57.html', qrdata=firstqrcode, route=route)
 ##SWITCH TO ONLINE
 
 
-@app.route("/step61", methods=['GET', 'POST'])
-def step61():
+@app.route("/step58", methods=['GET', 'POST'])
+def step58():
     if request.method == 'POST':
         global thirdqrcode
         global secondqrcode
         global thirdqrcode
         thirdqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-        return redirect('/step62')
-    return render_template('YCstep61.html')
+        return redirect('/step59')
+    return render_template('YCstep58.html')
 
-@app.route("/step62", methods=['GET', 'POST'])
-def step62():
+@app.route("/step59", methods=['GET', 'POST'])
+def step59():
     global firstqrcode
     global secondqrcode
     global thirdqrcode
@@ -1137,40 +1122,40 @@ def step62():
             print(response)
             return "error response from sendrawtransaction: " + str(response[1]) + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yeticold sendrawtransaction '+parsedthirdqrcode+''
     if request.method == 'POST':
-        return redirect('/step64')
-    return render_template('YCstep62.html')
+        return redirect('/step61')
+    return render_template('YCstep59.html')
 ###SWITCH TO OFFLINE
 
 
-@app.route("/step63", methods=['GET', 'POST'])
-def step63():
+@app.route("/step60", methods=['GET', 'POST'])
+def step60():
     if request.method == 'POST':
         return redirect('/step')
-    return render_template('YCstep63.html')
+    return render_template('YCstep60.html')
 ###SWITCH TO ONLINE
 ### END OF OFFLINE
 
 
+@app.route("/step61", methods=['GET', 'POST'])
+def step61():
+    if request.method == 'POST':
+        return redirect('/step62')
+    return render_template('YCstep61.html')
+
+@app.route("/step62", methods=['GET', 'POST'])
+def step62():
+    if request.method == 'POST':
+        return redirect('/step63')
+    return render_template('YCstep62.html')
+
+@app.route("/step63", methods=['GET', 'POST'])
+def step63():
+    if request.method == 'POST':
+        return redirect('/step64')
+    return render_template('YCstep63.html')
+
 @app.route("/step64", methods=['GET', 'POST'])
 def step64():
-    if request.method == 'POST':
-        return redirect('/step65')
-    return render_template('YCstep64.html')
-
-@app.route("/step65", methods=['GET', 'POST'])
-def step65():
-    if request.method == 'POST':
-        return redirect('/step66')
-    return render_template('YCstep65.html')
-
-@app.route("/step66", methods=['GET', 'POST'])
-def step66():
-    if request.method == 'POST':
-        return redirect('/step67')
-    return render_template('YCstep66.html')
-
-@app.route("/step67", methods=['GET', 'POST'])
-def step67():
     global adrlist
     global color
     addresses = []
@@ -1211,7 +1196,7 @@ def step67():
             img.save(home + '/yeticold/'+addresses[i]['route'])
     if request.method == 'POST':
         return redirect('/step')
-    return render_template('YCstep67.html', addresses=addresses, len=len(addresses))
+    return render_template('YCstep64.html', addresses=addresses, len=len(addresses))
 ### END OF ONLINE
 
 @app.route("/step")

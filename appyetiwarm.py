@@ -432,7 +432,7 @@ def step1521():
                         privkeylist = []
                         error = 'You have imported your seeds correctly but your xprivs do not match: This means that you either do not have bitcoin running or its initial block download mode. Another issue is that you have a wallet folder or wallet dump file that was not deleted before starting this step.'
                         return redirect('/step1521')
-                return redirect('/step23')
+                return redirect('/step22')
             else:
                 return redirect('/step1521')
         else:
@@ -440,31 +440,31 @@ def step1521():
     return render_template('YWstep1521.html', x=privkeycount + 1, error=error,i=privkeycount + 35 )
 
 #reopen bitcoin
-@app.route("/step23", methods=['GET', 'POST'])
-def step23():
+@app.route("/step22", methods=['GET', 'POST'])
+def step22():
     if request.method == 'POST':
         subprocess.call('fuser -k 8332/tcp', shell=True)
         subprocess.call('sudo rm -r ~/.bitcoin/yetiwarm*', shell=True)
         subprocess.call('sudo rm -r ~/yetiwarmwallet*', shell=True)
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
-        return redirect('/step24')
-    return render_template('YWstep23.html')
+        return redirect('/step23')
+    return render_template('YWstep22.html')
 #finished reopen bitcoin
-@app.route('/step24', methods=['GET', 'POST'])
-def step24():
+@app.route('/step23', methods=['GET', 'POST'])
+def step23():
     global progress
     if request.method == 'GET':
         progress = BTCprogress()
     if request.method == 'POST':
         if progress >= 99:
             subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yetiwarm"','~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yetiwarm"'],shell=True)
-            return redirect('/step25')
-        else:
             return redirect('/step24')
-    return render_template('YWstep24.html', progress=progress)
+        else:
+            return redirect('/step23')
+    return render_template('YWstep23.html', progress=progress)
 #display for print
-@app.route("/step25", methods=['GET', 'POST'])
-def step25():
+@app.route("/step24", methods=['GET', 'POST'])
+def step24():
     global pubdesc
     if request.method == 'GET':
         randomnum = str(random.randrange(0,1000000))
@@ -482,14 +482,14 @@ def step25():
         img.save(home + '/yeticold/static/firstqrcode' + firstqrname + '.png')
         route = url_for('static', filename='firstqrcode' + firstqrname + '.png')
     if request.method == 'POST':
-        return redirect('/step26')
-    return render_template('YWstep25.html', qrdata=pubdesc, route=route)
+        return redirect('/step25')
+    return render_template('YWstep24.html', qrdata=pubdesc, route=route)
 
-@app.route("/step26", methods=['GET', 'POST'])
-def step26():
+@app.route("/step25", methods=['GET', 'POST'])
+def step25():
     if request.method == 'POST':
         return redirect('/menu')
-    return render_template('YWstep26.html')
+    return render_template('YWstep25.html')
 
 ###END OF SETUP
 
@@ -670,40 +670,40 @@ def Recovery_step1215():
                 xpub = response.split('(')[1].split(')')[0]
                 newxpublist.append(xpub)
                 privkeycount = 0
-            return redirect('/Recovery/step17')
+            return redirect('/Recovery/step16')
         else:
             return redirect('/Recovery/step1215')
     return render_template('YWRstep1215.html', x=privkeycount + 1, error=error,i=privkeycount + 12 )
 
 
 #reopen bitcoin
-@app.route("/Recovery/step17", methods=['GET', 'POST'])
-def Recovery_step17():
+@app.route("/Recovery/step16", methods=['GET', 'POST'])
+def Recovery_step16():
     if request.method == 'POST':
         subprocess.call('fuser -k 8332/tcp', shell=True)
         subprocess.call('rm -r ~/.bitcoin/yetiwarm*', shell=True)
         subprocess.call('rm -r ~/yetiwarmwallet*', shell=True)
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
-        return redirect('/Recovery/step18')
-    return render_template('YWRstep17.html')
+        return redirect('/Recovery/step17')
+    return render_template('YWRstep16.html')
 
 #finish reopen bitcoin
-@app.route('/Recovery/step18', methods=['GET', 'POST'])
-def Recovery_step18():
+@app.route('/Recovery/step17', methods=['GET', 'POST'])
+def Recovery_step17():
     global progress
     if request.method == 'GET':
         progress = BTCprogress()
     if request.method == 'POST':
         if progress >= 99:
             subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yetiwarm"','~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yetiwarm"'],shell=True)
-            return redirect('/Recovery/step19')
-        else:
             return redirect('/Recovery/step18')
-    return render_template('YWRstep18.html', progress=progress)
+        else:
+            return redirect('/Recovery/step17')
+    return render_template('YWRstep17.html', progress=progress)
 
 #GEN trans qr code
-@app.route("/Recovery/step19", methods=['GET', 'POST'])
-def Recovery_step19():
+@app.route("/Recovery/step18", methods=['GET', 'POST'])
+def Recovery_step18():
     global xprivlist
     global newxpublist
     global pubdesc
@@ -747,7 +747,7 @@ def Recovery_step19():
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm sendrawtransaction '+transnum['hex']+''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
         return redirect('/menu')
-    return render_template('YWRstep19.html', amount=amo, minerfee=minerfee, recipent=receipentaddress)
+    return render_template('YWRstep18.html', amount=amo, minerfee=minerfee, recipent=receipentaddress)
 
 
 
