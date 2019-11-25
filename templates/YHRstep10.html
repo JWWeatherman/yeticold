@@ -8,7 +8,7 @@
   </head>
   <body>
     <div class="container" style="margin-top: 3rem;">
-        <h2>Step 10: Input Private Key</h2>
+        <h2>Step 10: Check Private Key</h2>
         <ul>
             <li>If you lose access to more than 4 of your private keys your bitcoin will be permanently lost.</li>
             <li>Enter your seed phrases below to ensure you wrote them down correctly.</li>
@@ -16,6 +16,7 @@
       {% if error %}
         <p style="color:red;">{{ error }}</p>
       {% endif %}
+        <input id="filepath" type="file" name="path">
         <form action="" method="post" style="border: solid #f8f9fa;padding: 1.5rem;">
         <div class="form-row">
           <div class="input-group col-md-10 mb-3">
@@ -297,37 +298,53 @@ var decode = (s) => {
       return char === checksum
     }
     var highlightrows = () => {
-          var templist = []
-          var Privatekey = []
-          var numofrowsgreen = 0
-          var red = "rgba(255, 0, 0, 0.4)"
-          var green = "rgba(0, 151, 19, 0.4)"
-          for(var i = 1;i < 14; i++) {
-            document.getElementById('row' + i).style.backgroundColor = ""
-            templist = document.getElementById('row' + i).value.toString().split(' ')
-            Privatekey.concat(document.getElementById('row' + i).value.toString().split(' '))
-            templist = templist.splice(0, 5)
-            var checksum = templist.pop()
-            if (document.getElementById('row' + i).value) document.getElementById('row' + i).style.backgroundColor = red
-            if (templist.filter((el) => {return passphraseWIFlist.includes(el)}).length === 4) {
-              if (checksum != '') {
-                if (checkSum(templist,checksum)) {
-                  numofrowsgreen++
-                  document.getElementById('row' + i).style.backgroundColor = green
-                }
+        var templist = []
+        var Privatekey = []
+        var numofrowsgreen = 0
+        var red = "rgba(255, 0, 0, 0.4)"
+        var green = "rgba(0, 151, 19, 0.4)"
+        for(var i = 1;i < 14; i++) {
+          document.getElementById('row' + i).style.backgroundColor = ""
+          templist = document.getElementById('row' + i).value.toString().split(' ')
+          Privatekey.concat(document.getElementById('row' + i).value.toString().split(' '))
+          templist = templist.splice(0, 5)
+          var checksum = templist.pop()
+          if (document.getElementById('row' + i).value) document.getElementById('row' + i).style.backgroundColor = red
+          if (templist.filter((el) => {return passphraseWIFlist.includes(el)}).length === 4) {
+            if (checksum != '') {
+              if (checkSum(templist,checksum)) {
+                numofrowsgreen++
+                document.getElementById('row' + i).style.backgroundColor = green
               }
-              templist = []
+            }
+            templist = []
+          }
+        }
+        var ConvertKey = numofrowsgreen === 13
+        if (ConvertKey) {
+          document.getElementById("nextkey").disabled = false
+        } else {
+          document.getElementById("nextkey").disabled = true
+        }
+        setTimeout(() => { highlightrows() }, 80)
+      }
+      var importfile = () => {
+        let file = document.getElementById("filepath").files[0]
+        if (file != undefined) {
+          let reader = new FileReader();
+          document.getElementById('filepath').value = ""
+          reader.onload = function(evt) {
+            let list = evt.target.result.toString().split('\n')
+            for (let i = 0; i <= 12; i++) {
+              document.getElementById('row' + (i+1)).value = list[i]
             }
           }
-          var ConvertKey = numofrowsgreen === 13
-          if (ConvertKey) {
-            document.getElementById("nextkey").disabled = false
-          } else {
-            document.getElementById("nextkey").disabled = true
-          }
-          setTimeout(() => { highlightrows() }, 80)
+          reader.readAsText(file);
         }
-        highlightrows()
+        setTimeout(() => { importfile() }, 80)
+      }
+      importfile()
+      highlightrows()
     </script>
   </body>
 </html>
