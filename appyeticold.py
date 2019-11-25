@@ -612,13 +612,14 @@ def step2531():
 @app.route("/step32", methods=['GET', 'POST'])
 def step32():
     if request.method == 'POST':
-        subprocess.call('gnome-terminal -- bash -c "sudo python3 ~/yeticold/utils/deleteallwallets.py; echo "DONE, Close this window.""', shell=True)
         return redirect('/step33')
     return render_template('YCstep32.html')
 
 @app.route("/step33", methods=['GET', 'POST'])
 def step33():
     if request.method == 'POST':
+        subprocess.call('sudo rm -r ~/.bitcoin/yeticold*', shell=True)
+        subprocess.call('sudo rm -r ~/yeticoldwallet*', shell=True)
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         return redirect('/step34')
     return render_template('YCstep33.html')
@@ -771,13 +772,14 @@ def step44():
 def step45():
     global transnum
     if request.method == 'POST':
-        subprocess.call('gnome-terminal -- bash -c "sudo python3 ~/yeticold/utils/deleteallwallets.py; echo "DONE""', shell=True)
         return redirect('/step46')
     return render_template('YCstep45.html')
 
 @app.route("/step46", methods=['GET', 'POST'])
 def step46():
     if request.method == 'POST':
+        subprocess.call('sudo rm -r ~/.bitcoin/yeticold*', shell=True)
+        subprocess.call('sudo rm -r ~/yeticoldwallet*', shell=True)
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         return redirect('/step47')
     return render_template('YCstep46.html')
@@ -888,13 +890,14 @@ def step50():
 def step51():
     global transnum
     if request.method == 'POST':
-        subprocess.call('gnome-terminal -- bash -c "sudo python3 ~/yeticold/utils/deleteallwallets.py; echo "DONE""', shell=True)
         return redirect('/step52')
     return render_template('YCstep51.html')
 
 @app.route("/step52", methods=['GET', 'POST'])
 def step52():
     if request.method == 'POST':
+        subprocess.call('sudo rm -r ~/.bitcoin/yeticold*', shell=True)
+        subprocess.call('sudo rm -r ~/yeticoldwallet*', shell=True)
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         return redirect('/step53')
     return render_template('YCstep52.html')
@@ -1005,13 +1008,14 @@ def step56():
 def step57():
     global transnum
     if request.method == 'POST':
-        subprocess.call('gnome-terminal -- bash -c "sudo python3 ~/yeticold/utils/deleteallwallets.py; echo "DONE""', shell=True)
         return redirect('/step58')
     return render_template('YCstep57.html')
 
 @app.route("/step58", methods=['GET', 'POST'])
 def step58():
     if request.method == 'POST':
+        subprocess.call('sudo rm -r ~/.bitcoin/yeticold*', shell=True)
+        subprocess.call('sudo rm -r ~/yeticoldwallet*', shell=True)
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         return redirect('/step59')
     return render_template('YCstep58.html')

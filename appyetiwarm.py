@@ -432,23 +432,20 @@ def step1521():
                         privkeylist = []
                         error = 'You have imported your seeds correctly but your xprivs do not match: This means that you either do not have bitcoin running or its initial block download mode. Another issue is that you have a wallet folder or wallet dump file that was not deleted before starting this step.'
                         return redirect('/step1521')
-                return redirect('/step22')
+                return redirect('/step23')
             else:
                 return redirect('/step1521')
         else:
             error = 'You enterd the private key incorrectly but the checksums are correct please try agian. This means you probably inputed a valid seed, but not your seed ' +str(privkeycount + 1)+' seed.'
     return render_template('YWstep1521.html', x=privkeycount + 1, error=error,i=privkeycount + 35 )
-#delete wallet
-@app.route("/step22", methods=['GET', 'POST'])
-def step22():
-    if request.method == 'POST':
-        subprocess.call('gnome-terminal -- bash -c "sudo python3 ~/yeticold/utils/deleteallwallets.py; echo "DONE, Close this window.""', shell=True)
-        return redirect('/step23')
-    return render_template('YWstep22.html')
+
 #reopen bitcoin
 @app.route("/step23", methods=['GET', 'POST'])
 def step23():
     if request.method == 'POST':
+        subprocess.call('fuser -k 8332/tcp', shell=True)
+        subprocess.call('sudo rm -r ~/.bitcoin/yetiwarm*', shell=True)
+        subprocess.call('sudo rm -r ~/yetiwarmwallet*', shell=True)
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         return redirect('/step24')
     return render_template('YWstep23.html')
@@ -673,23 +670,19 @@ def Recovery_step1215():
                 xpub = response.split('(')[1].split(')')[0]
                 newxpublist.append(xpub)
                 privkeycount = 0
-            return redirect('/Recovery/step16')
+            return redirect('/Recovery/step17')
         else:
             return redirect('/Recovery/step1215')
     return render_template('YWRstep1215.html', x=privkeycount + 1, error=error,i=privkeycount + 12 )
 
-#stop bitocin qt and delete wallet
-@app.route("/Recovery/step16", methods=['GET', 'POST'])
-def Recovery_step16():
-    if request.method == 'POST':
-        subprocess.call('gnome-terminal -- bash -c "sudo python3 ~/yeticold/utils/deleteallwallets.py; echo "DONE, Close this window.""', shell=True)
-        return redirect('/Recovery/step17')
-    return render_template('YWRstep16.html')
 
 #reopen bitcoin
 @app.route("/Recovery/step17", methods=['GET', 'POST'])
 def Recovery_step17():
     if request.method == 'POST':
+        subprocess.call('fuser -k 8332/tcp', shell=True)
+        subprocess.call('sudo rm -r ~/.bitcoin/yetiwarm*', shell=True)
+        subprocess.call('sudo rm -r ~/yetiwarmwallet*', shell=True)
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         return redirect('/Recovery/step18')
     return render_template('YWRstep17.html')
