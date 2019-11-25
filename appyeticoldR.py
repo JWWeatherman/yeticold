@@ -668,22 +668,16 @@ def step2426():
                 xpub = response.split('(')[1].split(')')[0]
                 newxpublist.append(xpub)
                 privkeycount = 0
-            return redirect('/step27')
+            return redirect('/step28')
         else:
             return redirect('/step2426')
     return render_template('YCRstep2426.html', x=privkeycount + 1, error=error,i=privkeycount + 26 )
-
-#stop bitocin qt and delete wallet
-@app.route("/step27", methods=['GET', 'POST'])
-def step27():
-    if request.method == 'POST':
-        return redirect('/step28')
-    return render_template('YCRstep27.html')
 
 #reopen bitcoin
 @app.route("/step28", methods=['GET', 'POST'])
 def step28():
     if request.method == 'POST':
+        subprocess.call('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli stop', shell=True)
         subprocess.call('sudo rm -r ~/.bitcoin/yeticold*', shell=True)
         subprocess.call('sudo rm -r ~/yeticoldwallet*', shell=True)
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
@@ -838,20 +832,15 @@ def step33():
         if request.form['option'] == 'olddesc':
             return redirect('/step11')
         else:
-            return redirect('/step34')
+            return redirect('/step35')
     return render_template('YCRstep33.html')
 
-#stop bitocin qt and delete wallet
-@app.route("/step34", methods=['GET', 'POST'])
-def step34():
-    if request.method == 'POST':
-        return redirect('/step35')
-    return render_template('YCRstep34.html')
 
 #reopen bitcoin
 @app.route("/step35", methods=['GET', 'POST'])
 def step35():
     if request.method == 'POST':
+        subprocess.call('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli stop', shell=True)
         subprocess.call('sudo rm -r ~/.bitcoin/yeticold*', shell=True)
         subprocess.call('sudo rm -r ~/yeticoldwallet*', shell=True)
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)

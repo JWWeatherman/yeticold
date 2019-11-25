@@ -373,7 +373,7 @@ def step11():
 @app.route("/Recovery/step08", methods=['GET', 'POST'])
 def Recovery_step08():
     if request.method == 'POST':
-        subprocess.call('fuser -k 8332/tcp', shell=True)
+        subprocess.call('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli stop', shell=True)
         subprocess.call('sudo rm -r ~/.bitcoin/yetihot*', shell=True)
         subprocess.call('sudo rm -r ~/yetihotwallet*', shell=True)
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)

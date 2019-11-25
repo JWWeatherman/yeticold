@@ -443,7 +443,7 @@ def step1521():
 @app.route("/step22", methods=['GET', 'POST'])
 def step22():
     if request.method == 'POST':
-        subprocess.call('fuser -k 8332/tcp', shell=True)
+        subprocess.call('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli stop', shell=True)
         subprocess.call('sudo rm -r ~/.bitcoin/yetiwarm*', shell=True)
         subprocess.call('sudo rm -r ~/yetiwarmwallet*', shell=True)
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
@@ -680,7 +680,7 @@ def Recovery_step1215():
 @app.route("/Recovery/step16", methods=['GET', 'POST'])
 def Recovery_step16():
     if request.method == 'POST':
-        subprocess.call('fuser -k 8332/tcp', shell=True)
+        subprocess.call('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli stop', shell=True)
         subprocess.call('rm -r ~/.bitcoin/yetiwarm*', shell=True)
         subprocess.call('rm -r ~/yetiwarmwallet*', shell=True)
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
