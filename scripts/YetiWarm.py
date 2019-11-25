@@ -6,7 +6,7 @@ subprocess.call(['sudo apt-get install python3-venv'],shell=True)
 subprocess.call(['sudo apt-get install python3-pip'],shell=True)
 subprocess.call(['sudo apt-get install libzbar0'],shell=True)
 subprocess.call(['sudo apt install tor'],shell=True)
-
+subprocess.call('fuser -k 8332/tcp', shell=True)
 subprocess.call('sudo rm -r ~/.bitcoin/yetiwarm*', shell=True)
 subprocess.call('sudo rm -r ~/yetiwarmwallet*', shell=True)
 
