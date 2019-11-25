@@ -681,8 +681,8 @@ def Recovery_step1215():
 def Recovery_step17():
     if request.method == 'POST':
         subprocess.call('fuser -k 8332/tcp', shell=True)
-        subprocess.call('sudo rm -r ~/.bitcoin/yetiwarm*', shell=True)
-        subprocess.call('sudo rm -r ~/yetiwarmwallet*', shell=True)
+        subprocess.call('rm -r ~/.bitcoin/yetiwarm*', shell=True)
+        subprocess.call('rm -r ~/yetiwarmwallet*', shell=True)
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         return redirect('/Recovery/step18')
     return render_template('YWRstep17.html')
