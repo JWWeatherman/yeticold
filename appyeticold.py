@@ -821,7 +821,7 @@ def step46():
         trans = trans.split("&")[0].split(",")
         trans[1] = int(trans[1])
         trans[4] = float(trans[4])
-        minerfee = float(rpc.estimatesmartfee(6)["feerate"])
+        minerfee = float(rpc.estimatesmartfee(1)["feerate"])
         kilobytespertrans = 0.200
         amo = (trans[4] - (minerfee * kilobytespertrans))
         amo = "{:.8f}".format(float(amo))
@@ -940,7 +940,7 @@ def step52():
         trans = trans.split("&")[1].split(",")
         trans[1] = int(trans[1])
         trans[4] = float(trans[4])
-        minerfee = float(rpc.estimatesmartfee(6)["feerate"])
+        minerfee = float(rpc.estimatesmartfee(1)["feerate"])
         kilobytespertrans = 0.200
         amo = (trans[4] - (minerfee * kilobytespertrans))
         amo = "{:.8f}".format(float(amo))
@@ -1051,7 +1051,7 @@ def step57():
         trans = trans.split("&")[2].split(",")
         trans[1] = int(trans[1])
         trans[4] = float(trans[4])
-        minerfee = float(rpc.estimatesmartfee(6)["feerate"])
+        minerfee = float(rpc.estimatesmartfee(1)["feerate"])
         kilobytespertrans = 0.200
         amo = (trans[4] - (minerfee * kilobytespertrans))
         amo = "{:.8f}".format(float(amo))

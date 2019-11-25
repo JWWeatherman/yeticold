@@ -730,7 +730,7 @@ def Recovery_step18():
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm importmulti \'[{ "desc": '+desc+'#'+ checksum +'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
         rpc = RPC()
-        minerfee = float(rpc.estimatesmartfee(6)["feerate"])
+        minerfee = float(rpc.estimatesmartfee(1)["feerate"])
         kilobytespertrans = 0.200
         minerfee = (minerfee * kilobytespertrans)
         amo = (float(sourceaddress['numbal']) - minerfee)

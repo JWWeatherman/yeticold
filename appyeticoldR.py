@@ -752,7 +752,7 @@ def step30():
             print(response)
             return "error response from importmulti: " + str(response[1]) + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yeticold importmulti \'[{ "desc": '+desc+'#'+ checksum +'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''
         rpc = RPC()
-        minerfee = float(rpc.estimatesmartfee(6)["feerate"])
+        minerfee = float(rpc.estimatesmartfee(1)["feerate"])
         kilobytespertrans = 0.200
         amo = (float(balance) - (minerfee * kilobytespertrans))
         minerfee = (minerfee * kilobytespertrans)
@@ -804,7 +804,7 @@ def step31():
     if request.method == 'POST':
         rpc = RPC()
         firstqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-        minerfee = float(rpc.estimatesmartfee(6)["feerate"])
+        minerfee = float(rpc.estimatesmartfee(1)["feerate"])
         kilobytespertrans = 0.200
         amount = (float(balance) - (minerfee * kilobytespertrans))
         amount = "{:.8f}".format(float(amount))
