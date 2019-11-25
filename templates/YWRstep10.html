@@ -25,32 +25,34 @@
               <ul class="nav navbar-nav navbar-left">
                 <li class="form-inline my-2 my-lg-0 navbar-right nav navbar-nav">{{addresses[i]['address']}}</li>
               </ul>
-              <ul class="nav navbar-nav navbar-left" style="position: absolute; right: 18vw!important;">
-                <li class="form-inline my-2 my-lg-0 navbar-right nav navbar-nav">Balance:</li>
-              </ul>
-              <ul class="nav navbar-nav navbar-left" style="position: absolute; right: 13vw!important;">
-                <li class="form-inline my-2 my-lg-0 navbar-right nav navbar-nav">{{addresses[i]['balance']}}</li>
-              </ul>
-              <ul class="nav navbar-nav navbar-right" style="position: absolute; right: 6.5vw!important;display: flex;">
-                <form action="" method="post" class="form-inline my-2 my-lg-0 navbar-right nav navbar-nav">
-                  <input style="display: none;" name="option" value="SEND">
-                  <input style="display: none;" name="address" value="{{addresses[i]['address']}}">
-                  {%if addresses[i]['numbal'] > 0 and addresses[i]['utxocount'] == 1%}
-                  <input class="btn btn-primary my-2 my-sm-0" type="submit" id="send{{i}}" value="Send">
-                  {%else%}
-                  <input disabled class="btn btn-primary my-2 my-sm-0" type="submit" id="send{{i}}" value="Send">
-                  {%endif%}
-                </form>
-              </ul>
               <ul class="nav navbar-nav navbar-right" style="display: flex;">
-                <form action="" method="post" class="form-inline my-2 my-lg-0 navbar-right nav navbar-nav">
-                  <input style="display: none;" name="option" value="RECEIVE">
-                  {%if addresses[i]['totalnumbal'] > 0%}
-                  <input disabled class="btn btn-secondary my-2 my-sm-0" type="button" id="show{{i}}" value="Receive">
-                  {%else%}
-                  <input class="btn btn-primary my-2 my-sm-0" type="button" id="show{{i}}" value="Receive">
-                  {%endif%}
-                </form>
+                <ul class="nav navbar-nav navbar-left" style="position: absolute; right: 29.5%!important;">
+                  <li class="form-inline my-2 my-lg-0 navbar-right nav navbar-nav">Balance:</li>
+                </ul>
+                <ul class="nav navbar-nav navbar-left" style="position: absolute; right: 13%!important;">
+                  <li class="form-inline my-2 my-lg-0 navbar-right nav navbar-nav">{{addresses[i]['balance']}}</li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right" style="position: absolute; right: 10.5%!important;display: flex;">
+                  <form action="" method="post" class="form-inline my-2 my-lg-0 navbar-right nav navbar-nav">
+                    <input style="display: none;" name="option" value="SEND">
+                    <input style="display: none;" name="address" value="{{addresses[i]['address']}}">
+                    {%if addresses[i]['numbal'] > 0 and addresses[i]['utxocount'] == 1%}
+                    <input class="btn btn-primary my-2 my-sm-0" type="submit" id="send{{i}}" value="Send">
+                    {%else%}
+                    <input disabled class="btn btn-primary my-2 my-sm-0" type="submit" id="send{{i}}" value="Send">
+                    {%endif%}
+                  </form>
+                </ul>
+                <ul class="nav navbar-nav navbar-right" style="display: flex;">
+                  <form action="" method="post" class="form-inline my-2 my-lg-0 navbar-right nav navbar-nav">
+                    <input style="display: none;" name="option" value="RECEIVE">
+                    {%if addresses[i]['totalnumbal'] > 0%}
+                    <input disabled class="btn btn-secondary my-2 my-sm-0" type="button" id="show{{i}}" value="Receive">
+                    {%else%}
+                    <input class="btn btn-primary my-2 my-sm-0" type="button" id="show{{i}}" value="Receive">
+                    {%endif%}
+                  </form>
+                </ul>
               </ul>
             </li>
         {%if (i % 2) == 0 %} 
