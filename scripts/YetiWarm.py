@@ -36,4 +36,4 @@ if not (os.path.exists(home + "/yeticold/bitcoin-0.19.0rc1/bin")):
 	os.system('tar xvzf ~/yeticold/bitcoin-0.19.0rc1-x86_64-linux-gnu.tar.gz -C ~/yeticold')
 
 subprocess.Popen('python3 ~/yeticold/appyetiwarm.py',shell=True,start_new_session=True)
-subprocess.call(['xdg-open http://localhost:5000/step06'],shell=True)
+subprocess.call(['xdg-open http://localhost:5000/YWopenbitcoin'],shell=True)
