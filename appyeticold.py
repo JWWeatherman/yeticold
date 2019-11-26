@@ -358,13 +358,13 @@ def YCcheckprogressC():
     if request.method == 'POST':
         if progress >= 99:
             subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticold"','~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yeticold"'],shell=True)
-            return redirect('/YCgetkeys')
+            return redirect('/YCgetseeds')
         else:
             return redirect('/YCcheckprogressC')
     return render_template('YCcheckprogressC.html', progress=progress)
 
-@app.route("/YCgetkeys", methods=['GET', 'POST'])
-def YCgetkeys():
+@app.route("/YCgetseeds", methods=['GET', 'POST'])
+def YCgetseeds():
     global privkeylist
     global privkeycount
     global firstqrcode
@@ -425,7 +425,7 @@ def YCgetkeys():
         desc = response["descriptor"]
         firstqrcode = desc
         return redirect('/YCdisplaydescriptor')
-    return render_template('YCgetkeys.html')
+    return render_template('YCgetseeds.html')
 
 @app.route("/YCdisplaydescriptor", methods=['GET', 'POST'])
 def YCdisplaydescriptor():

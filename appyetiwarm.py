@@ -297,12 +297,12 @@ def YWmenu():
         if request.form['option'] == 'recovery':
             return redirect('/YWRscandescriptor')
         else:
-            return redirect('/YWgetkeys')
+            return redirect('/YWgetseeds')
     return render_template('YWmenu.html')
 
 #randomise priv key and get xprivs
-@app.route("/YWgetkeys", methods=['GET', 'POST'])
-def YWgetkeys():
+@app.route("/YWgetseeds", methods=['GET', 'POST'])
+def YWgetseeds():
     global privkeylist
     global privkeycount
     global xprivlist
@@ -359,7 +359,7 @@ def YWgetkeys():
         checksum = response["checksum"]
         pubdesc = response["descriptor"]
         return redirect('/YWdisplayseeds')
-    return render_template('YWgetkeys.html')
+    return render_template('YWgetseeds.html')
 #display seeds
 @app.route('/YWdisplayseeds', methods=['GET', 'POST'])
 def YWdisplayseeds():
@@ -380,13 +380,13 @@ def YWdisplayseeds():
         privkeycount = privkeycount + 1
         if (privkeycount == 7):
             privkeycount = 0
-            return redirect('/YWcheckkeys')
+            return redirect('/YWcheckseeds')
         else:
             return redirect('/YWdisplayseeds')
     return render_template('YWdisplayseeds.html', PPL=passphraselist, x=privkeycount + 1, i=privkeycount + 25)
 #confirm privkey
-@app.route('/YWcheckkeys', methods=['GET', 'POST'])
-def YWcheckkeys():
+@app.route('/YWcheckseeds', methods=['GET', 'POST'])
+def YWcheckseeds():
     global privkeylist
     global xprivlist
     global privkeycount
@@ -431,13 +431,13 @@ def YWcheckkeys():
                         privkeycount = 0
                         privkeylist = []
                         error = 'You have imported your seeds correctly but your xprivs do not match: This means that you either do not have bitcoin running or its initial block download mode. Another issue is that you have a wallet folder or wallet dump file that was not deleted before starting this step.'
-                        return redirect('/YWcheckkeys')
+                        return redirect('/YWcheckseeds')
                 return redirect('/YWrestartbitcoin')
             else:
-                return redirect('/YWcheckkeys')
+                return redirect('/YWcheckseeds')
         else:
             error = 'You enterd the private key incorrectly but the checksums are correct please try agian. This means you probably inputed a valid seed, but not your seed ' +str(privkeycount + 1)+' seed.'
-    return render_template('YWcheckkeys.html', x=privkeycount + 1, error=error,i=privkeycount + 35 )
+    return render_template('YWcheckseeds.html', x=privkeycount + 1, error=error,i=privkeycount + 35 )
 
 #reopen bitcoin
 @app.route("/YWrestartbitcoin", methods=['GET', 'POST'])
