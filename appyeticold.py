@@ -199,7 +199,7 @@ def BTCFinished():
 
 def RPC():
     name = 'username'
-    wallet_name = 'yeticold'
+    wallet_name = ''
     uri = wallet_template.format(**settings, wallet_name=wallet_name)
     rpc = AuthServiceProxy(uri, timeout=600)  # 1 minute timeout
     return rpc
@@ -616,7 +616,6 @@ def YCcheckseeds():
                 privkeycount = 7
                 newxprivlist = []
                 for i in range(0,7):
-                    rpc = RPC()
                     home = os.getenv('HOME')
                     path = home + '/yeticoldwallet' + str(i)
                     subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticoldwallet'+str(i)+'" false true'],shell=True)
