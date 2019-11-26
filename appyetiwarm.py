@@ -270,26 +270,20 @@ def redirectroute():
         return redirect('/YWopenbitcoin')
     return render_template('redirect.html')
 
-### open bitcoin
 @app.route("/YWopenbitcoin", methods=['GET', 'POST'])
 def YWopenbitcoin():
-    if request.method == 'POST':
-        subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
-        return redirect('/YWcheckprogress')
-    return render_template('YWopenbitcoin.html')
-#finish open bitcoin
-@app.route("/YWcheckprogress", methods=['GET', 'POST'])
-def YWcheckprogress():
     global progress
     if request.method == 'GET':
+        home = os.getenv("HOME")
+        if not os.path.exists(home + '/.bitcoin/bitcoind.pid'):
+            subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':
         if progress >= 99.9:
-            subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yetiwarm"','~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yetiwarm"'],shell=True)
-            return redirect('/YWmenu')
+            return redirect('/YHmenu')
         else:
-            return redirect('/YWcheckprogress')
-    return render_template('YWcheckprogress.html', progress=progress)
+            return redirect('/YWopenbitcoin')
+    return render_template('YWopenbitcoin.html', progress=progress)
 
 @app.route("/YWmenu", methods=['GET', 'POST'])
 def YWmenu():
@@ -439,29 +433,23 @@ def YWcheckseeds():
             error = 'You enterd the private key incorrectly but the checksums are correct please try agian. This means you probably inputed a valid seed, but not your seed ' +str(privkeycount + 1)+' seed.'
     return render_template('YWcheckseeds.html', x=privkeycount + 1, error=error,i=privkeycount + 35 )
 
-#reopen bitcoin
+#finish open bitcoin
 @app.route("/YWrestartbitcoin", methods=['GET', 'POST'])
 def YWrestartbitcoin():
-    if request.method == 'POST':
-        subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
-        subprocess.call('sudo rm -r ~/.bitcoin/yetiwarm*', shell=True)
-        subprocess.call('sudo rm -r ~/yetiwarmwallet*', shell=True)
-        subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
-        return redirect('/YWcheckprogressB')
-    return render_template('YWrestartbitcoin.html')
-#finished reopen bitcoin
-@app.route('/YWcheckprogressB', methods=['GET', 'POST'])
-def YWcheckprogressB():
     global progress
+    global IBD
     if request.method == 'GET':
+        subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
+        subprocess.call('sudo rm -r ~/.bitcoin/yetihot*', shell=True)
+        subprocess.call('sudo rm -r ~/yetihotwallet*', shell=True)
+        subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':
-        if progress >= 99:
-            subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yetiwarm"','~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yetiwarm"'],shell=True)
-            return redirect('/YWprintdescriptor')
-        else:
-            return redirect('/YWcheckprogressB')
-    return render_template('YWcheckprogressB.html', progress=progress)
+        IBD = BTCFinished()
+        while IBD:
+            IBD = BTCFinished()
+        return redirect('/YWprintdescriptor')
+    return render_template('YWrestartbitcoin.html')
 #display for print
 @app.route("/YWprintdescriptor", methods=['GET', 'POST'])
 def YWprintdescriptor():
@@ -676,30 +664,23 @@ def YWRimportseeds():
     return render_template('YWRimportseeds.html', x=privkeycount + 1, error=error,i=privkeycount + 12 )
 
 
-#reopen bitcoin
+#finish open bitcoin
 @app.route("/YWRrestartbitcoin", methods=['GET', 'POST'])
 def YWRrestartbitcoin():
-    if request.method == 'POST':
-        subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
-        subprocess.call('rm -r ~/.bitcoin/yetiwarm*', shell=True)
-        subprocess.call('rm -r ~/yetiwarmwallet*', shell=True)
-        subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
-        return redirect('/YWRcheckprogress')
-    return render_template('YWRrestartbitcoin.html')
-
-#finish reopen bitcoin
-@app.route('/YWRcheckprogress', methods=['GET', 'POST'])
-def YWRcheckprogress():
     global progress
+    global IBD
     if request.method == 'GET':
+        subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
+        subprocess.call('sudo rm -r ~/.bitcoin/yetihot*', shell=True)
+        subprocess.call('sudo rm -r ~/yetihotwallet*', shell=True)
+        subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':
-        if progress >= 99:
-            subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yetiwarm"','~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yetiwarm"'],shell=True)
-            return redirect('/YWRsendtransaction')
-        else:
-            return redirect('/YWRcheckprogress')
-    return render_template('YWRcheckprogress.html', progress=progress)
+        IBD = BTCFinished()
+        while IBD:
+            IBD = BTCFinished()
+        return redirect('/YWRsendtransaction')
+    return render_template('YWRrestartbitcoin.html')
 
 #GEN trans qr code
 @app.route("/YWRsendtransaction", methods=['GET', 'POST'])

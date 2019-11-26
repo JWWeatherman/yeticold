@@ -200,10 +200,9 @@ def BTCFinished():
     response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
     if not (len(response[0]) == 0):
         bitcoinprogress = json.loads(response[0])['initialblockdownload']
-        print(json.loads(response[0]))
     else:
+        print("error response: "+ str(response[1]))
         bitcoinprogress = True
-    print(bitcoinprogress)
     return bitcoinprogress
 
 def RPC():
@@ -282,12 +281,12 @@ def xor(x, y):
 @app.route("/", methods=['GET', 'POST'])
 def redirectroute():
     if request.method == 'GET':
-        return redirect('/YHcheckprogress')
+        return redirect('/YHopenbitcoin')
     return render_template('redirect.html')
 
 #finish open bitcoin
-@app.route("/YHcheckprogress", methods=['GET', 'POST'])
-def YHcheckprogress():
+@app.route("/YHopenbitcoin", methods=['GET', 'POST'])
+def YHopenbitcoin():
     global progress
     if request.method == 'GET':
         home = os.getenv("HOME")
@@ -298,14 +297,14 @@ def YHcheckprogress():
         if progress >= 99.9:
             return redirect('/YHmenu')
         else:
-            return redirect('/YHcheckprogress')
-    return render_template('YHcheckprogress.html', progress=progress)
+            return redirect('/YHopenbitcoin')
+    return render_template('YHopenbitcoin.html', progress=progress)
 
 @app.route("/YHmenu", methods=['GET', 'POST'])
 def YHmenu():
     if request.method == 'POST':
         if request.form['option'] == 'recovery':
-            return redirect('/YHRcheckprogress')
+            return redirect('/YHRrestartbitcoin')
         else:
             return redirect('/YHgetseed')
     return render_template('YHmenu.html')
@@ -381,8 +380,8 @@ def YHcopyseed():
 #STOP SET UP-----------------------------------------------------------------------------------------------------------------------------------------------------
 
 #finish open bitcoin
-@app.route("/YHRcheckprogress", methods=['GET', 'POST'])
-def YHRcheckprogress():
+@app.route("/YHRrestartbitcoin", methods=['GET', 'POST'])
+def YHRrestartbitcoin():
     global progress
     global IBD
     if request.method == 'GET':
@@ -395,9 +394,8 @@ def YHRcheckprogress():
         IBD = BTCFinished()
         while IBD:
             IBD = BTCFinished()
-            print(IBD)
         return redirect('/YHRinputseed')
-    return render_template('YHRcheckprogress.html')
+    return render_template('YHRrestartbitcoin.html')
     
 @app.route('/YHRinputseed', methods=['GET', 'POST'])
 def YHRinputseed():
@@ -418,9 +416,14 @@ def YHRinputseed():
         subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yetihot" false true'],shell=True)
         subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yetihot"'],shell=True)
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetihot sethdseed false "'+privkey+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        print(response)
-        return redirect('/YHmenu')
+        return redirect('/YHRwalletinstructions')
     return render_template('YHRinputseed.html', error=error)
+
+@app.route('/YHRwalletinstructions', methods=['GET', 'POST'])
+def YHRwalletinstructions():
+    if request.method == 'POST':
+        return redirect('/YHmenu')
+    return render_template('YHRwalletinstructions.html', error=error)
 
 if __name__ == "__main__":
     app.run()
