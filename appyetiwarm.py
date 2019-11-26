@@ -307,10 +307,29 @@ def YWopenbitcoin():
 def YWmenu():
     if request.method == 'POST':
         if request.form['option'] == 'recovery':
-            return redirect('/YWRscandescriptor')
+            return redirect('/YWRrestartbitcoin')
         else:
-            return redirect('/YWgetseeds')
+            return redirect('/YWrestartbitcoin')
     return render_template('YWmenu.html')
+
+@app.route("/YWrestartbitcoin", methods=['GET', 'POST'])
+def YWrestartbitcoin():
+    global progress
+    global IBD
+    if request.method == 'GET':
+        subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
+        subprocess.call('sudo rm -r ~/.bitcoin/yetihot*', shell=True)
+        subprocess.call('sudo rm -r ~/yetihotwallet*', shell=True)
+        subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
+        progress = BTCprogress()
+    if request.method == 'POST':
+        IBD = BTCFinished()
+        while IBD:
+            IBD = BTCFinished()
+        subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yetiwarm"'],shell=True)
+        subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yetiwarm"'],shell=True)
+        return redirect('/YWgetseeds')
+    return render_template('YWrestartbitcoin.html')
 
 #randomise priv key and get xprivs
 @app.route("/YWgetseeds", methods=['GET', 'POST'])
@@ -446,32 +465,13 @@ def YWcheckseeds():
                         privkeylist = []
                         error = 'You have imported your seeds correctly but your xprivs do not match: This means that you either do not have bitcoin running or its initial block download mode. Another issue is that you have a wallet folder or wallet dump file that was not deleted before starting this step.'
                         return redirect('/YWcheckseeds')
-                return redirect('/YWrestartbitcoin')
+                return redirect('/YWprintdescriptor')
             else:
                 return redirect('/YWcheckseeds')
         else:
             error = 'You enterd the private key incorrectly but the checksums are correct please try agian. This means you probably inputed a valid seed, but not your seed ' +str(privkeycount + 1)+' seed.'
     return render_template('YWcheckseeds.html', x=privkeycount + 1, error=error,i=privkeycount + 35 )
 
-#finish open bitcoin
-@app.route("/YWrestartbitcoin", methods=['GET', 'POST'])
-def YWrestartbitcoin():
-    global progress
-    global IBD
-    if request.method == 'GET':
-        subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
-        subprocess.call('sudo rm -r ~/.bitcoin/yetihot*', shell=True)
-        subprocess.call('sudo rm -r ~/yetihotwallet*', shell=True)
-        subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
-        progress = BTCprogress()
-    if request.method == 'POST':
-        IBD = BTCFinished()
-        while IBD:
-            IBD = BTCFinished()
-        subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yetiwarm"'],shell=True)
-        subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yetiwarm"'],shell=True)
-        return redirect('/YWprintdescriptor')
-    return render_template('YWrestartbitcoin.html')
 #display for print
 @app.route("/YWprintdescriptor", methods=['GET', 'POST'])
 def YWprintdescriptor():
@@ -504,6 +504,26 @@ def YWcopyseeds():
 ###END OF SETUP
 
 #### start recovery
+
+#finish open bitcoin
+@app.route("/YWRrestartbitcoin", methods=['GET', 'POST'])
+def YWRrestartbitcoin():
+    global progress
+    global IBD
+    if request.method == 'GET':
+        subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
+        subprocess.call('sudo rm -r ~/.bitcoin/yetihot*', shell=True)
+        subprocess.call('sudo rm -r ~/yetihotwallet*', shell=True)
+        subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
+        progress = BTCprogress()
+    if request.method == 'POST':
+        IBD = BTCFinished()
+        while IBD:
+            IBD = BTCFinished()
+        subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yetiwarm"'],shell=True)
+        subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yetiwarm"'],shell=True)
+        return redirect('/YWRscandescriptor')
+    return render_template('YWRrestartbitcoin.html')
 
 @app.route("/YWRscandescriptor", methods=['GET', 'POST'])
 def YWRscandescriptor():
@@ -681,31 +701,10 @@ def YWRimportseeds():
                 xpub = response.split('(')[1].split(')')[0]
                 newxpublist.append(xpub)
                 privkeycount = 0
-            return redirect('/YWRrestartbitcoin')
+            return redirect('/YWRsendtransaction')
         else:
             return redirect('/YWRimportseeds')
     return render_template('YWRimportseeds.html', x=privkeycount + 1, error=error,i=privkeycount + 12 )
-
-
-#finish open bitcoin
-@app.route("/YWRrestartbitcoin", methods=['GET', 'POST'])
-def YWRrestartbitcoin():
-    global progress
-    global IBD
-    if request.method == 'GET':
-        subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
-        subprocess.call('sudo rm -r ~/.bitcoin/yetihot*', shell=True)
-        subprocess.call('sudo rm -r ~/yetihotwallet*', shell=True)
-        subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
-        progress = BTCprogress()
-    if request.method == 'POST':
-        IBD = BTCFinished()
-        while IBD:
-            IBD = BTCFinished()
-        subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yetiwarm"'],shell=True)
-        subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yetiwarm"'],shell=True)
-        return redirect('/YWRsendtransaction')
-    return render_template('YWRrestartbitcoin.html')
 
 #GEN trans qr code
 @app.route("/YWRsendtransaction", methods=['GET', 'POST'])
