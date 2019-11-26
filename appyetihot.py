@@ -400,6 +400,7 @@ def YHcopyseed():
 @app.route('/YHwalletinstructions', methods=['GET', 'POST'])
 def YHwalletinstructions():
     global qrdata
+    global error
     if request.method == 'GET':
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetihot rescanblockchain 600000',shell=True,start_new_session=True)
     if request.method == 'POST':
