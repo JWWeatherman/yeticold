@@ -2,7 +2,7 @@ import os
 import subprocess
 home = os.getenv("HOME")
 
-subprocess.call(['cd ~/yeticold', 'git pull', 'cd'],shell=True)
+subprocess.call(['cd ~/yeticold; git pull; cd'],shell=True)
 subprocess.call(['sudo apt-get install python3-venv'],shell=True)
 subprocess.call(['sudo apt-get install python3-pip'],shell=True)
 subprocess.call(['sudo apt-get install libzbar0'],shell=True)
