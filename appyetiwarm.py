@@ -620,7 +620,7 @@ def YWRscanrecipent():
         return redirect('/YWRimportseeds')
     return render_template('YWRscanrecipent.html', error=error, recipent=receipentaddress)
 
-@app.route('/RYWRimportseeds', methods=['GET', 'POST'])
+@app.route('/YWRimportseeds', methods=['GET', 'POST'])
 def YWRimportseeds():
     global privkeylist
     global xprivlist
