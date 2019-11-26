@@ -37,7 +37,7 @@
             </div>
         </div>
         <input style="display: none;" name="skip" value="dontskip">
-        <input disabled  style="background-color: rgb(112,196,245)!important;color: white;" class="btn" type="submit" id="xorbtn" value="Next">
+        <input disabled class="btn" type="submit" id="xorbtn" value="Next">
       </form>
     </div>
     <script>
@@ -55,11 +55,8 @@
       }
       var enable = () => {
         binaryrows = 0
-        for (var i = 1; i < 8; i++) {
-          var binary = document.getElementById('binary' + i).value
-          if (binary.length === 256) { binaryrows = binaryrows + 1 }
-        }
-        if (binaryrows === 7) {
+        var binary = document.getElementById('binary1').value
+        if (binary.length === 256) {
           document.getElementById("xorbtn").disabled = false
         } else {
           document.getElementById("xorbtn").disabled = true
@@ -67,12 +64,6 @@
         setTimeout(() => { enable() }, 80)
       }
       highlight(1)
-      highlight(2)
-      highlight(3)
-      highlight(4)
-      highlight(5)
-      highlight(6)
-      highlight(7)
       enable()
 
     </script>
