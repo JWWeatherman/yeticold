@@ -292,7 +292,7 @@ def YHcheckprogress():
     global progress
     if request.method == 'GET':
         home = os.getenv("HOME")
-        if not os.path.exists():
+        if not os.path.exists(home + '/.bitcoin/bitcoind.pid'):
             subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':
