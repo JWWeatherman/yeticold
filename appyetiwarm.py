@@ -18,7 +18,7 @@ if not (os.path.exists(home + "/.bitcoin")):
     subprocess.call(['mkdir ~/.bitcoin'],shell=True)
 else:
     subprocess.call(['rm ~/.bitcoin/bitcoin.conf'],shell=True)
-subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
+subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> ~/.bitcoin/bitcoin.conf', shell=True)
 
 ### VARIBALES START
 settings = {
@@ -203,6 +203,7 @@ def BTCFinished():
 def RPCYW():
     name = 'username'
     wallet_name = 'yetiwarm'
+    print(settings)
     uri = wallet_template.format(**settings, wallet_name=wallet_name)
     rpc = AuthServiceProxy(uri, timeout=600)  # 1 minute timeout
     return rpc
@@ -210,6 +211,7 @@ def RPCYW():
 def RPC():
     name = 'username'
     wallet_name = ''
+    print(settings)
     uri = wallet_template.format(**settings, wallet_name=wallet_name)
     rpc = AuthServiceProxy(uri, timeout=600)  # 1 minute timeout
     return rpc
