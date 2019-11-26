@@ -286,18 +286,14 @@ def redirectroute():
         return redirect('/menu')
     return render_template('redirect.html')
 
-### open bitcoin
-@app.route("/YHopenbitcoin", methods=['GET', 'POST'])
-def YHopenbitcoin():
-    if request.method == 'POST':
-        subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
-        return redirect('/YHcheckprogress')
-    return render_template('YHopenbitcoin.html')
 #finish open bitcoin
 @app.route("/YHcheckprogress", methods=['GET', 'POST'])
 def YHcheckprogress():
     global progress
     if request.method == 'GET':
+        home = os.getenv("HOME")
+        if not os.path.exists():
+            subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':
         if progress >= 99.9:
@@ -393,9 +389,6 @@ def YHRrestartbitcoin():
         subprocess.call('sudo rm -r ~/.bitcoin/yetihot*', shell=True)
         subprocess.call('sudo rm -r ~/yetihotwallet*', shell=True)
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
-        progress = 0
-        while progress < 99:
-            progress = BTCprogress()
         return redirect('/YHRcheckprogress')
     return render_template('YHRrestartbitcoin.html')
 
@@ -428,7 +421,8 @@ def YHRinputseed():
         privkey = PassphraseListToWIF(privkey)
         error = None
         rpc = RPC()
-        subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yetihot" false true','~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yetihot"'],shell=True)
+        subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yetihot" false true'],shell=True)
+        subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yetihot"'],shell=True)
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetihot sethdseed false "'+privkey+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
         return redirect('/YHmenu')
