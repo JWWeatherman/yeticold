@@ -394,8 +394,30 @@ def YHcheckseed():
 @app.route("/YHcopyseed", methods=['GET', 'POST'])
 def YHcopyseed():
     if request.method == 'POST':
-        return redirect('/YHmenu')
+        return redirect('/YHwalletinstructions')
     return render_template('YHcopyseed.html')
+
+@app.route('/YHwalletinstructions', methods=['GET', 'POST'])
+def YHwalletinstructions():
+    global qrdata
+    if request.method == 'GET':
+        subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetihot rescanblockchain 600000',shell=True,start_new_session=True)
+    if request.method == 'POST':
+        error = None
+        if request.form['option'] == 'scanqrcode':
+            qrdata = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+            qrdata = qrdata.decode("utf-8").replace('\n', '')
+            if (qrdata.split(':')[0] == 'bitcoin'):
+                qrdata = qrdata.split(':')[1].split('?')[0]
+            if (qrdata[:3] == 'bc1') or (qrdata[:1] == '3') or (qrdata[:1] == '1'):
+                if not (len(qrdata) >= 26) and (len(qrdata) <= 35):
+                    error = qrdata + ' is not a valid bitcoin address, address should have a length from 26 to 35 instead of ' + str(len(qrdata)) + '.'
+            else: 
+                error = qrdata + ' is not a valid bitcoin address, address should have started with bc1, 3 or 1 instead of ' + qrdata[:1] + ', or ' + qrdata[:3] + '.'
+            return redirect('/YHwalletinstructions')
+        else:
+            return redirect('/YHmenu')
+    return render_template('YHwalletinstructions.html', error=error, qrdata=qrdata)
 #STOP SET UP-----------------------------------------------------------------------------------------------------------------------------------------------------
 
 #finish open bitcoin
@@ -435,13 +457,14 @@ def YHRinputseed():
         subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yetihot" false true'],shell=True)
         subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yetihot"'],shell=True)
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetihot sethdseed true "'+privkey+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetihot rescanblockchain 600000',shell=True,start_new_session=True)
         return redirect('/YHRwalletinstructions')
     return render_template('YHRinputseed.html', error=error)
 
 @app.route('/YHRwalletinstructions', methods=['GET', 'POST'])
 def YHRwalletinstructions():
     global qrdata
+    if request.method == 'GET':
+        subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetihot rescanblockchain 600000',shell=True,start_new_session=True)
     if request.method == 'POST':
         error = None
         if request.form['option'] == 'scanqrcode':
