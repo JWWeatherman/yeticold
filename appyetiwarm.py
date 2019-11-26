@@ -297,6 +297,8 @@ def YWopenbitcoin():
     if request.method == 'POST':
         if progress >= 99.9:
             return redirect('YWmenu')
+            subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yetiwarm"'],shell=True)
+            subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yetiwarm"'],shell=True)
         else:
             return redirect('/YWopenbitcoin')
     return render_template('YWopenbitcoin.html', progress=progress)
@@ -466,6 +468,8 @@ def YWrestartbitcoin():
         IBD = BTCFinished()
         while IBD:
             IBD = BTCFinished()
+        subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yetiwarm"'],shell=True)
+        subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yetiwarm"'],shell=True)
         return redirect('/YWprintdescriptor')
     return render_template('YWrestartbitcoin.html')
 #display for print
@@ -698,6 +702,8 @@ def YWRrestartbitcoin():
         IBD = BTCFinished()
         while IBD:
             IBD = BTCFinished()
+        subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yetiwarm"'],shell=True)
+        subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yetiwarm"'],shell=True)
         return redirect('/YWRsendtransaction')
     return render_template('YWRrestartbitcoin.html')
 
