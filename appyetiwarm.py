@@ -371,12 +371,12 @@ def YWdisplayseeds():
     if request.method == 'POST':
         home = os.getenv('HOME')
         path = home + '/Documents'
-        subprocess.call('rm '+path+'/seed'+str(privkeycount + 1)+'.txt', shell=True)
-        subprocess.call('touch '+path+'/seed'+str(privkeycount + 1)+'.txt', shell=True)
+        subprocess.call('rm '+path+'/ywseed'+str(privkeycount + 1)+'.txt', shell=True)
+        subprocess.call('touch '+path+'/ywseed'+str(privkeycount + 1)+'.txt', shell=True)
         file = ''
         for i in range(0,13):
             file = file + request.form['displayrow' + str(i+1)] + '\n'
-        subprocess.call('echo "'+file+'" >> '+path+'/seed'+str(privkeycount + 1)+'.txt', shell=True)
+        subprocess.call('echo "'+file+'" >> '+path+'/ywseed'+str(privkeycount + 1)+'.txt', shell=True)
         privkeycount = privkeycount + 1
         if (privkeycount == 7):
             privkeycount = 0

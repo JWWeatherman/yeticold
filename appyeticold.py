@@ -590,12 +590,12 @@ def YCdisplayseeds():
     if request.method == 'POST':
         home = os.getenv('HOME')
         path = home + '/Documents'
-        subprocess.call('rm '+path+'/seed'+str(privkeycount + 1)+'.txt', shell=True)
-        subprocess.call('touch '+path+'/seed'+str(privkeycount + 1)+'.txt', shell=True)
+        subprocess.call('rm '+path+'/ycseed'+str(privkeycount + 1)+'.txt', shell=True)
+        subprocess.call('touch '+path+'/ycseed'+str(privkeycount + 1)+'.txt', shell=True)
         file = ''
         for i in range(0,13):
             file = file + request.form['displayrow' + str(i+1)] + '\n'
-        subprocess.call('echo "'+file+'" >> '+path+'/seed'+str(privkeycount + 1)+'.txt', shell=True)
+        subprocess.call('echo "'+file+'" >> '+path+'/ycseed'+str(privkeycount + 1)+'.txt', shell=True)
         privkeycount = privkeycount + 1
         if (privkeycount == 7):
             privkeycount = 0
