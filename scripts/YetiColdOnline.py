@@ -3,6 +3,8 @@ import subprocess
 home = os.getenv("HOME")
 
 
+subprocess.call(['cd ~/yeticold; git pull; cd'],shell=True)
+subprocess.call('fuser -k 5000/tcp', shell=True)
 if not (os.system("python3 -c 'import flask'") == 0):
 	subprocess.call(['pip3 install flask'],shell=True)
 if not (os.system("python3 -c 'import qrtools'") == 0):
@@ -18,12 +20,10 @@ if not (os.system("python3 -c 'import zbar'") == 0):
 	
 
 if not (os.path.exists(home + "/yeticold/bitcoin-0.19.0rc1/bin")):
-	subprocess.call(['cd ~/yeticold; git pull; cd'],shell=True)
 	subprocess.call(['sudo apt-get install python3-venv'],shell=True)
 	subprocess.call(['sudo apt-get install python3-pip'],shell=True)
 	subprocess.call(['sudo apt-get install libzbar0'],shell=True)
 	subprocess.call(['sudo apt install tor'],shell=True)
-	subprocess.call('fuser -k 5000/tcp', shell=True)
 	subprocess.call(['sudo pip3 install python-bitcoinrpc'],shell=True)
 	subprocess.call(['pip3 install opencv-python'],shell=True)
 	subprocess.call(['sudo apt-get update'],shell=True)
