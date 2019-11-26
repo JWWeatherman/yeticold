@@ -524,6 +524,7 @@ def YWRrestartbitcoin():
         while IBD:
             print(IBD)
             IBD = BTCFinished()
+        print("created wallets")
         subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yetiwarm"'],shell=True)
         subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yetiwarm"'],shell=True)
         return redirect('/YWRscandescriptor')
