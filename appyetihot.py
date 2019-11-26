@@ -202,6 +202,8 @@ def BTCFinished():
         bitcoinprogress = json.loads(response[0])['initialblockdownload']
     else:
         bitcoinprogress = False
+    print(json.loads(response[0]))
+    print(bitcoinprogress)
     return bitcoinprogress
 
 def RPC():
@@ -382,6 +384,7 @@ def YHcopyseed():
 @app.route("/YHRcheckprogress", methods=['GET', 'POST'])
 def YHRcheckprogress():
     global progress
+    global finished
     if request.method == 'GET':
         subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
         subprocess.call('sudo rm -r ~/.bitcoin/yetihot*', shell=True)
@@ -392,6 +395,7 @@ def YHRcheckprogress():
         finished = BTCFinished()
         while not finished:
             finished = BTCFinished()
+            print(finished)
         return redirect('/YHRinputseed')
     return render_template('YHRcheckprogress.html')
     
