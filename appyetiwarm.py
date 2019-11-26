@@ -191,9 +191,16 @@ def BTCprogress():
         bitcoinprogress = 0
     return bitcoinprogress
 
-def RPC():
+def RPCYW():
     name = 'username'
     wallet_name = 'yetiwarm'
+    uri = wallet_template.format(**settings, wallet_name=wallet_name)
+    rpc = AuthServiceProxy(uri, timeout=600)  # 1 minute timeout
+    return rpc
+
+def RPC():
+    name = 'username'
+    wallet_name = ''
     uri = wallet_template.format(**settings, wallet_name=wallet_name)
     rpc = AuthServiceProxy(uri, timeout=600)  # 1 minute timeout
     return rpc
@@ -532,7 +539,7 @@ def YWRdisplaywallet():
         for i in range(0, len(adrlist)):
             randomnum = str(random.randrange(0,1000000))
             route = url_for('static', filename='address'+randomnum+'.png')
-            rpc = RPC()
+            rpc = RPCYW()
             testlist = []
             testlist.append(adrlist[i])
             response = rpc.listunspent(0, 9999999, testlist)
