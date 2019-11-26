@@ -283,7 +283,7 @@ def xor(x, y):
 @app.route("/", methods=['GET', 'POST'])
 def redirectroute():
     if request.method == 'GET':
-        return redirect('/menu')
+        return redirect('/YHcheckprogress')
     return render_template('redirect.html')
 
 #finish open bitcoin
@@ -306,7 +306,7 @@ def YHcheckprogress():
 def YHmenu():
     if request.method == 'POST':
         if request.form['option'] == 'recovery':
-            return redirect('/YHRrestartbitcoin')
+            return redirect('/YHRcheckprogress')
         else:
             return redirect('/YHgetseed')
     return render_template('YHmenu.html')
@@ -381,29 +381,21 @@ def YHcopyseed():
     return render_template('YHcopyseed.html')
 #STOP SET UP-----------------------------------------------------------------------------------------------------------------------------------------------------
 
-#reopen bitcoin
-@app.route("/YHRrestartbitcoin", methods=['GET', 'POST'])
-def YHRrestartbitcoin():
-    if request.method == 'POST':
-        subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
-        subprocess.call('sudo rm -r ~/.bitcoin/yetihot*', shell=True)
-        subprocess.call('sudo rm -r ~/yetihotwallet*', shell=True)
-        subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
-        return redirect('/YHRcheckprogress')
-    return render_template('YHRrestartbitcoin.html')
-
 #finish open bitcoin
 @app.route("/YHRcheckprogress", methods=['GET', 'POST'])
 def YHRcheckprogress():
     global progress
     if request.method == 'GET':
+        subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
+        subprocess.call('sudo rm -r ~/.bitcoin/yetihot*', shell=True)
+        subprocess.call('sudo rm -r ~/yetihotwallet*', shell=True)
+        subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':
-        if progress >= 99.9:
-            return redirect('/YHRinputseed')
-        else:
-            return redirect('/YHRcheckprogress')
-    return render_template('YHRcheckprogress.html', progress=progress)
+        while not finished:
+            i = "wait"
+        return redirect('/YHRinputseed')
+    return render_template('YHRcheckprogress.html')
     
 @app.route('/YHRinputseed', methods=['GET', 'POST'])
 def YHRinputseed():
