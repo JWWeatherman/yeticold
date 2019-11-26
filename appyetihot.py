@@ -306,8 +306,26 @@ def YHmenu():
         if request.form['option'] == 'recovery':
             return redirect('/YHRrestartbitcoin')
         else:
-            return redirect('/YHgetseed')
+            return redirect('/YHrestartbitcoin')
     return render_template('YHmenu.html')
+
+#finish open bitcoin
+@app.route("/YHrestartbitcoin", methods=['GET', 'POST'])
+def YHrestartbitcoin():
+    global progress
+    global IBD
+    if request.method == 'GET':
+        subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
+        subprocess.call('sudo rm -r ~/.bitcoin/yetihot*', shell=True)
+        subprocess.call('sudo rm -r ~/yetihotwallet*', shell=True)
+        subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
+        progress = BTCprogress()
+    if request.method == 'POST':
+        IBD = BTCFinished()
+        while IBD:
+            IBD = BTCFinished()
+        return redirect('/YHgetseed')
+    return render_template('YHrestartbitcoin.html')
 
 #randomise priv key and get xprivs
 @app.route("/YHgetseed", methods=['GET', 'POST'])
