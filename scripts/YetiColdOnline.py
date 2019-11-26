@@ -8,7 +8,7 @@ subprocess.call(['sudo apt-get install python3-pip'],shell=True)
 subprocess.call(['sudo apt-get install libzbar0'],shell=True)
 subprocess.call(['sudo apt install tor'],shell=True)
 subprocess.call('fuser -k 5000/tcp', shell=True)
-subprocess.call('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli stop', shell=True)
+subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
 subprocess.call('sudo rm -r ~/.bitcoin/yeticold*', shell=True)
 subprocess.call('sudo rm -r ~/yeticoldwallet*', shell=True)
 

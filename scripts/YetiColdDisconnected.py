@@ -9,7 +9,7 @@ subprocess.call(['sudo chmod +x ~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt'],sh
 subprocess.call(['sudo chmod +x ~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-wallet'],shell=True)
 subprocess.call(['sudo chmod +x ~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-tx'],shell=True)
 subprocess.call('fuser -k 5000/tcp', shell=True)
-subprocess.call('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli stop', shell=True)
+subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
 subprocess.call('sudo rm -r ~/.bitcoin/yeticold*', shell=True)
 subprocess.call('sudo rm -r ~/yeticoldwallet*', shell=True)
 subprocess.Popen('python3 ~/yeticold/appyeticold.py',shell=True,start_new_session=True)
