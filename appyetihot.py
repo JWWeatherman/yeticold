@@ -199,12 +199,9 @@ def BTCprogress():
 def BTCFinished():
     response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
     if not (len(response[0]) == 0):
-        bitcoinprogress = json.loads(response[0])['verificationprogress']
-        bitcoinprogress = bitcoinprogress * 100
-        bitcoinprogress = round(bitcoinprogress, 3)
+        bitcoinprogress = json.loads(response[0])['initialblockdownload']
     else:
-        print("error response: "+ str(response[1]))
-        bitcoinprogress = 0
+        bitcoinprogress = False
     return bitcoinprogress
 
 def RPC():
@@ -392,9 +389,9 @@ def YHRcheckprogress():
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':
-        finished = BTCfinished()
+        finished = BTCFinished()
         while not finished:
-            finished = BTCfinished()
+            finished = BTCFinished()
         return redirect('/YHRinputseed')
     return render_template('YHRcheckprogress.html')
     
