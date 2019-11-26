@@ -209,7 +209,7 @@ def BTCFinished():
 
 def RPC():
     name = 'username'
-    wallet_name = 'yetihot'
+    wallet_name = ''
     uri = wallet_template.format(**settings, wallet_name=wallet_name)
     rpc = AuthServiceProxy(uri, timeout=600)  # 1 minute timeout
     return rpc
@@ -333,7 +333,7 @@ def YHgetseed():
         privkey = BinaryToWIF(xor(binary,newbinary))
         home = os.getenv('HOME')
         path = home + '/yetihotwallet'
-        subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yetihot" false true','~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yetihot"'],shell=True)
+        subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yetihot"','~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yetihot"'],shell=True)
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetihot sethdseed false "'+privkey+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         return redirect('/YHdisplayseed')
     return render_template('YHgetseed.html')
@@ -431,6 +431,7 @@ def YHRinputseed():
         subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yetihot" false true','~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yetihot"'],shell=True)
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetihot sethdseed false "'+privkey+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
+        return redirect('/YHmenu')
     return render_template('YHRinputseed.html', error=error)
 
 if __name__ == "__main__":
