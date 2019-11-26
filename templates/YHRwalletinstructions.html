@@ -15,8 +15,19 @@
       <h2>Step X: Rescan finish then follow thees instructions</h2>
       <div>When you click next Yeti will open Bitcoin Core and will begin downloading the blockchain.</div>
       <form action="" method="post" style="margin-top:35px;">
+        <input style="display: none;" name="option" value="VALUE">
         <input class="btn btn-primary" type="submit" id="next" value="Next">
       </form>
+      <form action="" method="post" style="margin-top:35px;">
+        <input style="display: none;" name="option" value="scanqrcode">
+        <input class="btn btn-primary" type="submit" id="next" value="Scan">
+      </form>error
+      {%if error%}
+      <div>{{error}}</div>
+      {%endif%}
+      {%if qrdata%}
+      <div>{{qrdata}}</div>
+      {%endif%}
     </div>
   </body>
 </html>
