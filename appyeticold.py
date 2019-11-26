@@ -318,10 +318,10 @@ def YCopenbitcoinB():
             subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':
-        if progress >= 99.9:
-            return redirect('/YConlinestartup')
-        else:
-            return redirect('/YCopenbitcoinB')
+        IBD = BTCFinished()
+        while IBD:
+            IBD = BTCFinished()
+        return redirect('/YConlinestartup')
     return render_template('YCopenbitcoinB.html', progress=progress)
 
 @app.route("/YConlinestartup", methods=['GET', 'POST'])
@@ -343,10 +343,10 @@ def YCopenbitcoinC():
             subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':
-        if progress >= 99.9:
-            return redirect('/YCgetseeds')
-        else:
-            return redirect('/YCopenbitcoinC')
+        IBD = BTCFinished()
+        while IBD:
+            IBD = BTCFinished()
+        return redirect('/YCgetseeds')
     return render_template('YCopenbitcoinC.html', progress=progress)
 
 @app.route("/YCgetseeds", methods=['GET', 'POST'])

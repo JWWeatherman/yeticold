@@ -12,13 +12,9 @@
       <h3 style="color:white;margin:0;">Yeti Bitcoin Cold Storage</h3>
     </nav>
     <div class="container" style="margin-top: 3rem;">
-      <h2>Step 34: Finish Opening Bitcoin.</h2>
-      <div>Once Bitcoin is fully opened click Next.</div>
-      <div class="progress mb-3">
-        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:{{ progress }}%">
-    {{ progress }}% Done
-        </div>
-      </div>
+      <h2>Step X: When finished will auto redirect.</h2>
+    
+     
       <div>
         <form action="" method="post" style="margin-top:35px;">
           <input style="display: none;" name="option" value="VALUE">
@@ -28,11 +24,7 @@
     </div>
     <script>
       var enable = () => {
-        if ({{ progress }} >= 99) {
-          document.getElementById("next").style.display = ""
-        } else {
-          setTimeout(() => { document.getElementById("next").click() }, 5000)
-        }
+        document.getElementById("next").click()
       }
       enable()
     </script>
