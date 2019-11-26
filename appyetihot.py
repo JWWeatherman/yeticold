@@ -392,8 +392,9 @@ def YHRcheckprogress():
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':
+        finished = BTCfinished()
         while not finished:
-            i = "wait"
+            finished = BTCfinished()
         return redirect('/YHRinputseed')
     return render_template('YHRcheckprogress.html')
     
