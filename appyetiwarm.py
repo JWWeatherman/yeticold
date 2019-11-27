@@ -199,6 +199,14 @@ def BTCFinished():
         bitcoinprogress = True
     return bitcoinprogress
 
+def BTCRunning():
+    home = os.getenv("HOME")
+    if (subprocess.call('lsof -n -i :8332', shell=True) != 1):
+        return True
+    elif os.path.exists(home + "/.bitcoin/bitcoind.pid"):
+        subprocess.call('rm -r ~/.bitcoin/bitcoind.pid', shell=True)
+    return False
+
 def RPCYW():
     name = 'username'
     wallet_name = 'yetiwarm'
@@ -292,7 +300,7 @@ def YWopenbitcoin():
     global progress
     if request.method == 'GET':
         home = os.getenv("HOME")
-        if not os.path.exists(home + '/.bitcoin/bitcoind.pid'):
+        if not BTCRunning():
             subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':
