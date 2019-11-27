@@ -182,7 +182,6 @@ def BTCprogress():
         bitcoinprogress = bitcoinprogress * 100
         bitcoinprogress = round(bitcoinprogress, 3)
     else:
-        print("error response: "+ str(response[1]))
         bitcoinprogress = 0
     return bitcoinprogress
 
@@ -191,7 +190,6 @@ def BTCFinished():
     if not (len(response[0]) == 0):
         bitcoinprogress = json.loads(response[0])['initialblockdownload']
     else:
-        print("error response: "+ str(response[1]))
         bitcoinprogress = True
     return bitcoinprogress
 
@@ -325,10 +323,9 @@ def YCopenbitcoinB():
         progress = BTCprogress()
     if request.method == 'POST':
         IBD = BTCFinished()
-        while IBD:
-            IBD = BTCFinished()
-        subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yeticold"'],shell=True)
-        return redirect('/YConlinestartup')
+        if IBD:
+            subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yeticold"'],shell=True)
+            return redirect('/YConlinestartup')
     return render_template('YCopenbitcoinB.html', progress=progress)
 
 @app.route("/YConlinestartup", methods=['GET', 'POST'])
@@ -351,10 +348,9 @@ def YCopenbitcoinC():
         progress = BTCprogress()
     if request.method == 'POST':
         IBD = BTCFinished()
-        while IBD:
-            IBD = BTCFinished()
-        subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticold"'],shell=True)
-        return redirect('/YCgetseeds')
+        if IBD:
+            subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticold"'],shell=True)
+            return redirect('/YCgetseeds')
     return render_template('YCopenbitcoinC.html', progress=progress)
 
 @app.route("/YCgetseeds", methods=['GET', 'POST'])
