@@ -6,7 +6,7 @@ if (subprocess.call('lsof -n -i :8332', shell=True) != 1):
 elif os.path.exists(home + "/.bitcoin/bitcoind.pid"):
 	subprocess.call('rm -r ~/.bitcoin/bitcoin.pid', shell=True)
 i = 0
-while os.path.exists(home + "/.bitcoin/bitcoind.pid") and (subprocess.call('lsof -n -i :8332', shell=True) != 1):
+while os.path.exists(home + "/.bitcoin/bitcoind.pid") or (subprocess.call('lsof -n -i :8332', shell=True) != 1):
 	if (subprocess.call('lsof -n -i :8332', shell=True) == 1) and (i > 2000):
 		subprocess.call('rm -r ~/.bitcoin/bitcoin.pid', shell=True)
 		print(os.path.exists(home + "/.bitcoin/bitcoind.pid"))
