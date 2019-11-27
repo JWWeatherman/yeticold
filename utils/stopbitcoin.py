@@ -9,4 +9,3 @@ while os.path.exists(home + "/.bitcoin/bitcoind.pid") and (subprocess.call('lsof
 	if (subprocess.call('lsof -n -i :8332', shell=True) == 1) and (i > 2000):
 		subprocess.call('rm -r ~/.bitcoin/bitcoin.pid', shell=True)
 		print(os.path.exists(home + "/.bitcoin/bitcoind.pid"))
-	i = "random stuff untill bitcoin stops"
