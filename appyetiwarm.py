@@ -51,6 +51,7 @@ progress = 0
 samedesc = False
 utxo = None
 rescan = False
+imported = False
 switcher = {
     "1": "ONE",
     "2": "TWO",
@@ -344,6 +345,7 @@ def YWgetseeds():
     global privkeycount
     global xprivlist
     global pubdesc
+    global imported
     if request.method == 'POST':
         if request.form['skip'] == 'skip':
             privkeylisttemp = []
@@ -386,6 +388,7 @@ def YWgetseeds():
             privkeyline = wallet.readline()
             privkeyline = privkeyline.split(" ")[4][:-1]
             xprivlist.append(privkeyline)
+        imported = True
         addresses = []
         checksum = None
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm getdescriptorinfo "wsh(multi(3,'+xprivlist[0]+'/*,'+xprivlist[1]+'/*,'+xprivlist[2]+'/*,'+xprivlist[3]+'/*,'+xprivlist[4]+'/*,'+xprivlist[5]+'/*,'+xprivlist[6]+'/*))"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
@@ -514,7 +517,16 @@ def YWcopyseeds():
 def YWRrestartbitcoin():
     global progress
     global IBD
+    global pubdesc
+    global samedesc
+    global rescan
     if request.method == 'GET':
+        if pubdesc:
+            samedesc = True
+            if rescan:
+                return redirect('/YWRdisplaywallet')
+            else:
+                return redirect('/YWRrescanwallet')
         subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
         subprocess.call('rm -r ~/.bitcoin/yetiwarm*', shell=True)
         subprocess.call('rm -r ~/yetiwarmwallet*', shell=True)
@@ -533,13 +545,6 @@ def YWRscandescriptor():
     global firstqrcode
     global pubdesc
     global samedesc
-    if request.method == 'GET':
-        if pubdesc:
-            samedesc = True
-            if rescan:
-                return redirect('/YWRdisplaywallet')
-            else:
-                return redirect('/YWRrescanwallet')
     if request.method == 'POST':
         firstqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
         pubdesc = firstqrcode.decode("utf-8").replace('\n', '')
@@ -631,6 +636,10 @@ def YWRdisplaywallet():
 def YWRscanrecipent():
     global error
     global receipentaddress
+    global imported
+    if request.method == 'GET':
+        if imported:
+            return redirect('/YWRsendtransaction')
     if request.method == 'POST':
         error = None
         if request.form['option'] == 'scan':
