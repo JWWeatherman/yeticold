@@ -193,13 +193,17 @@ def BTCFinished():
         bitcoinprogress = True
     return bitcoinprogress
 
-def BTCRunning():
+def BTCClosed():
     home = os.getenv("HOME")
     if (subprocess.call('lsof -n -i :8332', shell=True) != 1):
-        if not (BTCprogress() == 0):
-            return True
+        return False
     elif os.path.exists(home + "/.bitcoin/bitcoind.pid"):
         subprocess.call('rm -r ~/.bitcoin/bitcoind.pid', shell=True)
+    return True
+
+def BTCRunning():
+    if not (BTCprogress() == 0):
+        return True
     return False
 
 def RPC():
@@ -287,7 +291,7 @@ def YCopenbitcoin():
     global progress
     if request.method == 'GET':
         home = os.getenv("HOME")
-        if not BTCRunning():
+        if BTCClosed():
             subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':
@@ -319,11 +323,11 @@ def YCopenbitcoinB():
     global progress
     if request.method == 'GET':
         home = os.getenv("HOME")
-        if not BTCRunning():
+        if BTCClosed():
             subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':
-        IBD = BTCFinished()
+        IBD = BTCRunning()
         if IBD:
             subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yeticold"'],shell=True)
             return redirect('/YConlinestartup')
@@ -346,11 +350,11 @@ def YCopenbitcoinC():
     global progress
     if request.method == 'GET':
         home = os.getenv("HOME")
-        if not BTCRunning():
+        if BTCClosed():
             subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':
-        IBD = BTCFinished()
+        IBD = BTCRunning()
         if IBD:
             subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticold"'],shell=True)
             return redirect('/YCgetseeds')
