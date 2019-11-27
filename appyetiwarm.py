@@ -51,7 +51,6 @@ progress = 0
 samedesc = False
 utxo = None
 rescan = False
-imported = False
 switcher = {
     "1": "ONE",
     "2": "TWO",
@@ -345,7 +344,6 @@ def YWgetseeds():
     global privkeycount
     global xprivlist
     global pubdesc
-    global imported
     if request.method == 'POST':
         if request.form['skip'] == 'skip':
             privkeylisttemp = []
@@ -388,7 +386,6 @@ def YWgetseeds():
             privkeyline = wallet.readline()
             privkeyline = privkeyline.split(" ")[4][:-1]
             xprivlist.append(privkeyline)
-        imported = True
         addresses = []
         checksum = None
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm getdescriptorinfo "wsh(multi(3,'+xprivlist[0]+'/*,'+xprivlist[1]+'/*,'+xprivlist[2]+'/*,'+xprivlist[3]+'/*,'+xprivlist[4]+'/*,'+xprivlist[5]+'/*,'+xprivlist[6]+'/*))"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
@@ -472,7 +469,6 @@ def YWcheckseeds():
                         privkeylist = []
                         error = 'You have imported your seeds correctly but your xprivs do not match: This means that you either do not have bitcoin running or its initial block download mode. Another issue is that you have a wallet folder or wallet dump file that was not deleted before starting this step.'
                         return redirect('/YWcheckseeds')
-                imported = True
                 return redirect('/YWprintdescriptor')
             else:
                 return redirect('/YWcheckseeds')
@@ -522,12 +518,6 @@ def YWRrestartbitcoin():
     global samedesc
     global rescan
     if request.method == 'GET':
-        if pubdesc:
-            samedesc = True
-            if rescan:
-                return redirect('/YWRdisplaywallet')
-            else:
-                return redirect('/YWRrescanwallet')
         subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
         subprocess.call('rm -r ~/.bitcoin/yetiwarm*', shell=True)
         subprocess.call('rm -r ~/yetiwarmwallet*', shell=True)
@@ -557,12 +547,10 @@ def YWRscandescriptor():
 def YWRrescanwallet():
     global firstqrcode
     global pubdesc
-    global rescan
     if request.method == 'GET':
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm importmulti \'[{ "desc": "'+pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm rescanblockchain 600000',shell=True,start_new_session=True)
-        rescan = True
     if request.method == 'POST':
         return redirect('/YWRdisplaywallet')
     return render_template('YWRrescanwallet.html')
@@ -637,10 +625,6 @@ def YWRdisplaywallet():
 def YWRscanrecipent():
     global error
     global receipentaddress
-    global imported
-    if request.method == 'GET':
-        if imported:
-            return redirect('/YWRsendtransaction')
     if request.method == 'POST':
         error = None
         if request.form['option'] == 'scan':
@@ -668,9 +652,7 @@ def YWRimportseeds():
     global privkeycount
     global error 
     global samedesc
-    if request.method == 'GET':
-        if samedesc:
-            return redirect('/YWRsendtransaction')
+    global improted
     if request.method == 'POST':
         privkey = []
         for i in range(1,14):
