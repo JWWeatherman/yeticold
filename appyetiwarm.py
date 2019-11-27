@@ -186,7 +186,6 @@ def BTCprogress():
         bitcoinprogress = bitcoinprogress * 100
         bitcoinprogress = round(bitcoinprogress, 3)
     else:
-        print("error response: "+ str(response[1]))
         bitcoinprogress = 0
     return bitcoinprogress
 
@@ -195,7 +194,6 @@ def BTCFinished():
     if not (len(response[0]) == 0):
         bitcoinprogress = json.loads(response[0])['initialblockdownload']
     else:
-        print("error response: "+ str(response[1]))
         bitcoinprogress = True
     return bitcoinprogress
 
