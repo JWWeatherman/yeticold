@@ -327,6 +327,7 @@ def YCopenbitcoinB():
         IBD = BTCFinished()
         while IBD:
             IBD = BTCFinished()
+        subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yeticold"'],shell=True)
         return redirect('/YConlinestartup')
     return render_template('YCopenbitcoinB.html', progress=progress)
 
