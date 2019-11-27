@@ -326,6 +326,8 @@ def YCopenbitcoinB():
         if IBD:
             subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yeticold"'],shell=True)
             return redirect('/YConlinestartup')
+        else:
+            return redirect('/YCopenbitcoinB')
     return render_template('YCopenbitcoinB.html', progress=progress)
 
 @app.route("/YConlinestartup", methods=['GET', 'POST'])
@@ -351,6 +353,8 @@ def YCopenbitcoinC():
         if IBD:
             subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticold"'],shell=True)
             return redirect('/YCgetseeds')
+        else:
+            return redirect('/YCopenbitcoinC')
     return render_template('YCopenbitcoinC.html', progress=progress)
 
 @app.route("/YCgetseeds", methods=['GET', 'POST'])
