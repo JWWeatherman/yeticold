@@ -9,6 +9,7 @@ from qrtools.qrtools import QR
 from pyzbar.pyzbar import decode
 from PIL import Image
 import random
+import time
 import qrcode
 app = Flask(__name__)
 home = os.getenv("HOME")
@@ -522,6 +523,7 @@ def YWRrestartbitcoin():
         subprocess.call('sudo rm -r ~/.bitcoin/yetiwarm*', shell=True)
         subprocess.call('sudo rm -r ~/yetiwarmwallet*', shell=True)
         print("finished wallet delete")
+        time.sleep(1000)
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':
