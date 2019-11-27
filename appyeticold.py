@@ -196,7 +196,8 @@ def BTCFinished():
 def BTCRunning():
     home = os.getenv("HOME")
     if (subprocess.call('lsof -n -i :8332', shell=True) != 1):
-        return True
+        if not (BTCprogress() == 0):
+            return True
     elif os.path.exists(home + "/.bitcoin/bitcoind.pid"):
         subprocess.call('rm -r ~/.bitcoin/bitcoind.pid', shell=True)
     return False
