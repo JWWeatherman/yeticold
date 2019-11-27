@@ -472,6 +472,7 @@ def YWcheckseeds():
                         privkeylist = []
                         error = 'You have imported your seeds correctly but your xprivs do not match: This means that you either do not have bitcoin running or its initial block download mode. Another issue is that you have a wallet folder or wallet dump file that was not deleted before starting this step.'
                         return redirect('/YWcheckseeds')
+                imported = True
                 return redirect('/YWprintdescriptor')
             else:
                 return redirect('/YWcheckseeds')
