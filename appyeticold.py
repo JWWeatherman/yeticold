@@ -293,6 +293,7 @@ def YCopenbitcoin():
         progress = BTCprogress()
     if request.method == 'POST':
         if progress >= 99.9:
+            subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticold"'],shell=True)
             return redirect('/YCpackage')
         else:
             return redirect('/YCopenbitcoin')
@@ -305,7 +306,6 @@ def YCpackage():
     if request.method == 'POST':
         return redirect('/YCmovefiles')
     return render_template('YCpackage.html')
-
 
 @app.route("/YCmovefiles", methods=['GET', 'POST'])
 def YCmovefiles():
@@ -352,6 +352,7 @@ def YCopenbitcoinC():
         IBD = BTCFinished()
         while IBD:
             IBD = BTCFinished()
+        subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticold"'],shell=True)
         return redirect('/YCgetseeds')
     return render_template('YCopenbitcoinC.html', progress=progress)
 
