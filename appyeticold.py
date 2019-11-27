@@ -13,7 +13,6 @@ import qrcode
 app = Flask(__name__)
 home = os.getenv("HOME")
 rpcpsw = str(random.randrange(0,1000000))
-subprocess.call(['sudo apt-get update'],shell=True)
 if not (os.path.exists(home + "/.bitcoin")):
     subprocess.call(['mkdir ~/.bitcoin'],shell=True)
 else:
