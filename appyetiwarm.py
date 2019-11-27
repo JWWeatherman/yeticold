@@ -523,7 +523,6 @@ def YWRrestartbitcoin():
     if request.method == 'POST':
         IBD = BTCFinished()
         while IBD:
-            print(IBD)
             IBD = BTCFinished()
         subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yetiwarm"'],shell=True)
         return redirect('/YWRscandescriptor')
@@ -571,7 +570,6 @@ def YWRdisplaywallet():
         addresses = []
         subprocess.call(['rm -r ~/yeticold/static/address*'],shell=True)
         adrlist = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm deriveaddresses "'+pubdesc+'" "[0,999]"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        print(adrlist)
         adrlist = json.loads(adrlist[0].decode("utf-8"))
         for i in range(0, len(adrlist)):
             randomnum = str(random.randrange(0,1000000))
@@ -580,7 +578,6 @@ def YWRdisplaywallet():
             testlist = []
             testlist.append(adrlist[i])
             response = rpc.listunspent(0, 9999999, testlist)
-            print(response)
             if response == []:
                 bal = "0.0000000"
                 txid = ''
@@ -591,7 +588,6 @@ def YWRdisplaywallet():
                 vout = str(response[0]['vout'])
             utxocount = len(response)
             response = rpc.getreceivedbyaddress(adrlist[i])
-            print(response)
             if response == 0:
                 totalbal = "0.0000000"
             else:
@@ -686,7 +682,6 @@ def YWRimportseeds():
                 path = home + '/yetiwarmwallet' + str(i)
                 subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yetiwarmwallet'+str(i)+'" false true'],shell=True)
                 response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarmwallet'+str(i)+' sethdseed false "'+privkeylist[i]+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-                print(response)
                 response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarmwallet'+str(i)+' dumpwallet "yetiwarmwallet'+str(i)+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
                 print(response)
                 wallet = open(path,'r')
