@@ -574,7 +574,7 @@ def YCsendtestC():
 @app.route("/YCcheckfunds", methods=['GET', 'POST'])
 def YCcheckfunds():
     if request.method == 'POST':
-        return redirect('/YCscandescriptorB')
+        return redirect('/YCdisplayutxo')
     return render_template('YCcheckfunds.html')
 
 ##SWITCH TO OFFLINE
@@ -665,7 +665,7 @@ def YCscanutxo():
         global utxoresponse
         firstqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
         utxoresponse = firstqrcode
-        return redirect('/YCdisplayutxo')
+        return redirect('/YCscandescriptorB')
     return render_template('YCscanutxo.html')
 
 ##SWITCH TO ONLINE
