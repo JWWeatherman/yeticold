@@ -529,7 +529,6 @@ def YWRrestartbitcoin():
         while IBD:
             print(IBD)
             IBD = BTCFinished()
-        subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yetiwarm"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
         return redirect('/YWRscandescriptor')
     return render_template('YWRrestartbitcoin.html')
 
