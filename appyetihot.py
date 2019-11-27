@@ -324,8 +324,8 @@ def YHrestartbitcoin():
     global IBD
     if request.method == 'GET':
         subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
-        subprocess.call('sudo rm -r ~/.bitcoin/yetihot*', shell=True)
-        subprocess.call('sudo rm -r ~/yetihotwallet*', shell=True)
+        subprocess.call('rm -r ~/.bitcoin/yetihot*', shell=True)
+        subprocess.call('rm -r ~/yetihotwallet*', shell=True)
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':
@@ -435,8 +435,8 @@ def YHRrestartbitcoin():
     global IBD
     if request.method == 'GET':
         subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
-        subprocess.call('sudo rm -r ~/.bitcoin/yetihot*', shell=True)
-        subprocess.call('sudo rm -r ~/yetihotwallet*', shell=True)
+        subprocess.call('rm -r ~/.bitcoin/yetihot*', shell=True)
+        subprocess.call('rm -r ~/yetihotwallet*', shell=True)
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':

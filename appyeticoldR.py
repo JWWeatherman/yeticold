@@ -688,8 +688,8 @@ def YCRimportseeds():
 def YCRrestartbitcoin():
     if request.method == 'POST':
         subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
-        subprocess.call('sudo rm -r ~/.bitcoin/yeticold*', shell=True)
-        subprocess.call('sudo rm -r ~/yeticoldwallet*', shell=True)
+        subprocess.call('rm -r ~/.bitcoin/yeticold*', shell=True)
+        subprocess.call('rm -r ~/yeticoldwallet*', shell=True)
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         return redirect('/YCRcheckprogressD')
     return render_template('YCRrestartbitcoin.html')
@@ -850,8 +850,8 @@ def YCRchoosedescriptor():
 def YCRrestartbitcoinB():
     if request.method == 'POST':
         subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
-        subprocess.call('sudo rm -r ~/.bitcoin/yeticold*', shell=True)
-        subprocess.call('sudo rm -r ~/yeticoldwallet*', shell=True)
+        subprocess.call('rm -r ~/.bitcoin/yeticold*', shell=True)
+        subprocess.call('rm -r ~/yeticoldwallet*', shell=True)
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         return redirect('/YCRcheckprogressE')
     return render_template('YCRrestartbitcoinB.html')
