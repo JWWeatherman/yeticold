@@ -349,7 +349,6 @@ def YConlinestartup():
 def YCopenbitcoinC():
     global progress
     if request.method == 'GET':
-        home = os.getenv("HOME")
         if BTCClosed():
             subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
