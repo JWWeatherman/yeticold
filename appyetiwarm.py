@@ -328,6 +328,7 @@ def YWrestartbitcoin():
         subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
         subprocess.call('sudo rm -r ~/.bitcoin/yetiwarm*', shell=True)
         subprocess.call('sudo rm -r ~/yetiwarmwallet*', shell=True)
+        time.sleep(1000)
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':
