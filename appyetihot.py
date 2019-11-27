@@ -13,7 +13,6 @@ import qrcode
 app = Flask(__name__)
 home = os.getenv("HOME")
 rpcpsw = str(random.randrange(0,1000000))
-subprocess.call(['sudo apt-get update'],shell=True)
 if not (os.path.exists(home + "/.bitcoin")):
     subprocess.call(['mkdir ~/.bitcoin'],shell=True)
 else:
@@ -206,6 +205,14 @@ def BTCFinished():
         bitcoinprogress = True
     return bitcoinprogress
 
+def BTCRunning():
+    home = os.getenv("HOME")
+    if (subprocess.call('lsof -n -i :8332', shell=True) != 1):
+        return True
+    elif os.path.exists(home + "/.bitcoin/bitcoind.pid"):
+        subprocess.call('rm -r ~/.bitcoin/bitcoind.pid', shell=True)
+    return False
+
 def RPC():
     name = 'username'
     wallet_name = ''
@@ -291,7 +298,7 @@ def YHopenbitcoin():
     global progress
     if request.method == 'GET':
         home = os.getenv("HOME")
-        if not os.path.exists(home + '/.bitcoin/bitcoind.pid'):
+        if not BTCRunning():
             subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':
@@ -317,8 +324,8 @@ def YHrestartbitcoin():
     global IBD
     if request.method == 'GET':
         subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
-        subprocess.call('sudo rm -r ~/.bitcoin/yetihot*', shell=True)
-        subprocess.call('sudo rm -r ~/yetihotwallet*', shell=True)
+        subprocess.call('rm -r ~/.bitcoin/yetihot*', shell=True)
+        subprocess.call('rm -r ~/yetihotwallet*', shell=True)
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':
@@ -428,8 +435,8 @@ def YHRrestartbitcoin():
     global IBD
     if request.method == 'GET':
         subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
-        subprocess.call('sudo rm -r ~/.bitcoin/yetihot*', shell=True)
-        subprocess.call('sudo rm -r ~/yetihotwallet*', shell=True)
+        subprocess.call('rm -r ~/.bitcoin/yetihot*', shell=True)
+        subprocess.call('rm -r ~/yetihotwallet*', shell=True)
         subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':

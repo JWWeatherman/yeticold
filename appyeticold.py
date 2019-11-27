@@ -13,7 +13,6 @@ import qrcode
 app = Flask(__name__)
 home = os.getenv("HOME")
 rpcpsw = str(random.randrange(0,1000000))
-subprocess.call(['sudo apt-get update'],shell=True)
 if not (os.path.exists(home + "/.bitcoin")):
     subprocess.call(['mkdir ~/.bitcoin'],shell=True)
 else:
@@ -183,7 +182,6 @@ def BTCprogress():
         bitcoinprogress = bitcoinprogress * 100
         bitcoinprogress = round(bitcoinprogress, 3)
     else:
-        print("error response: "+ str(response[1]))
         bitcoinprogress = 0
     return bitcoinprogress
 
@@ -192,14 +190,25 @@ def BTCFinished():
     if not (len(response[0]) == 0):
         bitcoinprogress = json.loads(response[0])['initialblockdownload']
     else:
-        print("error response: "+ str(response[1]))
         bitcoinprogress = True
     return bitcoinprogress
 
+def BTCClosed():
+    home = os.getenv("HOME")
+    if (subprocess.call('lsof -n -i :8332', shell=True) != 1):
+        return False
+    elif os.path.exists(home + "/.bitcoin/bitcoind.pid"):
+        subprocess.call('rm -r ~/.bitcoin/bitcoind.pid', shell=True)
+    return True
+
+def BTCRunning():
+    if not (BTCprogress() == 0):
+        return True
+    return False
 
 def RPC():
     name = 'username'
-    wallet_name = 'yeticold'
+    wallet_name = ''
     uri = wallet_template.format(**settings, wallet_name=wallet_name)
     rpc = AuthServiceProxy(uri, timeout=600)  # 1 minute timeout
     return rpc
@@ -282,11 +291,12 @@ def YCopenbitcoin():
     global progress
     if request.method == 'GET':
         home = os.getenv("HOME")
-        if not os.path.exists(home + '/.bitcoin/bitcoind.pid'):
+        if BTCClosed():
             subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':
         if progress >= 99.9:
+            subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticold"'],shell=True)
             return redirect('/YCpackage')
         else:
             return redirect('/YCopenbitcoin')
@@ -299,7 +309,6 @@ def YCpackage():
     if request.method == 'POST':
         return redirect('/YCmovefiles')
     return render_template('YCpackage.html')
-
 
 @app.route("/YCmovefiles", methods=['GET', 'POST'])
 def YCmovefiles():
@@ -314,14 +323,16 @@ def YCopenbitcoinB():
     global progress
     if request.method == 'GET':
         home = os.getenv("HOME")
-        if not os.path.exists(home + '/.bitcoin/bitcoind.pid'):
+        if BTCClosed():
             subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':
-        IBD = BTCFinished()
-        while IBD:
-            IBD = BTCFinished()
-        return redirect('/YConlinestartup')
+        IBD = BTCRunning()
+        if IBD:
+            subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yeticold"'],shell=True)
+            return redirect('/YConlinestartup')
+        else:
+            return redirect('/YCopenbitcoinB')
     return render_template('YCopenbitcoinB.html', progress=progress)
 
 @app.route("/YConlinestartup", methods=['GET', 'POST'])
@@ -338,15 +349,16 @@ def YConlinestartup():
 def YCopenbitcoinC():
     global progress
     if request.method == 'GET':
-        home = os.getenv("HOME")
-        if not os.path.exists(home + '/.bitcoin/bitcoind.pid'):
+        if BTCClosed():
             subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':
-        IBD = BTCFinished()
-        while IBD:
-            IBD = BTCFinished()
-        return redirect('/YCgetseeds')
+        IBD = BTCRunning()
+        if IBD:
+            subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticold"'],shell=True)
+            return redirect('/YCgetseeds')
+        else:
+            return redirect('/YCopenbitcoinC')
     return render_template('YCopenbitcoinC.html', progress=progress)
 
 @app.route("/YCgetseeds", methods=['GET', 'POST'])
@@ -562,7 +574,7 @@ def YCsendtestC():
 @app.route("/YCcheckfunds", methods=['GET', 'POST'])
 def YCcheckfunds():
     if request.method == 'POST':
-        return redirect('/YCscandescriptorB')
+        return redirect('/YCdisplayutxo')
     return render_template('YCcheckfunds.html')
 
 ##SWITCH TO OFFLINE
@@ -616,7 +628,6 @@ def YCcheckseeds():
                 privkeycount = 7
                 newxprivlist = []
                 for i in range(0,7):
-                    rpc = RPC()
                     home = os.getenv('HOME')
                     path = home + '/yeticoldwallet' + str(i)
                     subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticoldwallet'+str(i)+'" false true'],shell=True)
@@ -654,7 +665,7 @@ def YCscanutxo():
         global utxoresponse
         firstqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
         utxoresponse = firstqrcode
-        return redirect('/YCdisplayutxo')
+        return redirect('/YCscandescriptorB')
     return render_template('YCscanutxo.html')
 
 ##SWITCH TO ONLINE
