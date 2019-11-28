@@ -913,7 +913,7 @@ def YCscantransactionB():
 @app.route("/YCswitchlaptopB", methods=['GET', 'POST'])
 def YCswitchlaptopB():
     if request.method == 'POST':
-        return redirect('/YCsendtransactions')
+        return redirect('/YCscantransactionC')
     return render_template('YCswitchlaptopB.html')
 ##SWITCH TO OFFLINE
 
