@@ -379,7 +379,7 @@ def YWgetseeds():
         response = json.loads(response[0].decode("utf-8"))
         print(response)
         checksum = response["checksum"]
-        pubdesc = response["descriptor"].replace('\n', '')
+        pubdesc = response["descriptor"].replace('\n', '')[:-1]
         print()
         print(pubdesc)
         print()
