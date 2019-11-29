@@ -379,9 +379,9 @@ def YWgetseeds():
         response = json.loads(response[0].decode("utf-8"))
         print(response)
         checksum = response["checksum"]
-        pubdesc = response["descriptor"].replace('\n', '')[:-1]
+        pubdesc = response["descriptor"].replace('\n', '')
         print()
-        print(pubdesc)
+        print('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm importmulti "'+pubdesc+'"')
         print()
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm importmulti "'+pubdesc+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
