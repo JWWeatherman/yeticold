@@ -490,7 +490,7 @@ def YWprintdescriptor():
 @app.route("/YWcopyseeds", methods=['GET', 'POST'])
 def YWcopyseeds():
     if request.method == 'POST':
-        return redirect('/YWRrescanwallet')
+        return redirect('/YWRdisplaywallet')
     return render_template('YWcopyseeds.html')
 
 ###END OF SETUP
