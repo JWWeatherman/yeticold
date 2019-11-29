@@ -320,8 +320,10 @@ def YWopenbitcoin():
 def YWmenu():
     if request.method == 'POST':
         if request.form['option'] == 'recovery':
+            subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
             return redirect('/YWRrestartbitcoin')
         else:
+            subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
             return redirect('/YWrestartbitcoin')
     return render_template('YWmenu.html')
 
@@ -331,7 +333,6 @@ def YWrestartbitcoin():
     global IBD
     if request.method == 'GET':
         if BTCClosed():
-            subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
             subprocess.call('rm -r ~/.bitcoin/yetiwarm*', shell=True)
             subprocess.call('rm -r ~/yetiwarmwallet*', shell=True)
             subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
@@ -526,7 +527,6 @@ def YWRrestartbitcoin():
         if sent:
             return redirect('/YWRdisplaywallet')
         if BTCClosed():
-            subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
             subprocess.call('rm -r ~/.bitcoin/yetiwarm*', shell=True)
             subprocess.call('rm -r ~/yetiwarmwallet*', shell=True)
             subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
