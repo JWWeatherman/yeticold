@@ -310,8 +310,8 @@ def YWopenbitcoin():
         progress = BTCprogress()
     if request.method == 'POST':
         if progress >= 99.9:
-            return redirect('YWmenu')
             subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yetiwarm"'],shell=True)
+            return redirect('YWmenu')
         else:
             return redirect('/YWopenbitcoin')
     return render_template('YWopenbitcoin.html', progress=progress)
