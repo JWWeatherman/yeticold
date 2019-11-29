@@ -215,7 +215,6 @@ def BTCRunning():
 def RPCYW():
     name = 'username'
     wallet_name = 'yetiwarm'
-    print(settings)
     uri = wallet_template.format(**settings, wallet_name=wallet_name)
     rpc = AuthServiceProxy(uri, timeout=600)  # 1 minute timeout
     return rpc
@@ -223,7 +222,6 @@ def RPCYW():
 def RPC():
     name = 'username'
     wallet_name = ''
-    print(settings)
     uri = wallet_template.format(**settings, wallet_name=wallet_name)
     rpc = AuthServiceProxy(uri, timeout=600)  # 1 minute timeout
     return rpc
@@ -529,10 +527,10 @@ def YWRdisplaywallet():
         subprocess.call(['rm -r ~/yeticold/static/address*'],shell=True)
         adrlist = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarm deriveaddresses "'+pubdesc+'" "[0,999]"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         adrlist = json.loads(adrlist[0].decode("utf-8"))
+        rpc = RPCYW()
         for i in range(0, len(adrlist)):
             randomnum = str(random.randrange(0,1000000))
             route = url_for('static', filename='address'+randomnum+'.png')
-            rpc = RPCYW()
             testlist = []
             testlist.append(adrlist[i])
             response = rpc.listunspent(0, 9999999, testlist)
