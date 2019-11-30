@@ -20,7 +20,7 @@
           {%if (i % 2) == 0 %} 
             <li style="display: flex;" class="list-group-item navbar navbar-inverse">
           {%else%}
-            <li style="display: flex;background-color: #ced4da!important;color: #212529!important;" class="list-group-item navbar navbar-inverse">
+            <li style="display: flex;background-color: #e9ecef!important;color: #212529!important;" class="list-group-item navbar navbar-inverse">
           {%endif%}
               <ul class="nav navbar-nav navbar-left">
                 <li class="form-inline my-2 my-lg-0 navbar-right nav navbar-nav">{{addresses[i]['address']}}</li>
@@ -56,7 +56,7 @@
         {%if (i % 2) == 0 %} 
           <li id="test{{i}}" style="display:none;" class="list-group-item navbar navbar-inverse">
         {%else%}
-          <li id="test{{i}}" style="display:none;background-color: #b8daff!important;color: #004085!important;" class="list-group-item navbar navbar-inverse">
+          <li id="test{{i}}" style="display:none;background-color: #e9ecef!important;color: #212529!important;" class="list-group-item navbar navbar-inverse">
         {%endif%}
           <img src="{{addresses[i]['route']}}" style="height: 20vh; width: 20vh">
         </li>

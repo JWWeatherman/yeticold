@@ -333,7 +333,7 @@ def YCRdisplaywallet():
             )
             qr.add_data(addresses[i]['address'])
             qr.make(fit=True)
-            color = '#ced4da'
+            color = '#e9ecef'
             if (i % 2) == 0:
                 color = 'white'
             img = qr.make_image(fill_color="black", back_color=color)
