@@ -407,7 +407,7 @@ def YWdisplayseeds():
             return redirect('/YWcheckseeds')
         else:
             return redirect('/YWdisplayseeds')
-    return render_template('YWdisplayseeds.html', PPL=passphraselist, x=privkeycount + 1, i=privkeycount + 25)
+    return render_template('YWdisplayseeds.html', PPL=passphraselist, x=privkeycount + 1, i=privkeycount + 9)
 #confirm privkey
 @app.route('/YWcheckseeds', methods=['GET', 'POST'])
 def YWcheckseeds():
@@ -461,7 +461,7 @@ def YWcheckseeds():
                 return redirect('/YWcheckseeds')
         else:
             error = 'You enterd the private key incorrectly but the checksums are correct please try agian. This means you probably inputed a valid seed, but not your seed ' +str(privkeycount + 1)+' seed.'
-    return render_template('YWcheckseeds.html', x=privkeycount + 1, error=error,i=privkeycount + 35 )
+    return render_template('YWcheckseeds.html', x=privkeycount + 1, error=error,i=privkeycount + 16 )
 
 #display for print
 @app.route("/YWprintdescriptor", methods=['GET', 'POST'])
