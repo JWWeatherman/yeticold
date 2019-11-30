@@ -531,7 +531,7 @@ def YWRdisplaywallet():
         rpc = RPCYW()
         for i in range(0, len(adrlist)):
             randomnum = str(random.randrange(0,1000000))
-            route = url_for('static', filename='address'+randomnum+'.png')
+            route = url_for('static', filename='address'+adrlist[i]+''+randomnum+'.png')
             testlist = []
             testlist.append(adrlist[i])
             response = rpc.listunspent(0, 9999999, testlist)
