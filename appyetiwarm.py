@@ -571,7 +571,7 @@ def YWRdisplaywallet():
             )
             qr.add_data(addresses[i]['address'])
             qr.make(fit=True)
-            color = '#b8daff'
+            color = '#ced4da'
             if (i % 2) == 0:
                 color = 'white'
             img = qr.make_image(fill_color="black", back_color=color)
