@@ -661,10 +661,18 @@ def YWRimportseeds():
             xpublist = pubdesc.split(',')[1:]
             xpublist[6] = xpublist[6].split('))')[0]
             descriptorlist = xpublist
+            print(xpublist)
+            print(newxpublist)
             for i in range(0,3):
                 xpub = newxpublist[i] + '/*'
                 for x in range(0,7):
                     oldxpub = xpublist[x]
+                    print('match')
+                    print(xpub)
+                    print(oldxpub)
+                    print(x)
+                    print(i)
+                    print()
                     if xpub == oldxpub:
                         descriptorlist[x] = (xprivlist[i] + '/*')
                         break
