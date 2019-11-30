@@ -15,6 +15,10 @@
       <h2>Yeti is opening Bitcoin. Please wait.</h2>
       <div>Once Yeti is ready it will automatically take you to the next step.</div>
     </div>
+    <form action="" method="post" style="margin-top:35px;">
+      <input style="display: none;" name="option" value="VALUE">
+      <input style="display: none;" class="btn btn-primary" type="submit" id="next" value="Next">
+    </form>
     <script>
       var enable = () => {
         setTimeout(() => { document.getElementById("next").click() }, 2000)
