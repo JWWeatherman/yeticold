@@ -16,10 +16,10 @@
       {% if error %}
         <p style="color:red;">{{ error }}</p>
       {% endif %}
-      <div>Click Scan to open the webcam and scan the Descriptor from your paper packet. Each packet contains an identical copy of the Descriptor.</div>
+      <div styple ="margin-bottom: 30px;">Click <b>Scan</b> to open the webcam and scan the destination address or paste in the address into the box below and click <b>Next</b>.</div>
       <form action="" method="post">
         <input style="display: none;" name="option" value="scan">
-        <input class="btn btn-primary" type="submit" id="next" value="Scan recipent from qr code">
+        <input class="btn btn-primary" type="submit" id="next" value="Scan">
       </form>
       <form action="" method="post">
         <div class="form-row" id="row1">
@@ -28,7 +28,7 @@
             <input type="text" class="form-control" placeholder="bitcoin address" name="option" id="option">
           </div>
         </div>
-        <input class="btn btn-primary" type="submit" id="next" value="Submit recipent">
+        <input class="btn btn-primary" type="submit" id="next" value="Next">
       </form>
     </div>
   </body>
