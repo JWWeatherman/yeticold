@@ -731,10 +731,12 @@ def YWRsendtransaction():
 @app.route("/YWRerror", methods=['GET', 'POST'])
 def YWRerror():
     global error
+    global walletimported
     if request.method == 'POST':
         error = None
         subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
         subprocess.call('rm -r ~/.bitcoin/yetiwarmpriv', shell=True)
+        walletimported = False
         return redirect('/YWRopenbitcoinB')
     return render_template('YWRerror.html',error=error)
 
