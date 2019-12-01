@@ -615,7 +615,7 @@ def YWRimportseeds():
     global privkeycount
     global error 
     global samedesc
-    global improted
+    global imported
     global walletimported
     if request.method == 'GET':
         if walletimported:
@@ -717,7 +717,7 @@ def YWRsendtransaction():
         response = json.loads(response[0].decode("utf-8"))
         if not response['complete']:
             error = response['errors'][0]['error']
-            return redirect('/YWRimprotseeds')
+            return redirect('/YWRimportseeds')
         transnum = response
         minerfee = "{:.8f}".format(minerfee)
     if request.method == 'POST':
