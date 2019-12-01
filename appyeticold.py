@@ -485,97 +485,97 @@ def YCprintpage():
         home = os.getenv("HOME")
         img.save(home + '/yeticold/static/firstqrcode' + firstqrname + '.png')
     if request.method == 'POST':
-        return redirect('/YCsendtest')
+        return redirect('/YCstoreseeds')
     return render_template('YCprintpage.html', qrdata=firstqrcode, path=path)
 
-@app.route("/YCsendtest", methods=['GET', 'POST'])
-def YCsendtest():
-    global firstqrcode
-    global firstqrname
-    global pubdesc
-    global adrlist
-    if request.method == 'GET':
-        pubdesc = firstqrcode[:-1]
-        response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yeticold importmulti \'[{ "desc": "'+pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        if not (len(response[1]) == 0): 
-            print(response)
-            return "error response from importmulti: " + str(response[1]) + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yeticold importmulti \'[{ "desc": "'+pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''
-        response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yeticold deriveaddresses "'+pubdesc+'" "[0,999]"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        if not (len(response[0]) == 0): 
-            response = json.loads(response[0].decode("utf-8"))
-        adrlist = response
-        randomnum = str(random.randrange(0,1000000))
-        firstqrname = randomnum
-        firstqrcode = adrlist[0]
-        path = url_for('static', filename='firstqrcode' + firstqrname + '.png')
-        qr = qrcode.QRCode(
-               version=1,
-               error_correction=qrcode.constants.ERROR_CORRECT_L,
-               box_size=10,
-               border=4,
-        )
-        qr.add_data(firstqrcode)
-        qr.make(fit=True)
-        img = qr.make_image(fill_color="black", back_color="white")
-        home = os.getenv("HOME")
-        img.save(home + '/yeticold/static/firstqrcode' + firstqrname + '.png')
-    if request.method == 'POST':
-        return redirect('/YCsendtestB')
-    return render_template('YCsendtest.html', path=path, qrdata=firstqrcode)
+# @app.route("/YCsendtest", methods=['GET', 'POST'])
+# def YCsendtest():
+#     global firstqrcode
+#     global firstqrname
+#     global pubdesc
+#     global adrlist
+#     if request.method == 'GET':
+#         pubdesc = firstqrcode[:-1]
+#         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yeticold importmulti \'[{ "desc": "'+pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+#         if not (len(response[1]) == 0): 
+#             print(response)
+#             return "error response from importmulti: " + str(response[1]) + '\n' + '~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yeticold importmulti \'[{ "desc": "'+pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''
+#         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yeticold deriveaddresses "'+pubdesc+'" "[0,999]"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+#         if not (len(response[0]) == 0): 
+#             response = json.loads(response[0].decode("utf-8"))
+#         adrlist = response
+#         randomnum = str(random.randrange(0,1000000))
+#         firstqrname = randomnum
+#         firstqrcode = adrlist[0]
+#         path = url_for('static', filename='firstqrcode' + firstqrname + '.png')
+#         qr = qrcode.QRCode(
+#                version=1,
+#                error_correction=qrcode.constants.ERROR_CORRECT_L,
+#                box_size=10,
+#                border=4,
+#         )
+#         qr.add_data(firstqrcode)
+#         qr.make(fit=True)
+#         img = qr.make_image(fill_color="black", back_color="white")
+#         home = os.getenv("HOME")
+#         img.save(home + '/yeticold/static/firstqrcode' + firstqrname + '.png')
+#     if request.method == 'POST':
+#         return redirect('/YCsendtestB')
+#     return render_template('YCsendtest.html', path=path, qrdata=firstqrcode)
 
-@app.route("/YCsendtestB", methods=['GET', 'POST'])
-def YCsendtestB():
-    global pubdesc
-    global adrlist
-    if request.method == 'GET':
-        randomnum = str(random.randrange(0,1000000))
-        firstqrname = randomnum
-        firstqrcode = adrlist[1]
-        path = url_for('static', filename='firstqrcode' + firstqrname + '.png')
-        qr = qrcode.QRCode(
-               version=1,
-               error_correction=qrcode.constants.ERROR_CORRECT_L,
-               box_size=10,
-               border=4,
-        )
-        qr.add_data(firstqrcode)
-        qr.make(fit=True)
-        img = qr.make_image(fill_color="black", back_color="white")
-        home = os.getenv("HOME")
-        img.save(home + '/yeticold/static/firstqrcode' + firstqrname + '.png')
-    if request.method == 'POST':
-        return redirect('/YCsendtestC')
-    return render_template('YCsendtestB.html', path=path, qrdata=firstqrcode)
+# @app.route("/YCsendtestB", methods=['GET', 'POST'])
+# def YCsendtestB():
+#     global pubdesc
+#     global adrlist
+#     if request.method == 'GET':
+#         randomnum = str(random.randrange(0,1000000))
+#         firstqrname = randomnum
+#         firstqrcode = adrlist[1]
+#         path = url_for('static', filename='firstqrcode' + firstqrname + '.png')
+#         qr = qrcode.QRCode(
+#                version=1,
+#                error_correction=qrcode.constants.ERROR_CORRECT_L,
+#                box_size=10,
+#                border=4,
+#         )
+#         qr.add_data(firstqrcode)
+#         qr.make(fit=True)
+#         img = qr.make_image(fill_color="black", back_color="white")
+#         home = os.getenv("HOME")
+#         img.save(home + '/yeticold/static/firstqrcode' + firstqrname + '.png')
+#     if request.method == 'POST':
+#         return redirect('/YCsendtestC')
+#     return render_template('YCsendtestB.html', path=path, qrdata=firstqrcode)
 
-@app.route("/YCsendtestC", methods=['GET', 'POST'])
-def YCsendtestC():
-    global pubdesc
-    global adrlist
-    if request.method == 'GET':
-        randomnum = str(random.randrange(0,1000000))
-        firstqrname = randomnum
-        firstqrcode = adrlist[2]
-        path = url_for('static', filename='firstqrcode' + firstqrname + '.png')
-        qr = qrcode.QRCode(
-               version=1,
-               error_correction=qrcode.constants.ERROR_CORRECT_L,
-               box_size=10,
-               border=4,
-        )
-        qr.add_data(firstqrcode)
-        qr.make(fit=True)
-        img = qr.make_image(fill_color="black", back_color="white")
-        home = os.getenv("HOME")
-        img.save(home + '/yeticold/static/firstqrcode' + firstqrname + '.png')
-    if request.method == 'POST':
-        return redirect('/YCcheckfunds')
-    return render_template('YCsendtestC.html', path=path, qrdata=firstqrcode)
+# @app.route("/YCsendtestC", methods=['GET', 'POST'])
+# def YCsendtestC():
+#     global pubdesc
+#     global adrlist
+#     if request.method == 'GET':
+#         randomnum = str(random.randrange(0,1000000))
+#         firstqrname = randomnum
+#         firstqrcode = adrlist[2]
+#         path = url_for('static', filename='firstqrcode' + firstqrname + '.png')
+#         qr = qrcode.QRCode(
+#                version=1,
+#                error_correction=qrcode.constants.ERROR_CORRECT_L,
+#                box_size=10,
+#                border=4,
+#         )
+#         qr.add_data(firstqrcode)
+#         qr.make(fit=True)
+#         img = qr.make_image(fill_color="black", back_color="white")
+#         home = os.getenv("HOME")
+#         img.save(home + '/yeticold/static/firstqrcode' + firstqrname + '.png')
+#     if request.method == 'POST':
+#         return redirect('/YCcheckfunds')
+#     return render_template('YCsendtestC.html', path=path, qrdata=firstqrcode)
 
-@app.route("/YCcheckfunds", methods=['GET', 'POST'])
-def YCcheckfunds():
-    if request.method == 'POST':
-        return redirect('/YCstoreseeds')
-    return render_template('YCcheckfunds.html')
+# @app.route("/YCcheckfunds", methods=['GET', 'POST'])
+# def YCcheckfunds():
+#     if request.method == 'POST':
+#         return redirect('/YCdisplayutxo')
+#     return render_template('YCcheckfunds.html')
 
 ##SWITCH TO OFFLINE
 
