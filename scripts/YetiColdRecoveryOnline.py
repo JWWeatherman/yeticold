@@ -33,7 +33,7 @@ if not (os.system("python3 -c 'import zbar'") == 0):
 	subprocess.call(['pip3 install zbar-py'],shell=True)
 
 subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
-subprocess.call('sudo rm -r ~/.bitcoin/yeticold*', shell=True)
-subprocess.call('sudo rm -r ~/yeticoldwallet*', shell=True)
+subprocess.call('rm -r ~/.bitcoin/yeticold*', shell=True)
+subprocess.call('rm -r ~/yeticoldwallet*', shell=True)
 subprocess.Popen('python3 ~/yeticold/appyeticoldR.py',shell=True,start_new_session=True)
 subprocess.call(['xdg-open http://localhost:5000/YCRopenbitcoin'],shell=True)

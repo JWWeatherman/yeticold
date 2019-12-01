@@ -248,8 +248,8 @@ def YCRopenbitcoin():
         progress = BTCprogress()
     if request.method == 'POST':
         if progress >= 99.9:
-            return redirect('YCRscandescriptor')
             subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticold"'],shell=True)
+            return redirect('YCRscandescriptor')
         else:
             return redirect('/YCRopenbitcoin')
     return render_template('YCRopenbitcoin.html', progress=progress)
