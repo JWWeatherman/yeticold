@@ -642,7 +642,7 @@ def YCRdisplaytransaction():
         response = json.loads(response[0].decode("utf-8"))
         if not response['complete']:
             error = response['errors'][0]['error']
-            return redirect('/YCRimprotseeds')
+            return redirect('/YCRerror')
         transone = response
         firstqrcode = transone
         randomnum = str(random.randrange(0,1000000))
@@ -662,6 +662,36 @@ def YCRdisplaytransaction():
     if request.method == 'POST':
         return redirect('/YCRscanCQR')
     return render_template('YCRdisplaytransaction.html', qrdata=firstqrcode, route=route)
+
+#GEN trans qr code
+@app.route("/YCRerror", methods=['GET', 'POST'])
+def YCRerror():
+    global error
+    global walletimported
+    if request.method == 'POST':
+        error = None
+        subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
+        subprocess.call('rm -r ~/.bitcoin/yeticoldpriv', shell=True)
+        walletimported = False
+        return redirect('/YCRopenbitcoinC')
+    return render_template('YCRerror.html',error=error)
+
+@app.route("/YCRopenbitcoinC", methods=['GET', 'POST'])
+def YCRopenbitcoinC():
+    global progress
+    if request.method == 'GET':
+        home = os.getenv("HOME")
+        if BTCClosed():
+            subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
+        progress = BTCprogress()
+    if request.method == 'POST':
+        IBD = BTCRunning()
+        if IBD:
+            response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yeticoldpriv"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            return redirect('/YCRimportseeds')
+        else:
+            return redirect('/YCRopenbitcoinC')
+    return render_template('YCRopenbitcoinC.html', progress=progress)
 
 #SWITCH TO ONLINE
 
