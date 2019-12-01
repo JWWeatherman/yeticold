@@ -618,7 +618,7 @@ def YWRimportseeds():
     global imported
     global walletimported
     if request.method == 'GET':
-        if walletimported:
+        if walletimported and not error:
             return redirect('/YWRsendtransaction')
     if request.method == 'POST':
         privkey = []
