@@ -701,6 +701,7 @@ def YWRsendtransaction():
     global receipentaddress
     global minerfee
     global transnum
+    global error
     if request.method == 'GET':
         rpc = RPC()
         minerfee = float(rpc.estimatesmartfee(1)["feerate"])
