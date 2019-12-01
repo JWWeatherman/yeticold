@@ -618,7 +618,7 @@ def YWRimportseeds():
     global imported
     global walletimported
     if request.method == 'GET':
-        if walletimported and not error:
+        if walletimported:
             return redirect('/YWRsendtransaction')
     if request.method == 'POST':
         privkey = []
@@ -684,8 +684,8 @@ def YWRimportseeds():
             response = json.loads(response[0].decode("utf-8"))
             checksum = response["checksum"]
             response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarmpriv importmulti \'[{ "desc": '+desc+'#'+ checksum +'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-            print(response)
             walletimported = True
+            print(response)
             return redirect('/YWRsendtransaction')
         else:
             return redirect('/YWRimportseeds')
@@ -718,7 +718,7 @@ def YWRsendtransaction():
         response = json.loads(response[0].decode("utf-8"))
         if not response['complete']:
             error = response['errors'][0]['error']
-            return redirect('/YWRimportseeds')
+            return redirect('/YWRerror')
         transnum = response
         minerfee = "{:.8f}".format(minerfee)
     if request.method == 'POST':
@@ -726,6 +726,34 @@ def YWRsendtransaction():
         print(response)
         return redirect('/YWRdisplaywallet')
     return render_template('YWRsendtransaction.html', amount=amo, minerfee=minerfee, recipent=receipentaddress)
+
+#GEN trans qr code
+@app.route("/YWRerror", methods=['GET', 'POST'])
+def YWRerror():
+    global error
+    if request.method == 'POST':
+        error = None
+        subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
+        subprocess.call('rm -r ~/.bitcoin/yetiwarmpriv', shell=True)
+        return redirect('/YWRopenbitcoinB')
+    return render_template('YWRerror.html',error=error)
+
+@app.route("/YWRopenbitcoinB", methods=['GET', 'POST'])
+def YWRopenbitcoinB():
+    global progress
+    if request.method == 'GET':
+        home = os.getenv("HOME")
+        if BTCClosed():
+            subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
+        progress = BTCprogress()
+    if request.method == 'POST':
+        IBD = BTCRunning()
+        if IBD:
+            response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yetiwarmpriv"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            return redirect('/YWRimportseeds')
+        else:
+            return redirect('/YWRopenbitcoinB')
+    return render_template('YWRopenbitcoinB.html', progress=progress)
 
 if __name__ == "__main__":
     app.run()
