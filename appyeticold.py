@@ -1050,6 +1050,8 @@ def YCdeleteseeds():
 
 @app.route("/YCsendfunds", methods=['GET', 'POST'])
 def YCsendfunds():
+    if request.method == 'POST':
+        subprocess.Popen('python3 ~/yeticold/scripts/YetiColdRecoveryOnline.py',shell=True,start_new_session=True)
     return render_template('YCsendfunds.html')
 
 if __name__ == "__main__":
