@@ -625,6 +625,7 @@ def YCRdisplaytransaction():
     global vout
     global minerfee
     global amount
+    global error
     if request.method == 'GET':
         rpc = RPC()
         minerfee = float(rpc.estimatesmartfee(1)["feerate"])
@@ -639,6 +640,9 @@ def YCRdisplaytransaction():
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yeticoldpriv signrawtransactionwithwallet '+transonehex],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
         response = json.loads(response[0].decode("utf-8"))
+        if not response['complete']:
+            error = response['errors'][0]['error']
+            return redirect('/YCRimprotseeds')
         transone = response
         firstqrcode = transone
         randomnum = str(random.randrange(0,1000000))

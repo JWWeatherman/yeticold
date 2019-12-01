@@ -715,6 +715,9 @@ def YWRsendtransaction():
         response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetiwarmpriv signrawtransactionwithwallet '+transonehex],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
         response = json.loads(response[0].decode("utf-8"))
+        if not response['complete']:
+            error = response['errors'][0]['error']
+            return redirect('/YWRimprotseeds')
         transnum = response
         minerfee = "{:.8f}".format(minerfee)
     if request.method == 'POST':
