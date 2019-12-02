@@ -186,7 +186,7 @@ switcher = {
 ### FUNCTIONS START
 
 def BTCprogress():
-    response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+    response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
     if not (len(response[0]) == 0):
         bitcoinprogress = json.loads(response[0])['verificationprogress']
         bitcoinprogress = bitcoinprogress * 100
@@ -197,7 +197,7 @@ def BTCprogress():
     return bitcoinprogress
 
 def BTCFinished():
-    response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+    response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
     if not (len(response[0]) == 0):
         bitcoinprogress = json.loads(response[0])['initialblockdownload']
     else:
@@ -299,7 +299,7 @@ def YHopenbitcoin():
     if request.method == 'GET':
         home = os.getenv("HOME")
         if BTCClosed():
-            subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
+            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':
         if progress >= 99.9:
@@ -326,7 +326,7 @@ def YHrestartbitcoin():
         subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
         subprocess.call('rm -r ~/.bitcoin/yetihot*', shell=True)
         subprocess.call('rm -r ~/yetihotwallet*', shell=True)
-        subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
+        subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':
         IBD = BTCFinished()
@@ -353,8 +353,8 @@ def YHgetseed():
         privkey = BinaryToWIF(xor(binary,newbinary))
         home = os.getenv('HOME')
         path = home + '/yetihotwallet'
-        subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yetihot"','~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yetihot"'],shell=True)
-        response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetihot sethdseed false "'+privkey+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetihot"','~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetihot"'],shell=True)
+        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetihot sethdseed false "'+privkey+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         return redirect('/YHdisplayseed')
     return render_template('YHgetseed.html')
 #display seeds
@@ -409,7 +409,7 @@ def YHwalletinstructions():
     global qrdata
     global error
     if request.method == 'GET':
-        subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetihot rescanblockchain 600000',shell=True,start_new_session=True)
+        subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetihot rescanblockchain 600000',shell=True,start_new_session=True)
     if request.method == 'POST':
         error = None
         if request.form['option'] == 'scanqrcode':
@@ -437,7 +437,7 @@ def YHRrestartbitcoin():
         subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
         subprocess.call('rm -r ~/.bitcoin/yetihot*', shell=True)
         subprocess.call('rm -r ~/yetihotwallet*', shell=True)
-        subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
+        subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':
         IBD = BTCFinished()
@@ -462,9 +462,9 @@ def YHRinputseed():
         privkey = PassphraseListToWIF(privkey)
         error = None
         rpc = RPC()
-        subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli createwallet "yetihot" false true'],shell=True)
-        subprocess.call(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli loadwallet "yetihot"'],shell=True)
-        response = subprocess.Popen(['~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetihot sethdseed true "'+privkey+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetihot" false true'],shell=True)
+        subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetihot"'],shell=True)
+        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetihot sethdseed true "'+privkey+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         return redirect('/YHRwalletinstructions')
     return render_template('YHRinputseed.html', error=error)
 
@@ -473,7 +473,7 @@ def YHRwalletinstructions():
     global qrdata
     global error
     if request.method == 'GET':
-        subprocess.Popen('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli -rpcwallet=yetihot rescanblockchain 600000',shell=True,start_new_session=True)
+        subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetihot rescanblockchain 600000',shell=True,start_new_session=True)
     if request.method == 'POST':
         error = None
         if request.form['option'] == 'scanqrcode':
