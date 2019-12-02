@@ -130,6 +130,304 @@
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
 <script>   
+    var autocompletelist = {
+    "ON": "ONE",
+    "ONE": "ONE",
+    "TW": "TWO",
+    "TWO": "TWO",
+    "TH": "THREE",
+    "THR": "THREE",
+    "THRE": "THREE",
+    "THREE": "THREE",
+    "FOU": "FOUR",
+    "FOUR": "FOUR",
+    "FI": "FIVE",
+    "FIV": "FIVE",
+    "FIVE": "FIVE",
+    "SIX": "SIX",
+    "SE": "SEVEN",
+    "SEV": "SEVEN",
+    "SEVE": "SEVEN",
+    "SEVEN": "SEVEN",
+    "EI": "EIGHT",
+    "EIG": "EIGHT",
+    "EIGH": "EIGHT",
+    "EIGHT": "EIGHT",
+    "NI": "NINE",
+    "NIN": "NINE",
+    "NINE": "NINE",
+    "A": "ALFA",
+    "AL": "ALFA",
+    "ALF": "ALFA",
+    "ALFA": "ALFA",
+    "B": "BRAVO",
+    "BR": "BRAVO",
+    "BRA": "BRAVO",
+    "BRAV": "BRAVO",
+    "BRAVO": "BRAVO",
+    "C": "CHARLIE",
+    "CH": "CHARLIE",
+    "CHA": "CHARLIE",
+    "CHAR": "CHARLIE",
+    "CHARL": "CHARLIE",
+    "CHARLI": "CHARLIE",
+    "CHARLIE": "CHARLIE",
+    "D": "DELTA",
+    "DE": "DELTA",
+    "DEL": "DELTA",
+    "DELT": "DELTA",
+    "DELTA": "DELTA",
+    "EC": "ECHO",
+    "ECH": "ECHO",
+    "ECHO": "ECHO",
+    "FOX": "FOXTROT",
+    "FOXT": "FOXTROT",
+    "FOXTR": "FOXTROT",
+    "FOXTRO": "FOXTROT",
+    "FOXTROT": "FOXTROT",
+    "G": "GOLF",
+    "GO": "GOLF",
+    "GOL": "GOLF",
+    "GOLF": "GOLF",
+    "H": "HOTEL",
+    "HO": "HOTEL",
+    "HOT": "HOTEL",
+    "HOTE": "HOTEL",
+    "HOTEL": "HOTEL",
+    "I": "INDIA",
+    "IN": "INDIA",
+    "IND": "INDIA",
+    "INDI": "INDIA",
+    "INDIA": "INDIA",
+    "J": "JULIETT",
+    "JU": "JULIETT",
+    "JUL": "JULIETT",
+    "JULI": "JULIETT",
+    "JULIE": "JULIETT",
+    "JULIET": "JULIETT",
+    "JULIETT": "JULIETT",
+    "K": "KILO",
+    "KI": "KILO",
+    "KIL": "KILO",
+    "KILO": "KILO",
+    "L": "LIMA",
+    "LI": "LIMA",
+    "LIM": "LIMA",
+    "LIMA": "LIMA",
+    "M": "MIKE",
+    "MI": "MIKE",
+    "MIK": "MIKE",
+    "MIKE": "MIKE",
+    "NO": "NOVEMBER",
+    "NOV": "NOVEMBER",
+    "NOVE": "NOVEMBER",
+    "NOVEM": "NOVEMBER",
+    "NOVEMB": "NOVEMBER",
+    "NOVEMBE": "NOVEMBER",
+    "NOVEMBER": "NOVEMBER",
+    "OS": "OSCAR",
+    "OSC": "OSCAR",
+    "OSCA": "OSCAR",
+    "OSCAR": "OSCAR",
+    "P": "PAPA",
+    "PA": "PAPA",
+    "PAP": "PAPA",
+    "PAPA": "PAPA",
+    "Q": "QUEBEC",
+    "QU": "QUEBEC",
+    "QUE": "QUEBEC",
+    "QUEB": "QUEBEC",
+    "QUEBE": "QUEBEC",
+    "QUEBEC": "QUEBEC",
+    "R": "ROMEO",
+    "RO": "ROMEO",
+    "ROM": "ROMEO",
+    "ROME": "ROMEO",
+    "ROMEO": "ROMEO",
+    "SI": "SIERRA",
+    "SIE": "SIERRA",
+    "SIER": "SIERRA",
+    "SIERR": "SIERRA",
+    "SIERRA": "SIERRA",
+    "TA": "TANGO",
+    "TAN": "TANGO",
+    "TANG": "TANGO",
+    "TANGO": "TANGO",
+    "U": "UNIFORM",
+    "UN": "UNIFORM",
+    "UNI": "UNIFORM",
+    "UNIF": "UNIFORM",
+    "UNIFO": "UNIFORM",
+    "UNIFOR": "UNIFORM",
+    "UNIFORM": "UNIFORM",
+    "V": "VICTOR",
+    "VI": "VICTOR",
+    "VIC": "VICTOR",
+    "VICT": "VICTOR",
+    "VICTO": "VICTOR",
+    "VICTOR": "VICTOR",
+    "W": "WHISKEY",
+    "WH": "WHISKEY",
+    "WHI": "WHISKEY",
+    "WHIS": "WHISKEY",
+    "WHISK": "WHISKEY",
+    "WHISKE": "WHISKEY",
+    "WHISKEY": "WHISKEY",
+    "X": "X-RAY",
+    "X-": "X-RAY",
+    "X-R": "X-RAY",
+    "X-RA": "X-RAY",
+    "X-RAY": "X-RAY",
+    "Y": "YANKEE",
+    "YA": "YANKEE",
+    "YAN": "YANKEE",
+    "YANK": "YANKEE",
+    "YANKE": "YANKEE",
+    "YANKEE": "YANKEE",
+    "Z": "ZULU",
+    "ZU": "ZULU",
+    "ZUL": "ZULU",
+    "ZULU": "ZULU",
+    "a": "alfa",
+    "al": "alfa",
+    "alf": "alfa",
+    "alfa": "alfa",
+    "b": "bravo",
+    "br": "bravo",
+    "bra": "bravo",
+    "brav": "bravo",
+    "bravo": "bravo",
+    "c": "charlie",
+    "ch": "charlie",
+    "cha": "charlie",
+    "char": "charlie",
+    "charl": "charlie",
+    "charli": "charlie",
+    "charlie": "charlie",
+    "d": "delta",
+    "de": "delta",
+    "del": "delta",
+    "delt": "delta",
+    "delta": "delta",
+    "e": "echo",
+    "ec": "echo",
+    "ech": "echo",
+    "echo": "echo",
+    "f": "foxtrot",
+    "fo": "foxtrot",
+    "fox": "foxtrot",
+    "foxt": "foxtrot",
+    "foxtr": "foxtrot",
+    "foxtro": "foxtrot",
+    "foxtrot": "foxtrot",
+    "g": "golf",
+    "go": "golf",
+    "gol": "golf",
+    "golf": "golf",
+    "h": "hotel",
+    "ho": "hotel",
+    "hot": "hotel",
+    "hote": "hotel",
+    "hotel": "hotel",
+    "i": "india",
+    "in": "india",
+    "ind": "india",
+    "indi": "india",
+    "india": "india",
+    "j": "juliett",
+    "ju": "juliett",
+    "jul": "juliett",
+    "juli": "juliett",
+    "julie": "juliett",
+    "juliet": "juliett",
+    "juliett": "juliett",
+    "k": "kilo",
+    "ki": "kilo",
+    "kil": "kilo",
+    "kilo": "kilo",
+    "l": "lima",
+    "li": "lima",
+    "lim": "lima",
+    "lima": "lima",
+    "m": "mike",
+    "mi": "mike",
+    "mik": "mike",
+    "mike": "mike",
+    "n": "november",
+    "no": "november",
+    "nov": "november",
+    "nove": "november",
+    "novem": "november",
+    "novemb": "november",
+    "novembe": "november",
+    "november": "november",
+    "o": "oscar",
+    "os": "oscar",
+    "osc": "oscar",
+    "osca": "oscar",
+    "oscar": "oscar",
+    "p": "papa",
+    "pa": "papa",
+    "pap": "papa",
+    "papa": "papa",
+    "q": "quebec",
+    "qu": "quebec",
+    "que": "quebec",
+    "queb": "quebec",
+    "quebe": "quebec",
+    "quebec": "quebec",
+    "r": "romeo",
+    "ro": "romeo",
+    "rom": "romeo",
+    "rome": "romeo",
+    "romeo": "romeo",
+    "s": "sierra",
+    "si": "sierra",
+    "sie": "sierra",
+    "sier": "sierra",
+    "sierr": "sierra",
+    "sierra": "sierra",
+    "t": "tango",
+    "ta": "tango",
+    "tan": "tango",
+    "tang": "tango",
+    "tango": "tango",
+    "u": "uniform",
+    "un": "uniform",
+    "uni": "uniform",
+    "unif": "uniform",
+    "unifo": "uniform",
+    "unifor": "uniform",
+    "uniform": "uniform",
+    "v": "victor",
+    "vi": "victor",
+    "vic": "victor",
+    "vict": "victor",
+    "victo": "victor",
+    "victor": "victor",
+    "w": "whiskey",
+    "wh": "whiskey",
+    "whi": "whiskey",
+    "whis": "whiskey",
+    "whisk": "whiskey",
+    "whiske": "whiskey",
+    "whiskey": "whiskey",
+    "x": "x-ray",
+    "x-": "x-ray",
+    "x-r": "x-ray",
+    "x-ra": "x-ray",
+    "x-ray": "x-ray",
+    "y": "yankee",
+    "ya": "yankee",
+    "yan": "yankee",
+    "yank": "yankee",
+    "yanke": "yankee",
+    "yankee": "yankee",
+    "z": "zulu",
+    "zu": "zulu",
+    "zul": "zulu",
+    "zulu": "zulu"
+  } 
   var switcher = {
   "1": "ONE",
   "2": "TWO",
@@ -301,37 +599,62 @@ var decode = (s) => {
       return char === checksum
     }
     var highlightrows = () => {
-          var templist = []
-          var Privatekey = []
-          var numofrowsgreen = 0
-          var red = "rgba(255, 0, 0, 0.4)"
-          var green = "rgba(0, 151, 19, 0.4)"
-          for(var i = 1;i < 14; i++) {
-            document.getElementById('row' + i).style.backgroundColor = ""
-            templist = document.getElementById('row' + i).value.toString().split(' ')
-            Privatekey.concat(document.getElementById('row' + i).value.toString().split(' '))
-            templist = templist.splice(0, 5)
-            var checksum = templist.pop()
-            if (document.getElementById('row' + i).value) document.getElementById('row' + i).style.backgroundColor = red
-            if (templist.filter((el) => {return passphraseWIFlist.includes(el)}).length === 4) {
-              if (checksum != '') {
-                if (checkSum(templist,checksum)) {
-                  numofrowsgreen++
-                  document.getElementById('row' + i).style.backgroundColor = green
-                }
-              }
-              templist = []
+      var templist = []
+      var Privatekey = []
+      var numofrowsgreen = 0
+      var red = "rgba(255, 0, 0, 0.4)"
+      var green = "rgba(0, 151, 19, 0.4)"
+      for(var i = 1;i < 14; i++) {
+        document.getElementById('row' + i).style.backgroundColor = ""
+        templist = document.getElementById('row' + i).value.toString().split(' ')
+        Privatekey.concat(document.getElementById('row' + i).value.toString().split(' '))
+        templist = templist.splice(0, 5)
+        var checksum = templist.pop()
+        if (document.getElementById('row' + i).value) document.getElementById('row' + i).style.backgroundColor = red
+        if (templist.filter((el) => {return passphraseWIFlist.includes(el)}).length === 4) {
+          if (checksum != '') {
+            if (checkSum(templist,checksum)) {
+              numofrowsgreen++
+              document.getElementById('row' + i).style.backgroundColor = green
             }
           }
-          var ConvertKey = numofrowsgreen === 13
-          if (ConvertKey) {
-            document.getElementById("nextkey").disabled = false
-          } else {
-            document.getElementById("nextkey").disabled = true
-          }
-          setTimeout(() => { highlightrows() }, 80)
+          templist = []
         }
-        highlightrows()
+      }
+      var ConvertKey = numofrowsgreen === 13
+      if (ConvertKey) {
+        document.getElementById("nextkey").disabled = false
+      } else {
+        document.getElementById("nextkey").disabled = true
+      }
+      setTimeout(() => { highlightrows() }, 80)
+    }
+    highlightrows()
+
+    var autocomplete = (input) => {
+      inputs = input.split(' ')
+      if (autocompletelist[inputs[inputs.length - 1]] != undefined) {
+        inputs[inputs.length - 1] = autocompletelist[inputs[inputs.length - 1]]
+        inputs = inputs.join(' ')
+      } else {
+        inputs = false
+      }
+      return inputs
+    }
+    document.addEventListener('keydown', (evt) => {
+      if (evt.key === 'Tab'){
+        autocompleted = autocomplete(document.getElementById(evt.srcElement.id).value)
+        if (autocompleted) {
+          document.getElementById(evt.srcElement.id).value = autocompleted
+          if (autocompleted.split(' ').length != 5) {
+            document.getElementById(evt.srcElement.id).value = document.getElementById(evt.srcElement.id).value + ' '
+            evt.preventDefault()
+          }
+        }else{
+          evt.preventDefault()
+        }
+      }
+    }); 
     </script>
   </body>
 </html>
