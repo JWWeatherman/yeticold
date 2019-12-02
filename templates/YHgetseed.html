@@ -44,9 +44,10 @@
       var highlight = (i) => {
         var binary = document.getElementById('binary' + i).value
         document.getElementById('count' + i).innerHTML = binary.length + ' \\ 256'
-        if (binary.length === 256) {
+        console.log(document.getElementById('binary' + i).value.replace(/1/g, '').replace(/0/g,'').length)
+        if (binary.length === 256 && document.getElementById('binary' + i).value.replace(/1/g, '').replace(/0/g,'').length === 0) {
           document.getElementById('binary' + i).style.backgroundColor = "rgba(0, 151, 19, 0.4)"
-        } else if (binary.length >= 257) {
+        } else if (binary.length >= 257 || document.getElementById('binary' + i).value.replace(/1/g, '').replace(/0/g,'').length != 0) {
           document.getElementById('binary' + i).style.backgroundColor = "rgba(255, 0, 0, 0.4)"
         } else {
           document.getElementById('binary' + i).style.backgroundColor = ""
