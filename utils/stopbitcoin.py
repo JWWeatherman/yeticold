@@ -2,7 +2,7 @@ import os
 import subprocess
 home = os.getenv("HOME")
 if (subprocess.call('lsof -n -i :8332', shell=True) != 1):
-	subprocess.call('~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli stop', shell=True)
+	subprocess.call('~/yeticold/bitcoin/bin/bitcoin-cli stop', shell=True)
 elif os.path.exists(home + "/.bitcoin/bitcoind.pid"):
 	subprocess.call('rm -r ~/.bitcoin/bitcoind.pid', shell=True)
 i = 0
