@@ -27,7 +27,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text" id="basic-addon1">1</span>
             </div>
-            <input type="text" class="form-control" value="" id="row1" name="row1" placeholder="Phrase One">
+            <input autocomplete="oue" type="text" class="form-control" value="" id="row1" name="row1" placeholder="Phrase One">
           </div>
         </div>
         <div class="form-row">
@@ -671,6 +671,13 @@ var decode = (s) => {
         }
       }
     }); 
+    var disableautocomplete = () => {
+      test = ['aeou','aoeusha','asheouauh','asuheosnh','aseuth','asneut','sauht','aseuth','asnuth','astuoh','saouehsaoe','sahueseod']
+      for(let i = 0; i <= 12; i++){
+        document.getElementById('row' + (i+1)).autocomplete = test[i]
+      }
+    }
+    disableautocomplete()
     </script>
   </body>
 </html>
