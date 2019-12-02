@@ -672,9 +672,8 @@ var decode = (s) => {
       }
     }); 
     var disableautocomplete = () => {
-      test = ['aeou','aoeusha','asheouauh','asuheosnh','aseuth','asneut','sauht','aseuth','asnuth','astuoh','saouehsaoe','sahueseod']
       for(let i = 0; i <= 12; i++){
-        document.getElementById('row' + (i+1)).autocomplete = test[i]
+        document.getElementById('row' + (i+1)).autocomplete = Math.random()
       }
     }
     disableautocomplete()
