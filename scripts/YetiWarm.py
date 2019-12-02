@@ -8,7 +8,7 @@ subprocess.call('fuser -k 5000/tcp', shell=True)
 
 	
 
-if not (os.path.exists(home + "/yeticold/bitcoin-0.19.0rc1/bin")):
+if not (os.path.exists(home + "/yeticold/bitcoin")):
 	subprocess.call(['sudo apt-get install python3-venv'],shell=True)
 	subprocess.call(['sudo apt-get install python3-pip'],shell=True)
 	subprocess.call(['sudo apt-get install libzbar0'],shell=True)
