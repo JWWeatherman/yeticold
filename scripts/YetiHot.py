@@ -6,7 +6,7 @@ subprocess.call(['cd ~/yeticold; git pull; cd'],shell=True)
 subprocess.call('fuser -k 5000/tcp', shell=True)
 	
 
-if not (os.path.exists(home + "/yeticold/bitcoin-0.19.0rc1/bin")):
+if not (os.path.exists(home + "/yeticold/bitcoin")):
 	subprocess.call(['sudo apt-get install python3-venv'],shell=True)
 	subprocess.call(['sudo apt-get install python3-pip'],shell=True)
 	subprocess.call(['sudo apt-get install libzbar0'],shell=True)
@@ -16,8 +16,7 @@ if not (os.path.exists(home + "/yeticold/bitcoin-0.19.0rc1/bin")):
 	subprocess.call(['sudo apt-get update'],shell=True)
 	subprocess.call(['echo "Installing updates. This could take an hour without feedback."'],shell=True)
 	subprocess.call(['sudo unattended-upgrade'],shell=True)
-	subprocess.call(['wget https://bitcoincore.org/bin/bitcoin-core-0.19.0/test.rc1/bitcoin-0.19.0rc1-x86_64-linux-gnu.tar.gz -P ~/yeticold/'],shell=True)
-	os.system('tar xvzf ~/yeticold/bitcoin-0.19.0rc1-x86_64-linux-gnu.tar.gz -C ~/yeticold')
+	subprocess.call(['python3 ~/yeticold/utils/downloadbitcoin.py'],shell=True)
 if not (os.system("python3 -c 'import flask'") == 0):
 	subprocess.call(['pip3 install flask'],shell=True)
 if not (os.system("python3 -c 'import qrtools'") == 0):
