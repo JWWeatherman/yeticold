@@ -19,7 +19,7 @@ if not (os.path.exists(home + "/yeticold/bitcoin-0.19.0rc1/bin")):
 	subprocess.call(['echo "Installing updates. This could take an hour without feedback."'],shell=True)
 	subprocess.call(['sudo unattended-upgrade'],shell=True)
 	subprocess.call(['wget https://bitcoincore.org/bin/bitcoin-core-0.19.0/test.rc1/bitcoin-0.19.0rc1-x86_64-linux-gnu.tar.gz -P ~/yeticold/'],shell=True)
-	os.system('tar xvzf ~/yeticold/bitcoin-0.19.0rc1-x86_64-linux-gnu.tar.gz -C ~/yeticold')
+	subprocess.call(['tar xvzf ~/yeticold/bitcoin-0.19.0rc1-x86_64-linux-gnu.tar.gz -C ~/yeticold'],shell=True)
 	subprocess.call(['mv ~/yeticold/bitcoin* ~/yeticold/bitcoin'],shell=True)
 if not (os.system("python3 -c 'import flask'") == 0):
 	subprocess.call(['pip3 install flask'],shell=True)
