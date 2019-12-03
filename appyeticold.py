@@ -601,7 +601,7 @@ def YCdisplayseeds():
             return redirect('/YCcheckseeds')
         else:
             return redirect('/YCdisplayseeds')
-    return render_template('YCdisplayseeds.html', PPL=passphraselist, x=privkeycount + 1, i=privkeycount + 25)
+    return render_template('YCdisplayseeds.html', PPL=passphraselist, x=privkeycount + 1, i=privkeycount + 15)
 
 @app.route('/YCcheckseeds', methods=['GET', 'POST'])
 def YCcheckseeds():
@@ -656,7 +656,7 @@ def YCcheckseeds():
                 return redirect('/YCcheckseeds')
         else:
             error = 'You enterd the private key incorrectly but the checksums are correct please try agian. This means you probably inputed a valid seed, but not your seed ' +str(privkeycount + 1)+' seed.'
-    return render_template('YCcheckseeds.html', x=privkeycount + 1, error=error,i=privkeycount + 35 )
+    return render_template('YCcheckseeds.html', x=privkeycount + 1, error=error,i=privkeycount + 22 )
 
 # @app.route("/YCscanutxo", methods=['GET', 'POST'])
 # def YCscanutxo():
