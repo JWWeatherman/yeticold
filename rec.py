@@ -3,11 +3,11 @@ import os
 
 if not (os.system("python3 -c 'import flask'") == 0):
 	subprocess.call(['bash -c "sudo chmod +x ~/yeticold/scripts/dpkg-script.sh; sudo ~/yeticold/scripts/dpkg-script.sh"'],shell=True)
-subprocess.call(['sudo chmod +x ~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-cli'],shell=True)
-subprocess.call(['sudo chmod +x ~/yeticold/bitcoin-0.19.0rc1/bin/bitcoind'],shell=True)
-subprocess.call(['sudo chmod +x ~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-qt'],shell=True)
-subprocess.call(['sudo chmod +x ~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-wallet'],shell=True)
-subprocess.call(['sudo chmod +x ~/yeticold/bitcoin-0.19.0rc1/bin/bitcoin-tx'],shell=True)
+subprocess.call(['sudo chmod +x ~/yeticold/bitcoin/bin/bitcoin-cli'],shell=True)
+subprocess.call(['sudo chmod +x ~/yeticold/bitcoin/bin/bitcoind'],shell=True)
+subprocess.call(['sudo chmod +x ~/yeticold/bitcoin/bin/bitcoin-qt'],shell=True)
+subprocess.call(['sudo chmod +x ~/yeticold/bitcoin/bin/bitcoin-wallet'],shell=True)
+subprocess.call(['sudo chmod +x ~/yeticold/bitcoin/bin/bitcoin-tx'],shell=True)
 subprocess.call('fuser -k 5000/tcp', shell=True)
 subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
 subprocess.call('sudo rm -r ~/.bitcoin/yeticold*', shell=True)
