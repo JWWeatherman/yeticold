@@ -192,7 +192,6 @@ def BTCprogress():
         bitcoinprogress = bitcoinprogress * 100
         bitcoinprogress = round(bitcoinprogress, 3)
     else:
-        print("error response: "+ str(response[1]))
         bitcoinprogress = 0
     return bitcoinprogress
 
@@ -201,16 +200,20 @@ def BTCFinished():
     if not (len(response[0]) == 0):
         bitcoinprogress = json.loads(response[0])['initialblockdownload']
     else:
-        print("error response: "+ str(response[1]))
         bitcoinprogress = True
     return bitcoinprogress
 
-def BTCRunning():
+def BTCClosed():
     home = os.getenv("HOME")
     if (subprocess.call('lsof -n -i :8332', shell=True) != 1):
-        return True
+        return False
     elif os.path.exists(home + "/.bitcoin/bitcoind.pid"):
         subprocess.call('rm -r ~/.bitcoin/bitcoind.pid', shell=True)
+    return True
+
+def BTCRunning():
+    if not (BTCprogress() == 0):
+        return True
     return False
 
 def RPC():

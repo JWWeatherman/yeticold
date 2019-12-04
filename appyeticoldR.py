@@ -527,10 +527,10 @@ def YCRdisplayCQR():
         img = qr.make_image(fill_color="black", back_color="white")
         home = os.getenv("HOME")
         img.save(home + '/yeticold/static/thirdqrcode' + thirdqrname + '.png')
-        route = url_for('static', filename='thirdqrcode' + thirdqrname + '.png')
+        path = url_for('static', filename='thirdqrcode' + thirdqrname + '.png')
     if request.method == 'POST':
         return redirect('/YCRscantransaction')
-    return render_template('YCRdisplayCQR.html', qrdata=thirdqrcode, route=route)
+    return render_template('YCRdisplayCQR.html', qrdata=thirdqrcode, path=path)
 
 ###SWITCH TO OFFLINE
 
@@ -661,10 +661,10 @@ def YCRdisplaytransaction():
         img = qr.make_image(fill_color="black", back_color="white")
         home = os.getenv("HOME")
         img.save(home + '/yeticold/static/firsttransqrcode'+firstqrname+'.png')
-        route = url_for('static', filename='firsttransqrcode' + firstqrname + '.png')
+        path = url_for('static', filename='firsttransqrcode' + firstqrname + '.png')
     if request.method == 'POST':
         return redirect('/YCRscanCQR')
-    return render_template('YCRdisplaytransaction.html', qrdata=firstqrcode, route=route)
+    return render_template('YCRdisplaytransaction.html', qrdata=firstqrcode, path=path)
 
 #GEN trans qr code
 @app.route("/YCRerror", methods=['GET', 'POST'])
