@@ -12,11 +12,11 @@
         <h3 style="color:white;margin:0;">Yeti Bitcoin Cold Storage</h3>
     </nav>
     <div class="container" style="margin-top: 3rem;">
-      <h2>Step 11: Scan Receipent from Paper</h2>
+      <h2>Step 11: Scan Destination Address</h2>
       {% if error %}
         <p style="color:red;">{{ error }}</p>
       {% endif %}
-      <div>Click Scan to open the webcam and scan the Descriptor from your paper packet. Each packet contains an identical copy of the Descriptor.</div>
+      <div>Click Scan to open the webcam and scan the destination address where you would like to send the entire amount of this UTXO.</div>
       <form action="" method="post">
         <input style="display: none;" name="option" value="scan">
         <input class="btn btn-primary" type="submit" id="next" value="Scan">
