@@ -392,7 +392,7 @@ def YWgetseeds():
 def YWdisplayseeds():
     global privkeylist
     global privkeycount
-    global
+    global pubdesc
     if request.method == 'GET':
         privkey = privkeylist[privkeycount]
         passphraselist = WIFToPassphraseList(privkey)
