@@ -615,7 +615,7 @@ def YCRimportseeds():
             return redirect('/YCRdisplaytransaction')
         else:
             return redirect('/YCRimportseeds')
-    return render_template('YCRimportseeds.html', x=privkeycount + 1, error=error,i=privkeycount + 26 )
+    return render_template('YCRimportseeds.html', x=privkeycount + 1, error=error,i=privkeycount + 18 )
 
 #GEN trans qr code
 @app.route("/YCRdisplaytransaction", methods=['GET', 'POST'])
