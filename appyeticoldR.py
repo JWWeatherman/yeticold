@@ -437,7 +437,7 @@ def YCRrestartbitcoin():
     if request.method == 'POST':
         IBD = BTCRunning()
         if IBD:
-            subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yeticold"'],shell=True)
+            subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yeticold"'],shell=True)
             return redirect('/YCRmovefiles')
         return redirect('/YCRrestartbitcoin')
     return render_template('YCRrestartbitcoin.html')
