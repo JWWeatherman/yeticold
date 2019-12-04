@@ -16,10 +16,10 @@
       {% if error %}
         <p style="color:red;">{{ error }}</p>
       {% endif %}
-      <div>Click Scan to open the webcam and scan the destination address where you would like to send the entire amount of this UTXO.</div>
+      <div>Click <b>Scan</b> to open the webcam and scan the destination address or paste it into the box below and click <b>Next</b>. The balance at the sending bitcoin addresss will be sent so send to your own wallet first if you need to pay someone more or less.</div>
       <form action="" method="post">
         <input style="display: none;" name="option" value="scan">
-        <input class="btn btn-primary" type="submit" id="next" value="Scan">
+        <input class="btn btn-primary" type="submit" id="next" value="Scan" style="margin-top: 30px;">
       </form>
       <form action="" method="post">
         <div class="form-row" id="row1">
@@ -28,7 +28,7 @@
             <input type="text" class="form-control" placeholder="bitcoin address" name="option" id="option">
           </div>
         </div>
-        <input class="btn btn-primary" type="submit" id="next" value="Submit recipent">
+        <input class="btn btn-primary" type="submit" id="next" value="Next">
       </form>
     </div>
   </body>
