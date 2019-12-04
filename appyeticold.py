@@ -368,6 +368,7 @@ def YCgetseeds():
     global firstqrcode
     global secondqrcode
     global xprivlist
+    global pubdesc
     if request.method == 'POST':
         if request.form['skip'] == 'skip':
             privkeylisttemp = []
@@ -421,8 +422,8 @@ def YCgetseeds():
             print(response)
             return "error response from getdescriptorinfo: " + str(response[1]) + '\n' + '~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yeticold getdescriptorinfo "wsh(multi(3,'+xprivlist[0]+'/*,'+xprivlist[1]+'/*,'+xprivlist[2]+'/*,'+xprivlist[3]+'/*,'+xprivlist[4]+'/*,'+xprivlist[5]+'/*,'+xprivlist[6]+'/*))"'
         checksum = response["checksum"]
-        desc = response["descriptor"]
-        firstqrcode = desc
+        pubdesc = response["descriptor"]
+        firstqrcode = pubdesc
         return redirect('/YCdisplaydescriptor')
     return render_template('YCgetseeds.html')
 
