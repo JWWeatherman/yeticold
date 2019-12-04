@@ -422,9 +422,8 @@ def YCRpackage():
 #move files to LARGE EXTERNAL DRIVE
 @app.route("/YCRcopyfiles", methods=['GET', 'POST'])
 def YCRcopyfiles():
-    if request.method == 'GET':
-        subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
     if request.method == 'POST':
+        subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
         return redirect('/YCRrestartbitcoin')
     return render_template('YCRcopyfiles.html')
 
@@ -438,7 +437,7 @@ def YCRrestartbitcoin():
     if request.method == 'POST':
         IBD = BTCRunning()
         if IBD:
-            subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yeticold"'],shell=True)
+            subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yeticold"'],shell=True)
             return redirect('/YCRmovefiles')
         return redirect('/YCRrestartbitcoin')
     return render_template('YCRrestartbitcoin.html')

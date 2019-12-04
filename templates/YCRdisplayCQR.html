@@ -14,7 +14,7 @@
     <div class="container" style="margin-top: 3rem;">
       <h2>Step 16: Scan Transaction Data</h2>
       <div>On the <b>Disconnected</b> laptop click <b>Scan</b> to scan the QR code below that contains the transaction data.</div>
-      <p>This is your transaction data (fields are separated by the & symbol): {{ qrdata }}</p>
+      <p style="overflow-wrap:break-word;">This is your transaction data (& separated): {{ qrdata }}</p>
       <img src="{{path}}" style="height: 95vh; width: 95vh">
       <form action="" method="post">
         <input style="display: none;" name="option" value="VALUE">
