@@ -382,6 +382,9 @@ def YWgetseeds():
         pubdesc = response["descriptor"].replace('\n', '')
         response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwarm importmulti \'[{ "desc": "'+pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
+        home = os.getenv('HOME')
+        path = home + '/Documents'
+        subprocess.call('rm -r '+path+'/ywseedpacket*', shell=True)
         return redirect('/YWdisplayseeds')
     return render_template('YWgetseeds.html')
 #display seeds
@@ -396,7 +399,6 @@ def YWdisplayseeds():
     if request.method == 'POST':
         home = os.getenv('HOME')
         path = home + '/Documents'
-        subprocess.call('rm -r '+path+'/ywseedpacket*', shell=True)
         subprocess.call('mkdir '+path+'/ywseedpacket'+str(privkeycount + 1), shell=True)
         subprocess.call('touch '+path+'/ywseedpacket'+str(privkeycount + 1)+'/ywseed'+str(privkeycount + 1)+'.txt', shell=True)
         subprocess.call('touch '+path+'/ywseedpacket'+str(privkeycount + 1)+'/descriptor.txt', shell=True)

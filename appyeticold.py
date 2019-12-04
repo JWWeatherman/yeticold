@@ -448,6 +448,9 @@ def YCdisplaydescriptor():
         img.save(home + '/yeticold/static/firstqrcode' + firstqrname + '.png')
         path = url_for('static', filename='firstqrcode' + firstqrname + '.png')
     if request.method == 'POST':
+        home = os.getenv('HOME')
+        seedpath = home + '/Documents'
+        subprocess.call('rm -r '+seedpath+'/ycseedpacket*', shell=True)
         return redirect('/YCdisplayseeds')
     return render_template('YCdisplaydescriptor.html', qrdata=firstqrcode, path=path)
 
@@ -578,7 +581,7 @@ def YCprintpage():
 #         return redirect('/YCdisplayutxo')
 #     return render_template('YCcheckfunds.html')
 
-##SWITCH TO OFFLINE
+#SWITCH TO OFFLINE
 
 @app.route('/YCdisplayseeds', methods=['GET', 'POST'])
 def YCdisplayseeds():
@@ -591,7 +594,6 @@ def YCdisplayseeds():
     if request.method == 'POST':
         home = os.getenv('HOME')
         path = home + '/Documents'
-        subprocess.call('rm -r '+path+'/ycseedpacket*', shell=True)
         subprocess.call('mkdir '+path+'/ycseedpacket'+str(privkeycount + 1), shell=True)
         subprocess.call('touch '+path+'/ycseedpacket'+str(privkeycount + 1)+'/ycseed'+str(privkeycount + 1)+'.txt', shell=True)
         subprocess.call('touch '+path+'/ycseedpacket'+str(privkeycount + 1)+'/descriptor.txt', shell=True)
