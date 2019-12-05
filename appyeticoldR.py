@@ -399,7 +399,7 @@ def YCRskipcopy():
         if request.form['option'] == 'Recopy':
             return redirect('/YCRpackage')
         else:
-            return redirect('/YCRskiptoscanCQR')
+            return redirect('/YCRswitchlaptop')
     return render_template('YCRskipcopy.html')
 
 #repackage everything
@@ -606,7 +606,7 @@ def YCRimportseeds():
             return redirect('/YCRdisplaytransaction')
         else:
             return redirect('/YCRimportseeds')
-    return render_template('YCRimportseeds.html', x=privkeycount + 1, error=error,i=privkeycount + 18 )
+    return render_template('YCRimportseeds.html', x=privkeycount + 1, error=error,i=privkeycount + 9 )
 
 #GEN trans qr code
 @app.route("/YCRdisplaytransaction", methods=['GET', 'POST'])
@@ -731,11 +731,11 @@ def YCRconfirmsend():
 ###SECONDARY FLOW
 
 #restart offline laptop
-@app.route("/YCRskiptoscanCQR", methods=['GET', 'POST'])
-def YCRskiptoscanCQR():
+@app.route("/YCRswitchlaptop", methods=['GET', 'POST'])
+def YCRswitchlaptop():
     if request.method == 'POST':
         return redirect('/YCRdisplayCQR')
-    return render_template('YCRskiptoscanCQR.html')
+    return render_template('YCRswitchlaptop.html')
 
 ###SWITCH TO OFFLINE
 
