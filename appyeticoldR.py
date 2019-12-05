@@ -394,6 +394,10 @@ def YCRskipcopy():
                     if oldaddresses[i]['totalbal'] <= addresses[i]['totalbal']:
                         print("not lesser than")
                         tempchange = False
+                    else:
+                        print(oldaddresses[i]['totalbal'])
+                        print(addresses[i]['totalbal'])
+                        print("bal")
                 if not tempchange:
                     break
             if tempchange:
@@ -487,8 +491,6 @@ def YCRscanCQR():
         balance = firstqrcode[2]
         txid = firstqrcode[3]
         vout = firstqrcode[4]
-        if walletimported:
-            return redirect('/YCRdisplaytransaction')
         return redirect('/YCRscandescriptorB')
     return render_template('YCRscanCQR.html')
 
@@ -504,6 +506,7 @@ def YCRdisplayCQR():
         testlist = []
         testlist.append(sourceaddress)
         response = rpc.listunspent(0, 9999999, testlist)
+        print(response)
         txid = response[0]['txid']
         vout = str(response[0]['vout'])
         bal = response[0]['amount']
