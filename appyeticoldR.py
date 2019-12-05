@@ -399,7 +399,7 @@ def YCRskipcopy():
         if request.form['option'] == 'Recopy':
             return redirect('/YCRpackage')
         else:
-            return redirect('/YCRswitchlaptop')
+            return redirect('/YCRscanCQRB')
     return render_template('YCRskipcopy.html')
 
 #repackage everything
@@ -729,15 +729,6 @@ def YCRconfirmsend():
 
 
 ###SECONDARY FLOW
-
-#restart offline laptop
-@app.route("/YCRswitchlaptop", methods=['GET', 'POST'])
-def YCRswitchlaptop():
-    if request.method == 'POST':
-        return redirect('/YCRdisplayCQR')
-    return render_template('YCRswitchlaptop.html')
-
-###SWITCH TO OFFLINE
 
 @app.route("/YCRscanCQRB", methods=['GET', 'POST'])
 def YCRscanCQRB():
