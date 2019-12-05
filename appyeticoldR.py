@@ -408,6 +408,7 @@ def YCRpackage():
     if request.method == 'GET':
         subprocess.call(['gnome-terminal -- bash -c "sudo chmod +x ~/yeticold/scripts/rpkg-script.sh; sudo ~/yeticold/scripts/rpkg-script.sh"'],shell=True)
     if request.method == 'POST':
+        subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
         return redirect('/YCRcopyfiles')
     return render_template('YCRpackage.html')
 
@@ -415,7 +416,6 @@ def YCRpackage():
 @app.route("/YCRcopyfiles", methods=['GET', 'POST'])
 def YCRcopyfiles():
     if request.method == 'POST':
-        subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
         return redirect('/YCRrestartbitcoin')
     return render_template('YCRcopyfiles.html')
 
