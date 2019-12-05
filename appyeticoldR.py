@@ -382,6 +382,9 @@ def YCRskipcopy():
     if request.method == 'GET':
         change = False
         if len(oldaddresses) != len(addresses):
+            print("length")
+            print(len(oldaddresses))
+            print(len(addresses))
             change = True
         for i in range(0, len(oldaddresses)):
             tempchange = True
@@ -392,6 +395,9 @@ def YCRskipcopy():
                 if not tempchange:
                     break
             if tempchange:
+                print("tempchange never happend")
+                print(addresses[i])
+                print(oldaddresses[i])
                 change = True
         if change:
             return redirect('/YCRpackage')
