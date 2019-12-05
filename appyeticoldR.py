@@ -382,22 +382,13 @@ def YCRskipcopy():
     if request.method == 'GET':
         change = False
         if len(oldaddresses) != len(addresses):
-            print("length")
-            print(len(oldaddresses))
-            print(len(addresses))
             change = True
         for i in range(0, len(oldaddresses)):
             tempchange = True
             for x in range(0, len(addresses)):
                 if oldaddresses[i]['address'] == addresses[x]['address']:
-                    print("same address")
                     if oldaddresses[i]['totalbal'] <= addresses[i]['totalbal']:
-                        print("not lesser than")
                         tempchange = False
-                    else:
-                        print(oldaddresses[i]['totalbal'])
-                        print(addresses[i]['totalbal'])
-                        print("bal")
                 if not tempchange:
                     break
             if tempchange:
