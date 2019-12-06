@@ -461,7 +461,6 @@ def YHRinputseed():
         error = None
         rpc = RPC()
         subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetihot" false true'],shell=True)
-        subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetihot"'],shell=True)
         response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetihot sethdseed true "'+privkey+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         return redirect('/YHRwalletinstructions')
     return render_template('YHRinputseed.html', error=error)

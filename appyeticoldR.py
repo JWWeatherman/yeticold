@@ -401,6 +401,8 @@ def YCRskipcopy():
                 change = True
         if change:
             return redirect('/YCRpackage')
+    ####ISSUE
+    return redirect('/YCRdisplayCQRB')
     if request.method == 'POST':
         if request.form['option'] == 'Recopy':
             return redirect('/YCRpackage')
