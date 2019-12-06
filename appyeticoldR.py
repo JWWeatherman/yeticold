@@ -390,7 +390,7 @@ def YCRskipcopy():
             tempchange = True
             for x in range(0, len(addresses)):
                 if oldaddresses[i]['address'] == addresses[x]['address']:
-                    if oldaddresses[i]['totalbal'] <= addresses[i]['totalbal']:
+                    if oldaddresses[i]['totalbal'] <= addresses[x]['totalbal']:
                         tempchange = False
                 if not tempchange:
                     break
@@ -440,7 +440,7 @@ def YCRrestartbitcoin():
         return redirect('/YCRrestartbitcoin')
     return render_template('YCRrestartbitcoin.html')
 
-#COPY TO THE OFFLINE
+#copy to offline
 @app.route("/YCRmovefiles", methods=['GET', 'POST'])
 def YCRmovefiles():
     global oldaddresses
@@ -454,44 +454,24 @@ def YCRmovefiles():
 
 @app.route("/YCRopenbitcoinB", methods=['GET', 'POST'])
 def YCRopenbitcoinB():
-    global progress
     if request.method == 'GET':
         home = os.getenv("HOME")
         if BTCClosed():
             subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
-        progress = BTCprogress()
     if request.method == 'POST':
-        if progress >= 99.9:
-            return redirect('YCRscanCQR')
+       IBD = BTCRunning()
+        if IBD:
             subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwarm"'],shell=True)
-        else:
-            return redirect('/YCRopenbitcoinB')
+            return redirect('/YCRswitchlaptop')
     return render_template('YCRopenbitcoinB.html', progress=progress)
 
-@app.route("/YCRscanCQR", methods=['GET', 'POST'])
-def YCRscanCQR():
-    global firstqrcode
-    global receipentaddress
-    global balance
-    global sourceaddress
-    global txid
-    global vout
-    global walletimported
+@app.route("/YCRswitchlaptop", methods=['GET', 'POST'])
+def YCRswitchlaptop():
     if request.method == 'POST':
-        firstqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-        firstqrcode = firstqrcode.decode("utf-8")
-        firstqrcode = firstqrcode.split('&')
-        print("spliced qr code")
-        print(firstqrcode)
-        receipentaddress = firstqrcode[0]
-        sourceaddress = firstqrcode[1]
-        balance = firstqrcode[2]
-        txid = firstqrcode[3]
-        vout = firstqrcode[4]
-        return redirect('/YCRscandescriptorB')
-    return render_template('YCRscanCQR.html')
+        return redirect('/YCRscanCQR')
+    return render_template('YCRswitchlaptop.html', progress=progress)
 
-###SWITCH TO ONLINE
+##SWITCH TO ONLINE
 
 @app.route("/YCRdisplayCQR", methods=['GET', 'POST'])
 def YCRdisplayCQR():
@@ -528,7 +508,36 @@ def YCRdisplayCQR():
         return redirect('/YCRscantransaction')
     return render_template('YCRdisplayCQR.html', qrdata=thirdqrcode, path=path)
 
+
+
+###SWITCH TO ONLINE
+
+
+
 ###SWITCH TO OFFLINE
+
+@app.route("/YCRscanCQR", methods=['GET', 'POST'])
+def YCRscanCQR():
+    global firstqrcode
+    global receipentaddress
+    global balance
+    global sourceaddress
+    global txid
+    global vout
+    global walletimported
+    if request.method == 'POST':
+        firstqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+        firstqrcode = firstqrcode.decode("utf-8")
+        firstqrcode = firstqrcode.split('&')
+        print("spliced qr code")
+        print(firstqrcode)
+        receipentaddress = firstqrcode[0]
+        sourceaddress = firstqrcode[1]
+        balance = firstqrcode[2]
+        txid = firstqrcode[3]
+        vout = firstqrcode[4]
+        return redirect('/YCRscandescriptorB')
+    return render_template('YCRscanCQR.html')
 
 @app.route("/YCRscandescriptorB", methods=['GET', 'POST'])
 def YCRscandescriptorB():

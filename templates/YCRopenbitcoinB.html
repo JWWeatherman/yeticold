@@ -12,27 +12,15 @@
         <h3 style="color:white;margin:0;">Yeti Bitcoin Cold Storage</h3>
     </nav>
     <div class="container" style="margin-top: 3rem;">
-      <h2>Step 5: Finish Opening Bitcoin.</h2>
-      <div>Once Bitcoin is fully opened click Next.</div>
-      <div class="progress mb-3" style="margin-top:35px;">
-        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:{{ progress }}%">
-    {{ progress }}% Done
-        </div>
-      </div>
-      <div>
-        <form action="" method="post">
-          <input style="display: none;" name="option" value="VALUE">
-          <input style="display: none;" class="btn btn-primary" type="submit" id="next" value="Next">
-        </form>
-      </div>
+      <h2>Yeit is Opening Bitcoin Core. Please wait.</h2>
     </div>
+    <form action="" method="post" style="margin-top:35px;">
+      <input style="display: none;" name="option" value="VALUE">
+      <input style="display: none;" class="btn btn-primary" type="submit" id="next" value="Next">
+    </form>
     <script>
       var enable = () => {
-        if ({{ progress }} >= 99) {
-          document.getElementById("next").style.display = ""
-        } else {
-          setTimeout(() => { document.getElementById("next").click() }, 5000)
-        }
+        setTimeout(() => { document.getElementById("next").click() }, 2000)
       }
       enable()
     </script>
