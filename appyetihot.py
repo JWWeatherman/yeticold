@@ -411,8 +411,6 @@ def YHcopyseed():
 def YHwalletinstructions():
     global qrdata
     global error
-    if request.method == 'GET':
-        subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetihot rescanblockchain 600000',shell=True,start_new_session=True)
     if request.method == 'POST':
         error = None
         qrdata = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
