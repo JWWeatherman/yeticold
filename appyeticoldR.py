@@ -459,7 +459,7 @@ def YCRopenbitcoinB():
         if BTCClosed():
             subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
     if request.method == 'POST':
-       IBD = BTCRunning()
+        IBD = BTCRunning()
         if IBD:
             subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwarm"'],shell=True)
             return redirect('/YCRswitchlaptop')
@@ -507,12 +507,6 @@ def YCRdisplayCQR():
     if request.method == 'POST':
         return redirect('/YCRscantransaction')
     return render_template('YCRdisplayCQR.html', qrdata=thirdqrcode, path=path)
-
-
-
-###SWITCH TO ONLINE
-
-
 
 ###SWITCH TO OFFLINE
 
