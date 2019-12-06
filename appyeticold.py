@@ -505,8 +505,8 @@ def YCdisplayseeds():
     if request.method == 'POST':
         home = os.getenv('HOME')
         path = home + '/Documents'
-        subprocess.call('mkdir '+path+'/ycseedpacket'+str(privkeycount + 1), shell=True)
-        subprocess.call('touch '+path+'/ycseedpacket'+str(privkeycount + 1)+'/ycseed'+str(privkeycount + 1)+'.txt', shell=True)
+        subprocess.call('mkdir '+path+'/ycseed'+str(privkeycount + 1), shell=True)
+        subprocess.call('touch '+path+'/ycseed'+str(privkeycount + 1)+'/ycseed'+str(privkeycount + 1)+'.txt', shell=True)
         file = ''
         for i in range(0,13):
             file = file + request.form['displayrow' + str(i+1)] + '\n'
@@ -524,7 +524,7 @@ def YCdisplayseeds():
         file = file + 'This seed packet also contains a usb device that has a digital copy of the information on this document. It does not contain another set of seed words, but simply a copy of the seed words in this document.\n'
         file = file + 'Two other seed packets must be obtained to recover the bitcoin stored.\n'
         file = file + 'YetiCold.com recommends storing seed words in locations like safety deposit boxes, home safes, and with professionals such as accountants and lawyers.\n'
-        subprocess.call('echo "'+file+'" >> '+path+'/ycseedpacket'+str(privkeycount + 1)+'/ycseed'+str(privkeycount + 1)+'.txt', shell=True)
+        subprocess.call('echo "'+file+'" >> '+path+'/ycseed'+str(privkeycount + 1)+'/ycseed'+str(privkeycount + 1)+'.txt', shell=True)
         qr = qrcode.QRCode(
                version=1,
                error_correction=qrcode.constants.ERROR_CORRECT_L,
@@ -535,7 +535,7 @@ def YCdisplayseeds():
         qr.make(fit=True)
         img = qr.make_image(fill_color="black", back_color="white")
         home = os.getenv("HOME")
-        img.save(home + '/Documents/ycseedpacket'+str(privkeycount + 1)+'/descriptor.png')
+        img.save(home + '/Documents/ycseed'+str(privkeycount + 1)+'/descriptor.png')
         privkeycount = privkeycount + 1
         if (privkeycount == 7):
             privkeycount = 0

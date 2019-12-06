@@ -382,6 +382,10 @@ def YWgetseeds():
         pubdesc = response["descriptor"].replace('\n', '')
         response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwarm importmulti \'[{ "desc": "'+pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
+        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwarmpriv"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        print(response)
+        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwarmpriv importmulti \'[{ "desc": "wsh(multi(3,'+xprivlist[0]+'/*,'+xprivlist[1]+'/*,'+xprivlist[2]+'/*,'+xprivlist[3]+'/*,'+xprivlist[4]+'/*,'+xprivlist[5]+'/*,'+xprivlist[6]+'/*))#'+checksum+'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        print(response)
         home = os.getenv('HOME')
         path = home + '/Documents'
         subprocess.call('rm -r '+path+'/ywseedpacket*', shell=True)
@@ -399,8 +403,8 @@ def YWdisplayseeds():
     if request.method == 'POST':
         home = os.getenv('HOME')
         path = home + '/Documents'
-        subprocess.call('mkdir '+path+'/ywseedpacket'+str(privkeycount + 1), shell=True)
-        subprocess.call('touch '+path+'/ywseedpacket'+str(privkeycount + 1)+'/ywseed'+str(privkeycount + 1)+'.txt', shell=True)
+        subprocess.call('mkdir '+path+'/ywseed'+str(privkeycount + 1), shell=True)
+        subprocess.call('touch '+path+'/ywseed'+str(privkeycount + 1)+'/ywseed'+str(privkeycount + 1)+'.txt', shell=True)
         file = ''
         for i in range(0,13):
             file = file + request.form['displayrow' + str(i+1)] + '\n'
@@ -418,7 +422,7 @@ def YWdisplayseeds():
         file = file + 'This seed packet also contains a usb device that has a digital copy of the information on this document. It does not contain another set of seed words, but simply a copy of the seed words in this document.\n'
         file = file + 'Two other seed packets must be obtained to recover the bitcoin stored.\n'
         file = file + 'YetiCold.com recommends storing seed words in locations like safety deposit boxes, home safes, and with professionals such as accountants and lawyers.\n'
-        subprocess.call('echo "'+file+'" >> '+path+'/ywseedpacket'+str(privkeycount + 1)+'/ywseed'+str(privkeycount + 1)+'.txt', shell=True)
+        subprocess.call('echo "'+file+'" >> '+path+'/ywseed'+str(privkeycount + 1)+'/ywseed'+str(privkeycount + 1)+'.txt', shell=True)
         qr = qrcode.QRCode(
                version=1,
                error_correction=qrcode.constants.ERROR_CORRECT_L,
@@ -429,7 +433,7 @@ def YWdisplayseeds():
         qr.make(fit=True)
         img = qr.make_image(fill_color="black", back_color="white")
         home = os.getenv("HOME")
-        img.save(home + '/Documents/ywseedpacket'+str(privkeycount + 1)+'/descriptor.png')
+        img.save(home + '/Documents/ywseed'+str(privkeycount + 1)+'/descriptor.png')
         privkeycount = privkeycount + 1
         if (privkeycount == 7):
             privkeycount = 0
