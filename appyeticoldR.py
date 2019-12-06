@@ -261,7 +261,7 @@ def YCRscandescriptor():
     if request.method == 'POST':
         firstqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
         firstqrcode = firstqrcode.decode("utf-8")
-        pubdesc = firstqrcode[:-2]
+        pubdesc = firstqrcode.replace('\n', '')
         return redirect('/YCRrescanwallet')
     return render_template('YCRscandescriptor.html')
 
