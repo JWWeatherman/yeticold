@@ -640,7 +640,7 @@ def YWRimportseeds():
     global walletimported
     if request.method == 'GET':
         if walletimported:
-            return redirect('/YWRsendtransaction')
+            return redirect('/YWRsendtransactionB')
     if request.method == 'POST':
         privkey = []
         for i in range(1,14):
@@ -710,7 +710,7 @@ def YWRimportseeds():
             return redirect('/YWRsendtransaction')
         else:
             return redirect('/YWRimportseeds')
-    return render_template('YWRimportseeds.html', x=privkeycount + 1, error=error,i=privkeycount + 11 )
+    return render_template('YWRimportseeds.html', x=privkeycount + 1, error=error,i=privkeycount + 2 )
 
 #GEN trans qr code
 @app.route("/YWRsendtransaction", methods=['GET', 'POST'])
@@ -747,6 +747,42 @@ def YWRsendtransaction():
         print(response)
         return redirect('/YWRdisplaywallet')
     return render_template('YWRsendtransaction.html', amount=amo, minerfee=minerfee, recipent=receipentaddress)
+
+#GEN trans qr code
+@app.route("/YWRsendtransactionB", methods=['GET', 'POST'])
+def YWRsendtransactionB():
+    global xprivlist
+    global newxpublist
+    global pubdesc
+    global sourceaddress
+    global receipentaddress
+    global minerfee
+    global transnum
+    global error
+    if request.method == 'GET':
+        rpc = RPC()
+        minerfee = float(rpc.estimatesmartfee(1)["feerate"])
+        kilobytespertrans = 0.200
+        minerfee = (minerfee * kilobytespertrans)
+        amo = (float(sourceaddress['numbal']) - minerfee)
+        amo = "{:.8f}".format(float(amo))
+        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwarmpriv createrawtransaction \'[{ "txid": "'+sourceaddress['txid']+'", "vout": '+sourceaddress['vout']+'}]\' \'[{"'+receipentaddress+'" : '+str(amo)+'}]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        print(response)
+        response = response[0].decode("utf-8")
+        transonehex = response[:-1]
+        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwarmpriv signrawtransactionwithwallet '+transonehex],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        print(response)
+        response = json.loads(response[0].decode("utf-8"))
+        if not response['complete']:
+            error = response['errors'][0]['error']
+            return redirect('/YWRerror')
+        transnum = response
+        minerfee = "{:.8f}".format(minerfee)
+    if request.method == 'POST':
+        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwarmpriv sendrawtransaction '+transnum['hex']+''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        print(response)
+        return redirect('/YWRdisplaywallet')
+    return render_template('YWRsendtransactionB.html', amount=amo, minerfee=minerfee, recipent=receipentaddress)
 
 #GEN trans qr code
 @app.route("/YWRerror", methods=['GET', 'POST'])
