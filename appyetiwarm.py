@@ -330,6 +330,7 @@ def YWgetseeds():
     global privkeycount
     global xprivlist
     global pubdesc
+    global walletimported
     if request.method == 'POST':
         if request.form['skip'] == 'skip':
             privkeylisttemp = []
@@ -386,6 +387,8 @@ def YWgetseeds():
         print(response)
         response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwarmpriv importmulti \'[{ "desc": "wsh(multi(3,'+xprivlist[0]+'/*,'+xprivlist[1]+'/*,'+xprivlist[2]+'/*,'+xprivlist[3]+'/*,'+xprivlist[4]+'/*,'+xprivlist[5]+'/*,'+xprivlist[6]+'/*))#'+checksum+'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
+        walletimported = True
+        print(walletimported)
         home = os.getenv('HOME')
         path = home + '/Documents'
         subprocess.call('rm -r '+path+'/ywseedpacket*', shell=True)
