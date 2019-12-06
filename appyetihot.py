@@ -476,19 +476,16 @@ def YHRwalletinstructions():
         subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetihot rescanblockchain 600000',shell=True,start_new_session=True)
     if request.method == 'POST':
         error = None
-        if request.form['option'] == 'scanqrcode':
-            qrdata = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-            qrdata = qrdata.decode("utf-8").replace('\n', '')
-            if (qrdata.split(':')[0] == 'bitcoin'):
-                qrdata = qrdata.split(':')[1].split('?')[0]
-            if (qrdata[:3] == 'bc1') or (qrdata[:1] == '3') or (qrdata[:1] == '1'):
-                if not (len(qrdata) >= 26) and (len(qrdata) <= 35):
-                    error = qrdata + ' is not a valid bitcoin address, address should have a length from 26 to 35 instead of ' + str(len(qrdata)) + '.'
-            else: 
-                error = qrdata + ' is not a valid bitcoin address, address should have started with bc1, 3 or 1 instead of ' + qrdata[:1] + ', or ' + qrdata[:3] + '.'
-            return redirect('/YHRwalletinstructions')
-        else:
-            return redirect('/YHmenu')
+        qrdata = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+        qrdata = qrdata.decode("utf-8").replace('\n', '')
+        if (qrdata.split(':')[0] == 'bitcoin'):
+            qrdata = qrdata.split(':')[1].split('?')[0]
+        if (qrdata[:3] == 'bc1') or (qrdata[:1] == '3') or (qrdata[:1] == '1'):
+            if not (len(qrdata) >= 26) and (len(qrdata) <= 35):
+                error = qrdata + ' is not a valid bitcoin address, address should have a length from 26 to 35 instead of ' + str(len(qrdata)) + '.'
+        else: 
+            error = qrdata + ' is not a valid bitcoin address, address should have started with bc1, 3 or 1 instead of ' + qrdata[:1] + ', or ' + qrdata[:3] + '.'
+        return redirect('/YHwalletinstructions')
     return render_template('YHRwalletinstructions.html', error=error, qrdata=qrdata)
 
 if __name__ == "__main__":
