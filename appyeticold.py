@@ -195,6 +195,7 @@ def BTCFinished():
 
 def BTCClosed():
     home = os.getenv("HOME")
+    print(subprocess.call('lsof -n -i :8332', shell=True))
     if (subprocess.call('lsof -n -i :8332', shell=True) != 1):
         return False
     elif os.path.exists(home + "/.bitcoin/bitcoind.pid"):
@@ -320,12 +321,10 @@ def YCmovefiles():
 #finish open bitcoin
 @app.route("/YCopenbitcoinB", methods=['GET', 'POST'])
 def YCopenbitcoinB():
-    global progress
     if request.method == 'GET':
         home = os.getenv("HOME")
         if BTCClosed():
             subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
-        progress = BTCprogress()
     if request.method == 'POST':
         IBD = BTCRunning()
         if IBD:
