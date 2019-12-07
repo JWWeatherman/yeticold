@@ -22,10 +22,10 @@
       </ul>
       <form action="" method="post" style="margin-top:35px;">
         <input style="display: none;" name="option" value="scanqrcode">
-        <input class="btn btn-primary" type="submit" id="next" value="Scan">
+        <input class="btn btn-primary" type="submit" id="next" value="Scan a bitcoin address for copy and paste">
       </form>
       {%if error%}
-      <div>{{error}}</div>
+      <div style="color:red;">{{error}}</div>
       {%endif%}
       {%if qrdata%}
       <div>{{qrdata}}</div>

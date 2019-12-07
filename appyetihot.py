@@ -486,7 +486,7 @@ def YHRwalletinstructions():
             error = qrdata + ' is not a valid bitcoin address, address should have started with bc1, 3 or 1 instead of ' + qrdata[:1] + ', or ' + qrdata[:3] + '.'
         if error:
             qrdata = None
-        return redirect('/YHwalletinstructions')
+        return redirect('/YHRwalletinstructions')
     return render_template('YHRwalletinstructions.html', error=error, qrdata=qrdata)
 
 if __name__ == "__main__":
