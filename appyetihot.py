@@ -44,6 +44,7 @@ thirdqrname = None
 transnum = None
 utxoresponse = None
 receipentaddress = None
+qrcodescanning = None
 pubdesc = None
 adrlist = []
 transnum = 0
@@ -471,8 +472,11 @@ def YHRinputseed():
 def YHRwalletinstructions():
     global qrdata
     global error
+    global qrcodescanning
     if request.method == 'GET':
-        subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetihot rescanblockchain 600000',shell=True,start_new_session=True)
+        if not qrcodescanning:
+            qrcodescanning = False
+            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetihot rescanblockchain 600000',shell=True,start_new_session=True)
     if request.method == 'POST':
         error = None
         qrdata = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
@@ -486,6 +490,7 @@ def YHRwalletinstructions():
             error = qrdata + ' is not a valid bitcoin address, address should have started with bc1, 3 or 1 instead of ' + qrdata[:1] + ', or ' + qrdata[:3] + '.'
         if error:
             qrdata = None
+        qrcodescanning = True
         return redirect('/YHRwalletinstructions')
     return render_template('YHRwalletinstructions.html', error=error, qrdata=qrdata)
 
