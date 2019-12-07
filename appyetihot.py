@@ -325,10 +325,12 @@ def YHmenu():
 def YHrestartbitcoin():
     global progress
     global IBD
+    import time
     if request.method == 'GET':
         response = subprocess.Popen(['python3 ~/yeticold/utils/stopbitcoin.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         subprocess.call('rm -r ~/.bitcoin/yetihot*', shell=True)
         subprocess.call('rm -r ~/yetihotwallet*', shell=True)
+        time.sleep(5)
         subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':
