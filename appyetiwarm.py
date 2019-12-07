@@ -391,7 +391,7 @@ def YWgetseeds():
         print(walletimported)
         home = os.getenv('HOME')
         path = home + '/Documents'
-        subprocess.call('rm -r '+path+'/ywseedpacket*', shell=True)
+        subprocess.call('rm -r '+path+'/ywseed*', shell=True)
         return redirect('/YWdisplayseeds')
     return render_template('YWgetseeds.html')
 #display seeds

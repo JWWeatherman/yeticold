@@ -449,7 +449,7 @@ def YCdisplaydescriptor():
     if request.method == 'POST':
         home = os.getenv('HOME')
         seedpath = home + '/Documents'
-        subprocess.call('rm -r '+seedpath+'/ycseedpacket*', shell=True)
+        subprocess.call('rm -r '+seedpath+'/ycseed*', shell=True)
         return redirect('/YCdisplayseeds')
     return render_template('YCdisplaydescriptor.html', qrdata=firstqrcode, path=path)
 
