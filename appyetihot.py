@@ -422,6 +422,8 @@ def YHwalletinstructions():
                 error = qrdata + ' is not a valid bitcoin address, address should have a length from 26 to 35 instead of ' + str(len(qrdata)) + '.'
         else: 
             error = qrdata + ' is not a valid bitcoin address, address should have started with bc1, 3 or 1 instead of ' + qrdata[:1] + ', or ' + qrdata[:3] + '.'
+        if error:
+            qrdata = None
         return redirect('/YHwalletinstructions')
     return render_template('YHwalletinstructions.html', error=error, qrdata=qrdata)
 #STOP SET UP-----------------------------------------------------------------------------------------------------------------------------------------------------

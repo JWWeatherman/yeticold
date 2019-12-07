@@ -21,7 +21,7 @@
         <input class="btn btn-primary" type="submit" id="next" value="Scan">
       </form>
       {%if error%}
-      <div>{{error}}</div>
+      <div style="color:red;">{{error}}</div>
       {%endif%}
       {%if qrdata%}
       <div>{{qrdata}}</div>
