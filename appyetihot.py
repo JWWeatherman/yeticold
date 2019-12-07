@@ -326,7 +326,7 @@ def YHrestartbitcoin():
     global progress
     global IBD
     if request.method == 'GET':
-        subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
+        response = subprocess.Popen(['python3 ~/yeticold/utils/stopbitcoin.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         subprocess.call('rm -r ~/.bitcoin/yetihot*', shell=True)
         subprocess.call('rm -r ~/yetihotwallet*', shell=True)
         subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
