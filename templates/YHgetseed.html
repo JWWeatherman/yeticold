@@ -33,7 +33,7 @@
               <input type="text" class="form-control" placeholder="256 binary numbers" name="binary" id="binary">
             </div>
             <div class="form-group col-md-2">
-              <div style="margin-top:2.5rem;" name="count1" id="count1"></div>
+              <div style="margin-top:2.5rem;" name="count" id="count"></div>
             </div>
         </div>
         <input style="display: none;" name="skip" value="dontskip">
@@ -41,9 +41,9 @@
       </form>
     </div>
     <script>
-      var highlight = (i) => {
+      var highlight = () => {
         var binary = document.getElementById('binary').value
-        document.getElementById('count' + i).innerHTML = binary.length + ' \\ 256'
+        document.getElementById('count').innerHTML = binary.length + ' \\ 256'
         console.log(document.getElementById('binary').value.replace(/1/g, '').replace(/0/g,'').length)
         if (binary.length === 256 && document.getElementById('binary').value.replace(/1/g, '').replace(/0/g,'').length === 0) {
           document.getElementById('binary').style.backgroundColor = "rgba(0, 151, 19, 0.4)"
@@ -52,11 +52,11 @@
         } else {
           document.getElementById('binary').style.backgroundColor = ""
         }
-        setTimeout(() => { highlight(i) }, 80)
+        setTimeout(() => { highlight() }, 80)
       }
       var enable = () => {
         binaryrows = 0
-        var binary = document.getElementById('binary1').value
+        var binary = document.getElementById('binary').value
         if (binary.length === 256) {
           document.getElementById("xorbtn").disabled = false
         } else {
@@ -64,7 +64,7 @@
         }
         setTimeout(() => { enable() }, 80)
       }
-      highlight(1)
+      highlight()
       enable()
 
     </script>
