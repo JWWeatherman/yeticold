@@ -1,7 +1,7 @@
 <template>
     <div class="container" style="margin-top: 3rem;">
       <h2>YetiCold.com Bitcoin Storage</h2>
-      <p>Yeti is currently pre-alpha. This means that not only is the code not well tested, but it isn't even functional yet. We would love help testing and code review and hope to have something usable and reasonably trustworthy within a few weeks.</p>
+      <p>Yeti is currently beta software. This means that the code is functional, but not fully tested.</p>
       <p>Yeti is a script that installs bitcoin core and then walks the user through setup of cold storage solution that has the following advantages:</p>
       <ul>
           <li>Private keys are never on any device with a channel to an Internet connected device except through QR codes. Solutions that use removable media or a USB cable to connect to a device connected to the internet could be used to send keys to an attacker. Because the only data that leaves device with private keys does so through QR codes all data can be easily verified and is very limited. We believe this is the smallest possible attack surface.</li>
