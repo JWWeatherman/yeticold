@@ -125,7 +125,7 @@
             <input type="text" class="form-control" value="" id="row13" name="row13" placeholder="Phrase Thirteen">
           </div>
         </div>
-        <input class="btn btn-primary" type="submit" id="next" value="Next">
+        <input class="btn btn-primary" type="submit" id="nextkey" value="Next">
       </form>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
@@ -630,7 +630,6 @@ var decode = (s) => {
       setTimeout(() => { highlightrows() }, 80)
     }
     highlightrows()
-
     var autocomplete = (input) => {
       inputs = input.split(' ')
       if (autocompletelist[inputs[inputs.length - 1]] != undefined) {
@@ -642,6 +641,7 @@ var decode = (s) => {
       return inputs
     }
     document.addEventListener('keydown', (evt) => {
+      console.log(evt)
       if (evt.key === 'Tab'){
         autocompleted = autocomplete(document.getElementById(evt.srcElement.id).value)
         if (autocompleted) {
@@ -654,7 +654,7 @@ var decode = (s) => {
           evt.preventDefault()
         }
       }
-    }); 
+    });
     </script>
   </body>
 </html>
