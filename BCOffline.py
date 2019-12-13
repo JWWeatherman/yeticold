@@ -202,6 +202,11 @@ def BCdisplaytransaction():
         rpc = RPC()
         minerfee = float(rpc.estimatesmartfee(1)["feerate"])
         kilobytespertrans = 0.200
+        print(selectedutxo)
+        print(selectedutxo[0])
+        print(selectedutxo['stramount'])
+        print(selectedutxo['amount'])
+        print(float(selectedutxo['amount']))
         amo = (float(selectedutxo['stramount']) - (minerfee * kilobytespertrans))
         minerfee = (minerfee * kilobytespertrans)
         amo = "{:.8f}".format(float(amo))
