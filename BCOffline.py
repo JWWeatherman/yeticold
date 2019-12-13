@@ -201,18 +201,19 @@ def BCdisplaytransaction():
     global receipentaddress
     if request.method == 'GET':
         rpc = RPC()
+        amount = float(selectedutxo['amount'])
         minerfee = float(rpc.estimatesmartfee(1)["feerate"])
         kilobytespertrans = 0.200
-        amo = (float(selectedutxo['amount']) - (minerfee * kilobytespertrans))
+        amo = (amount - (minerfee * kilobytespertrans))
         minerfee = (minerfee * kilobytespertrans)
         amo = "{:.8f}".format(float(amo))
         response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet= createrawtransaction \'[{ "txid": "'+selectedutxo['txid']+'", "vout": '+str(selectedutxo['vout'])+'}]\' \'[{"'+receipentaddress+'" : '+str(amo)+'}]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
         response = response[0].decode("utf-8")
         transonehex = response[:-1]
-        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet= signrawtransactionwithwallet '+transonehex+' \'[{"txid":"'+selectedutxo['txid']+'","vout":'+str(selectedutxo['vout'])+',"scriptPubKey":"'+selectedutxo['scriptPubKey']+'","amount":"'+str(amo)+'"}]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet= signrawtransactionwithwallet '+transonehex+' \'[{"txid":"'+selectedutxo['txid']+'","vout":'+str(selectedutxo['vout'])+',"scriptPubKey":"'+selectedutxo['scriptPubKey']+'","amount":"'+str(amount)+'"}]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
-        firstqrcode = json.loads(response[0].decode("utf-8"))['hex'] + '&' + str(selectedutxo['amount'])
+        firstqrcode = json.loads(response[0].decode("utf-8"))['hex'] + '&' + str(amount)
         randomnum = str(random.randrange(0,1000000))
         firstqrname = randomnum
         qr = qrcode.QRCode(
