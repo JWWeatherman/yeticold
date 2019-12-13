@@ -251,6 +251,7 @@ def BCconfirmsend():
     rpc = RPC()
     if request.method == 'GET':
         response = rpc.decoderawtransaction(signtransactionhex)
+        print(response)
         amount = totalamount
         minerfee = totalamount - response['vout']['value']
         receipentaddress = response['vout']['scriptPubKey']['addresses'][0]
