@@ -221,7 +221,7 @@ def BCdisplaytransaction():
         response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet= signrawtransactionwithwallet '+transonehex+' \'[{"txid":"'+selectedutxo['txid']+'","vout":'+str(selectedutxo['vout'])+',"scriptPubKey":"'+selectedutxo['scriptPubKey']+'","amount":"'+str(amount)+'"}]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
         firstqrcode = json.loads(response[0].decode("utf-8"))['hex'] + '&' + str(amount)
-        rpc.sendrawtransaction(response[0].decode("utf-8"))['hex'])
+        rpc.sendrawtransaction(json.loads(response[0].decode("utf-8"))['hex'])
         randomnum = str(random.randrange(0,1000000))
         firstqrname = randomnum
         qr = qrcode.QRCode(
