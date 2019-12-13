@@ -238,7 +238,7 @@ def BCscantransaction():
     if request.method == 'POST':
         rpc = RPC()
         response = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-        signtransactionhex = response.split('&')[0]
+        signtransactionhex = response.decode("utf-8").split('&')[0]
         totalamount = response.split('&')[1]
         return redirect('/BCconfirmsend')
     return render_template('BCscantransaction.html')
