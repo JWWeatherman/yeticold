@@ -159,7 +159,6 @@ def BCdisplayutxos():
             if utxos[i]['spendable']:
                 utxo = {}
                 utxo['amount'] = utxos[i]['amount']
-                utxo['stramount'] = str(utxos[i]['amount'])
                 utxo['address'] = utxos[i]['address']
                 utxo['txid'] = utxos[i]['txid']
                 utxo['vout'] = utxos[i]['vout']
@@ -167,7 +166,7 @@ def BCdisplayutxos():
                 parsedutxos.append(utxo)
         parsedutxos.sort(key=lambda x: x['amount'], reverse=True)
     if request.method == 'POST':
-        selectedutxo = request.form['selectedutxo']
+        selectedutxo = json.loads(request.form['selectedutxo'])
         return redirect('/BCscanrecipent')
     return render_template('BCdisplayutxos.html', parsedutxos=parsedutxos, len=len(parsedutxos))
 
@@ -202,12 +201,7 @@ def BCdisplaytransaction():
         rpc = RPC()
         minerfee = float(rpc.estimatesmartfee(1)["feerate"])
         kilobytespertrans = 0.200
-        print(selectedutxo)
-        print(selectedutxo[0])
-        print(selectedutxo['stramount'])
-        print(selectedutxo['amount'])
-        print(float(selectedutxo['amount']))
-        amo = (float(selectedutxo['stramount']) - (minerfee * kilobytespertrans))
+        amo = (float(selectedutxo['amount']) - (minerfee * kilobytespertrans))
         minerfee = (minerfee * kilobytespertrans)
         amo = "{:.8f}".format(float(amo))
         response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet= createrawtransaction \'[{ "txid": "'+selectedutxo['txid']+'", "vout": '+selectedutxo['vout']+'}]\' \'[{"'+receipentaddress+'" : '+str(amo)+'}]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
