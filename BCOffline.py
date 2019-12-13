@@ -253,8 +253,8 @@ def BCconfirmsend():
         response = rpc.decoderawtransaction(signtransactionhex)
         print(response)
         amount = totalamount
-        minerfee = totalamount - response['vout']['value']
-        receipentaddress = response['vout']['scriptPubKey']['addresses'][0]
+        minerfee = totalamount - response['vout'][0]['value']
+        receipentaddress = response['vout'][0]['scriptPubKey']['addresses'][0]
     if request.method == 'POST':
         response = rpc.sendrawtransaction(signtransactionhex)
         return redirect('/BCscantransaction')
