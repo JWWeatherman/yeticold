@@ -202,7 +202,9 @@ def BCdisplaytransaction():
         minerfee = float(rpc.estimatesmartfee(1)["feerate"])
         kilobytespertrans = 0.200
         print(selectedutxo)
-        amo = (float(selectedutxo[0]['amount']) - (minerfee * kilobytespertrans))
+        print(selectedutxo['amount'])
+        print(float(selectedutxo['amount']))
+        amo = (float(selectedutxo['amount']) - (minerfee * kilobytespertrans))
         minerfee = (minerfee * kilobytespertrans)
         amo = "{:.8f}".format(float(amo))
         response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet= createrawtransaction \'[{ "txid": "'+selectedutxo['txid']+'", "vout": '+selectedutxo['vout']+'}]\' \'[{"'+receipentaddress+'" : '+str(amo)+'}]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
