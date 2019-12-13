@@ -76,9 +76,10 @@ def RPC():
 #Import keys - step 10 - Disconnected //Have user manuly import keys to default wallet
 #Display utxos - WP - Disconnected //Make sure utxos are spendable before displaying
 #Scan recipent - step 1 - Disconnected 
-#Display signed transaction - step 2 - Disconnected # On your Online showing step 9 click next to display step 3 or if your on step 3 continue on step 3
-#Scan sign transaction - step 3 - Online
-#Confirm send transaction - step 4 - Online //decode the transaction and display details # On your Disconnected displaying step 2 Click next and follow on step WP
+#Confirm send transaction - step 2 - Online //Create the transaction if user confirms data
+#Display signed transaction - step 3 - Disconnected # On your Online showing step (9 or 5) click next to display step 4
+#Scan sign transaction - step 4 - Online
+#Sent page - step 5 - Online # On your Disconnected currently showing step 3 click next to display your wallet page
 
 @app.route("/", methods=['GET', 'POST'])
 def redirectroute():
@@ -199,8 +200,23 @@ def BCscanrecipent():
             error = receipentaddress + ' is not a valid bitcoin address, address should have started with bc1, 3 or 1 instead of ' + receipentaddress[:1] + ', or ' + secondqrcode[:3] + '.'
         if error:
             return redirect('/BCscanrecipent')
-        return redirect('/BCdisplaytransaction')
+        return redirect('/BCconfirmsend')
     return render_template('BCscanrecipent.html', error=error)
+
+@app.route("/BCconfirmsend", methods=['GET', 'POST'])
+def BCconfirmsend():
+    global receipentaddress
+    rpc = RPC()
+    if request.method == 'GET':
+        amount = float(selectedutxo['amount'])
+        minerfee = float(rpc.estimatesmartfee(1)["feerate"])
+        kilobytespertrans = 0.200
+        amo = (amount - (minerfee * kilobytespertrans))
+        minerfee = (minerfee * kilobytespertrans)
+        amo = "{:.8f}".format(float(amo))
+    if request.method == 'POST':
+        return redirect('/BCdisplaytransaction')
+    return render_template('BCconfirmsend.html', amount=amo, minerfee=minerfee, recipent=receipentaddress)
 
 @app.route("/BCdisplaytransaction", methods=['GET', 'POST'])
 def BCdisplaytransaction():
@@ -220,7 +236,7 @@ def BCdisplaytransaction():
         transonehex = response[:-1]
         response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet= signrawtransactionwithwallet '+transonehex+' \'[{"txid":"'+selectedutxo['txid']+'","vout":'+str(selectedutxo['vout'])+',"scriptPubKey":"'+selectedutxo['scriptPubKey']+'","amount":"'+str(amount)+'"}]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
-        firstqrcode = json.loads(response[0].decode("utf-8"))['hex'] + '&' + str(amount)
+        firstqrcode = json.loads(response[0].decode("utf-8"))['hex']
         rpc.sendrawtransaction(json.loads(response[0].decode("utf-8"))['hex'])
         randomnum = str(random.randrange(0,1000000))
         firstqrname = randomnum
@@ -247,28 +263,17 @@ def BCscantransaction():
     if request.method == 'POST':
         rpc = RPC()
         response = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-        response = response.decode("utf-8")
-        signtransactionhex = response.split('&')[0]
-        totalamount = float(response.split('&')[1])
-        return redirect('/BCconfirmsend')
+        rpc.sendrawtransaction(response.decode("utf-8"))
+        return redirect('/BCswitchlaptop')
     return render_template('BCscantransaction.html')
 
-@app.route("/BCconfirmsend", methods=['GET', 'POST'])
-def BCconfirmsend():
-    global signtransactionhex
-    global totalamount
-    rpc = RPC()
-    if request.method == 'GET':
-        response = rpc.decoderawtransaction(signtransactionhex)
-        print(response)
-        amount = totalamount
-        minerfee = totalamount - float(response['vout'][0]['value'])
-        minerfee = "{:.8f}".format(minerfee)
-        receipentaddress = response['vout'][0]['scriptPubKey']['addresses'][0]
+@app.route("/BCswitchlaptop", methods=['GET', 'POST'])
+def BCswitchlaptop():
     if request.method == 'POST':
-        response = rpc.sendrawtransaction(signtransactionhex)
         return redirect('/BCscantransaction')
-    return render_template('BCconfirmsend.html', amount=amount, minerfee=minerfee, recipent=receipentaddress)
+    return render_template('BCswitchlaptop.html')
+
+
 
 if __name__ == "__main__":
     app.run()
