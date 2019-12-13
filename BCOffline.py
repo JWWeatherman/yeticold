@@ -159,6 +159,7 @@ def BCdisplayutxos():
             if utxos[i]['spendable']:
                 utxo = {}
                 utxo['amount'] = utxos[i]['amount']
+                utxo['stramount'] = str(utxos[i]['amount'])
                 utxo['address'] = utxos[i]['address']
                 utxo['txid'] = utxos[i]['txid']
                 utxo['vout'] = utxos[i]['vout']
@@ -201,9 +202,6 @@ def BCdisplaytransaction():
         rpc = RPC()
         minerfee = float(rpc.estimatesmartfee(1)["feerate"])
         kilobytespertrans = 0.200
-        print(selectedutxo)
-        print(selectedutxo['amount'])
-        print(float(selectedutxo['amount']))
         amo = (float(selectedutxo['amount']) - (minerfee * kilobytespertrans))
         minerfee = (minerfee * kilobytespertrans)
         amo = "{:.8f}".format(float(amo))
