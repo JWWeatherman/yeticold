@@ -73,9 +73,10 @@ def RPC():
 #Open bitcoin - auto redirect - Open bitcoin - Online
 #Setup Disconnected - step 9 - Online # Run script and follow on the Disconnected 
 #Open bitcoin - auto redirect - Disconnected
+#Import keys - step 10 - Disconnected //Have user manuly import keys to default wallet
 #Display utxos - WP - Disconnected //Make sure utxos are spendable before displaying
 #Scan recipent - step 1 - Disconnected 
-#Display signed transaction - step 2 - Disconnected # On your Online showing step (9 or 4) click next to display step 3
+#Display signed transaction - step 2 - Disconnected # On your Online showing step 9 click next to display step 3 or if your on step 3 continue on step 3
 #Scan sign transaction - step 3 - Online
 #Confirm send transaction - step 4 - Online //decode the transaction and display details # On your Disconnected displaying step 2 Click next and follow on step WP
 
@@ -141,10 +142,16 @@ def BCopenbitcoinC():
     if request.method == 'POST':
         IBD = BTCRunning()
         if IBD:
-            return redirect('/BCdisplayutxos')
+            return redirect('/BCimportkeys')
         else:
             return redirect('/BCopenbitcoinC')
     return render_template('BCopenbitcoinC.html', progress=progress)
+
+@app.route("/BCimportkeys", methods=['GET', 'POST'])
+def BCimportkeys():
+    if request.method == 'POST':
+        return redirect('/BCdisplayutxos')
+    return render_template('BCimportkeys.html')
 
 @app.route("/BCdisplayutxos", methods=['GET', 'POST'])
 def BCdisplayutxos():
