@@ -166,7 +166,7 @@ def BCdisplayutxos():
                 parsedutxos.append(utxo)
         parsedutxos.sort(key=lambda x: x['amount'], reverse=True)
     if request.method == 'POST':
-        selectedutxo = request.form['parsedutxo']
+        selectedutxo = request.form['selectedutxo']
         return redirect('/BCscanrecipent')
     return render_template('BCdisplayutxos.html', parsedutxos=parsedutxos, len=len(parsedutxos))
 
