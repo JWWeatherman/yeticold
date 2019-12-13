@@ -166,7 +166,9 @@ def BCdisplayutxos():
                 parsedutxos.append(utxo)
         parsedutxos.sort(key=lambda x: x['amount'], reverse=True)
     if request.method == 'POST':
-        selectedutxo = json.loads(request.form['selectedutxo'])
+        for i in range(0, len(parsedutxos)):
+            if request.form['address'] == parsedutxos[i]['address']
+                selectedutxo = parsedutxos[i]
         return redirect('/BCscanrecipent')
     return render_template('BCdisplayutxos.html', parsedutxos=parsedutxos, len=len(parsedutxos))
 
