@@ -296,7 +296,7 @@ def YCRdisplaywallet():
             rpc = RPC()
             testlist = []
             testlist.append(listofaddresses[i])
-            utxo = rpc.listunspent(0, 9999999, testlist)
+            utxo = rpc.listunspent(1, 9999999, testlist)
             utxocount = len(utxo)
             address['utxocount'] = utxocount
             address['address'] = listofaddresses[i]
