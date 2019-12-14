@@ -310,7 +310,7 @@ def YCRdisplaywallet():
                 amount = "0.0000000"
             amount = "{:.8f}".format(float(amount))
             address['formatedAmount'] = amount
-            total = rpc.getrecivedbyaddress(listofaddresses[i])
+            total = rpc.getreceivedbyaddress(listofaddresses[i])
             address['totalbal'] = total
             randomnum = str(random.randrange(0,1000000))
             route = url_for('static', filename='address'+listofaddresses[i]+''+randomnum+'.png')
