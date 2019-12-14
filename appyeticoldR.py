@@ -28,14 +28,15 @@ settings = {
     "address_chunk": 100
 }
 wallet_template = "http://{rpc_username}:{rpc_password}@{rpc_host}:{rpc_port}/wallet/{wallet_name}"
+address = []
 xprivlist = []
+privkeylist = []
 error = None
-privkeycount = 0
 pubdesc = None
 selectedutxo = None
-address = []
 receipentaddress = None
 progress = 0
+privkeycount = 0
 init = True
 switcher = {
     "1": "ONE",
@@ -412,6 +413,7 @@ def YCRimportseeds():
     global privkeycount
     global init
     global error
+    global privkeylist
     if request.method == 'POST':
         privkey = []
         for i in range(1,14):
