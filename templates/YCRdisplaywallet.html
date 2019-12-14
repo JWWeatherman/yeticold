@@ -50,7 +50,7 @@
               <ul class="nav navbar-nav navbar-right" style="display: flex;">
                 <form action="" method="post" class="form-inline my-2 my-lg-0 navbar-right nav navbar-nav">
                   <input style="display: none;" name="option" value="RECEIVE">
-                  {%if addresses[i]['totalbal'] > 0 and addresses[i]['amount'] == 0%}
+                  {%if addresses[i]['totalbal'] > 0 or addresses[i]['amount'] > 0%}
                   <input disabled class="btn btn-secondary my-2 my-sm-0" type="button" id="show{{i}}" value="Receive">
                   {%else%}
                   <input class="btn btn-primary my-2 my-sm-0" type="button" id="show{{i}}" value="Receive">
