@@ -308,7 +308,7 @@ def YCRdisplaywallet():
                 address['txid'] = utxo[0]['txid']
                 address['vout'] = utxo[0]['vout']
                 address['scriptPubKey'] = utxo[0]['scriptPubKey']
-                address['amount'] = utxo[0]['amount']
+                address['amount'] = float(str(utxo[0]['amount']))
                 amount = str(utxo[0]['amount'])
             else:
                 address['amount'] = 0
@@ -316,7 +316,7 @@ def YCRdisplaywallet():
             amount = "{:.8f}".format(float(amount))
             address['formatedAmount'] = amount
             total = rpc.getreceivedbyaddress(listofaddresses[i])
-            address['totalbal'] = total
+            address['totalbal'] = float(str(total))
             randomnum = str(random.randrange(0,1000000))
             route = url_for('static', filename='address'+listofaddresses[i]+''+randomnum+'.png')
             address['route'] = route
@@ -510,7 +510,7 @@ def YCRscanutxo():
     global selectedutxo
     if request.method == 'POST':
         selectedutxo = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-        selectedutxo = json.loads("\"" + selectedutxo.decode("utf-8") + "\"")
+        selectedutxo = eval(selectedutxo.decode("utf-8"))
         return redirect('/YCRscanrecipent')
     return render_template('YCRscanutxo.html')
 
