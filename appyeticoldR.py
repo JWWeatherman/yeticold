@@ -334,7 +334,10 @@ def YCRdisplaywallet():
             home = os.getenv("HOME")
             img.save(home + '/yeticold/'+addresses[i]['route'])
     if request.method == 'POST':
-        selectedutxo = request.form['selectedutxo']
+        for i in range(0, len(addresses)):
+            if request.form['address'] == addresses[i]['address']:
+                selectedutxo = addresses[i]
+                break
         if init:
             return redirect('/YCRpackage')
         return redirect('/YCRdisplayutxoB')
