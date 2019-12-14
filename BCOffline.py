@@ -263,6 +263,7 @@ def BCscantransaction():
     if request.method == 'POST':
         rpc = RPC()
         response = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+        print(response.decode("utf-8"))
         rpc.sendrawtransaction(response.decode("utf-8"))
         return redirect('/BCswitchlaptop')
     return render_template('BCscantransaction.html')
