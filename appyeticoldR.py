@@ -307,6 +307,7 @@ def YCRdisplaywallet():
                 address['amount'] = utxo[0]['amount']
                 amount = str(utxo[0]['amount'])
             else:
+                address['amount'] = 0
                 amount = "0.0000000"
             amount = "{:.8f}".format(float(amount))
             address['formatedAmount'] = amount
