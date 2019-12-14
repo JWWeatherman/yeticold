@@ -33,8 +33,10 @@ error = None
 privkeycount = 0
 pubdesc = None
 selectedutxo = None
+address = []
 receipentaddress = None
 progress = 0
+init = True
 switcher = {
     "1": "ONE",
     "2": "TWO",
