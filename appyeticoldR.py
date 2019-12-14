@@ -541,6 +541,7 @@ def YCRscanrecipent():
 def YCRconfirmsend():
     global receipentaddress
     if request.method == 'GET':
+        rpc = RPC()
         amount = float(selectedutxo['amount'])
         minerfee = float(rpc.estimatesmartfee(1)["feerate"])
         kilobytespertrans = 0.200
