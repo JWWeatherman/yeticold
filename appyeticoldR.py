@@ -411,6 +411,7 @@ def YCRimportseeds():
     global pubdesc
     global privkeycount
     global init
+    global error
     if request.method == 'POST':
         privkey = []
         for i in range(1,14):
