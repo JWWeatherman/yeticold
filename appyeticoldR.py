@@ -284,6 +284,7 @@ def YCRrescanwallet():
 @app.route("/YCRdisplaywallet", methods=['GET', 'POST'])
 def YCRdisplaywallet():
     global selectedutxo
+    global addresses
     global init
     if request.method == 'GET':
         subprocess.call(['rm -r ~/yeticold/static/address*'],shell=True)
