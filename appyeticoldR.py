@@ -316,7 +316,7 @@ def YCRdisplaywallet():
             route = url_for('static', filename='address'+listofaddresses[i]+''+randomnum+'.png')
             address['route'] = route
             addresses.append(address)
-        addresses.sort(key=lambda x: x['balance'], reverse=True)
+        addresses.sort(key=lambda x: x['amount'], reverse=True)
         for i in range(0, len(addresses)):
             qr = qrcode.QRCode(
                 version=1,
