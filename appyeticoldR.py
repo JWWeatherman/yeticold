@@ -299,17 +299,19 @@ def YCRdisplaywallet():
             utxo = rpc.listunspent(0, 9999999, testlist)
             utxocount = len(utxo)
             address['utxocount'] = utxocount
-            address['txid'] = utxo[0]['txid']
-            address['vout'] = utxo[0]['vout']
-            address['scriptPubKey'] = utxo[0]['scriptPubKey']
-            address['amount'] = utxo[0]['amount']
             address['address'] = listofaddresses[i]
-            if utxo == []:
-                amount = "0.0000000"
-            else:
+            if utxo != []:
+                address['txid'] = utxo[0]['txid']
+                address['vout'] = utxo[0]['vout']
+                address['scriptPubKey'] = utxo[0]['scriptPubKey']
+                address['amount'] = utxo[0]['amount']
                 amount = str(utxo[0]['amount'])
+            else:
+                amount = "0.0000000"
             amount = "{:.8f}".format(float(amount))
             address['formatedAmount'] = amount
+            total = rpc.getrecivedbyaddress(listofaddresses[i])
+            address['totalbal'] = total
             randomnum = str(random.randrange(0,1000000))
             route = url_for('static', filename='address'+listofaddresses[i]+''+randomnum+'.png')
             address['route'] = route
