@@ -300,6 +300,7 @@ def YCopenbitcoin():
 @app.route("/YCpackage", methods=['GET', 'POST'])
 def YCpackage():
     if request.method == 'GET':
+        subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
         subprocess.call(['rm ~/disc.py'],shell=True)
         subprocess.call(['cp ~/yeticold/YCdisc.py ~/disc.py'],shell=True)
         subprocess.call(['gnome-terminal -- bash -c "sudo chmod +x ~/yeticold/scripts/rpkg-script.sh; sudo ~/yeticold/scripts/rpkg-script.sh"'],shell=True)
@@ -309,8 +310,6 @@ def YCpackage():
 
 @app.route("/YCmovefiles", methods=['GET', 'POST'])
 def YCmovefiles():
-    if request.method == 'GET':
-        subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
     if request.method == 'POST':
         return redirect('/YCopenbitcoinB')
     return render_template('YCmovefiles.html')

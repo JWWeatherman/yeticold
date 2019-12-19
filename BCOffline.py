@@ -103,6 +103,7 @@ def BCopenbitcoin():
 @app.route("/BCpackage", methods=['GET', 'POST'])
 def BCpackage():
     if request.method == 'GET':
+        subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
         subprocess.call(['rm ~/disc.py'],shell=True)
         subprocess.call(['cp ~/yeticold/BCOdisc.py ~/disc.py'],shell=True)
         subprocess.call(['gnome-terminal -- bash -c "sudo chmod +x ~/yeticold/scripts/rpkg-script.sh; sudo ~/yeticold/scripts/rpkg-script.sh"'],shell=True)
@@ -112,8 +113,6 @@ def BCpackage():
 
 @app.route("/BCmovefiles", methods=['GET', 'POST'])
 def BCmovefiles():
-    if request.method == 'GET':
-        subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
     if request.method == 'POST':
         return redirect('/BCopenbitcoinB')
     return render_template('BCmovefiles.html')

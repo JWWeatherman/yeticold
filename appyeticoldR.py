@@ -344,19 +344,19 @@ def YCRdisplaywallet():
 @app.route("/YCRpackage", methods=['GET', 'POST'])
 def YCRpackage():
     if request.method == 'GET':
+        subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
         subprocess.call(['rm ~/disc.py'],shell=True)
         subprocess.call(['cp ~/yeticold/YCRdisc.py ~/disc.py'],shell=True)
         subprocess.call(['gnome-terminal -- bash -c "sudo chmod +x ~/yeticold/scripts/rpkg-script.sh; sudo ~/yeticold/scripts/rpkg-script.sh"'],shell=True)
     if request.method == 'POST':
-        subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
-        return redirect('/YCRcopyfiles')
+        return redirect('/YCRmovefiles')
     return render_template('YCRpackage.html')
 
-@app.route("/YCRcopyfiles", methods=['GET', 'POST'])
-def YCRcopyfiles():
+@app.route("/YCRmovefiles", methods=['GET', 'POST'])
+def YCRmovefiles():
     if request.method == 'POST':
         return redirect('/YCRrestartbitcoin')
-    return render_template('YCRcopyfiles.html')
+    return render_template('YCRmovefiles.html')
 
 @app.route("/YCRrestartbitcoin", methods=['GET', 'POST'])
 def YCRrestartbitcoin():
