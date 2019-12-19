@@ -5,6 +5,11 @@ cd
 sudo chmod 777 ~/dpkg-repack
 mkdir ~/dpkg-repack/wheelhouse
 pip3 download -r ~/yeticold/reqs.txt -d ~/dpkg-repack/wheelhouse
-tar -czf ToDisconnected.tar.gz dpkg-repack
+tar -czf ToDisconnected.tar.gz dpkg-repack yeticold .bitcoin
 sudo chmod 777 ~/ToDisconnected.tar.gz
+split -b 1G ToDisconnected.tar.gz "ToDisconnected.tar.gz.part"
+mkdir ToDisconnected
+sudo chmod 777 ~/ToDisconnected
+mv ~/disc.py ~/ToDisconnected
+mv ~/ToDisconnected.tar.gz.part* ~/ToDisconnected
 echo "Done Packaging"

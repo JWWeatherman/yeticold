@@ -344,6 +344,8 @@ def YCRdisplaywallet():
 @app.route("/YCRpackage", methods=['GET', 'POST'])
 def YCRpackage():
     if request.method == 'GET':
+        subprocess.call(['rm ~/disc.py'],shell=True)
+        subprocess.call(['cp ~/yeticold/YCRdisc.py ~/disc.py'],shell=True)
         subprocess.call(['gnome-terminal -- bash -c "sudo chmod +x ~/yeticold/scripts/rpkg-script.sh; sudo ~/yeticold/scripts/rpkg-script.sh"'],shell=True)
     if request.method == 'POST':
         subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
