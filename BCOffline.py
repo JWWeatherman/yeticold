@@ -105,7 +105,7 @@ def BCpackage():
     if request.method == 'GET':
         subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
         subprocess.call(['rm ~/disc.py'],shell=True)
-        subprocess.call(['cp ~/yeticold/script/BCOdisc.py ~/disc.py'],shell=True)
+        subprocess.call(['cp ~/yeticold/scripts/BCOdisc.py ~/disc.py'],shell=True)
         subprocess.call(['gnome-terminal -- bash -c "sudo chmod +x ~/yeticold/scripts/rpkg-script.sh; sudo ~/yeticold/scripts/rpkg-script.sh"'],shell=True)
     if request.method == 'POST':
         return redirect('/BCmovefiles')
