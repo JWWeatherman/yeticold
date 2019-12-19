@@ -11,5 +11,6 @@ split -b 1G ToDisconnected.tar.gz "ToDisconnected.tar.gz.part"
 mkdir ToDisconnected
 sudo chmod 777 ~/ToDisconnected
 mv ~/disc.py ~/ToDisconnected
+sudo chmod 777 ~/ToDisconnected/disc.py
 mv ~/ToDisconnected.tar.gz.part* ~/ToDisconnected
 echo "Done Packaging"
