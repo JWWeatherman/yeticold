@@ -15,3 +15,4 @@ sudo chmod 777 ~/ToDisconnected/disc.py
 mv ~/ToDisconnected.tar.gz.part* ~/ToDisconnected
 sudo chmod 777 ~/ToDisconnected/ToDisconnected.tar.gz.part*
 echo "Done Packaging"
+read line
