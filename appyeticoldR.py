@@ -203,14 +203,12 @@ def PassphraseToWIF(passphraselist):
     return Privkey
 
 
+#YCRblockchain - step X - #download crap bitcoin directory?
 #Open bitcoin - step 7 - Open bitcoin - Online
-#Scan Descriptor - step 11 - Online
-#Rescan Wallet - step 12 - Online
+#Scan Descriptor - step 8 - Online
+#Rescan Wallet - step 9 - Online
 #Display Wallet - WP - Online
-#Package - step 1 - Online
-#Copy files to Drive - step 2 - Close bitcoin - Online
-#Open bitcoin - auto redirect - Open bitcoin - Online
-#Setup Disconnected - step 3 - Online # Run script and follow on the Disconnected 
+#Setup Disconnected - step 3 - Online # go to rec.yeticold.com and follow steps
 #Open bitcoin - auto redirect - Open bitcoin - Disconnected
 #Scan descriptor - step 4 - Disconnected
 #Import keys - step 5 - Disconnected # seed 1
@@ -235,8 +233,18 @@ def PassphraseToWIF(passphraselist):
 @app.route("/", methods=['GET', 'POST'])
 def redirectroute():
     if request.method == 'GET':
-        return redirect('/YCRopenbitcoin')
+        return redirect('/YCRblockchain')
     return render_template('redirect.html')
+
+@app.route("/YCRblockchain", methods=['GET', 'POST'])
+def YCRblockchain():
+    if request.method == 'POST':
+        if request.form['option'] == 'downloadblockchain':
+            ###ISSUE function needed and a file hosted
+            subprocess.call(['wsh a crap bitcoin file'],shell=True)
+        return redirect('/YCopenbitcoin')
+    ###ISSUE template needed
+    return render_template('YCRblockchain.html')
 
 @app.route("/YCRopenbitcoin", methods=['GET', 'POST'])
 def YCRopenbitcoin():
@@ -337,41 +345,9 @@ def YCRdisplaywallet():
                 selectedutxo = addresses[i]
                 break
         if init:
-            return redirect('/YCRpackage')
+            return redirect('/YCRstartdisconnected')
         return redirect('/YCRdisplayutxoB')
     return render_template('YCRdisplaywallet.html', addresses=addresses, len=len(addresses))
-
-@app.route("/YCRpackage", methods=['GET', 'POST'])
-def YCRpackage():
-    if request.method == 'GET':
-        subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
-        subprocess.call(['rm ~/disc.py'],shell=True)
-        subprocess.call(['cp ~/yeticold/scripts/YCRdisc.py ~/disc.py'],shell=True)
-        subprocess.call(['gnome-terminal -- bash -c "sudo chmod +x ~/yeticold/scripts/rpkg-script.sh; sudo ~/yeticold/scripts/rpkg-script.sh"'],shell=True)
-    if request.method == 'POST':
-        return redirect('/YCRmovefiles')
-    return render_template('YCRpackage.html')
-
-@app.route("/YCRmovefiles", methods=['GET', 'POST'])
-def YCRmovefiles():
-    if request.method == 'POST':
-        return redirect('/YCRrestartbitcoin')
-    return render_template('YCRmovefiles.html')
-
-@app.route("/YCRrestartbitcoin", methods=['GET', 'POST'])
-def YCRrestartbitcoin():
-    global progress
-    global IBD
-    if request.method == 'GET':
-        if BTCClosed():
-            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
-    if request.method == 'POST':
-        IBD = BTCRunning()
-        if IBD:
-            subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yeticold"'],shell=True)
-            return redirect('/YCRstartdisconnected')
-        return redirect('/YCRrestartbitcoin')
-    return render_template('YCRrestartbitcoin.html')
 
 @app.route("/YCRstartdisconnected", methods=['GET', 'POST'])
 def YCRstartdisconnected():

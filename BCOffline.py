@@ -67,11 +67,9 @@ def RPC():
     rpc = AuthServiceProxy(uri, timeout=600)  # 1 minute timeout
     return rpc
 
+#BCblockchain - step X - #download crap bitcoin directory?
 #Open bitcoin - step 6 - Open bitcoin - Online
-#Package - step 7 - Online
-#Copy files to Drive - step 8 - Close bitcoin - Online
-#Open bitcoin - auto redirect - Open bitcoin - Online
-#Setup Disconnected - step 9 - Online # Run script and follow on the Disconnected 
+#Setup Disconnected - step 9 - Online # go to off.yeticold.com
 #Open bitcoin - auto redirect - Disconnected
 #Import keys - step 10 - Disconnected //Have user manuly import keys to default wallet
 #Display utxos - WP - Disconnected //Make sure utxos are spendable before displaying
@@ -83,7 +81,17 @@ def RPC():
 
 @app.route("/", methods=['GET', 'POST'])
 def redirectroute():
-    return redirect('/BCopenbitcoin')
+    return redirect('/BCblockchain')
+
+@app.route("/BCblockchain", methods=['GET', 'POST'])
+def BCblockchain():
+    if request.method == 'POST':
+        if request.form['option'] == 'downloadblockchain':
+            ###ISSUE function needed and a file hosted
+            subprocess.call(['wsh a crap bitcoin file'],shell=True)
+        return redirect('/BCopenbitcoin')
+    ###ISSUE template needed
+    return render_template('BCblockchain.html')
 
 @app.route("/BCopenbitcoin", methods=['GET', 'POST'])
 def BCopenbitcoin():
@@ -95,40 +103,10 @@ def BCopenbitcoin():
         progress = BTCprogress()
     if request.method == 'POST':
         if progress >= 99.9:
-            return redirect('/BCpackage')
+            return redirect('/BConlinestartup')
         else:
             return redirect('/BCopenbitcoin')
     return render_template('BCopenbitcoin.html', progress=progress)
-
-@app.route("/BCpackage", methods=['GET', 'POST'])
-def BCpackage():
-    if request.method == 'GET':
-        subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
-        subprocess.call(['rm ~/disc.py'],shell=True)
-        subprocess.call(['cp ~/yeticold/scripts/BCOdisc.py ~/disc.py'],shell=True)
-        subprocess.call(['gnome-terminal -- bash -c "sudo chmod +x ~/yeticold/scripts/rpkg-script.sh; sudo ~/yeticold/scripts/rpkg-script.sh"'],shell=True)
-    if request.method == 'POST':
-        return redirect('/BCmovefiles')
-    return render_template('BCpackage.html')
-
-@app.route("/BCmovefiles", methods=['GET', 'POST'])
-def BCmovefiles():
-    if request.method == 'POST':
-        return redirect('/BCopenbitcoinB')
-    return render_template('BCmovefiles.html')
-
-@app.route("/BCopenbitcoinB", methods=['GET', 'POST'])
-def BCopenbitcoinB():
-    if request.method == 'GET':
-        if BTCClosed():
-            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
-    if request.method == 'POST':
-        IBD = BTCRunning()
-        if IBD:
-            return redirect('/BConlinestartup')
-        else:
-            return redirect('/BCopenbitcoinB')
-    return render_template('BCopenbitcoinB.html', progress=progress)
 
 @app.route("/BConlinestartup", methods=['GET', 'POST'])
 def BConlinestartup():

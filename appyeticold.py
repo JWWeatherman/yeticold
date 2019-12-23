@@ -277,10 +277,19 @@ def decode58(s):
 @app.route("/", methods=['GET', 'POST'])
 def redirectroute():
     if request.method == 'GET':
-        return redirect('/YCopenbitcoin')
+        return redirect('/YCblockchain')
     return render_template('redirect.html')
 
-#finish open bitcoin
+@app.route("/YCblockchain", methods=['GET', 'POST'])
+def YCblockchain():
+    if request.method == 'POST':
+        if request.form['option'] == 'downloadblockchain':
+            ###ISSUE function needed and a file hosted
+            subprocess.call(['wsh a crap bitcoin file'],shell=True)
+        return redirect('/YCopenbitcoin')
+    ###ISSUE template needed
+    return render_template('YCblockchain.html')
+
 @app.route("/YCopenbitcoin", methods=['GET', 'POST'])
 def YCopenbitcoin():
     global progress
@@ -292,43 +301,12 @@ def YCopenbitcoin():
     if request.method == 'POST':
         if progress >= 99.9:
             subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yeticold"'],shell=True)
-            return redirect('/YCpackage')
+            return redirect('/YConlinestartup')
         else:
             return redirect('/YCopenbitcoin')
     return render_template('YCopenbitcoin.html', progress=progress)
 
-@app.route("/YCpackage", methods=['GET', 'POST'])
-def YCpackage():
-    if request.method == 'GET':
-        subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
-        subprocess.call(['rm ~/disc.py'],shell=True)
-        subprocess.call(['cp ~/yeticold/scripts/YCdisc.py ~/disc.py'],shell=True)
-        subprocess.call(['gnome-terminal -- bash -c "sudo chmod +x ~/yeticold/scripts/rpkg-script.sh; sudo ~/yeticold/scripts/rpkg-script.sh"'],shell=True)
-    if request.method == 'POST':
-        return redirect('/YCmovefiles')
-    return render_template('YCpackage.html')
-
-@app.route("/YCmovefiles", methods=['GET', 'POST'])
-def YCmovefiles():
-    if request.method == 'POST':
-        return redirect('/YCopenbitcoinB')
-    return render_template('YCmovefiles.html')
-#finish open bitcoin
-@app.route("/YCopenbitcoinB", methods=['GET', 'POST'])
-def YCopenbitcoinB():
-    if request.method == 'GET':
-        home = os.getenv("HOME")
-        if BTCClosed():
-            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
-    if request.method == 'POST':
-        IBD = BTCRunning()
-        if IBD:
-            subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yeticold"'],shell=True)
-            return redirect('/YConlinestartup')
-        else:
-            return redirect('/YCopenbitcoinB')
-    return render_template('YCopenbitcoinB.html', progress=progress)
-
+###ISSUE have user visit disc.yeticold.com on disconnected laptop
 @app.route("/YConlinestartup", methods=['GET', 'POST'])
 def YConlinestartup():
     if request.method == 'POST':
