@@ -17,7 +17,7 @@ if not (os.path.exists(home + "/.bitcoin")):
     subprocess.call(['mkdir ~/.bitcoin'],shell=True)
 else:
     subprocess.call(['rm ~/.bitcoin/bitcoin.conf'],shell=True)
-subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
+subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\npruned=550\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
 
 settings = {"rpc_username": "rpcuser","rpc_password": rpcpsw,"rpc_host": "127.0.0.1","rpc_port": 8332,"address_chunk": 100}
 wallet_template = "http://{rpc_username}:{rpc_password}@{rpc_host}:{rpc_port}/wallet/{wallet_name}"
