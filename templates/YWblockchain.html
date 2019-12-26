@@ -12,20 +12,15 @@
         <h3 style="color:black;margin:0;">Yeti Bitcoin Hot Storage</h3>
     </nav>
     <div class="container" style="margin-top: 3rem;">
-      <h2>Opening Bitcoin - Please wait.</h2>
-      <div>Yeti is opening bitcoin and will take you to the next step when it is ready. Please wait.</div>
-      <div>
-        <form action="" method="post" style="margin-top:35px;">
-          <input style="display: none;" name="option" value="VALUE">
-          <input style="display: none;" class="btn btn-primary" type="submit" id="next" value="Next">
-        </form>
-      </div>
+      <h2>Step 7: Blockchain</h2>
+      <form action="" method="post">
+        <input style="display: none;" name="option" value="downloadblockchain">
+        <input class="btn btn-primary" type="submit" id="next" value="Use crap blockchain">
+      </form>
+      <form action="" method="post">
+        <input style="display: none;" name="option" value="VALUE">
+        <input class="btn btn-primary" type="submit" id="next" value="Use secure blockchain">
+      </form>
     </div>
-    <script>
-      var enable = () => {
-        setTimeout(() => { document.getElementById("next").click() }, 2000)
-      }
-      enable()
-    </script>
   </body>
 </html>

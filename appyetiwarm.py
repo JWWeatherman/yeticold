@@ -289,8 +289,18 @@ def xor(x, y):
 @app.route("/", methods=['GET', 'POST'])
 def redirectroute():
     if request.method == 'GET':
-        return redirect('/YWopenbitcoin')
+        return redirect('/YWblockchain')
     return render_template('redirect.html')
+
+@app.route("/YWblockchain", methods=['GET', 'POST'])
+def YWblockchain():
+    if request.method == 'POST':
+        if request.form['option'] == 'downloadblockchain':
+            ###ISSUE function needed and a file hosted
+            subprocess.call(['wsh a crap bitcoin file'],shell=True)
+        return redirect('/YWopenbitcoin')
+    ###ISSUE template needed
+    return render_template('YWblockchain.html')
 
 @app.route("/YWopenbitcoin", methods=['GET', 'POST'])
 def YWopenbitcoin():

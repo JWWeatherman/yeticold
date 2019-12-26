@@ -274,8 +274,18 @@ def xor(x, y):
 @app.route("/", methods=['GET', 'POST'])
 def redirectroute():
     if request.method == 'GET':
-        return redirect('/YHopenbitcoin')
+        return redirect('/YHblockchain')
     return render_template('redirect.html')
+
+@app.route("/YHblockchain", methods=['GET', 'POST'])
+def YHblockchain():
+    if request.method == 'POST':
+        if request.form['option'] == 'downloadblockchain':
+            ###ISSUE function needed and a file hosted
+            subprocess.call(['wsh a crap bitcoin file'],shell=True)
+        return redirect('/YHopenbitcoin')
+    ###ISSUE template needed
+    return render_template('YHblockchain.html')
 
 #finish open bitcoin
 @app.route("/YHopenbitcoin", methods=['GET', 'POST'])
@@ -296,6 +306,7 @@ def YHopenbitcoin():
 @app.route("/YHmenu", methods=['GET', 'POST'])
 def YHmenu():
     if request.method == 'POST':
+        subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
         if request.form['option'] == 'recovery':
             return redirect('/YHRrestartbitcoin')
         else:
@@ -306,18 +317,20 @@ def YHmenu():
 @app.route("/YHrestartbitcoin", methods=['GET', 'POST'])
 def YHrestartbitcoin():
     global progress
-    global IBD
     if request.method == 'GET':
-        response = subprocess.Popen(['python3 ~/yeticold/utils/stopbitcoin.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        subprocess.call('rm -r ~/.bitcoin/yetihot*', shell=True)
-        subprocess.call('rm -r ~/yetihotwallet*', shell=True)
-        subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
+        home = os.getenv("HOME")
+        if BTCClosed():
+            subprocess.call('rm -r ~/.bitcoin/yetihot*', shell=True)
+            subprocess.call('rm -r ~/yetihotwallet*', shell=True)
+            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':
-        IBD = BTCFinished()
-        while IBD:
-            IBD = BTCFinished()
-        return redirect('/YHgetseed')
+        IBD = BTCRunning()
+        if IBD:
+            response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwarmpriv"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            return redirect('/YHgetseed')
+        else:
+            return redirect('/YHrestartbitcoin')
     return render_template('YHrestartbitcoin.html')
 
 #randomise priv key and get xprivs
@@ -414,18 +427,20 @@ def YHwalletinstructions():
 @app.route("/YHRrestartbitcoin", methods=['GET', 'POST'])
 def YHRrestartbitcoin():
     global progress
-    global IBD
     if request.method == 'GET':
-        subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
-        subprocess.call('rm -r ~/.bitcoin/yetihot*', shell=True)
-        subprocess.call('rm -r ~/yetihotwallet*', shell=True)
-        subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
+        home = os.getenv("HOME")
+        if BTCClosed():
+            subprocess.call('rm -r ~/.bitcoin/yetihot*', shell=True)
+            subprocess.call('rm -r ~/yetihotwallet*', shell=True)
+            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':
-        IBD = BTCFinished()
-        while IBD:
-            IBD = BTCFinished()
-        return redirect('/YHRinputseed')
+        IBD = BTCRunning()
+        if IBD:
+            response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwarmpriv"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            return redirect('/YHRinputseed')
+        else:
+            return redirect('/YHRrestartbitcoin')
     return render_template('YHRrestartbitcoin.html')
     
 @app.route('/YHRinputseed', methods=['GET', 'POST'])
