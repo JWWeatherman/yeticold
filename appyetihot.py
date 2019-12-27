@@ -296,11 +296,16 @@ def YHblockchain():
             fmt = '%Y-%m-%d %H:%M:%S'
             d1 = datetime.strptime(request.form['date'] + ' 12:0:0', fmt)
             d2 = datetime.strptime(str(datetime.today()), fmt)
+            print(d1)
+            print(d2)
             d1_ts = time.mktime(d1.timetuple())
             d2_ts = time.mktime(d2.timetuple())
-            diff = (int(d2_ts-d1_ts) / 60) / 10
+            print(d2_ts)
+            print(d1_ts)
+            diff = (int(d2_ts - d1_ts) / 60) / 10
             add = diff / 10
             blockheight = diff + add
+            print(blockheight)
             blockheight = int(blockheight)
             home = os.getenv("HOME")
             subprocess.call(['rm ~/.bitcoin/bitcoin.conf'],shell=True)
