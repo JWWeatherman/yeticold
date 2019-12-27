@@ -254,6 +254,7 @@ def YCRblockchain():
             subprocess.call(['wsh a crap bitcoin file'],shell=True)
         else:
             fmt = '%Y-%m-%d %H:%M:%S'
+            print("hih")
             print(request.form['date'] + ' 12:0:0')
             d1 = datetime.strptime(request.form['date'] + ' 12:0:0', fmt)
             d2 = datetime.strptime(str(datetime.today()), fmt)
