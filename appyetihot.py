@@ -279,10 +279,27 @@ def redirectroute():
 
 @app.route("/YHblockchain", methods=['GET', 'POST'])
 def YHblockchain():
+    if request.method == 'GET':
+        home = os.getenv("HOME")
+        if (os.path.exisits(home + "/.bitcoin")):
+            return redirect('/YCopenbitcoin')
     if request.method == 'POST':
         if request.form['option'] == 'downloadblockchain':
             ###ISSUE function needed and a file hosted
             subprocess.call(['wsh a crap bitcoin file'],shell=True)
+        else:
+            ###ISSUE caculate blocks to prune with 10% buffer
+            fmt = '%Y-%m-%d %H:%M:%S'
+            d1 = datetime.strptime(request.form['date'] + '12:0:0', fmt)
+            d2 = datetime.strptime(str(datetime.today()), fmt)
+            d1_ts = time.mktime(d1.timetuple())
+            d2_ts = time.mktime(d2.timetuple())
+            diff = (int(d2_ts-d1_ts) / 60) / 10
+            add = diff / 10
+            blockheight = diff + add
+            home = os.getenv("HOME")
+            subprocess.call(['rm ~/.bitcoin/bitcoin.conf'],shell=True)
+            subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nprune='+blockheight+'\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
         return redirect('/YHopenbitcoin')
     ###ISSUE template needed
     return render_template('YHblockchain.html')

@@ -103,10 +103,16 @@ def BCopenbitcoin():
         progress = BTCprogress()
     if request.method == 'POST':
         if progress >= 99.9:
-            return redirect('/BConlinestartup')
+            return redirect('/BCmovefiles')
         else:
             return redirect('/BCopenbitcoin')
     return render_template('BCopenbitcoin.html', progress=progress)
+
+@app.route("/BCmovefiles", methods=['GET', 'POST'])
+def BCmovefiles():
+    if request.method == 'POST':
+        return redirect('/BConlinestartup')
+    return render_template('BCmovefiles.html')
 
 @app.route("/BConlinestartup", methods=['GET', 'POST'])
 def BConlinestartup():
