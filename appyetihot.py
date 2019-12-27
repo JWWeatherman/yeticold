@@ -293,7 +293,7 @@ def YHblockchain():
             ###ISSUE function needed and a file hosted
             subprocess.call(['wsh a crap bitcoin file'],shell=True)
         else:
-            ###ISSUE caculate blocks to prune with 10% buffer
+            print(request.form['date'] + ' 12:0:0')
             fmt = '%Y-%m-%d %H:%M:%S'
             d1 = datetime.strptime(request.form['date'] + ' 12:0:0', fmt)
             d2 = datetime.strptime(str(datetime.today()), fmt)
