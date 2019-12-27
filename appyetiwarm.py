@@ -11,6 +11,8 @@ from PIL import Image
 import random
 import time
 import qrcode
+from datetime import datetime
+import time
 app = Flask(__name__)
 home = os.getenv("HOME")
 rpcpsw = str(random.randrange(0,1000000))
