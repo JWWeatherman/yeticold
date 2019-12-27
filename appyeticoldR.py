@@ -254,8 +254,11 @@ def YCRblockchain():
             subprocess.call(['wsh a crap bitcoin file'],shell=True)
         else:
             fmt = '%Y-%m-%d %H:%M:%S'
+            print(request.form['date'] + ' 12:0:0')
             d1 = datetime.strptime(request.form['date'] + ' 12:0:0', fmt)
             d2 = datetime.strptime(str(datetime.today()), fmt)
+            print(d1)
+            print(d2)
             d1_ts = time.mktime(d1.timetuple())
             d2_ts = time.mktime(d2.timetuple())
             diff = (int(d2_ts-d1_ts) / 60) / 10
