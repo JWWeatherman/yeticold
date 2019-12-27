@@ -14,7 +14,9 @@ import qrcode
 app = Flask(__name__)
 home = os.getenv("HOME")
 rpcpsw = str(random.randrange(0,1000000))
+blockchain = False
 if not (os.path.exists(home + "/.bitcoin")):
+    blockchain = True
     subprocess.call(['mkdir ~/.bitcoin'],shell=True)
 else:
     subprocess.call(['rm ~/.bitcoin/bitcoin.conf'],shell=True)
@@ -294,9 +296,10 @@ def redirectroute():
 
 @app.route("/YWblockchain", methods=['GET', 'POST'])
 def YWblockchain():
+    global blockchain
     if request.method == 'GET':
         home = os.getenv("HOME")
-        if (os.path.exists(home + "/.bitcoin")):
+        if blockchain:
             return redirect('/YWopenbitcoin')
     if request.method == 'POST':
        if request.form['option'] == 'downloadblockchain':

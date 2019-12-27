@@ -90,7 +90,6 @@ def BCblockchain():
             ###ISSUE function needed and a file hosted
             subprocess.call(['wsh a crap bitcoin file'],shell=True)
         return redirect('/BCopenbitcoin')
-    ###ISSUE template needed
     return render_template('BCblockchain.html')
 
 @app.route("/BCopenbitcoin", methods=['GET', 'POST'])
