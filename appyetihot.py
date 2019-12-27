@@ -295,6 +295,8 @@ def YHblockchain():
         else:
             fmt = '%Y-%m-%d %H:%M:%S'
             d1 = datetime.strptime(request.form['date'] + ' 12:0:0', fmt)
+            print(d1)
+            print(str(datetime.today()))
             d2 = datetime.strptime(str(datetime.today()), fmt)
             print(d1)
             print(d2)
