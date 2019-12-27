@@ -293,7 +293,6 @@ def YHblockchain():
             ###ISSUE function needed and a file hosted
             subprocess.call(['wsh a crap bitcoin file'],shell=True)
         else:
-            print(request.form['date'] + ' 12:0:0')
             fmt = '%Y-%m-%d %H:%M:%S'
             d1 = datetime.strptime(request.form['date'] + ' 12:0:0', fmt)
             d2 = datetime.strptime(str(datetime.today()), fmt)
@@ -302,6 +301,7 @@ def YHblockchain():
             diff = (int(d2_ts-d1_ts) / 60) / 10
             add = diff / 10
             blockheight = diff + add
+            blockheight = int(blockheight)
             home = os.getenv("HOME")
             subprocess.call(['rm ~/.bitcoin/bitcoin.conf'],shell=True)
             subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nprune='+blockheight+'\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
