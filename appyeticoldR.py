@@ -261,6 +261,7 @@ def YCRblockchain():
             diff = (int(d2_ts-d1_ts) / 60) / 10
             add = diff / 10
             blockheight = diff + add + 550
+            blockheight = int(blockheight)
             home = os.getenv("HOME")
             subprocess.call(['rm ~/.bitcoin/bitcoin.conf'],shell=True)
             subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nprune='+blockheight+'\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
