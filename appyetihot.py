@@ -294,6 +294,7 @@ def YHblockchain():
             subprocess.call(['wsh a crap bitcoin file'],shell=True)
         else:
             fmt = '%Y-%m-%d %H:%M:%S'
+            print("hi")
             d1 = datetime.strptime(request.form['date'] + ' 12:0:0', fmt)
             print(d1)
             print(str(datetime.today()))
