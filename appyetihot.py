@@ -282,7 +282,7 @@ def YHblockchain():
     if request.method == 'GET':
         home = os.getenv("HOME")
         if (os.path.exists(home + "/.bitcoin")):
-            return redirect('/YCopenbitcoin')
+            return redirect('/YHopenbitcoin')
     if request.method == 'POST':
         if request.form['option'] == 'downloadblockchain':
             ###ISSUE function needed and a file hosted
