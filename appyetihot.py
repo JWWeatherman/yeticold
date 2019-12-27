@@ -281,7 +281,7 @@ def redirectroute():
 def YHblockchain():
     if request.method == 'GET':
         home = os.getenv("HOME")
-        if (os.path.exisits(home + "/.bitcoin")):
+        if (os.path.exists(home + "/.bitcoin")):
             return redirect('/YCopenbitcoin')
     if request.method == 'POST':
         if request.form['option'] == 'downloadblockchain':
