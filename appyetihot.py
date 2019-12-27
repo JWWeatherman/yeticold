@@ -295,7 +295,7 @@ def YHblockchain():
         else:
             ###ISSUE caculate blocks to prune with 10% buffer
             fmt = '%Y-%m-%d %H:%M:%S'
-            d1 = datetime.strptime(request.form['date'] + '12:0:0', fmt)
+            d1 = datetime.strptime(request.form['date'] + ' 12:0:0', fmt)
             d2 = datetime.strptime(str(datetime.today()), fmt)
             d1_ts = time.mktime(d1.timetuple())
             d2_ts = time.mktime(d2.timetuple())
