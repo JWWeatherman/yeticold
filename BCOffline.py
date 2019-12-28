@@ -19,7 +19,7 @@ if not (os.path.exists(home + "/.bitcoin")):
     subprocess.call(['mkdir ~/.bitcoin'],shell=True)
 else:
     subprocess.call(['rm ~/.bitcoin/bitcoin.conf'],shell=True)
-subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nprune=550\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
+subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
 
 settings = {"rpc_username": "rpcuser","rpc_password": rpcpsw,"rpc_host": "127.0.0.1","rpc_port": 8332,"address_chunk": 100}
 wallet_template = "http://{rpc_username}:{rpc_password}@{rpc_host}:{rpc_port}/wallet/{wallet_name}"
@@ -104,16 +104,10 @@ def BCopenbitcoin():
         progress = BTCprogress()
     if request.method == 'POST':
         if progress >= 99.9:
-            return redirect('/BCmovefiles')
+            return redirect('/BConlinestartup')
         else:
             return redirect('/BCopenbitcoin')
     return render_template('BCopenbitcoin.html', progress=progress)
-
-@app.route("/BCmovefiles", methods=['GET', 'POST'])
-def BCmovefiles():
-    if request.method == 'POST':
-        return redirect('/BConlinestartup')
-    return render_template('BCmovefiles.html')
 
 @app.route("/BConlinestartup", methods=['GET', 'POST'])
 def BConlinestartup():
@@ -137,8 +131,23 @@ def BCopenbitcoinC():
 @app.route("/BCimportkeys", methods=['GET', 'POST'])
 def BCimportkeys():
     if request.method == 'POST':
-        return redirect('/BCdisplayutxos')
+        text = request.form['textarea']
+        print(text)
+        textlist = text.split('\n')
+        for i in range(0,len(textlist) - 1):
+            privkey = textlist[i].split(',')[3]
+            print(privkey)
+            rpc = RPC()
+            rpc.importprivkey(privkey, 'privkeylabel', False)
+        rpc.rescanblockchain()
+        return redirect('/BCrescan')
     return render_template('BCimportkeys.html')
+
+@app.route("/BCrescan", methods=['GET', 'POST'])
+def BCrescan():
+    if request.method == 'POST':
+        return redirect('/BCdisplayutxos')
+    return render_template('BCrescan.html')
 
 @app.route("/BCdisplayutxos", methods=['GET', 'POST'])
 def BCdisplayutxos():
