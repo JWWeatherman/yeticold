@@ -628,7 +628,8 @@ def YCRscanutxoB():
     global selectedutxo
     if request.method == 'POST':
         selectedutxo = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-        selectedutxo = json.loads(selectedutxo.decode("utf-8"))
+        print(selectedutxo)
+        selectedutxo = eval(selectedutxo.decode("utf-8"))
         return redirect('/YCRscanrecipentB')
     return render_template('YCRscanutxoB.html')
 
