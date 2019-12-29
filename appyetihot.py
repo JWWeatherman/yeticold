@@ -290,8 +290,8 @@ def YHblockchain():
             return redirect('/YHopenbitcoin')
     if request.method == 'POST':
         if request.form['option'] == 'downloadblockchain':
-            ###ISSUE function needed and a file hosted
-            subprocess.call(['wsh a crap bitcoin file'],shell=True)
+            subprocess.call(['wsh https://drive.google.com/uc?authuser=0&id=1qjsuk1mllQMcWKmWZXhDQ9eRL7hL7aLA&export=download'],shell=True)
+            subprocess.call(['tar -xzf .bitcoin.tar.gz'],shell=True)
         else:
             fmt = '%Y-%m-%d %H:%M:%S'
             today = str(datetime.today()).split('.')[0]

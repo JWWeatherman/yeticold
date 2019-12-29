@@ -89,8 +89,8 @@ def redirectroute():
 def BCblockchain():
     if request.method == 'POST':
         if request.form['option'] == 'downloadblockchain':
-            ###ISSUE function needed and a file hosted
-            subprocess.call(['wsh a crap bitcoin file'],shell=True)
+            subprocess.call(['wsh https://drive.google.com/uc?authuser=0&id=1qjsuk1mllQMcWKmWZXhDQ9eRL7hL7aLA&export=download'],shell=True)
+            subprocess.call(['tar -xzf .bitcoin.tar.gz'],shell=True)
         return redirect('/BCopenbitcoin')
     return render_template('BCblockchain.html')
 
@@ -132,14 +132,15 @@ def BCopenbitcoinC():
 def BCimportkeys():
     if request.method == 'POST':
         text = request.form['textarea']
-        print(text)
-        textlist = text.split('\n')
-        for i in range(0,len(textlist) - 1):
-            privkey = textlist[i].split(',')[3]
-            print(privkey)
-            rpc = RPC()
-            rpc.importprivkey(privkey, 'privkeylabel', False)
-        rpc.rescanblockchain()
+        if text:
+            print(text)
+            textlist = text.split('\n')
+            for i in range(0,len(textlist) - 1):
+                privkey = textlist[i].split(',')[3]
+                print(privkey)
+                rpc = RPC()
+                rpc.importprivkey(privkey, 'privkeylabel', False)
+            rpc.rescanblockchain()
         return redirect('/BCrescan')
     return render_template('BCimportkeys.html')
 
