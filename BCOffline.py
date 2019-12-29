@@ -151,8 +151,24 @@ def BCopenbitcoinC():
 @app.route("/BCimportkeys", methods=['GET', 'POST'])
 def BCimportkeys():
     if request.method == 'POST':
-        return redirect('/BCdisplayutxos')
+        text = request.form['textarea']
+        if text:
+            print(text)
+            textlist = text.split('\n')
+            for i in range(0,len(textlist) - 1):
+                privkey = textlist[i].split(',')[3]
+                print(privkey)
+                rpc = RPC()
+                rpc.importprivkey(privkey, 'privkeylabel', False)
+            rpc.rescanblockchain()
+        return redirect('/BCrescan')
     return render_template('BCimportkeys.html')
+
+@app.route("/BCrescan", methods=['GET', 'POST'])
+def BCrescan():
+    if request.method == 'POST':
+        return redirect('/BCdisplayutxos')
+    return render_template('BCrescan.html')
 
 @app.route("/BCdisplayutxos", methods=['GET', 'POST'])
 def BCdisplayutxos():
