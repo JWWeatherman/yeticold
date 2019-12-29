@@ -592,9 +592,10 @@ def YCRdisplaytransaction():
 @app.route("/YCRscantransaction", methods=['GET', 'POST'])
 def YCRscantransaction():
     if request.method == 'POST':
-        rpc = RPC()
         response = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-        rpc.sendrawtransaction(response.decode("utf-8"))
+        transactionhex = response.decode("utf-8")
+        print(transactionhex)
+        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet= sendrawtransaction '+transactionhex],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         return redirect('/YCRdisplaywallet')
     return render_template('YCRscantransaction.html')
 
@@ -707,9 +708,10 @@ def YCRdisplaytransactionB():
 @app.route("/YCRscantransactionB", methods=['GET', 'POST'])
 def YCRscantransactionB():
     if request.method == 'POST':
-        rpc = RPC()
         response = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-        rpc.sendrawtransaction(response.decode("utf-8"))
+        transactionhex = response.decode("utf-8")
+        print(transactionhex)
+        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet= sendrawtransaction '+transactionhex],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         return redirect('/YCRdisplaywallet')
     return render_template('YCRscantransactionB.html')
 
