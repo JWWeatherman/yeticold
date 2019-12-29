@@ -15,11 +15,6 @@ import time
 app = Flask(__name__)
 home = os.getenv("HOME")
 rpcpsw = str(random.randrange(0,1000000))
-if not (os.path.exists(home + "/.bitcoin")):
-    subprocess.call(['mkdir ~/.bitcoin'],shell=True)
-else:
-    subprocess.call(['rm ~/.bitcoin/bitcoin.conf'],shell=True)
-subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
 
 settings = {"rpc_username": "rpcuser","rpc_password": rpcpsw,"rpc_host": "127.0.0.1","rpc_port": 8332,"address_chunk": 100}
 wallet_template = "http://{rpc_username}:{rpc_password}@{rpc_host}:{rpc_port}/wallet/{wallet_name}"
@@ -87,11 +82,37 @@ def redirectroute():
 
 @app.route("/BCblockchain", methods=['GET', 'POST'])
 def BCblockchain():
+    global rpcpsw
+    global blockchain
+    if request.method == 'GET':
+        if (os.path.exists(home + "/.bitcoin")):
+            with open(".bitcoin/bitcoin.conf","r+") as f:
+                old = f.read()
+                f.seek(0)
+                new = "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword="+rpcpsw+"\n"
+                f.write(new + old)
+            return redirect('/BCopenbitcoin')
     if request.method == 'POST':
         if request.form['option'] == 'downloadblockchain':
             subprocess.call(['wsh https://drive.google.com/uc?authuser=0&id=1qjsuk1mllQMcWKmWZXhDQ9eRL7hL7aLA&export=download'],shell=True)
             subprocess.call(['tar -xzf .bitcoin.tar.gz'],shell=True)
-        return redirect('/BCopenbitcoin')
+        else:
+            fmt = '%Y-%m-%d %H:%M:%S'
+            today = str(datetime.today()).split('.')[0]
+            print(request.form['date'] + ' 12:0:0')
+            print(today)
+            d1 = datetime.strptime(request.form['date'] + ' 12:0:0', fmt)
+            d2 = datetime.strptime(today, fmt)
+            d1_ts = time.mktime(d1.timetuple())
+            d2_ts = time.mktime(d2.timetuple())
+            diff = (int(d2_ts - d1_ts) / 60) / 10
+            add = diff / 10
+            blockheight = diff + add + 550
+            blockheight = int(blockheight)
+            home = os.getenv("HOME")
+            subprocess.call(['rm ~/.bitcoin/bitcoin.conf'],shell=True)
+            subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nprune='+str(blockheight)+'\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
+
     return render_template('BCblockchain.html')
 
 @app.route("/BCopenbitcoin", methods=['GET', 'POST'])
@@ -133,13 +154,12 @@ def BCimportkeys():
     if request.method == 'POST':
         text = request.form['textarea']
         if text:
-            print(text)
             textlist = text.split('\n')
             for i in range(0,len(textlist) - 1):
                 privkey = textlist[i].split(',')[3]
-                print(privkey)
-                rpc = RPC()
-                rpc.importprivkey(privkey, 'privkeylabel', False)
+                if privkey[1] == 'L' or privkey[1] == 'K':
+                    rpc = RPC()
+                    rpc.importprivkey(privkey, 'privkeylabel', False)
             rpc.rescanblockchain()
         return redirect('/BCrescan')
     return render_template('BCimportkeys.html')

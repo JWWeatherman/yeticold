@@ -15,12 +15,6 @@ import time
 app = Flask(__name__)
 home = os.getenv("HOME")
 rpcpsw = str(random.randrange(0,1000000))
-if not (os.path.exists(home + "/.bitcoin")):
-    subprocess.call(['mkdir ~/.bitcoin'],shell=True)
-else:
-    subprocess.call(['rm ~/.bitcoin/bitcoin.conf'],shell=True)
-subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nprune=550\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
-
 ### VARIBALES START
 settings = {"rpc_username": "rpcuser","rpc_password": rpcpsw,"rpc_host": "127.0.0.1","rpc_port": 8332,"address_chunk": 100}
 wallet_template = "http://{rpc_username}:{rpc_password}@{rpc_host}:{rpc_port}/wallet/{wallet_name}"
@@ -294,9 +288,11 @@ def YConlinestartup():
 @app.route("/YCopenbitcoinC", methods=['GET', 'POST'])
 def YCopenbitcoinC():
     global progress
+    global psw
     if request.method == 'GET':
         if BTCClosed():
-            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
+            subprocess.call('rm -r ~/.bitcoin/regtest')
+            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoind -regtest -server=1 -rpcuser=rpcuser -rpcpassword='+rpcpsw+' -reindex -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':
         IBD = BTCRunning()

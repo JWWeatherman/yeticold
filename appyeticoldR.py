@@ -15,14 +15,6 @@ import time
 app = Flask(__name__)
 home = os.getenv("HOME")
 rpcpsw = str(random.randrange(0,1000000))
-blockchain = False
-if not (os.path.exists(home + "/.bitcoin")):
-    blockchain = True
-    subprocess.call(['mkdir ~/.bitcoin'],shell=True)
-else:
-    subprocess.call(['rm ~/.bitcoin/bitcoin.conf'],shell=True)
-subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nprune=550\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
-
 ### VARIBALES START
 settings = {"rpc_username": "rpcuser","rpc_password": rpcpsw,"rpc_host": "127.0.0.1","rpc_port": 8332,"address_chunk": 100}
 wallet_template = "http://{rpc_username}:{rpc_password}@{rpc_host}:{rpc_port}/wallet/{wallet_name}"
@@ -243,10 +235,13 @@ def redirectroute():
 @app.route("/YCRblockchain", methods=['GET', 'POST'])
 def YCRblockchain():
     global rpcpsw
-    global blockchain
     if request.method == 'GET':
-        home = os.getenv("HOME")
-        if blockchain:
+        if (os.path.exists(home + "/.bitcoin")):
+            with open(".bitcoin/bitcoin.conf","r+") as f:
+                old = f.read()
+                f.seek(0)
+                new = "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword="+rpcpsw+"\n"
+                f.write(new + old)
             return redirect('/YCRopenbitcoin')
     if request.method == 'POST':
         if request.form['option'] == 'downloadblockchain':
@@ -389,7 +384,7 @@ def YCRopenbitcoinB():
     if request.method == 'GET':
         home = os.getenv("HOME")
         if BTCClosed():
-            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
+            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoind -regtest -server=1 -rpcuser=rpcuser -rpcport=8332 -rpcpassword='+rpcpsw+' -reindex -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
     if request.method == 'POST':
         IBD = BTCRunning()
         if IBD:
