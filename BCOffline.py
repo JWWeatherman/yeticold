@@ -160,7 +160,7 @@ def BCimportkeys():
                 print(privkey)
                 rpc = RPC()
                 rpc.importprivkey(privkey, 'privkeylabel', False)
-            rpc.rescanblockchain()
+            response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet= rescanblockchain'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         return redirect('/BCrescan')
     return render_template('BCimportkeys.html')
 
