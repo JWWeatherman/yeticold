@@ -236,12 +236,16 @@ def redirectroute():
 def YCRblockchain():
     global rpcpsw
     if request.method == 'GET':
+        home = os.getenv("HOME")
         if (os.path.exists(home + "/.bitcoin")):
-            with open(".bitcoin/bitcoin.conf","r+") as f:
-                old = f.read()
-                f.seek(0)
-                new = "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword="+rpcpsw+"\n"
-                f.write(new + old)
+            if (os.path.exists(home + "/.bitcoin/bitcoin.conf")):
+                with open(".bitcoin/bitcoin.conf","r+") as f:
+                    old = f.read()
+                    f.seek(0)
+                    new = "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword="+rpcpsw+"\n"
+                    f.write(new + old)
+            else:
+                subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
             return redirect('/YCRopenbitcoin')
     if request.method == 'POST':
         if request.form['option'] == 'downloadblockchain':
@@ -262,7 +266,7 @@ def YCRblockchain():
             blockheight = diff + add + 550
             blockheight = int(blockheight)
             home = os.getenv("HOME")
-            subprocess.call(['rm ~/.bitcoin/bitcoin.conf'],shell=True)
+            subprocess.call(['mkdir ~/.bitcoin'],shell=True)
             subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nprune='+str(blockheight)+'\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
         return redirect('/YCopenbitcoin')
     return render_template('YCRblockchain.html')
@@ -273,6 +277,16 @@ def YCRopenbitcoin():
     if request.method == 'GET':
         home = os.getenv("HOME")
         if BTCClosed():
+            if not (os.path.exists(home + "/.bitcoin")):
+                subprocess.call(['mkdir ~/.bitcoin'],shell=True)
+            if (os.path.exists(home + "/.bitcoin/bitcoin.conf")):
+                with open(".bitcoin/bitcoin.conf","r+") as f:
+                    old = f.read()
+                    f.seek(0)
+                    new = "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword="+rpcpsw+"\n"
+                    f.write(new + old)
+            else:
+                subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
             subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':
