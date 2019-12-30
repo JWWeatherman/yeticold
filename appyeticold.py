@@ -291,7 +291,7 @@ def YCopenbitcoinC():
     global psw
     if request.method == 'GET':
         if BTCClosed():
-            subprocess.call('rm -r ~/.bitcoin/regtest')
+            subprocess.call('rm -r ~/.bitcoin/regtest', shell=True)
             subprocess.Popen('~/yeticold/bitcoin/bin/bitcoind -regtest -server=1 -rpcuser=rpcuser -rpcpassword='+rpcpsw+' -reindex -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':
