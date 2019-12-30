@@ -160,7 +160,7 @@ def BCimportkeys():
                 if privkey[1] == 'L' or privkey[1] == 'K':
                     rpc = RPC()
                     rpc.importprivkey(privkey, 'privkeylabel', False)
-            rpc.rescanblockchain()
+            response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet= rescanblockchain'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         return redirect('/BCrescan')
     return render_template('BCimportkeys.html')
 
@@ -277,10 +277,10 @@ def BCscantransaction():
     global signtransactionhex
     global totalamount
     if request.method == 'POST':
-        rpc = RPC()
         response = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-        print(response.decode("utf-8"))
-        rpc.sendrawtransaction(response.decode("utf-8"))
+        transactionhex = response.decode("utf-8")
+        print(transactionhex)
+        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet= sendrawtransaction '+transactionhex],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         return redirect('/BCswitchlaptop')
     return render_template('BCscantransaction.html')
 
