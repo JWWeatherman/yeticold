@@ -303,14 +303,14 @@ def YCopenbitcoinC():
             else:
                 subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
             subprocess.call('rm -r ~/.bitcoin/regtest', shell=True)
-            rpc = RPC()
-            adr = rpc.getnewaddress()
-            subprocess.call('~/yeticold/bitcoin/bin/bitcoin-cli generatetoaddress 1 '+adr, shell=True)
             subprocess.Popen('~/yeticold/bitcoin/bin/bitcoind -regtest -server=1 -rpcport=8332 -rpcuser=rpcuser -rpcpassword='+rpcpsw+' -reindex -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':
         IBD = BTCRunning()
         if IBD:
+            rpc = RPC()
+            adr = rpc.getnewaddress()
+            subprocess.call('~/yeticold/bitcoin/bin/bitcoin-cli generatetoaddress 1 '+adr, shell=True)
             subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yeticold"'],shell=True)
             return redirect('/YCgetseeds')
         else:
