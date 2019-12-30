@@ -16,16 +16,7 @@ app = Flask(__name__)
 home = os.getenv("HOME")
 rpcpsw = str(random.randrange(0,1000000))
 ### VARIBALES START
-if not (os.path.exists(home + "/.bitcoin")):
-    subprocess.call(['mkdir ~/.bitcoin'],shell=True)
-if (os.path.exists(home + "/.bitcoin/bitcoin.conf")):
-    with open(".bitcoin/bitcoin.conf","r+") as f:
-        old = f.read()
-        f.seek(0)
-        new = "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword="+rpcpsw+"\n"
-        f.write(new + old)
-else:
-    subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
+
 settings = {"rpc_username": "rpcuser","rpc_password": rpcpsw,"rpc_host": "127.0.0.1","rpc_port": 8332,"address_chunk": 100}
 wallet_template = "http://{rpc_username}:{rpc_password}@{rpc_host}:{rpc_port}/wallet/{wallet_name}"
 BASE58_ALPHABET = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'
@@ -301,6 +292,16 @@ def YCopenbitcoinC():
     global psw
     if request.method == 'GET':
         if BTCClosed():
+            if not (os.path.exists(home + "/.bitcoin")):
+            subprocess.call(['mkdir ~/.bitcoin'],shell=True)
+        if (os.path.exists(home + "/.bitcoin/bitcoin.conf")):
+            with open(".bitcoin/bitcoin.conf","r+") as f:
+                old = f.read()
+                f.seek(0)
+                new = "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword="+rpcpsw+"\n"
+                f.write(new + old)
+        else:
+            subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
             subprocess.call('rm -r ~/.bitcoin/regtest', shell=True)
             subprocess.Popen('~/yeticold/bitcoin/bin/bitcoind -regtest -server=1 -rpcport=8332 -rpcuser=rpcuser -rpcpassword='+rpcpsw+' -reindex -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
