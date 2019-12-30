@@ -277,16 +277,6 @@ def YCRopenbitcoin():
     if request.method == 'GET':
         home = os.getenv("HOME")
         if BTCClosed():
-            if not (os.path.exists(home + "/.bitcoin")):
-                subprocess.call(['mkdir ~/.bitcoin'],shell=True)
-            if (os.path.exists(home + "/.bitcoin/bitcoin.conf")):
-                with open(".bitcoin/bitcoin.conf","r+") as f:
-                    old = f.read()
-                    f.seek(0)
-                    new = "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword="+rpcpsw+"\n"
-                    f.write(new + old)
-            else:
-                subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
             subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':
@@ -398,6 +388,20 @@ def YCRopenbitcoinB():
     if request.method == 'GET':
         home = os.getenv("HOME")
         if BTCClosed():
+            if not (os.path.exists(home + "/.bitcoin")):
+                subprocess.call(['mkdir ~/.bitcoin'],shell=True)
+            if (os.path.exists(home + "/.bitcoin/bitcoin.conf")):
+                with open(".bitcoin/bitcoin.conf","r+") as f:
+                    old = f.read()
+                    f.seek(0)
+                    new = "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword="+rpcpsw+"\n"
+                    f.write(new + old)
+            else:
+                subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
+            subprocess.call('rm -r ~/.bitcoin/regtest', shell=True)
+            rpc = RPC()
+            adr = rpc.getnewaddress
+            subprocess.call('~/yeticold/bitcoin/bin/bitcoin-cli generatetoaddress 1 '+adr, shell=True)
             subprocess.Popen('~/yeticold/bitcoin/bin/bitcoind -regtest -server=1 -rpcuser=rpcuser -rpcport=8332 -rpcpassword='+rpcpsw+' -reindex -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
     if request.method == 'POST':
         IBD = BTCRunning()
