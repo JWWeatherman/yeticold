@@ -292,8 +292,6 @@ def YCopenbitcoinC():
     global psw
     if request.method == 'GET':
         if BTCClosed():
-            if not (os.path.exists(home + "/.bitcoin")):
-                subprocess.call(['wsh https://drive.google.com/uc?authuser=0&id=1qjsuk1mllQMcWKmWZXhDQ9eRL7hL7aLA&export=download'],shell=True)
             if (os.path.exists(home + "/.bitcoin/bitcoin.conf")):
                 with open(".bitcoin/bitcoin.conf","r+") as f:
                     old = f.read()
