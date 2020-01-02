@@ -16,7 +16,7 @@ if not (os.path.exists(home + "/yeticold/bitcoin")):
 	subprocess.call(['sudo unattended-upgrade'],shell=True)
 	subprocess.call(['python3 ~/yeticold/utils/downloadbitcoin.py'],shell=True)
 if not (os.path.exists(home + "/.bitcoin")):
-    subprocess.call(['wget https://drive.google.com/uc?authuser=0&id=1qjsuk1mllQMcWKmWZXhDQ9eRL7hL7aLA&export=download'],shell=True)
+    subprocess.call(['wget https://drive.google.com/uc?export=download&confirm=NtGc&id=1qjsuk1mllQMcWKmWZXhDQ9eRL7hL7aLA'],shell=True)
 if not (os.system("python3 -c 'import flask'") == 0):
 	subprocess.call(['pip3 install flask'],shell=True)
 if not (os.system("python3 -c 'import qrtools'") == 0):
