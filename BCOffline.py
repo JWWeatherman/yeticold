@@ -98,8 +98,8 @@ def BCblockchain():
             return redirect('/BCopenbitcoin')
     if request.method == 'POST':
         if request.form['option'] == 'downloadblockchain':
-            subprocess.call(['wget https://drive.google.com/uc?export=download&confirm=NtGc&id=1qjsuk1mllQMcWKmWZXhDQ9eRL7hL7aLA'],shell=True)
-            subprocess.call(['tar -xzf .bitcoin.tar.gz'],shell=True)
+            subprocess.call(['wget http://download1587.mediafire.com/g9f8gflivujg/6uo4wmh0esdjo15/bitcoin.tar.gz'],shell=True)
+            subprocess.call(['tar -xzf bitcoin.tar.gz'],shell=True)
         else:
             fmt = '%Y-%m-%d %H:%M:%S'
             today = str(datetime.today()).split('.')[0]

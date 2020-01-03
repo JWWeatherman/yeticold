@@ -3,6 +3,7 @@ import subprocess
 home = os.getenv("HOME")
 subprocess.call(['cd ~/yeticold; git pull; cd'],shell=True)
 subprocess.call('fuser -k 5000/tcp', shell=True)	
+subprocess.call('date -s "3 JAN 2020 10:00:00"',shell=True)
 if not (os.path.exists(home + "/yeticold/bitcoin")):
 	subprocess.call(['snap install network-manager'],shell=True)
 	subprocess.call(['sudo apt-get install python3-venv'],shell=True)
@@ -16,7 +17,8 @@ if not (os.path.exists(home + "/yeticold/bitcoin")):
 	subprocess.call(['sudo unattended-upgrade'],shell=True)
 	subprocess.call(['python3 ~/yeticold/utils/downloadbitcoin.py'],shell=True)
 if not (os.path.exists(home + "/.bitcoin")):
-    subprocess.call(['wget https://drive.google.com/uc?export=download&confirm=NtGc&id=1qjsuk1mllQMcWKmWZXhDQ9eRL7hL7aLA'],shell=True)
+    subprocess.call(['wget http://download1587.mediafire.com/g9f8gflivujg/6uo4wmh0esdjo15/bitcoin.tar.gz'],shell=True)
+    subprocess.call(['tar -xzf bitcoin.tar.gz'],shell=True)
 if not (os.system("python3 -c 'import flask'") == 0):
 	subprocess.call(['pip3 install flask'],shell=True)
 if not (os.system("python3 -c 'import qrtools'") == 0):
