@@ -3,7 +3,6 @@ import subprocess
 home = os.getenv("HOME")
 subprocess.call(['cd ~/yeticold; git pull; cd'],shell=True)
 subprocess.call('fuser -k 5000/tcp', shell=True)	
-subprocess.call('sudo date -s "3 JAN 2020 10:00:00"',shell=True)
 if not (os.path.exists(home + "/yeticold/bitcoin")):
 	subprocess.call(['snap install network-manager'],shell=True)
 	subprocess.call(['sudo apt-get install python3-venv'],shell=True)
@@ -32,6 +31,7 @@ if not (os.system("python3 -c 'import PIL'") == 0):
 if not (os.system("python3 -c 'import zbar'") == 0):
 	subprocess.call(['pip3 install zbar-py'],shell=True)
 subprocess.call(['nmcli n off'],shell=True)
+subprocess.call('sudo date -s "3 JAN 2020 10:00:00"',shell=True)
 subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
 subprocess.call('sudo rm -r ~/.bitcoin/yeticold*', shell=True)
 subprocess.call('sudo rm -r ~/yetihotwallet*', shell=True)
