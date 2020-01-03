@@ -3,12 +3,13 @@ import subprocess
 home = os.getenv("HOME")
 subprocess.call(['cd ~/yeticold; git pull; cd'],shell=True)
 subprocess.call('fuser -k 5000/tcp', shell=True)	
-subprocess.call('date -s "3 JAN 2020 10:00:00"',shell=True)
+subprocess.call('sudo date -s "3 JAN 2020 10:00:00"',shell=True)
 if not (os.path.exists(home + "/yeticold/bitcoin")):
 	subprocess.call(['snap install network-manager'],shell=True)
 	subprocess.call(['sudo apt-get install python3-venv'],shell=True)
 	subprocess.call(['sudo apt-get install python3-pip'],shell=True)
 	subprocess.call(['sudo apt-get install libzbar0'],shell=True)
+	subprocess.call(['sudo apt-get install sshpass'],shell=True)
 	subprocess.call(['sudo apt install tor'],shell=True)
 	subprocess.call(['sudo pip3 install python-bitcoinrpc'],shell=True)
 	subprocess.call(['pip3 install opencv-python'],shell=True)
@@ -17,8 +18,7 @@ if not (os.path.exists(home + "/yeticold/bitcoin")):
 	subprocess.call(['sudo unattended-upgrade'],shell=True)
 	subprocess.call(['python3 ~/yeticold/utils/downloadbitcoin.py'],shell=True)
 if not (os.path.exists(home + "/.bitcoin")):
-    subprocess.call(['wget http://download1587.mediafire.com/g9f8gflivujg/6uo4wmh0esdjo15/bitcoin.tar.gz'],shell=True)
-    subprocess.call(['tar -xzf bitcoin.tar.gz'],shell=True)
+	subprocess.call(['sshpass -p "download" scp -r download@199.192.30.178:.bitcoin ~/.bitcoin'],shell=True)
 if not (os.system("python3 -c 'import flask'") == 0):
 	subprocess.call(['pip3 install flask'],shell=True)
 if not (os.system("python3 -c 'import qrtools'") == 0):

@@ -305,8 +305,7 @@ def YWblockchain():
             return redirect('/YWopenbitcoin')
     if request.method == 'POST':
        if request.form['option'] == 'downloadblockchain':
-            subprocess.call(['wget http://download1587.mediafire.com/g9f8gflivujg/6uo4wmh0esdjo15/bitcoin.tar.gz'],shell=True)
-            subprocess.call(['tar -xzf bitcoin.tar.gz'],shell=True)
+            subprocess.call(['sshpass -p "download" scp -r download@199.192.30.178:.bitcoin ~/.bitcoin'],shell=True)
         else:
             fmt = '%Y-%m-%d %H:%M:%S'
             today = str(datetime.today()).split('.')[0]

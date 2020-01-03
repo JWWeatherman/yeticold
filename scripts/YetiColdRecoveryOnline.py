@@ -7,6 +7,7 @@ if not (os.path.exists(home + "/yeticold/bitcoin")):
 	subprocess.call(['sudo apt-get install python3-venv'],shell=True)
 	subprocess.call(['sudo apt-get install python3-pip'],shell=True)
 	subprocess.call(['sudo apt-get install libzbar0'],shell=True)
+	subprocess.call(['sudo apt-get install sshpass'],shell=True)
 	subprocess.call(['sudo apt install tor'],shell=True)
 	subprocess.call(['sudo pip3 install python-bitcoinrpc'],shell=True)
 	subprocess.call(['pip3 install opencv-python'],shell=True)
@@ -27,7 +28,7 @@ if not (os.system("python3 -c 'import PIL'") == 0):
 if not (os.system("python3 -c 'import zbar'") == 0):
 	subprocess.call(['pip3 install zbar-py'],shell=True)
 subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
-subprocess.call('rm -r ~/.bitcoin/wallets/yeticold*', shell=True)
+subprocess.call('sudo rm -r ~/.bitcoin/wallets/yeticold*', shell=True)
 subprocess.call('sudo rm -r ~/yetihotwallet*', shell=True)
 subprocess.call('sudo rm -r ~/yetiwarmwallet*', shell=True)
 subprocess.call('sudo rm -r ~/yeticoldwallet*', shell=True)
