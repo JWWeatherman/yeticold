@@ -8,7 +8,6 @@ if not (os.path.exists(home + "/yeticold/bitcoin")):
 	subprocess.call(['sudo apt-get install python3-venv'],shell=True)
 	subprocess.call(['sudo apt-get install python3-pip'],shell=True)
 	subprocess.call(['sudo apt-get install libzbar0'],shell=True)
-	subprocess.call(['sudo apt-get install sshpass'],shell=True)
 	subprocess.call(['sudo apt install tor'],shell=True)
 	subprocess.call(['sudo pip3 install python-bitcoinrpc'],shell=True)
 	subprocess.call(['pip3 install opencv-python'],shell=True)
@@ -17,6 +16,8 @@ if not (os.path.exists(home + "/yeticold/bitcoin")):
 	subprocess.call(['sudo unattended-upgrade'],shell=True)
 	subprocess.call(['python3 ~/yeticold/utils/downloadbitcoin.py'],shell=True)
 if not (os.path.exists(home + "/.bitcoin")):
+	subprocess.call(['sudo apt-get install sshpass'],shell=True)
+	subprocess.call(['echo "Downloading pruned blockchain. This could take up to half an hour without feedback."'],shell=True)
     subprocess.call(['sshpass -p "download" scp -r download@199.192.30.178:.bitcoin ~/.bitcoin'],shell=True)
 if not (os.system("python3 -c 'import flask'") == 0):
 	subprocess.call(['pip3 install flask'],shell=True)

@@ -266,7 +266,7 @@ def YCRblockchain():
             home = os.getenv("HOME")
             subprocess.call(['mkdir ~/.bitcoin'],shell=True)
             subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nprune='+str(blockheight)+'\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
-        return redirect('/YCopenbitcoin')
+        return redirect('/YCRopenbitcoin')
     return render_template('YCRblockchain.html')
 
 @app.route("/YCRopenbitcoin", methods=['GET', 'POST'])
