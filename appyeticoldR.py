@@ -249,6 +249,7 @@ def YCRblockchain():
             return redirect('/YCRopenbitcoin')
     if request.method == 'POST':
         if request.form['option'] == 'downloadblockchain':
+            print("hi")
             subprocess.call(['sshpass -p "download" scp -r download@199.192.30.178:.bitcoin ~/.bitcoin'],shell=True)
         else:
             fmt = '%Y-%m-%d %H:%M:%S'
