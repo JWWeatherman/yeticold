@@ -27,7 +27,8 @@ if not (os.system("python3 -c 'import PIL'") == 0):
 	subprocess.call(['pip3 install pillow'],shell=True)
 if not (os.system("python3 -c 'import zbar'") == 0):
 	subprocess.call(['pip3 install zbar-py'],shell=True)
-subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
+if (os.path.exists(home + "/.bitcoin")):
+	subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
 subprocess.call('sudo rm -r ~/.bitcoin/wallets/yetiwarm*', shell=True)
 subprocess.call('sudo rm -r ~/yetihotwallet*', shell=True)
 subprocess.call('sudo rm -r ~/yetiwarmwallet*', shell=True)
