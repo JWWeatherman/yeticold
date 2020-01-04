@@ -64,7 +64,7 @@ def RPC():
     rpc = AuthServiceProxy(uri, timeout=600)  # 1 minute timeout
     return rpc
 
-def blockheight:
+def blockheight():
     rpc = RPC()
     BInfo = rpc.getblockchaininfo()
     blockheight = 0

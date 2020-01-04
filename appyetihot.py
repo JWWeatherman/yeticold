@@ -265,7 +265,7 @@ def WIFToPassphraseList(privkeywif):
 def xor(x, y):
     return '{1:0{0}b}'.format(len(x), int(x, 2) ^ int(y, 2))
 
-def blockheight:
+def blockheight():
     rpc = RPC()
     BInfo = rpc.getblockchaininfo()
     blockheight = 0

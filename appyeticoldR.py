@@ -198,7 +198,7 @@ def PassphraseToWIF(passphraselist):
         Privkey += switcher.get(str(passphraselist[i]))
     return Privkey
 
-def blockheight:
+def blockheight():
     rpc = RPC()
     BInfo = rpc.getblockchaininfo()
     blockheight = 0
