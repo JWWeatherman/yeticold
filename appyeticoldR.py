@@ -314,6 +314,7 @@ def YCRdisplaywallet():
     global selectedutxo
     global addresses
     global init
+    global rpcpsw
     if request.method == 'GET':
         subprocess.call(['rm -r ~/yeticold/static/address*'],shell=True)
         response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yeticold deriveaddresses "'+pubdesc+'" "[0,999]"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
@@ -323,6 +324,8 @@ def YCRdisplaywallet():
         for i in range(0, len(listofaddresses)):
             address = {}
             rpc = RPC()
+            print(rpc)
+            print(rpcpsw)
             testlist = []
             testlist.append(listofaddresses[i])
             utxo = rpc.listunspent(1, 9999999, testlist)
