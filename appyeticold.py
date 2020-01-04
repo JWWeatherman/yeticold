@@ -375,75 +375,11 @@ def YCgetseeds():
         checksum = response["checksum"]
         pubdesc = response["descriptor"]
         firstqrcode = pubdesc
-        return redirect('/YCdisplaydescriptor')
-    return render_template('YCgetseeds.html')
-
-@app.route("/YCdisplaydescriptor", methods=['GET', 'POST'])
-def YCdisplaydescriptor():
-    global privkeylist
-    global firstqrcode
-    global firsqrname
-    if request.method == 'GET':
-        randomnum = str(random.randrange(0,1000000))
-        firstqrname = randomnum
-        qr = qrcode.QRCode(
-               version=1,
-               error_correction=qrcode.constants.ERROR_CORRECT_L,
-               box_size=10,
-               border=4,
-        )
-        qr.add_data(firstqrcode)
-        qr.make(fit=True)
-        img = qr.make_image(fill_color="black", back_color="white")
-        home = os.getenv("HOME")
-        img.save(home + '/yeticold/static/firstqrcode' + firstqrname + '.png')
-        path = url_for('static', filename='firstqrcode' + firstqrname + '.png')
-    if request.method == 'POST':
         home = os.getenv('HOME')
         seedpath = home + '/Documents'
         subprocess.call('rm -r '+seedpath+'/ycseed*', shell=True)
         return redirect('/YCdisplayseeds')
-    return render_template('YCdisplaydescriptor.html', qrdata=firstqrcode, path=path)
-
-##SWITCH TO ONLINE
-
-@app.route("/YCscandescriptor", methods=['GET', 'POST'])
-def YCscandescriptor():
-    global firstqrcode
-    if request.method == 'POST':
-        firstqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-        firstqrcode = firstqrcode.decode("utf-8")
-        return redirect('/YCprintpage')
-    return render_template('YCscandescriptor.html')
-
-@app.route("/YCprintpage", methods=['GET', 'POST'])
-def YCprintpage():
-    global firstqrcode
-    global secondqrcode
-    global firstqrname
-    global secondqrname
-    randomnum = str(random.randrange(0,1000000))
-    firstqrname = randomnum
-    secondqrname = randomnum
-    thirdqrname = randomnum
-    path = url_for('static', filename='firstqrcode' + firstqrname + '.png')
-    if request.method == 'GET':
-        qr = qrcode.QRCode(
-               version=1,
-               error_correction=qrcode.constants.ERROR_CORRECT_L,
-               box_size=10,
-               border=4,
-        )
-        qr.add_data(firstqrcode)
-        qr.make(fit=True)
-        img = qr.make_image(fill_color="black", back_color="white")
-        home = os.getenv("HOME")
-        img.save(home + '/yeticold/static/firstqrcode' + firstqrname + '.png')
-    if request.method == 'POST':
-        return redirect('/YCstoreseeds')
-    return render_template('YCprintpage.html', qrdata=firstqrcode, path=path)
-
-#SWITCH TO OFFLINE
+    return render_template('YCgetseeds.html')
 
 @app.route('/YCdisplayseeds', methods=['GET', 'POST'])
 def YCdisplayseeds():
@@ -552,9 +488,69 @@ def YCcheckseeds():
 
 @app.route("/YCcopyseeds", methods=['GET', 'POST'])
 def YCcopyseeds():
+    if request.method == 'POST':
+        return redirect('/YCdisplaydescriptor')
     return render_template('YCcopyseeds.html')
 
-###SWITCH TO ONLINE
+@app.route("/YCdisplaydescriptor", methods=['GET', 'POST'])
+def YCdisplaydescriptor():
+    global privkeylist
+    global firstqrcode
+    global firsqrname
+    if request.method == 'GET':
+        randomnum = str(random.randrange(0,1000000))
+        firstqrname = randomnum
+        qr = qrcode.QRCode(
+               version=1,
+               error_correction=qrcode.constants.ERROR_CORRECT_L,
+               box_size=10,
+               border=4,
+        )
+        qr.add_data(firstqrcode)
+        qr.make(fit=True)
+        img = qr.make_image(fill_color="black", back_color="white")
+        home = os.getenv("HOME")
+        img.save(home + '/yeticold/static/firstqrcode' + firstqrname + '.png')
+        path = url_for('static', filename='firstqrcode' + firstqrname + '.png')
+    return render_template('YCdisplaydescriptor.html', qrdata=firstqrcode, path=path)
+
+##SWITCH TO ONLINE
+
+@app.route("/YCscandescriptor", methods=['GET', 'POST'])
+def YCscandescriptor():
+    global firstqrcode
+    if request.method == 'POST':
+        firstqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+        firstqrcode = firstqrcode.decode("utf-8")
+        return redirect('/YCprintpage')
+    return render_template('YCscandescriptor.html')
+
+@app.route("/YCprintpage", methods=['GET', 'POST'])
+def YCprintpage():
+    global firstqrcode
+    global secondqrcode
+    global firstqrname
+    global secondqrname
+    randomnum = str(random.randrange(0,1000000))
+    firstqrname = randomnum
+    secondqrname = randomnum
+    thirdqrname = randomnum
+    path = url_for('static', filename='firstqrcode' + firstqrname + '.png')
+    if request.method == 'GET':
+        qr = qrcode.QRCode(
+               version=1,
+               error_correction=qrcode.constants.ERROR_CORRECT_L,
+               box_size=10,
+               border=4,
+        )
+        qr.add_data(firstqrcode)
+        qr.make(fit=True)
+        img = qr.make_image(fill_color="black", back_color="white")
+        home = os.getenv("HOME")
+        img.save(home + '/yeticold/static/firstqrcode' + firstqrname + '.png')
+    if request.method == 'POST':
+        return redirect('/YCstoreseeds')
+    return render_template('YCprintpage.html', qrdata=firstqrcode, path=path)
 
 @app.route("/YCstoreseeds", methods=['GET', 'POST'])
 def YCstoreseeds():
