@@ -194,9 +194,17 @@ def RPC():
 
 def PassphraseToWIF(passphraselist):
     Privkey = ''
-    for i in range(len(passphraselist)):
+    for i in rangeblockheight()(len(passphraselist)):
         Privkey += switcher.get(str(passphraselist[i]))
     return Privkey
+
+def blockheight:
+    rpc = RPC()
+    BInfo = rpc.getblockchaininfo()
+    blockheight = 0
+    if BInfo['pruned']:
+        blockheight = Binfo['pruneheight']
+    return str(blockheight)
 
 
 #YCRblockchain - step X - #download crap bitcoin directory?
@@ -304,7 +312,7 @@ def YCRrescanwallet():
         if not (len(response[1]) == 0): 
             print(response)
             return "error response from importmulti: " + str(response[1]) + '\n' + '~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yeticold importmulti \'[{ "desc": "'+pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''
-        subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yeticold rescanblockchain 600000',shell=True,start_new_session=True)
+        subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yeticold rescanblockchain '+blockheight(),shell=True,start_new_session=True)
     if request.method == 'POST':
         return redirect('/YCRdisplaywallet')
     return render_template('YCRrescanwallet.html')

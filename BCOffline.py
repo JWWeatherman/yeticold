@@ -64,6 +64,14 @@ def RPC():
     rpc = AuthServiceProxy(uri, timeout=600)  # 1 minute timeout
     return rpc
 
+def blockheight:
+    rpc = RPC()
+    BInfo = rpc.getblockchaininfo()
+    blockheight = 0
+    if BInfo['pruned']:
+        blockheight = Binfo['pruneheight']
+    return str(blockheight)
+
 #BCblockchain - step X - #download crap bitcoin directory?
 #Open bitcoin - step 6 - Open bitcoin - Online
 #Setup Disconnected - step 9 - Online # go to off.yeticold.com
@@ -163,7 +171,7 @@ def BCimportkeys():
                 if privkey[1] == 'L' or privkey[1] == 'K':
                     rpc = RPC()
                     rpc.importprivkey(privkey, 'privkeylabel', False)
-            response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet= rescanblockchain'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet= rescanblockchain '+blockheight()],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         return redirect('/BCrescan')
     return render_template('BCimportkeys.html')
 

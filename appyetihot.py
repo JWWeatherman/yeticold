@@ -265,6 +265,14 @@ def WIFToPassphraseList(privkeywif):
 def xor(x, y):
     return '{1:0{0}b}'.format(len(x), int(x, 2) ^ int(y, 2))
 
+def blockheight:
+    rpc = RPC()
+    BInfo = rpc.getblockchaininfo()
+    blockheight = 0
+    if BInfo['pruned']:
+        blockheight = Binfo['pruneheight']
+    return str(blockheight)
+
 ### FUNCTIONS STOP
 
 @app.route("/", methods=['GET', 'POST'])
@@ -496,7 +504,7 @@ def YHRwalletinstructions():
     if request.method == 'GET':
         if not qrcodescanning:
             qrcodescanning = False
-            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetihot rescanblockchain 600000',shell=True,start_new_session=True)
+            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetihot rescanblockchain '+blockheight(),shell=True,start_new_session=True)
     if request.method == 'POST':
         error = None
         qrdata = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]

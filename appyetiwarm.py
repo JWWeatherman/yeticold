@@ -280,6 +280,14 @@ def WIFToPassphraseList(privkeywif):
 def xor(x, y):
     return '{1:0{0}b}'.format(len(x), int(x, 2) ^ int(y, 2))
 
+def blockheight:
+    rpc = RPC()
+    BInfo = rpc.getblockchaininfo()
+    blockheight = 0
+    if BInfo['pruned']:
+        blockheight = Binfo['pruneheight']
+    return str(blockheight)
+
 ### FUNCTIONS STOP
 
 @app.route("/", methods=['GET', 'POST'])
@@ -576,7 +584,7 @@ def YWRrescanwallet():
     if request.method == 'GET':
         response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwarm importmulti \'[{ "desc": "'+pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
-        subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwarm rescanblockchain 600000',shell=True,start_new_session=True)
+        subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwarm rescanblockchain '+blockheight(),shell=True,start_new_session=True)
     if request.method == 'POST':
         return redirect('/YWRdisplaywallet')
     return render_template('YWRrescanwallet.html')
