@@ -282,10 +282,10 @@ def xor(x, y):
 
 def blockheight():
     rpc = RPC()
-    BInfo = rpc.getblockchaininfo()
+    Blockinfo = rpc.getblockchaininfo()
     blockheight = 0
-    if BInfo['pruned']:
-        blockheight = Binfo['pruneheight']
+    if Blockinfo['pruned']:
+        blockheight = Blockinfo['pruneheight']
     return str(blockheight)
 
 ### FUNCTIONS STOP

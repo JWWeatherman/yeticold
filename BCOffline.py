@@ -64,12 +64,12 @@ def RPC():
     rpc = AuthServiceProxy(uri, timeout=600)  # 1 minute timeout
     return rpc
 
-def blockheight():
+def blockheight()g:
     rpc = RPC()
-    BInfo = rpc.getblockchaininfo()
+    Blockinfo = rpc.getblockchaininfo()
     blockheight = 0
-    if BInfo['pruned']:
-        blockheight = Binfo['pruneheight']
+    if Blockinfo['pruned']:
+        blockheight = Blockinfo['pruneheight']
     return str(blockheight)
 
 #BCblockchain - step X - #download crap bitcoin directory?
