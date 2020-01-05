@@ -426,7 +426,6 @@ def YCRscandescriptorB():
 def YCRimportseeds():
     global pubdesc
     global privkeycount
-    global init
     global error
     global privkeylist
     if request.method == 'POST':
@@ -486,7 +485,6 @@ def YCRimportseeds():
             checksum = response["checksum"]
             response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yeticoldpriv importmulti \'[{ "desc": '+desc+'#'+ checksum +'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
             print(response)
-            init = False
             return redirect('/YCRswitchlaptop')
         else:
             return redirect('/YCRimportseeds')
@@ -606,10 +604,12 @@ def YCRdisplaytransaction():
 
 @app.route("/YCRscantransaction", methods=['GET', 'POST'])
 def YCRscantransaction():
+    global init
     if request.method == 'POST':
         response = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
         transactionhex = response.decode("utf-8")
         print(transactionhex)
+        init = False
         response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet= sendrawtransaction '+transactionhex],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         return redirect('/YCRdisplaywallet')
     return render_template('YCRscantransaction.html')
