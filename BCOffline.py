@@ -233,14 +233,15 @@ def BCscanrecipent():
 @app.route("/BCconfirmsend", methods=['GET', 'POST'])
 def BCconfirmsend():
     global receipentaddress
-    rpc = RPC()
     if request.method == 'GET':
+        rpc = RPC()
         amount = float(selectedutxo['amount'])
         minerfee = float(rpc.estimatesmartfee(1)["feerate"])
         kilobytespertrans = 0.200
         amo = (amount - (minerfee * kilobytespertrans))
         minerfee = (minerfee * kilobytespertrans)
         amo = "{:.8f}".format(float(amo))
+        minerfee = "{:.8f}".format(float(minerfee))
     if request.method == 'POST':
         return redirect('/BCdisplaytransaction')
     return render_template('BCconfirmsend.html', amount=amo, minerfee=minerfee, recipent=receipentaddress)

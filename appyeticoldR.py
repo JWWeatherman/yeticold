@@ -682,6 +682,7 @@ def YCRconfirmsendB():
         amo = (amount - (minerfee * kilobytespertrans))
         minerfee = (minerfee * kilobytespertrans)
         amo = "{:.8f}".format(float(amo))
+        minerfee = "{:.8f}".format(float(minerfee))
     if request.method == 'POST':
         return redirect('/YCRdisplaytransactionB')
     return render_template('YCRconfirmsendB.html', amount=amo, minerfee=minerfee, recipent=receipentaddress)
