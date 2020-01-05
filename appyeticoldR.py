@@ -490,7 +490,7 @@ def YCRimportseeds():
             return redirect('/YCRswitchlaptop')
         else:
             return redirect('/YCRimportseeds')
-    return render_template('YCRimportseeds.html', x=privkeycount + 1, error=error,i=privkeycount + 5)
+    return render_template('YCRimportseeds.html', x=privkeycount + 1, error=error,i=privkeycount + 4)
 
 @app.route("/YCRswitchlaptop", methods=['GET', 'POST'])
 def YCRswitchlaptop():
@@ -519,7 +519,9 @@ def YCRdisplayutxo():
         path = url_for('static', filename='qrcode' + qrname + '.png')
     if request.method == 'POST':
         return redirect('/YCRscantransaction')
-    return render_template('YCRdisplayutxo.html', qrdata=selectedutxo, path=path)
+    if init:
+        return render_template('YCRdisplayutxo.html', qrdata=selectedutxo, path=path)
+    return render_template('YCRdisplayutxoB.html', qrdata=selectedutxo, path=path)
 
 @app.route("/YCRscanutxo", methods=['GET', 'POST'])
 def YCRscanutxo():
