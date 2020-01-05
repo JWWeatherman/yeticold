@@ -486,7 +486,6 @@ def YCRimportseeds():
             checksum = response["checksum"]
             response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yeticoldpriv importmulti \'[{ "desc": '+desc+'#'+ checksum +'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
             print(response)
-            init = False
             return redirect('/YCRswitchlaptop')
         else:
             return redirect('/YCRimportseeds')
@@ -616,6 +615,7 @@ def YCRdisplaytransaction():
     if request.method == 'POST':
         return redirect('/YCRscanutxo')
     if init:
+        init = False
         return render_template('YCRdisplaytransaction.html', qrdata=transhex, path=path)
     return render_template('YCRdisplaytransactionB.html', qrdata=transhex, path=path)
 
