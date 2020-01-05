@@ -312,7 +312,7 @@ def YWblockchain():
                 subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
             return redirect('/YWopenbitcoin')
     if request.method == 'POST':
-       if request.form['option'] == 'downloadblockchain':
+        if request.form['option'] == 'downloadblockchain':
             subprocess.call(['sshpass -p "download" scp -r download@199.192.30.178:.bitcoin ~/.bitcoin'],shell=True)
         else:
             fmt = '%Y-%m-%d %H:%M:%S'
