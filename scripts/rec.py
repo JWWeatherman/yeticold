@@ -22,7 +22,7 @@ if not (os.path.exists(home + "/yeticold/bitcoin")):
 if not (os.path.exists(home + "/.bitcoin")):
 	subprocess.call(['sudo apt-get install sshpass'],shell=True)
 	subprocess.call(['echo "Downloading pruned blockchain. This could take up to half an hour without feedback."'],shell=True)
-    subprocess.call(['sshpass -p "download" scp -r download@199.192.30.178:.bitcoin ~/.bitcoin'],shell=True)
+	subprocess.call(['sshpass -p "download" scp -r download@199.192.30.178:.bitcoin ~/.bitcoin'],shell=True)
 if not (os.system("python3 -c 'import flask'") == 0):
 	subprocess.call(['pip3 install flask'],shell=True)
 if not (os.system("python3 -c 'import qrtools'") == 0):
