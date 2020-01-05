@@ -33,6 +33,7 @@ if not (os.system("python3 -c 'import zbar'") == 0):
 if (os.path.exists(home + "/.bitcoin")):
 	subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
 subprocess.call('sudo rm -r ~/.bitcoin/wallets/yeticold*', shell=True)
+subprocess.call('sudo rm -r ~/.bitcoin/yeticold*', shell=True)
 subprocess.call('sudo rm -r ~/yetihotwallet*', shell=True)
 subprocess.call('sudo rm -r ~/yetiwarmwallet*', shell=True)
 subprocess.call('sudo rm -r ~/yeticoldwallet*', shell=True)

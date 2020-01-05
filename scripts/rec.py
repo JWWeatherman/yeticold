@@ -39,6 +39,7 @@ subprocess.call(['nmcli n off'],shell=True)
 subprocess.call('sudo date -s "3 JAN 2020 10:00:00"',shell=True)
 if (os.path.exists(home + "/.bitcoin")):
 	subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
+subprocess.call('sudo rm -r ~/.bitcoin/wallets/yeticold*', shell=True)
 subprocess.call('sudo rm -r ~/.bitcoin/yeticold*', shell=True)
 subprocess.call('sudo rm -r ~/yetihotwallet*', shell=True)
 subprocess.call('sudo rm -r ~/yetiwarmwallet*', shell=True)
