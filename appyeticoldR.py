@@ -380,7 +380,7 @@ def YCRdisplaywallet():
                 break
         if init:
             return redirect('/YCRstartdisconnected')
-        return redirect('/YCRdisplayutxoB')
+        return redirect('/YCRdisplayutxo')
     return render_template('YCRdisplaywallet.html', addresses=addresses, len=len(addresses))
 
 @app.route("/YCRstartdisconnected", methods=['GET', 'POST'])
@@ -424,6 +424,7 @@ def YCRscandescriptorB():
 
 @app.route('/YCRimportseeds', methods=['GET', 'POST'])
 def YCRimportseeds():
+    global init
     global pubdesc
     global privkeycount
     global error
@@ -485,6 +486,7 @@ def YCRimportseeds():
             checksum = response["checksum"]
             response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yeticoldpriv importmulti \'[{ "desc": '+desc+'#'+ checksum +'", "timestamp": "now", "range": [0,999], "watchonly": false, "label": "test" }]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
             print(response)
+            init = False
             return redirect('/YCRswitchlaptop')
         else:
             return redirect('/YCRimportseeds')
@@ -498,6 +500,7 @@ def YCRswitchlaptop():
 
 @app.route("/YCRdisplayutxo", methods=['GET', 'POST'])
 def YCRdisplayutxo():
+    global init
     global selectedutxo
     if request.method == 'GET':
         randomnum = str(random.randrange(0,1000000))
@@ -520,15 +523,19 @@ def YCRdisplayutxo():
 
 @app.route("/YCRscanutxo", methods=['GET', 'POST'])
 def YCRscanutxo():
+    global init
     global selectedutxo
     if request.method == 'POST':
         selectedutxo = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
         selectedutxo = eval(selectedutxo.decode("utf-8"))
         return redirect('/YCRscanrecipent')
-    return render_template('YCRscanutxo.html')
+    if init:
+        return render_template('YCRscanutxo.html')
+    return render_template('YCRscanutxoB.html')
 
 @app.route("/YCRscanrecipent", methods=['GET', 'POST'])
 def YCRscanrecipent():
+    global init
     global error
     global receipentaddress
     if request.method == 'POST':
@@ -548,10 +555,13 @@ def YCRscanrecipent():
         if error:
             return redirect('/YCRscanrecipent')
         return redirect('/YCRconfirmsend')
-    return render_template('YCRscanrecipent.html', error=error)
+    if init:
+        return render_template('YCRscanrecipent.html', error=error)
+    return render_template('YCRscanrecipentB.html', error=error)
 
 @app.route("/YCRconfirmsend", methods=['GET', 'POST'])
 def YCRconfirmsend():
+    global init
     global receipentaddress
     if request.method == 'GET':
         rpc = RPC()
@@ -564,10 +574,13 @@ def YCRconfirmsend():
         minerfee = "{:.8f}".format(float(minerfee))
     if request.method == 'POST':
         return redirect('/YCRdisplaytransaction')
-    return render_template('YCRconfirmsend.html', amount=amo, minerfee=minerfee, recipent=receipentaddress)
+    if init:
+        return render_template('YCRconfirmsend.html', amount=amo, minerfee=minerfee, recipent=receipentaddress)
+    return render_template('YCRconfirmsendB.html', amount=amo, minerfee=minerfee, recipent=receipentaddress)
 
 @app.route("/YCRdisplaytransaction", methods=['GET', 'POST'])
 def YCRdisplaytransaction():
+    global init
     global selectedutxo
     global receipentaddress
     if request.method == 'GET':
@@ -599,8 +612,10 @@ def YCRdisplaytransaction():
         img.save(home + '/yeticold/static/qrcode'+randomnum+'.png')
         path = url_for('static', filename='qrcode'+randomnum+'.png')
     if request.method == 'POST':
-        return redirect('/YCRscanutxoB')
-    return render_template('YCRdisplaytransaction.html', qrdata=transhex, path=path)
+        return redirect('/YCRscanutxo')
+    if init:
+        return render_template('YCRdisplaytransaction.html', qrdata=transhex, path=path)
+    return render_template('YCRdisplaytransactionB.html', qrdata=transhex, path=path)
 
 @app.route("/YCRscantransaction", methods=['GET', 'POST'])
 def YCRscantransaction():
@@ -612,134 +627,9 @@ def YCRscantransaction():
         init = False
         response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet= sendrawtransaction '+transactionhex],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         return redirect('/YCRdisplaywallet')
-    return render_template('YCRscantransaction.html')
-
-##Second folw
-
-@app.route("/YCRdisplayutxoB", methods=['GET', 'POST'])
-def YCRdisplayutxoB():
-    global selectedutxo
-    if request.method == 'GET':
-        randomnum = str(random.randrange(0,1000000))
-        qrname = randomnum
-        qr = qrcode.QRCode(
-               version=1,
-               error_correction=qrcode.constants.ERROR_CORRECT_L,
-               box_size=10,
-               border=4,
-        )
-        qr.add_data(str(selectedutxo))
-        qr.make(fit=True)
-        img = qr.make_image(fill_color="black", back_color="white")
-        home = os.getenv("HOME")
-        img.save(home + '/yeticold/static/qrcode' + qrname + '.png')
-        path = url_for('static', filename='qrcode' + qrname + '.png')
-    if request.method == 'POST':
-        return redirect('/YCRscantransactionB')
-    return render_template('YCRdisplayutxoB.html', qrdata=selectedutxo, path=path)
-
-@app.route("/YCRscanutxoB", methods=['GET', 'POST'])
-def YCRscanutxoB():
-    global selectedutxo
-    if request.method == 'POST':
-        selectedutxo = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-        print(selectedutxo)
-        selectedutxo = eval(selectedutxo.decode("utf-8"))
-        return redirect('/YCRscanrecipentB')
-    return render_template('YCRscanutxoB.html')
-
-@app.route("/YCRscanrecipentB", methods=['GET', 'POST'])
-def YCRscanrecipentB():
-    global error
-    global receipentaddress
-    if request.method == 'POST':
-        error = None
-        if request.form['option'] == 'scan':
-            receipentaddress = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-            receipentaddress = receipentaddress.decode("utf-8").replace('\n', '')
-        else:
-            receipentaddress = request.form['option']
-        if (receipentaddress.split(':')[0] == 'bitcoin'):
-            receipentaddress = receipentaddress.split(':')[1].split('?')[0]
-        if (receipentaddress[:3] == 'bc1') or (receipentaddress[:1] == '3') or (receipentaddress[:1] == '1'):
-            if not (len(receipentaddress) >= 26) and (len(receipentaddress) <= 35):
-                error = receipentaddress + ' is not a valid bitcoin address, address should have a length from 26 to 35 instead of ' + str(len(receipentaddress)) + '.'
-        else: 
-            error = receipentaddress + ' is not a valid bitcoin address, address should have started with bc1, 3 or 1 instead of ' + receipentaddress[:1] + ', or ' + receipentaddress[:3] + '.'
-        if error:
-            return redirect('/YCRscanrecipentB')
-        return redirect('/YCRconfirmsendB')
-    return render_template('YCRscanrecipentB.html', error=error)
-
-@app.route("/YCRconfirmsendB", methods=['GET', 'POST'])
-def YCRconfirmsendB():
-    global receipentaddress
-    if request.method == 'GET':
-        rpc = RPC()
-        amount = float(selectedutxo['amount'])
-        minerfee = float(rpc.estimatesmartfee(1)["feerate"])
-        kilobytespertrans = 0.200
-        amo = (amount - (minerfee * kilobytespertrans))
-        minerfee = (minerfee * kilobytespertrans)
-        amo = "{:.8f}".format(float(amo))
-        minerfee = "{:.8f}".format(float(minerfee))
-    if request.method == 'POST':
-        return redirect('/YCRdisplaytransactionB')
-    return render_template('YCRconfirmsendB.html', amount=amo, minerfee=minerfee, recipent=receipentaddress)
-
-@app.route("/YCRdisplaytransactionB", methods=['GET', 'POST'])
-def YCRdisplaytransactionB():
-    global selectedutxo
-    global receipentaddress
-    if request.method == 'GET':
-        rpc = RPC()
-        amount = float(selectedutxo['amount'])
-        minerfee = float(rpc.estimatesmartfee(1)["feerate"])
-        kilobytespertrans = 0.200
-        amo = (amount - (minerfee * kilobytespertrans))
-        minerfee = (minerfee * kilobytespertrans)
-        amo = "{:.8f}".format(float(amo))
-        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet= createrawtransaction \'[{ "txid": "'+selectedutxo['txid']+'", "vout": '+str(selectedutxo['vout'])+'}]\' \'[{"'+receipentaddress+'" : '+str(amo)+'}]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        print(response)
-        response = response[0].decode("utf-8")
-        transonehex = response[:-1]
-        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet= signrawtransactionwithwallet '+transonehex+' \'[{"txid":"'+selectedutxo['txid']+'","vout":'+str(selectedutxo['vout'])+',"scriptPubKey":"'+selectedutxo['scriptPubKey']+'","amount":"'+str(amount)+'"}]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        print(response)
-        transhex = json.loads(response[0].decode("utf-8"))['hex']
-        qr = qrcode.QRCode(
-            version=1,
-            error_correction=qrcode.constants.ERROR_CORRECT_L,
-            box_size=10,
-            border=4,
-            )
-        qr.add_data(transhex)
-        qr.make(fit=True)
-        img = qr.make_image(fill_color="black", back_color="white")
-        home = os.getenv("HOME")
-        randomnum = str(random.randrange(0,1000000))
-        img.save(home + '/yeticold/static/qrcode'+randomnum+'.png')
-        path = url_for('static', filename='qrcode'+randomnum+'.png')
-    if request.method == 'POST':
-        return redirect('/YCRscanutxoB')
-    return render_template('YCRdisplaytransactionB.html', qrdata=transhex, path=path)
-
-@app.route("/YCRscantransactionB", methods=['GET', 'POST'])
-def YCRscantransactionB():
-    if request.method == 'POST':
-        response = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-        transactionhex = response.decode("utf-8")
-        print(transactionhex)
-        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet= sendrawtransaction '+transactionhex],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        return redirect('/YCRdisplaywallet')
+    if init:
+        return render_template('YCRscantransaction.html')
     return render_template('YCRscantransactionB.html')
-
-
-
-
-
-
-
-
 
 
 if __name__ == "__main__":
