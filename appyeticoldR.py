@@ -194,7 +194,7 @@ def RPC():
 
 def PassphraseToWIF(passphraselist):
     Privkey = ''
-    for i in rangeblockheight()(len(passphraselist)):
+    for i in range(len(passphraselist)):
         Privkey += switcher.get(str(passphraselist[i]))
     return Privkey
 
