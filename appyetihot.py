@@ -338,7 +338,6 @@ def YHopenbitcoin():
 @app.route("/YHmenu", methods=['GET', 'POST'])
 def YHmenu():
     if request.method == 'POST':
-        subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
         if request.form['option'] == 'recovery':
             return redirect('/YHRinputseed')
         else:
