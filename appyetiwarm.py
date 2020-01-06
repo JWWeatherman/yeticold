@@ -646,6 +646,7 @@ def YWRdisplaywallet():
                     address['scriptPubKey'] = scriptPubKey
                     address['address'] = adr
                     address['balance'] = amount
+                    address['numbal'] = numamount
                     address['status'] = status
                     address['route'] = route
                     addresses.append(address)
