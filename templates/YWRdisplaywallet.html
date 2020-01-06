@@ -74,9 +74,11 @@
     $('#example').tooltip(options)
 
     tooltipsUsed = document.getElementsByClassName("tooltip-used")
-
+    console.log(tooltipsUsed.length)
+    console.log(tooltipsUsed)
     for (let i = 0; i <= tooltipsUsed.length; i++) {
-      tooltipsUsed[i].addEventListener("onmouseover", function(){
+      tooltipsUsed[i].addEventListener("onmouseover", function(evt){
+        console.log("evt")
         tooltipsUsed[i].tooltip('show')
       })
     }
