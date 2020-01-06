@@ -37,8 +37,10 @@
                   <form action="" method="post" class="form-inline my-2 my-lg-0 navbar-right nav navbar-nav">
                     <input style="display: none;" name="option" value="SEND">
                     <input style="display: none;" name="address" value="{{addresses[i]['address']}}">
-                    {%if addresses[i]['numbal'] > 0 and addresses[i]['utxocount'] == 1%}
+                    {%if addresses[i]['status'] == 2%}
                     <input class="btn btn-primary my-2 my-sm-0" type="submit" id="send{{i}}" value="Send">
+                    {%elif addresses[i]['status'] == 1%}
+                    <input disabled class="btn btn-secondary my-2 my-sm-0" type="submit" id="send{{i}}" value="Send">
                     {%else%}
                     <input disabled class="btn btn-primary my-2 my-sm-0" type="submit" id="send{{i}}" value="Send">
                     {%endif%}
@@ -47,10 +49,10 @@
                 <ul class="nav navbar-nav navbar-right" style="display: flex;">
                   <form action="" method="post" class="form-inline my-2 my-lg-0 navbar-right nav navbar-nav">
                     <input style="display: none;" name="option" value="RECEIVE">
-                    {%if addresses[i]['totalnumbal'] > 0%}
-                    <input disabled class="btn btn-secondary my-2 my-sm-0" type="button" id="show{{i}}" value="Receive">
+                    {%if addresses[i]['status'] == 0%}
+                    <input class="btn btn-secondary my-2 my-sm-0" type="button" id="show{{i}}" value="Receive">
                     {%else%}
-                    <input class="btn btn-primary my-2 my-sm-0" type="button" id="show{{i}}" value="Receive">
+                    <input disabled class="btn btn-primary my-2 my-sm-0" type="button" id="show{{i}}" value="Receive">
                     {%endif%}
                   </form>
                 </ul>
