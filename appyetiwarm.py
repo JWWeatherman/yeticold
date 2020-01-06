@@ -626,7 +626,7 @@ def YWRdisplaywallet():
                     txid = utxo['txid']
                     vout = utxo['vout']
                     scriptPubKey = utxo['scriptPubKey']
-                    numamount = response[0]['amount']
+                    numamount = utxo['amount']
                     totalwalletbal = totalwalletbal + numamount
                     amount = "{:.8f}".format(float(numamount))
                     confs = utxo['confirmations']
