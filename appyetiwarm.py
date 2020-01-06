@@ -596,6 +596,7 @@ def YWRdisplaywallet():
     global sourceaddress
     if request.method == 'GET':
         addresses = []
+        totalwalletbal = 0
         subprocess.call(['rm -r ~/yeticold/static/address*'],shell=True)
         adrlist = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwarm deriveaddresses "'+pubdesc+'" "[0,999]"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         adrlist = json.loads(adrlist[0].decode("utf-8"))
@@ -625,7 +626,8 @@ def YWRdisplaywallet():
                     txid = utxo['txid']
                     vout = utxo['vout']
                     scriptPubKey = utxo['scriptPubKey']
-                    numamount = str(response[0]['amount'])
+                    numamount = response[0]['amount']
+                    totalwalletbal = totalwalletbal + numamount
                     amount = "{:.8f}".format(float(numamount))
                     confs = utxo['confirmations']
                     totalbal = rpc.getreceivedbyaddress(adr)
@@ -644,7 +646,6 @@ def YWRdisplaywallet():
                     address['scriptPubKey'] = scriptPubKey
                     address['address'] = adr
                     address['balance'] = amount
-                    address['numbal'] = numamount
                     address['status'] = status
                     address['route'] = route
                     addresses.append(address)
@@ -669,7 +670,7 @@ def YWRdisplaywallet():
             if addresses[i]['txid'] == request.form['txid']:
                 sourceaddress = addresses[i]
         return redirect('/YWRscanrecipent')
-    return render_template('YWRdisplaywallet.html', addresses=addresses, len=len(addresses))
+    return render_template('YWRdisplaywallet.html', addresses=addresses, len=len(addresses), TWB=totalwalletbal)
 
 @app.route("/YWRscanrecipent", methods=['GET', 'POST'])
 def YWRscanrecipent():
@@ -832,7 +833,7 @@ def YWRsendtransactionB():
         minerfee = (minerfee * kilobytespertrans)
         amo = (float(sourceaddress['numbal']) - minerfee)
         amo = "{:.8f}".format(float(amo))
-        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwarmpriv createrawtransaction \'[{ "txid": "'+sourceaddress['txid']+'", "vout": '+sourceaddress['vout']+'}]\' \'[{"'+receipentaddress+'" : '+str(amo)+'}]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwarmpriv createrawtransaction \'[{ "txid": "'+sourceaddress['txid']+'", "vout": '+str(sourceaddress['vout'])+'}]\' \'[{"'+receipentaddress+'" : '+str(amo)+'}]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
         response = response[0].decode("utf-8")
         transonehex = response[:-1]
