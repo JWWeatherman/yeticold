@@ -41,7 +41,7 @@
                     {%if addresses[i]['status'] == 2%}
                     <input class="btn btn-primary my-2 my-sm-0" type="submit" id="send{{i}}" value="Send">
                     {%elif addresses[i]['status'] == 1%}
-                    <input disabled class="btn btn-primary my-2 my-sm-0 tooltip-confs" type="submit" id="send{{i}}" value="Send">
+                    <input disabled class="btn btn-primary my-2 my-sm-0 tooltip-confs" data-toggle="tooltip" data-placement="top" title="This balance has no confirmations yet." type="submit" id="send{{i}}" value="Send">
                     {%else%}
                     <input disabled class="btn btn-primary my-2 my-sm-0" type="submit" id="send{{i}}" value="Send">
                     {%endif%}
@@ -51,7 +51,7 @@
                   <form action="" method="post" class="form-inline my-2 my-lg-0 navbar-right nav navbar-nav">
                     <input style="display: none;" name="option" value="RECEIVE">
                     {%if addresses[i]['status'] == 3%}
-                    <input class="btn btn-secondary my-2 my-sm-0 tooltip-used" data-toggle="tooltip" data-placement="top" title="Tooltip on top" type="button" id="show{{i}}" value="Receive">
+                    <input class="btn btn-secondary my-2 my-sm-0 tooltip-used" data-toggle="tooltip" data-placement="top" title="You have used this address before." type="button" id="show{{i}}" value="Receive">
                     {%else%}
                     <input class="btn btn-primary my-2 my-sm-0" type="button" id="show{{i}}" value="Receive">
                     {%endif%}
@@ -71,15 +71,6 @@
     </div>
   </body>
   <script>
-    tooltipsUsed = document.getElementsByClassName("tooltip-used")
-    console.log(tooltipsUsed.length)
-    console.log(tooltipsUsed)
-    for (let i = 0; i <= tooltipsUsed.length; i++) {
-      tooltipsUsed[i].addEventListener("onmouseover", function(evt){
-        console.log("evt")
-        tooltipsUsed[i].tooltip('show')
-      })
-    }
     document.getElementById("refresh").addEventListener("click", function(){
       window.location.reload();
     })
