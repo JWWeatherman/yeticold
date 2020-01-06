@@ -51,6 +51,8 @@
                     <input style="display: none;" name="option" value="RECEIVE">
                     {%if addresses[i]['status'] == 0%}
                     <input class="btn btn-primary my-2 my-sm-0" type="button" id="show{{i}}" value="Receive">
+                    {%elif addresses[i]['status'] == 3%}
+                    <input class="btn btn-info my-2 my-sm-0" type="button" id="show{{i}}" value="Receive">
                     {%else%}
                     <input class="btn btn-secondary my-2 my-sm-0" type="button" id="show{{i}}" value="Receive">
                     {%endif%}
