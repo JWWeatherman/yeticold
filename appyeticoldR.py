@@ -359,6 +359,7 @@ def YCRdisplaywallet():
                     numamount = utxo['amount']
                     totalwalletbal = totalwalletbal + numamount
                     amount = "{:.8f}".format(float(numamount))
+                    numamount = float(amount)
                     confs = utxo['confirmations']
                     totalbal = rpc.getreceivedbyaddress(adr)
                     if numamount:
