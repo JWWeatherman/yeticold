@@ -24,17 +24,17 @@
             <li style="display: flex;background-color: #e9ecef!important;color: #212529!important;" class="list-group-item navbar navbar-inverse">
           {%endif%}
               <ul class="nav navbar-nav navbar-left">
-                <li class="form-inline my-2 my-lg-0 navbar-right nav navbar-nav">{{addresses[i]['address']}}</li>
+                <li class="form-inline my-2 my-lg-0">{{addresses[i]['address']}}</li>
               </ul>
               <ul class="nav navbar-nav navbar-right" style="display: flex;">
                 <ul class="nav navbar-nav navbar-left" style="position: absolute; right: 28.5%!important;">
-                  <li class="form-inline my-2 my-lg-0 navbar-right nav navbar-nav">Balance:</li>
+                  <li class="form-inline my-2 my-lg-0">Balance:</li>
                 </ul>
                 <ul class="nav navbar-nav navbar-left" style="position: absolute; right: 20%!important;">
-                  <li class="form-inline my-2 my-lg-0 navbar-right nav navbar-nav">{{addresses[i]['balance']}}</li>
+                  <li class="form-inline my-2 my-lg-0">{{addresses[i]['balance']}}</li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right" style="position: absolute; right: 10.5%!important;display: flex;">
-                  <form action="" method="post" class="form-inline my-2 my-lg-0 navbar-right nav navbar-nav">
+                  <form action="" method="post" class="form-inline my-2 my-lg-0">
                     <input style="display: none;" name="option" value="SEND">
                     <input style="display: none;" name="txid" value="{{addresses[i]['txid']}}">
                     {%if addresses[i]['status'] == 2%}

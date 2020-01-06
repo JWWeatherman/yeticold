@@ -614,7 +614,7 @@ def YWRdisplaywallet():
                 address = {}
                 address['txid'] = ''
                 address['address'] = adr
-                address['balance'] = "0.000000"
+                address['balance'] = "0.00000000"
                 address['numbal'] = 0
                 address['status'] = status
                 address['route'] = route
