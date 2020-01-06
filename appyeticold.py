@@ -429,7 +429,7 @@ def YCdisplayseeds():
             return redirect('/YCcheckseeds')
         else:
             return redirect('/YCdisplayseeds')
-    return render_template('YCdisplayseeds.html', PPL=passphraselist, x=privkeycount + 1, i=privkeycount + 15)
+    return render_template('YCdisplayseeds.html', PPL=passphraselist, x=privkeycount + 1, i=privkeycount + 10)
 
 @app.route('/YCcheckseeds', methods=['GET', 'POST'])
 def YCcheckseeds():
@@ -484,7 +484,7 @@ def YCcheckseeds():
                 return redirect('/YCcheckseeds')
         else:
             error = 'You enterd the private key incorrectly but the checksums are correct please try agian. This means you probably inputed a valid seed, but not your seed ' +str(privkeycount + 1)+' seed.'
-    return render_template('YCcheckseeds.html', x=privkeycount + 1, error=error,i=privkeycount + 22 )
+    return render_template('YCcheckseeds.html', x=privkeycount + 1, error=error,i=privkeycount + 17 )
 
 @app.route("/YCcopyseeds", methods=['GET', 'POST'])
 def YCcopyseeds():
@@ -567,7 +567,7 @@ def YCdeleteseeds():
 @app.route("/YCsendfunds", methods=['GET', 'POST'])
 def YCsendfunds():
     if request.method == 'POST':
-        subprocess.Popen('python3 ~/yeticold/scripts/YetiColdRecoveryOnline.py',shell=True,start_new_session=True)
+        subprocess.Popen('python3 ~/yeticold/scripts/YetiColdRecovery.py',shell=True,start_new_session=True)
     return render_template('YCsendfunds.html')
 
 if __name__ == "__main__":
