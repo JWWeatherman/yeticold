@@ -36,7 +36,7 @@
                 <ul class="nav navbar-nav navbar-right" style="position: absolute; right: 10.5%!important;display: flex;">
                   <form action="" method="post" class="form-inline my-2 my-lg-0 navbar-right nav navbar-nav">
                     <input style="display: none;" name="option" value="SEND">
-                    <input style="display: none;" name="address" value="{{addresses[i]['address']}}">
+                    <input style="display: none;" name="txid" value="{{addresses[i]['txid']}}">
                     {%if addresses[i]['status'] == 2%}
                     <input class="btn btn-primary my-2 my-sm-0" type="submit" id="send{{i}}" value="Send">
                     {%elif addresses[i]['status'] == 1%}
