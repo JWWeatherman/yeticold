@@ -590,7 +590,7 @@ def YCRconfirmsend():
     global receipentaddress
     if request.method == 'GET':
         rpc = RPC()
-        amount = float(selectedutxo['amount'])
+        amount = float(selectedutxo['balance'])
         minerfee = float(rpc.estimatesmartfee(1)["feerate"])
         kilobytespertrans = 0.200
         amo = (amount - (minerfee * kilobytespertrans))
@@ -610,7 +610,7 @@ def YCRdisplaytransaction():
     global receipentaddress
     if request.method == 'GET':
         rpc = RPC()
-        amount = float(selectedutxo['amount'])
+        amount = float(selectedutxo['balance'])
         minerfee = float(rpc.estimatesmartfee(1)["feerate"])
         kilobytespertrans = 0.200
         amo = (amount - (minerfee * kilobytespertrans))
