@@ -340,30 +340,10 @@ def YHmenu():
     if request.method == 'POST':
         subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
         if request.form['option'] == 'recovery':
-            return redirect('/YHRrestartbitcoin')
+            return redirect('/YHRinputseed')
         else:
-            return redirect('/YHrestartbitcoin')
-    return render_template('YHmenu.html')
-
-#finish open bitcoin
-@app.route("/YHrestartbitcoin", methods=['GET', 'POST'])
-def YHrestartbitcoin():
-    global progress
-    if request.method == 'GET':
-        home = os.getenv("HOME")
-        if BTCClosed():
-            subprocess.call('rm -r ~/.bitcoin/yetihot*', shell=True)
-            subprocess.call('rm -r ~/yetihotwallet*', shell=True)
-            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
-        progress = BTCprogress()
-    if request.method == 'POST':
-        IBD = BTCRunning()
-        if IBD:
-            response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwarmpriv"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
             return redirect('/YHgetseed')
-        else:
-            return redirect('/YHrestartbitcoin')
-    return render_template('YHrestartbitcoin.html')
+    return render_template('YHmenu.html')
 
 #randomise priv key and get xprivs
 @app.route("/YHgetseed", methods=['GET', 'POST'])
@@ -454,26 +434,6 @@ def YHwalletinstructions():
         return redirect('/YHwalletinstructions')
     return render_template('YHwalletinstructions.html', error=error, qrdata=qrdata)
 #STOP SET UP-----------------------------------------------------------------------------------------------------------------------------------------------------
-
-#finish open bitcoin
-@app.route("/YHRrestartbitcoin", methods=['GET', 'POST'])
-def YHRrestartbitcoin():
-    global progress
-    if request.method == 'GET':
-        home = os.getenv("HOME")
-        if BTCClosed():
-            subprocess.call('rm -r ~/.bitcoin/yetihot*', shell=True)
-            subprocess.call('rm -r ~/yetihotwallet*', shell=True)
-            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
-        progress = BTCprogress()
-    if request.method == 'POST':
-        IBD = BTCRunning()
-        if IBD:
-            response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwarmpriv"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-            return redirect('/YHRinputseed')
-        else:
-            return redirect('/YHRrestartbitcoin')
-    return render_template('YHRrestartbitcoin.html')
     
 @app.route('/YHRinputseed', methods=['GET', 'POST'])
 def YHRinputseed():
