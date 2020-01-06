@@ -601,37 +601,52 @@ def YWRdisplaywallet():
         adrlist = json.loads(adrlist[0].decode("utf-8"))
         rpc = RPCYW()
         for i in range(0, len(adrlist)):
+            adr = adrlist[i]
             randomnum = str(random.randrange(0,1000000))
-            route = url_for('static', filename='address'+adrlist[i]+''+randomnum+'.png')
-            testlist = []
-            testlist.append(adrlist[i])
-            response = rpc.listunspent(0, 9999999, testlist)
+            route = url_for('static', filename='address'+adr+''+randomnum+'.png')
+            response = rpc.listunspent(0, 9999999, [adr])
             if response == []:
-                bal = "0.0000000"
-                txid = ''
-                vout = 0
+                totalbal = rpc.getreceivedbyaddress(adrlist[i])
+                if totalbal:
+                    status = 3
+                else:
+                    status = 0
+                address = {}
+                address['address'] = adr
+                address['balance'] = "0.000000"
+                address['numbal'] = 0
+                address['status'] = status
+                address['route'] = route
+                addresses.append(address)
             else:
-                bal = str(response[0]['amount'])
-                txid = str(response[0]['txid'])
-                vout = str(response[0]['vout'])
-            utxocount = len(response)
-            response = rpc.getreceivedbyaddress(adrlist[i])
-            if response == 0:
-                totalbal = "0.0000000"
-            else:
-                totalbal = str(response)
-            bal = "{:.8f}".format(float(bal))
-            address = {}
-            address['txid'] = txid
-            address['vout'] = vout
-            address['utxocount'] = utxocount
-            address['address'] = adrlist[i]
-            address['balance'] = bal
-            address['numbal'] = float(bal)
-            address['totalbal'] = totalbal
-            address['totalnumbal'] = float(totalbal)
-            address['route'] = route
-            addresses.append(address)
+                for x in range(0, len(response)):
+                    utxo = response[x]
+                    txid = utxo['txid']
+                    vout = utxo['vout']
+                    scriptPubKey = utxo['scriptPubKey']
+                    numamount = str(response[0]['amount'])
+                    amount = "{:.8f}".format(float(numamount))
+                    confs = utxo['confirmations']
+                    totalbal = rpc.getreceivedbyaddress(adr)
+                    if numamount:
+                        if not confs:
+                            status = 1
+                        else:
+                            status = 2
+                    elif totalbal:
+                        status = 3
+                    else:
+                        status = 0
+                    address = {}
+                    address['txid'] = txid
+                    address['vout'] = vout 
+                    address['scriptPubKey'] = scriptPubKey
+                    address['address'] = adr
+                    address['balance'] = amount
+                    address['numbal'] = numamount
+                    address['status'] = status
+                    address['route'] = route
+                    addresses.append(address)
         addresses.sort(key=lambda x: x['balance'], reverse=True)
         for i in range(0, len(addresses)):
             qr = qrcode.QRCode(
@@ -650,7 +665,7 @@ def YWRdisplaywallet():
             img.save(home + '/yeticold/'+addresses[i]['route'])
     if request.method == 'POST':
         for i in range(0, len(addresses)):
-            if addresses[i]['address'] == request.form['address']:
+            if addresses[i]['txid'] == request.form['txid']:
                 sourceaddress = addresses[i]
         return redirect('/YWRscanrecipent')
     return render_template('YWRdisplaywallet.html', addresses=addresses, len=len(addresses))
