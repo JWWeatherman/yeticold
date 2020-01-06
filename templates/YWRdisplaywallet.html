@@ -51,7 +51,7 @@
                   <form action="" method="post" class="form-inline my-2 my-lg-0 navbar-right nav navbar-nav">
                     <input style="display: none;" name="option" value="RECEIVE">
                     {%if addresses[i]['status'] == 3%}
-                    <input class="btn btn-secondary my-2 my-sm-0 tooltip-used" type="button" id="show{{i}}" value="Receive">
+                    <input class="btn btn-secondary my-2 my-sm-0 tooltip-used" data-toggle="tooltip" data-placement="top" title="Tooltip on top" type="button" id="show{{i}}" value="Receive">
                     {%else%}
                     <input class="btn btn-primary my-2 my-sm-0" type="button" id="show{{i}}" value="Receive">
                     {%endif%}
@@ -71,6 +71,20 @@
     </div>
   </body>
   <script>
+    $('#example').tooltip(options)
+
+    tooltipsUsed = document.getElementsByClassName("tooltip-used")
+
+    for (let i = 0; i <= tooltipsUsed.length; i++) {
+      tooltipsUsed[i].addEventListener("onmouseover", function(){
+        tooltipsUsed[i].tooltip('show')
+      })
+    }
+
+
+    .addEventListener("click", function(){
+      window.location.reload();
+    })
     document.getElementById("refresh").addEventListener("click", function(){
       window.location.reload();
     })
