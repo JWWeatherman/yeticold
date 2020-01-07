@@ -24,24 +24,42 @@
         {%else%}
           <li style="display: flex;background-color: #e9ecef!important;color: #212529!important;" class="list-group-item navbar navbar-inverse">
         {%endif%}
-            <ul class="nav navbar-nav navbar-left">
-              <li class="form-inline my-2 my-lg-0">{{addresses[i]['address']}}</li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right" style="display: flex;">
-              <ul class="nav navbar-nav navbar-left" style="position: absolute; right: 28.5%!important;">
-                <li class="form-inline my-2 my-lg-0">Balance:</li>
-              </ul>
-              <ul class="nav navbar-nav navbar-left" style="position: absolute; right: 20%!important;">
-                <li class="form-inline my-2 my-lg-0">{{addresses[i]['balance']}}</li>
-              </ul>
-              <ul class="nav navbar-nav navbar-right" style="position: absolute; right: 10.5%!important;display: flex;">
-                <form action="" method="post" class="form-inline my-2 my-lg-0">
-                  <input style="display: none;" name="option" value="SEND">
-                  <input style="display: none;" name="txid" value="{{addresses[i]['txid']}}">
-                  <input class="btn btn-primary my-2 my-sm-0" type="submit" id="send{{i}}" value="Send">
-                </form>
-              </ul>
-            </ul>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div style="-ms-flex-preferred-size: 100%;flex-basis: 100%;-ms-flex-positive: 1;flex-grow: 1;-ms-flex-align: center;align-items: center;display: -ms-flexbox!important;display: flex!important;-ms-flex-preferred-size: auto;flex-basis: auto;" id="navbarSupportedContent">
+                  <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                      <a class="nav-link">{{addresses[i]['address']}}</a>
+                    </li>
+                  </ul>
+                  <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                      <a class="nav-link">Balance:</a>
+                    </li>
+                    <li class="nav-item active">
+                      <a class="nav-link">{{addresses[i]['balance']}}</a>
+                    </li>
+                  </ul>
+                  <form class="form-inline my-2 my-lg-0">
+                    <input style="display: none;" name="option" value="RECEIVE">
+                    {%if addresses[i]['status'] == 3%}
+                    <input class="btn btn-secondary m-2 my-sm-0" data-toggle="tooltip" data-placement="top" title="You have used this address before." type="button" id="show{{i}}" value="Receive">
+                    {%else%}
+                    <input class="btn btn-primary m-2 my-sm-0" type="button" id="show{{i}}" value="Receive">
+                    {%endif%}
+                  </form>
+                  <form class="form-inline my-2 my-lg-0">
+                    <input style="display: none;" name="option" value="SEND">
+                    <input style="display: none;" name="txid" value="{{addresses[i]['txid']}}">
+                    {%if addresses[i]['status'] == 2%}
+                    <input class="btn btn-primary m-2 my-sm-0" type="button" id="show{{i}}" value="Send">
+                    {%elif addresses[i]['status'] == 1%}
+                    <input disabled class="btn btn-primary m-2 my-sm-0" data-toggle="tooltip" data-placement="top" title="This amount has no confirmations yet." type="submit" id="send{{i}}" value="Send">
+                    {%else%}
+                    <input disabled class="btn btn-primary m-2 my-sm-0" type="button" id="show{{i}}" value="Send">
+                    {%endif%}
+                  </form>
+                </div>
+              </nav>
           </li>
       {%endfor%}
       </ul>
