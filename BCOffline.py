@@ -156,14 +156,16 @@ def BCopenbitcoinC():
         home = os.getenv("HOME")
         if BTCClosed():
             subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
+        IBD = BTCFinished()
         progress = BTCprogress()
     if request.method == 'POST':
-        if BTCFinished():
+        IBD = BTCFinished()
+        if IBD:
             subprocess.call(['nmcli n off'],shell=True)
             return redirect('/BCimportkeys')
         else:
             return redirect('/BCopenbitcoinC')
-    return render_template('BCopenbitcoinC.html', progress=progress)
+    return render_template('BCopenbitcoinC.html', progress=progress, IBD=IBD)
 
 @app.route("/BCimportkeys", methods=['GET', 'POST'])
 def BCimportkeys():
