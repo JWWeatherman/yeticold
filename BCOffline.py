@@ -180,14 +180,13 @@ def BCimportkeys():
                 if privkey[1] == 'L' or privkey[1] == 'K':
                     rpc = RPC()
                     rpc.importprivkey(privkey, 'privkeylabel', False)
-            response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet= rescanblockchain '+blockheight()],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         return redirect('/BCrescan')
     return render_template('BCimportkeys.html')
 
 @app.route("/BCrescan", methods=['GET', 'POST'])
 def BCrescan():
     if request.method == 'GET':
-        subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yeticold rescanblockchain '+blockheight(),shell=True,start_new_session=True)
+        subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet= rescanblockchain '+blockheight(),shell=True,start_new_session=True)
     if request.method == 'POST':
         return redirect('/BCdisplayutxos')
     return render_template('BCrescan.html')
