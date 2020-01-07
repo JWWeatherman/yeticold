@@ -97,7 +97,7 @@ def BCopenbitcoin():
             subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         progress = BTCprogress()
     if request.method == 'POST':
-        if progress >= 99.9:
+        if BTCFinished():
             return redirect('/BConlinestartup')
         else:
             return redirect('/BCopenbitcoin')
@@ -155,7 +155,7 @@ def BCopenbitcoinC():
         if BTCClosed():
             subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
     if request.method == 'POST':
-        IBD = BTCRunning()
+        IBD = BTCFinished()
         if IBD:
             subprocess.call(['nmcli n off'],shell=True)
             return redirect('/BCimportkeys')
