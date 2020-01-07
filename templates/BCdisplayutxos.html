@@ -40,23 +40,9 @@
                     </li>
                   </ul>
                   <form class="form-inline my-2 my-lg-0">
-                    <input style="display: none;" name="option" value="RECEIVE">
-                    {%if addresses[i]['status'] == 3%}
-                    <input class="btn btn-secondary m-2 my-sm-0" data-toggle="tooltip" data-placement="top" title="You have used this address before." type="button" id="show{{i}}" value="Receive">
-                    {%else%}
-                    <input class="btn btn-primary m-2 my-sm-0" type="button" id="show{{i}}" value="Receive">
-                    {%endif%}
-                  </form>
-                  <form class="form-inline my-2 my-lg-0">
                     <input style="display: none;" name="option" value="SEND">
                     <input style="display: none;" name="txid" value="{{addresses[i]['txid']}}">
-                    {%if addresses[i]['status'] == 2%}
                     <input class="btn btn-primary m-2 my-sm-0" type="button" id="show{{i}}" value="Send">
-                    {%elif addresses[i]['status'] == 1%}
-                    <input disabled class="btn btn-primary m-2 my-sm-0" data-toggle="tooltip" data-placement="top" title="This amount has no confirmations yet." type="submit" id="send{{i}}" value="Send">
-                    {%else%}
-                    <input disabled class="btn btn-primary m-2 my-sm-0" type="button" id="show{{i}}" value="Send">
-                    {%endif%}
                   </form>
                 </div>
               </nav>
