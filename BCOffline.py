@@ -199,12 +199,13 @@ def BCdisplayutxos():
         addresses = []
         totalwalletbal = 0
         rpc = RPC()
-        utxos = rpc.listunspent()
+        response = rpc.listunspent()
         for x in range(0, len(response)):
             utxo = response[x]
             if utxo['spendable']:
                 txid = utxo['txid']
                 vout = utxo['vout']
+                address = utxo['address']
                 scriptPubKey = utxo['scriptPubKey']
                 numamount = utxo['amount']
                 totalwalletbal = totalwalletbal + numamount
