@@ -124,7 +124,7 @@ def BCblockchain():
                     f.write(new + old)
             else:
                 subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
-            return redirect('/BCopenbitcoin')
+            return redirect('/BCopenbitcoinC')
         subprocess.call(['nmcli n on'],shell=True)
         time.sleep(5)
     if request.method == 'POST':
