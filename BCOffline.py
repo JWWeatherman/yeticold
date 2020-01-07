@@ -315,6 +315,7 @@ def BCscantransaction():
         transactionhex = response.decode("utf-8")
         print(transactionhex)
         response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet= sendrawtransaction '+transactionhex],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        print(response)
         return redirect('/BCswitchlaptop')
     return render_template('BCscantransaction.html')
 
