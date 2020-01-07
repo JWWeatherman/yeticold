@@ -39,10 +39,10 @@
                       <a class="nav-link">{{addresses[i]['balance']}}</a>
                     </li>
                   </ul>
-                  <form class="form-inline my-2 my-lg-0">
+                  <form action="" method="post" class="form-inline my-2 my-lg-0">
                     <input style="display: none;" name="option" value="SEND">
                     <input style="display: none;" name="txid" value="{{addresses[i]['txid']}}">
-                    <input class="btn btn-primary m-2 my-sm-0" type="submit" id="send{{i}}" value="Send">
+                    <input class="btn btn-primary m-2 my-sm-0" type="submit" value="Send">
                   </form>
                 </div>
               </nav>

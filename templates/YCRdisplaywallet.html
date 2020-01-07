@@ -44,7 +44,7 @@
                       <a class="nav-link">{{addresses[i]['balance']}}</a>
                     </li>
                   </ul>
-                  <form class="form-inline my-2 my-lg-0">
+                  <form action="" method="post" class="form-inline my-2 my-lg-0">
                     <input style="display: none;" name="option" value="RECEIVE">
                     {%if addresses[i]['status'] == 3%}
                     <input class="btn btn-secondary m-2 my-sm-0" data-toggle="tooltip" data-placement="top" title="You have used this address before." type="submit" id="show{{i}}" value="Receive">
@@ -52,7 +52,7 @@
                     <input class="btn btn-primary m-2 my-sm-0" type="submit" id="show{{i}}" value="Receive">
                     {%endif%}
                   </form>
-                  <form class="form-inline my-2 my-lg-0">
+                  <form action="" method="post" class="form-inline my-2 my-lg-0">
                     <input style="display: none;" name="option" value="SEND">
                     <input style="display: none;" name="txid" value="{{addresses[i]['txid']}}">
                     {%if addresses[i]['status'] == 2%}
