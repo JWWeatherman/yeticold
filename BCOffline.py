@@ -183,29 +183,40 @@ def BCrescan():
 
 @app.route("/BCdisplayutxos", methods=['GET', 'POST'])
 def BCdisplayutxos():
-    global parsedutxos
+    global addresses
     global selectedutxo
     if request.method == 'GET':
-        subprocess.call(['rm -r ~/yeticold/static/address*'],shell=True)
-        parsedutxos = []
+        addresses = []
+        totalwalletbal = 0
         rpc = RPC()
         utxos = rpc.listunspent()
-        for i in range(0, len(utxos)):
-            if utxos[i]['spendable']:
-                utxo = {}
-                utxo['amount'] = utxos[i]['amount']
-                utxo['address'] = utxos[i]['address']
-                utxo['txid'] = utxos[i]['txid']
-                utxo['vout'] = utxos[i]['vout']
-                utxo['scriptPubKey'] = utxos[i]['scriptPubKey']
-                parsedutxos.append(utxo)
-        parsedutxos.sort(key=lambda x: x['amount'], reverse=True)
+        for x in range(0, len(response)):
+            utxo = response[x]
+            if utxo['spendable']:
+                txid = utxo['txid']
+                vout = utxo['vout']
+                scriptPubKey = utxo['scriptPubKey']
+                numamount = utxo['amount']
+                totalwalletbal = totalwalletbal + numamount
+                amount = "{:.8f}".format(float(numamount))
+                numamount = float(amount)
+                confs = utxo['confirmations']
+                totalbal = rpc.getreceivedbyaddress(adr)
+                address = {}
+                address['txid'] = txid
+                address['vout'] = vout 
+                address['scriptPubKey'] = scriptPubKey
+                address['address'] = adr
+                address['balance'] = amount
+                address['numbal'] = numamount
+                addresses.append(address)
+        addresses.sort(key=lambda x: x['amount'], reverse=True)
     if request.method == 'POST':
-        for i in range(0, len(parsedutxos)):
-            if request.form['address'] == parsedutxos[i]['address']:
-                selectedutxo = parsedutxos[i]
+        for i in range(0, len(addresses)):
+            if request.form['txid'] == addresses[i]['txid']:
+                selectedutxo = addresses[i]
         return redirect('/BCscanrecipent')
-    return render_template('BCdisplayutxos.html', parsedutxos=parsedutxos, len=len(parsedutxos))
+    return render_template('BCdisplayutxos.html', addresses=addresses, len=len(addresses), TWB=totalwalletbal)
 
 @app.route("/BCscanrecipent", methods=['GET', 'POST'])
 def BCscanrecipent():
