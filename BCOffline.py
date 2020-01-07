@@ -159,6 +159,8 @@ def BCopenbitcoinC():
         IBD = BTCFinished()
         if IBD:
             IBD = 'true'
+        else:
+            IBD = 'false'
         progress = BTCprogress()
     if request.method == 'POST':
         IBD = BTCFinished()
