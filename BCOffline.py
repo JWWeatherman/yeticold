@@ -186,6 +186,8 @@ def BCimportkeys():
 
 @app.route("/BCrescan", methods=['GET', 'POST'])
 def BCrescan():
+    if request.method == 'GET':
+        subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yeticold rescanblockchain '+blockheight(),shell=True,start_new_session=True)
     if request.method == 'POST':
         return redirect('/BCdisplayutxos')
     return render_template('BCrescan.html')
