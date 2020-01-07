@@ -157,10 +157,6 @@ def BCopenbitcoinC():
         if BTCClosed():
             subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         IBD = BTCFinished()
-        if IBD:
-            IBD = 'true'
-        else:
-            IBD = 'false'
         progress = BTCprogress()
     if request.method == 'POST':
         IBD = BTCFinished()
