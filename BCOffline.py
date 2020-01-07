@@ -221,7 +221,7 @@ def BCdisplayutxos():
                 address['balance'] = amount
                 address['numbal'] = numamount
                 addresses.append(address)
-        addresses.sort(key=lambda x: x['amount'], reverse=True)
+        addresses.sort(key=lambda x: x['numbal'], reverse=True)
     if request.method == 'POST':
         for i in range(0, len(addresses)):
             if request.form['txid'] == addresses[i]['txid']:
