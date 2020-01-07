@@ -205,7 +205,7 @@ def BCdisplayutxos():
             if utxo['spendable']:
                 txid = utxo['txid']
                 vout = utxo['vout']
-                address = utxo['address']
+                adr = utxo['address']
                 scriptPubKey = utxo['scriptPubKey']
                 numamount = utxo['amount']
                 totalwalletbal = totalwalletbal + numamount
