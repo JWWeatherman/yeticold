@@ -31,8 +31,7 @@ if not (os.system("python3 -c 'import PIL'") == 0):
 	subprocess.call(['pip3 install pillow'],shell=True)
 if not (os.system("python3 -c 'import zbar'") == 0):
 	subprocess.call(['pip3 install zbar-py'],shell=True)
-subprocess.call(['nmcli n off'],shell=True)
 if (os.path.exists(home + "/.bitcoin")):
 	subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
 subprocess.Popen('python3 ~/yeticold/BCOffline.py',shell=True,start_new_session=True)
-subprocess.call(['xdg-open http://localhost:5000/BCopenbitcoinC'],shell=True)
+subprocess.call(['xdg-open http://localhost:5000/BCblockchain'],shell=True)

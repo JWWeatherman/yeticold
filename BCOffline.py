@@ -86,45 +86,7 @@ def blockheight():
 
 @app.route("/", methods=['GET', 'POST'])
 def redirectroute():
-    return redirect('/BCblockchain')
-
-@app.route("/BCblockchain", methods=['GET', 'POST'])
-def BCblockchain():
-    global rpcpsw
-    global blockchain
-    if request.method == 'GET':
-        home = os.getenv("HOME")
-        if (os.path.exists(home + "/.bitcoin")):
-            if (os.path.exists(home + "/.bitcoin/bitcoin.conf")):
-                with open(".bitcoin/bitcoin.conf","r+") as f:
-                    old = f.read()
-                    f.seek(0)
-                    new = "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword="+rpcpsw+"\n"
-                    f.write(new + old)
-            else:
-                subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
-            return redirect('/BCopenbitcoin')
-    if request.method == 'POST':
-        if request.form['option'] == 'downloadblockchain':
-            subprocess.call(['sshpass -p "download" scp -r download@199.192.30.178:.bitcoin ~/.bitcoin'],shell=True)
-        else:
-            fmt = '%Y-%m-%d %H:%M:%S'
-            today = str(datetime.today()).split('.')[0]
-            print(request.form['date'] + ' 12:0:0')
-            print(today)
-            d1 = datetime.strptime(request.form['date'] + ' 12:0:0', fmt)
-            d2 = datetime.strptime(today, fmt)
-            d1_ts = time.mktime(d1.timetuple())
-            d2_ts = time.mktime(d2.timetuple())
-            diff = (int(d2_ts - d1_ts) / 60) / 10
-            add = diff / 10
-            blockheight = diff + add + 550
-            blockheight = int(blockheight)
-            home = os.getenv("HOME")
-            subprocess.call(['mkdir ~/.bitcoin'],shell=True)
-            subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nprune='+str(blockheight)+'\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
-
-    return render_template('BCblockchain.html')
+    return redirect('/BCopenbitcoin')
 
 @app.route("/BCopenbitcoin", methods=['GET', 'POST'])
 def BCopenbitcoin():
@@ -147,6 +109,46 @@ def BConlinestartup():
         return redirect('/BCscantransaction')
     return render_template('BConlinestartup.html')
 
+@app.route("/BCblockchain", methods=['GET', 'POST'])
+def BCblockchain():
+    global rpcpsw
+    global blockchain
+    if request.method == 'GET':
+        home = os.getenv("HOME")
+        if (os.path.exists(home + "/.bitcoin")):
+            if (os.path.exists(home + "/.bitcoin/bitcoin.conf")):
+                with open(".bitcoin/bitcoin.conf","r+") as f:
+                    old = f.read()
+                    f.seek(0)
+                    new = "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword="+rpcpsw+"\n"
+                    f.write(new + old)
+            else:
+                subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
+            return redirect('/BCopenbitcoin')
+        subprocess.call(['nmcli n on'],shell=True)
+        time.sleep(5)
+    if request.method == 'POST':
+        if request.form['option'] == 'downloadblockchain':
+            subprocess.call(['sshpass -p "download" scp -r download@199.192.30.178:.bitcoin ~/.bitcoin'],shell=True)
+        else:
+            fmt = '%Y-%m-%d %H:%M:%S'
+            today = str(datetime.today()).split('.')[0]
+            print(request.form['date'] + ' 12:0:0')
+            print(today)
+            d1 = datetime.strptime(request.form['date'] + ' 12:0:0', fmt)
+            d2 = datetime.strptime(today, fmt)
+            d1_ts = time.mktime(d1.timetuple())
+            d2_ts = time.mktime(d2.timetuple())
+            diff = (int(d2_ts - d1_ts) / 60) / 10
+            add = diff / 10
+            blockheight = diff + add + 550
+            blockheight = int(blockheight)
+            home = os.getenv("HOME")
+            subprocess.call(['mkdir ~/.bitcoin'],shell=True)
+            subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nprune='+str(blockheight)+'\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
+        return redirect('/BCopenbitcoinC')
+    return render_template('BCblockchain.html')
+
 @app.route("/BCopenbitcoinC", methods=['GET', 'POST'])
 def BCopenbitcoinC():
     if request.method == 'GET':
@@ -155,6 +157,7 @@ def BCopenbitcoinC():
     if request.method == 'POST':
         IBD = BTCRunning()
         if IBD:
+            subprocess.call(['nmcli n off'],shell=True)
             return redirect('/BCimportkeys')
         else:
             return redirect('/BCopenbitcoinC')
