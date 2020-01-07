@@ -152,6 +152,7 @@ def BCblockchain():
 @app.route("/BCopenbitcoinC", methods=['GET', 'POST'])
 def BCopenbitcoinC():
     global progress
+    global IBD
     if request.method == 'GET':
         home = os.getenv("HOME")
         if BTCClosed():
@@ -159,7 +160,6 @@ def BCopenbitcoinC():
         IBD = BTCFinished()
         progress = BTCprogress()
     if request.method == 'POST':
-        IBD = BTCFinished()
         if IBD:
             subprocess.call(['nmcli n off'],shell=True)
             return redirect('/BCimportkeys')
