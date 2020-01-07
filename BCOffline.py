@@ -42,7 +42,7 @@ def BTCFinished():
         bitcoinprogress = json.loads(response[0])['initialblockdownload']
     else:
         bitcoinprogress = True
-    return bitcoinprogress
+    return not bitcoinprogress
 
 def BTCClosed():
     home = os.getenv("HOME")
