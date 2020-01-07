@@ -179,7 +179,7 @@ def BTCFinished():
         bitcoinprogress = json.loads(response[0])['initialblockdownload']
     else:
         bitcoinprogress = True
-    return bitcoinprogress
+    return not bitcoinprogress
 
 def BTCClosed():
     home = os.getenv("HOME")
@@ -319,21 +319,22 @@ def YHblockchain():
     ###ISSUE template needed
     return render_template('YHblockchain.html')
 
-#finish open bitcoin
 @app.route("/YHopenbitcoin", methods=['GET', 'POST'])
 def YHopenbitcoin():
     global progress
+    global IBD
     if request.method == 'GET':
         home = os.getenv("HOME")
         if BTCClosed():
             subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
+        IBD = BTCFinished()
         progress = BTCprogress()
     if request.method == 'POST':
-        if progress >= 99.9:
+        if IBD:
             return redirect('/YHmenu')
         else:
             return redirect('/YHopenbitcoin')
-    return render_template('YHopenbitcoin.html', progress=progress)
+    return render_template('YHopenbitcoin.html', progress=progress, IBD=IBD)
 
 @app.route("/YHmenu", methods=['GET', 'POST'])
 def YHmenu():

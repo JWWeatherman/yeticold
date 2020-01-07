@@ -187,7 +187,7 @@ def BTCFinished():
         bitcoinprogress = json.loads(response[0])['initialblockdownload']
     else:
         bitcoinprogress = True
-    return bitcoinprogress
+    return not bitcoinprogress
 
 def BTCClosed():
     home = os.getenv("HOME")
@@ -336,18 +336,21 @@ def YWblockchain():
 @app.route("/YWopenbitcoin", methods=['GET', 'POST'])
 def YWopenbitcoin():
     global progress
+    global IBD
     if request.method == 'GET':
         home = os.getenv("HOME")
         if BTCClosed():
             subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
+        IBD = BTCFinished()
         progress = BTCprogress()
     if request.method == 'POST':
-        if progress >= 99.9:
+        if IBD:
             subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwarm"'],shell=True)
-            return redirect('YWmenu')
+            return redirect('/YWmenu')
         else:
             return redirect('/YWopenbitcoin')
-    return render_template('YWopenbitcoin.html', progress=progress)
+    return render_template('YWopenbitcoin.html', progress=progress, IBD=IBD)
+
 
 @app.route("/YWmenu", methods=['GET', 'POST'])
 def YWmenu():

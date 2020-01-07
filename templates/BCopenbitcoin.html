@@ -36,7 +36,9 @@
     </div>
     <script>
       var enable = () => {
-        if ({{ progress }} >= 99.9) {
+        True = true
+        False = false
+        if ({{IBD}}) { 
           document.getElementById("next").style.display = ""
         } else {
           setTimeout(() => { document.getElementById("next").click() }, 5000)

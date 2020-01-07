@@ -170,7 +170,7 @@ def BTCFinished():
         bitcoinprogress = json.loads(response[0])['initialblockdownload']
     else:
         bitcoinprogress = True
-    return bitcoinprogress
+    return not bitcoinprogress
 
 def BTCClosed():
     home = os.getenv("HOME")
@@ -418,6 +418,8 @@ def YCRstartdisconnected():
 
 @app.route("/YCRopenbitcoinB", methods=['GET', 'POST'])
 def YCRopenbitcoinB():
+    global progress
+    global IBD
     if request.method == 'GET':
         home = os.getenv("HOME")
         if BTCClosed():
@@ -429,14 +431,16 @@ def YCRopenbitcoinB():
                     f.write(new + old)
             else:
                 subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
-            subprocess.call('rm -r ~/.bitcoin/regtest', shell=True)
             subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
+        IBD = BTCFinished()
+        progress = BTCprogress()
     if request.method == 'POST':
-        IBD = BTCRunning()
         if IBD:
             subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yeticold"'],shell=True)
             return redirect('/YCRscandescriptorB')
-    return render_template('YCRopenbitcoinB.html', progress=progress)
+        else:
+            return redirect('/YCRopenbitcoinB')
+    return render_template('YCRopenbitcoinB.html', progress=progress, IBD=IBD)
 
 @app.route("/YCRscandescriptorB", methods=['GET', 'POST'])
 def YCRscandescriptorB():

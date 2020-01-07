@@ -91,17 +91,19 @@ def redirectroute():
 @app.route("/BCopenbitcoin", methods=['GET', 'POST'])
 def BCopenbitcoin():
     global progress
+    global IBD
     if request.method == 'GET':
         home = os.getenv("HOME")
         if BTCClosed():
             subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
+        IBD = BTCFinished()
         progress = BTCprogress()
     if request.method == 'POST':
-        if BTCFinished():
+        if IBD:
             return redirect('/BConlinestartup')
         else:
             return redirect('/BCopenbitcoin')
-    return render_template('BCopenbitcoin.html', progress=progress)
+    return render_template('BCopenbitcoin.html', progress=progress, IBD=IBD)
 
 @app.route("/BConlinestartup", methods=['GET', 'POST'])
 def BConlinestartup():
