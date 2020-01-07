@@ -257,7 +257,7 @@ def BCconfirmsend():
     global receipentaddress
     if request.method == 'GET':
         rpc = RPC()
-        amount = float(selectedutxo['amount'])
+        amount = float(selectedutxo['numbal'])
         minerfee = float(rpc.estimatesmartfee(1)["feerate"])
         kilobytespertrans = 0.200
         amo = (amount - (minerfee * kilobytespertrans))
@@ -274,7 +274,7 @@ def BCdisplaytransaction():
     global receipentaddress
     if request.method == 'GET':
         rpc = RPC()
-        amount = float(selectedutxo['amount'])
+        amount = float(selectedutxo['numbal'])
         minerfee = float(rpc.estimatesmartfee(1)["feerate"])
         kilobytespertrans = 0.200
         amo = (amount - (minerfee * kilobytespertrans))
