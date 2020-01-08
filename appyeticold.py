@@ -34,6 +34,7 @@ thirdqrname = None
 utxoresponse = None
 pubdesc = None
 adrlist = []
+IBD = False
 transnum = 0
 progress = 0
 utxo = None
