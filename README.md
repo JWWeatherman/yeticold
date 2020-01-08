@@ -13,6 +13,7 @@
           <li>Usable for non-technical users. By following simple instructions users with moderate computer literacy can use Yeti. This is important because trusting someone to help you establish your cold storage solution introduces considerable risk.</li>
           <li>Private. Unlike many popular hardware and software wallets that transmit your IP address and bitcoin balance to third party servers, Yeti uses a bitcoin core full node. This means nothing is shared beyond what is required to create a bitcoin transaction. Yeti also uses Tor.</li>
           <li>Counterfeit prevention. The only way to be certain that your balance represents genuine bitcoin is to use a bitcoin full node - in fact that is the primary purpose of a bitcoin full node - to verify that the bitcoin balance is correct and full of only genuine bitcoins. Any solution that does not involve a full node requires you trust someone else to tell you if you have real bitcoin.</li>
+<Li>Minimal hardware. You only need access to two cheap computer with a webcam. If you don't own a laptop you can use temporarily you can buy one used for around $50 usd.</li>
           <li>The process can be completed by non technologists with minimal effort.</li>
           <li>Bitcoin private keys are stored on paper in multiple geographic locations with professionals that do not know they are storing bitcoin private keys.</li>
           <li>Private keys are written down using the NATO phonetic alphabet where every fifth word is a checksum to reduce the possibility that a private key will be unreadable when needed.</li>
@@ -20,9 +21,8 @@
       </ul>
       <p>While we believe Yeti provides the best balance of security, ease of use and cost when storing significant sums of bitcoin, it has the following disadvantages that might not be expected:</p>
       <ul>
-          <li>Cost. You will need two computers and two external hard drives. If you need to purchase all of these items it should cost less than $500 USD, but this is not an insignificant expense.</li>
-          <li>Time. To complete setup you will need to invest 4 hours spread over the course of 1-2 weeks. This time includes writing down security words, copying files and scanning QR codes.</li>
-          <li>Privacy. While using bitcoin core over Tor does provide significant privacy advantages over many cold storage solutions using multisig is not very common and a 3 of 7 multisig is even less common. This means that someone could look at the blockchain and infer that the owner of the coins is probably using yeti for cold storage. This will eventually be fixed through changes to bitcoin and it is worth the security and recovery benefit to use multisig.</li>
+          <li>Time. To complete setup you will need to invest 2 hours spread over the course of a couple days. This time includes writing down security words, copying files and scanning QR codes.</li>
+          <li>Privacy. While using bitcoin core over Tor does provide significant privacy advantages over many cold storage solutions using multisig is not very common and a 3 of 7 multisig is even less common. This means that someone could look at the blockchain and infer that the owner of the coins is probably using yeti for cold storage. This will eventually be fixed through changes to bitcoin and it is worth the security and recovery benefit to use multisig and the type of multisig you are using is only exposed to the network when you spend from Yeti (not when you deposit funds).</li>
         </ul>
       <input v-on:click="click" style="margin-bottom:50px;" class="btn btn-primary" type="submit" id="next" value="Next">
     </div>
