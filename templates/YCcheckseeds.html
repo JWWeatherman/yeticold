@@ -678,7 +678,7 @@ var decode = (s) => {
       }else if (evt.key.length === 1 || evt.key === 'Backspace'){
         input = document.getElementById(evt.srcElement.id).value
         if (evt.key === 'Backspace') {
-          input[input.length - 2]
+          input = input.substring(0, input.length - 1)
         } else {
           input = input + evt.key
         }
