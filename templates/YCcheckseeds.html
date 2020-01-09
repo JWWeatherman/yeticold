@@ -684,6 +684,7 @@ var decode = (s) => {
         }
         console.log(input)
         document.getElementById(evt.srcElement.id).setAttribute('data-original-title', autocompletetooltip(input))
+        document.getElementById(evt.srcElement.id).setAttribute('title', autocompletetooltip(input))
       }
     }); 
     highlightrows()
