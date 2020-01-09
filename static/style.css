@@ -332,3 +332,7 @@ template {
 .tooltip {
   opacity: 1!important;
 }
+
+.tooltip-inner {
+  white-space:pre-wrap;
+}
