@@ -662,7 +662,6 @@ var decode = (s) => {
       return tooltip
     }
     document.addEventListener('keydown', (evt) => {
-      console.log(evt)
       if (evt.key === 'Tab'){
         autocompleted = autocomplete(document.getElementById(evt.srcElement.id).value)
         if (autocompleted) {
@@ -682,9 +681,9 @@ var decode = (s) => {
         } else {
           input = input + evt.key
         }
-        console.log(input)
-        document.getElementById(evt.srcElement.id).setAttribute('data-original-title', autocompletetooltip(input))
-        document.getElementById(evt.srcElement.id).setAttribute('title', autocompletetooltip(input))
+        tooltip = autocompletetooltip(input)
+        document.getElementById(evt.srcElement.id).setAttribute('data-original-title', tooltip)
+        document.getElementById(evt.srcElement.id).setAttribute('title', tooltip)
       }
     }); 
     highlightrows()
