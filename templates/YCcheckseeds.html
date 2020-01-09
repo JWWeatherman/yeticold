@@ -682,6 +682,9 @@ var decode = (s) => {
           input = input + evt.key
         }
         tooltip = autocompletetooltip(input)
+        if (tooltip === undefined){
+          tooltip = ''
+        }
         document.getElementById(evt.srcElement.id).setAttribute('data-original-title', tooltip)
         $('#' + evt.srcElement.id).tooltip('show');
       }
