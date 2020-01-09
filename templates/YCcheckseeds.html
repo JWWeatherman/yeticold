@@ -675,8 +675,15 @@ var decode = (s) => {
         }else{
           evt.preventDefault()
         }
-      }else{
-        document.getElementById(evt.srcElement.id).title = autocompletetooltip(document.getElementById(evt.srcElement.id).value)
+      }else if (evt.key.length === 1 || evt.key === 'Backspace'){
+        input = document.getElementById(evt.srcElement.id).value
+        if (evt.key === 'Backspace') {
+          input[input.length - 1]
+        } else {
+          input = input + evt.key
+        }
+        console.log(input)
+        document.getElementById(evt.srcElement.id).title = autocompletetooltip(input)
       }
     }); 
     highlightrows()
