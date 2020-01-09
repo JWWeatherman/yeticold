@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet", href="{{ url_for('static', filename='bootstrap.min.css') }}">
     <link rel="stylesheet", href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
   </head>
   <body>
@@ -27,7 +28,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text" id="basic-addon1">1</span>
             </div>
-            <input type="text" class="form-control" value="" data-trigger="click" data-placement="bottom" data-toggle="tooltip" title="ihi" id="row1" name="row1" placeholder="Phrase One">
+            <input type="text" class="form-control" value="" data-toggle="tooltip" title="Hooray!" id="row1" name="row1" placeholder="Phrase One">
           </div>
         </div>
         <div class="form-row">
@@ -655,6 +656,7 @@ var decode = (s) => {
         }
       }
     }); 
+    $('[data-toggle="tooltip"]').tooltip();   
     </script>
   </body>
 </html>
