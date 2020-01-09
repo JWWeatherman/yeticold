@@ -335,4 +335,5 @@ template {
 
 .tooltip-inner {
   white-space:pre-wrap;
+  text-align:left;
 }
