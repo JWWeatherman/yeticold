@@ -27,7 +27,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text" id="basic-addon1">1</span>
             </div>
-            <input type="text" class="form-control" data-toggle="tooltip" data-placement="right" title="This amount has no confirmations yet." value="" id="row1" name="row1" placeholder="Phrase One">
+            <input type="text" class="form-control" data-trigger="manual" data-toggle="tooltip" data-placement="right" title="This amount has no confirmations yet." value="" id="row1" name="row1" placeholder="Phrase One">
           </div>
         </div>
         <div class="form-row">
@@ -131,6 +131,8 @@
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
 <script>   
+
+    document.getElementById('row1').tooltip('show')
     var autocompletelist = {
     "ON": "ONE",
     "ONE": "ONE",
