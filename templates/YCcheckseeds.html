@@ -665,7 +665,7 @@ var decode = (s) => {
       if (evt.key === 'Tab'){
         autocompleted = autocomplete(document.getElementById(evt.srcElement.id).value)
         if (autocompleted) {
-          document.getElementById(evt.srcElement.id).title = ''
+          document.getElementById(evt.srcElement.id).setAttribute('data-original-title', '')
           document.getElementById(evt.srcElement.id).value = autocompleted
           if (autocompleted.split(' ').length != 5) {
             document.getElementById(evt.srcElement.id).value = document.getElementById(evt.srcElement.id).value + ' '
@@ -687,6 +687,9 @@ var decode = (s) => {
         }
         document.getElementById(evt.srcElement.id).setAttribute('data-original-title', tooltip)
         $('#' + evt.srcElement.id).tooltip('show');
+        if (document.getElementById(evt.srcElement.id).getAttribute('data-original-title') === '') {
+          $('#' + evt.srcElement.id).tooltip('hide');
+        }
       }
     }); 
     highlightrows()
