@@ -5,6 +5,7 @@
     <link rel="stylesheet", href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet", href="{{ url_for('static', filename='bootstrap.min.css') }}">
     <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
   </head>
   <body>
     <nav class="form-row navbar navbar-light bg-primary">
@@ -656,7 +657,6 @@ var decode = (s) => {
         }
       }
     }); 
-
     $(document).ready(function(){
       $('#tooltip').tooltip();   
     });
