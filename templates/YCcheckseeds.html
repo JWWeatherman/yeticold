@@ -28,7 +28,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text" id="basic-addon1">1</span>
             </div>
-            <input type="text" class="form-control" data-trigger="manual" data-toggle="tooltip" data-placement="right" title="This amount has no confirmations yet." value="" id="row1" name="row1" placeholder="Phrase One">
+            <input type="text" class="form-control" value="" id="row1" name="row1" placeholder="Phrase One">
             <tooltip id="tooltip1" style="position: absolute;" data-trigger="manual" data-placement="right" data-toggle="tooltip" title="Hooray!">
           </div>
         </div>
@@ -658,15 +658,15 @@ var decode = (s) => {
       }
     }); 
     $(document).ready(function(){
-      $('#tooltip').tooltip();   
+      $('#tooltip1').tooltip();   
     });
-    $('[data-toggle="tooltip"]').tooltip('hide');
-    $("#container").on('mousemove', function(e) {
-      $("#tooltip").css({top: e.pageY, left: e.pageX });
-      $('#tooltip').tooltip('show')
+    $('#tooltip1').tooltip('hide');
+    $("#row1").on('mousemove', function(e) {
+      $("#tooltip1").css({top: e.pageY, left: e.pageX });
+      $('#tooltip1').tooltip('show')
     })
-    $("#container").on('mouseleave', function(e) {
-        $('#tooltip').tooltip('hide')
+    $("#row1").on('mouseleave', function(e) {
+        $('#tooltip1').tooltip('hide')
     })
     </script>
   </body>
