@@ -683,7 +683,7 @@ var decode = (s) => {
           input = input + evt.key
         }
         console.log(input)
-        document.getElementById(evt.srcElement.id).title = autocompletetooltip(input)
+        document.getElementById(evt.srcElement.id).setAttribute('data-original-title', autocompletetooltip(input))
       }
     }); 
     highlightrows()
