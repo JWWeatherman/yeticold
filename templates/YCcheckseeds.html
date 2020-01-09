@@ -662,6 +662,7 @@ var decode = (s) => {
       return tooltip
     }
     document.addEventListener('keydown', (evt) => {
+      console.log(evt)
       if (evt.key === 'Tab'){
         autocompleted = autocomplete(document.getElementById(evt.srcElement.id).value)
         if (autocompleted) {
