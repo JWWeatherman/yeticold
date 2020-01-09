@@ -657,10 +657,7 @@ var decode = (s) => {
         }
       }
     }); 
-    $(document).ready(function(){
-      $('#tooltip1').tooltip();   
-    });
-    $('#tooltip1').tooltip('hide');
+    $('#tooltip1').tooltip();   
     $("#row1").on('mousemove', function(e) {
       $("#tooltip1").css({top: e.pageY, left: e.pageX });
       $('#tooltip1').tooltip('show')
