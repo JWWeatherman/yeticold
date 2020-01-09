@@ -661,6 +661,7 @@ var decode = (s) => {
     $("#row1").on('mousemove', function(e) {
       $("#tooltip1").css({top: e.pageY, left: e.pageX });
       $('#tooltip1').tooltip('show')
+      $('#tooltip').tooltip({title: "Hooray"})
     })
     $("#row1").on('mouseleave', function(e) {
         $('#tooltip1').tooltip('hide')
