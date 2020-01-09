@@ -594,19 +594,14 @@ var decode = (s) => {
     }
     var checkSum = (passphraselist, checksum) => {
       var list = PassphraseToWIF(passphraselist)
-      console.log(list)
       var sum = 0
       for (char in list) {
         var decodenum = decode(list.charAt(char))
-        console.log(decodenum, char)
         sum = sum + decodenum
       }
-      console.log(sum)
       mod = sum % 58
-      console.log(mod)
       var char = BASE58_ALPHABET.charAt(mod)
       char = WIFToPassphrase(char)[0]
-      console.log(char, checksum)
       return char === checksum
     }
     var highlightrows = () => {
@@ -652,7 +647,6 @@ var decode = (s) => {
     }
     var autocompletetooltip = (input) => {
       inputs = input.split(' ')
-      console.log(inputs)
       tooltip = ''
       if (autocompletelist[inputs[inputs.length - 1]] != undefined) {
         tooltip = autocompletelist[inputs[inputs.length - 1]]
