@@ -2,8 +2,8 @@
 <head>
     <title>Yeti Bitcoin Storage</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet", href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet", href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <link rel="stylesheet", href="{{ url_for('static', filename='style.css') }}">
     <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
   </head>
@@ -663,9 +663,9 @@ var decode = (s) => {
       $('#tooltip1').tooltip('show')
       $('#tooltip').tooltip({title: "Hooray"})
     })
-    // $("#row1").on('mouseleave', function(e) {
-    //     $('#tooltip1').tooltip('hide')
-    // })
+    $("#row1").on('mouseleave', function(e) {
+        $('#tooltip1').tooltip('hide')
+    })
     </script>
   </body>
 </html>

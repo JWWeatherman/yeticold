@@ -328,3 +328,7 @@ template {
 [hidden] {
   display: none !important;
 }
+
+.tooltip {
+  opacity: 1!important;
+}
