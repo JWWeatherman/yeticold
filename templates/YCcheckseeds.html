@@ -683,7 +683,8 @@ var decode = (s) => {
         }
         tooltip = autocompletetooltip(input)
         document.getElementById(evt.srcElement.id).setAttribute('data-original-title', tooltip)
-        document.getElementById(evt.srcElement.id).setAttribute('title', tooltip)
+        document.getElementById(evt.srcElement.id).tooltip('hide');
+        document.getElementById(evt.srcElement.id).tooltip('show');
       }
     }); 
     highlightrows()
