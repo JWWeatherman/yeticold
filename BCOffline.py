@@ -127,6 +127,7 @@ def BCblockchain():
             else:
                 subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
             return redirect('/BCopenbitcoinC')
+        subprocess.call(['python3 ~/yeticold/utils/forgetnetworks.py'],shell=True)
         subprocess.call(['nmcli n on'],shell=True)
         time.sleep(5)
     if request.method == 'POST':
