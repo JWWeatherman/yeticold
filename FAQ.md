@@ -10,6 +10,13 @@
 
 ### What are the minimum specs for the laptops?
 
+Two laptops that can run Ubuntu and Bitcoin Core. At the time of this writing almost any laptop will work but if your laptop has an SSD type hard some steps will take a few hours instead of a few days. Laptops without SSD type drives cost about $150 USD and laptops with SSD drives cost about $200 USD.
+
+### What printer?
+
+You need a printer and printer paper.  The printer should not be on a wifi network, ideally it's a printer without wifi.  After you're done it makes sense to do a hard reset of the printer.
+
+
 ### When going for a setup with 2 laptops, do the laptops need to be the same?
 
 No.
