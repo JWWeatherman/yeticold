@@ -1,4 +1,4 @@
-if [ -f "./sigcorrect" ]
+if [ -f "~/yeticold/sigcorrect" ]
 then
   rm ~/yeticold/sigcorrect
 fi
