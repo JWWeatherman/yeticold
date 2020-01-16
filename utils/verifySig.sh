@@ -3,7 +3,7 @@ then
   rm ~/yeticold/sigcorrect
 fi
 
-if [ ! -f "./SHA256SUMS.asc" ] 
+if [ ! -f "~/yeticold/SHA256SUMS.asc" ] 
 then
   sudo wget https://bitcoin.org/bin/bitcoin-core-0.19.0.1/SHA256SUMS.asc -P ~/yeticold/
 fi
