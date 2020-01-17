@@ -5,7 +5,7 @@ subprocess.call(['cd ~/yeticold; git pull; cd'],shell=True)
 subprocess.call('fuser -k 5000/tcp', shell=True)	
 subprocess.call('sudo rm -r ~/.ssh', shell=True)
 subprocess.call('mkdir ~/.ssh', shell=True)
-subprocess.call('echo "199.192.30.178 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBC53v0cUdL1QzUvOWIiOl+bkr7fE5CEQVMOOfKPIvYIX/+RYvk3+/sMEp8hM0HFIAAs1NYPQDlFPnNN+fD9bi7Q=" >> '+home+'/.ssh/known_hosts', shell=True)
+subprocess.call('echo "199.192.30.178 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBKHHGlR0iqE+bBwL7JD3n0Nj+kphTKliO7KLHircKvaC9kQxolZhp8ONAb/N127VGxsJiiZvFmvmhSVpvLfSiJU=" >> '+home+'/.ssh/known_hosts', shell=True)
 if not (os.path.exists(home + "/yeticold/bitcoin")):
 	subprocess.call(['snap install network-manager'],shell=True)
 	subprocess.call(['sudo apt-get install python3-venv'],shell=True)
