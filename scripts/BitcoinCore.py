@@ -4,10 +4,11 @@ home = os.getenv("HOME")
 subprocess.call(['cd ~/yeticold; git pull; cd'],shell=True)
 subprocess.call('fuser -k 5000/tcp', shell=True)
 if not (os.path.exists(home + "/yeticold/bitcoin")):
+	subprocess.call(['snap install network-manager'],shell=True)
 	subprocess.call(['sudo apt-get install python3-venv'],shell=True)
 	subprocess.call(['sudo apt-get install python3-pip'],shell=True)
-	subprocess.call(['sudo apt-get install libzbar0'],shell=True)
 	subprocess.call(['sudo apt-get install sshpass'],shell=True)
+	subprocess.call(['sudo apt-get install libzbar0'],shell=True)
 	subprocess.call(['sudo apt install tor'],shell=True)
 	subprocess.call(['sudo pip3 install python-bitcoinrpc'],shell=True)
 	subprocess.call(['pip3 install opencv-python'],shell=True)
@@ -27,7 +28,6 @@ if not (os.system("python3 -c 'import PIL'") == 0):
 	subprocess.call(['pip3 install pillow'],shell=True)
 if not (os.system("python3 -c 'import zbar'") == 0):
 	subprocess.call(['pip3 install zbar-py'],shell=True)
-subprocess.call(['python3 ~/yeticold/utils/testblockchain.py'],shell=True)
 if (os.path.exists(home + "/.bitcoin")):
 	subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
 subprocess.Popen('python3 ~/yeticold/BCOffline.py',shell=True,start_new_session=True)

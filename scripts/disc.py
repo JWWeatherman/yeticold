@@ -28,16 +28,10 @@ if not (os.system("python3 -c 'import PIL'") == 0):
 	subprocess.call(['pip3 install pillow'],shell=True)
 if not (os.system("python3 -c 'import zbar'") == 0):
 	subprocess.call(['pip3 install zbar-py'],shell=True)
-subprocess.call(['python3 ~/yeticold/utils/testblockchain.py'],shell=True)
-subprocess.call(['python3 ~/yeticold/utils/forgetnetworks.py'],shell=True)
-subprocess.call(['nmcli n off'],shell=True)
-subprocess.call('sudo date -s "3 JAN 2020 10:00:00"',shell=True)
 if (os.path.exists(home + "/.bitcoin")):
 	subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
 subprocess.call('sudo rm -r ~/.bitcoin/wallets/yeticold*', shell=True)
 subprocess.call('sudo rm -r ~/.bitcoin/yeticold*', shell=True)
-subprocess.call('sudo rm -r ~/yetihotwallet*', shell=True)
-subprocess.call('sudo rm -r ~/yetiwarmwallet*', shell=True)
 subprocess.call('sudo rm -r ~/yeticoldwallet*', shell=True)
 subprocess.Popen('python3 ~/yeticold/appyeticold.py',shell=True,start_new_session=True)
-subprocess.call(['xdg-open http://localhost:5000/YCopenbitcoinC'],shell=True)
+subprocess.call(['xdg-open http://localhost:5000/YCblockchain'],shell=True)
