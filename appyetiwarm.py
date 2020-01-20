@@ -313,7 +313,7 @@ def YWblockchain():
             return redirect('/YWopenbitcoin')
     if request.method == 'POST':
         if request.form['option'] == 'downloadblockchain':
-            subprocess.call(['sshpass -p "download" sftp -r download@199.192.30.178:.bitcoin ~/.bitcoin'],shell=True)
+            subprocess.call(['python3 ~/yeticold/utils/testblockchain.py'],shell=True)
         else:
             fmt = '%Y-%m-%d %H:%M:%S'
             today = str(datetime.today()).split('.')[0]
