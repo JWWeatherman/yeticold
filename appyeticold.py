@@ -86,7 +86,7 @@ def RPC():
 
 #FLOW
 #YConlinestartup - step 7 - ONLINE
-#YCblockchain - step 8 - DISCONNECTED - CHOOSE blockchain eaith test blockchain or create/use a valid one.
+#YCblockchain - DISCONNECTED - CHOOSE test blockchain or create/use a valid one if none is found.
 #YCopenbitcoinC - step 9 - DISCONNECTED - 
 #YCconnection - step 10 - DISCONNECTED - TURN OFF internet and disconnect cables
 #YCgetseeds - step 9 - DISCONNECTED
