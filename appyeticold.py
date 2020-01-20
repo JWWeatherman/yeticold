@@ -15,10 +15,6 @@ from datetime import datetime
 import time
 import sys
 
-#FILE IMPORTS
-sys.path.append('./utils/')
-from formating import *
-
 #VARIABLES
 app = Flask(__name__)
 home = os.getenv("HOME")
@@ -39,6 +35,10 @@ IBD = False
 transnum = 0
 progress = 0
 utxo = None
+
+#FILE IMPORTS
+sys.path.append(home + '/yeticold/utils/')
+from formating import *
 
 #RPC
 rpcpsw = str(random.randrange(0,1000000))
