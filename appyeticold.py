@@ -124,7 +124,7 @@ def YCblockchain():
                     f.write(new + old)
             else:
                 subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
-            return redirect('/YCRopenbitcoin')
+            return redirect('/YCopenbitcoinC')
     if request.method == 'POST':
         if request.form['option'] == 'downloadblockchain':
             subprocess.call(['python3 ~/yeticold/utils/testblockchain.py'],shell=True)
