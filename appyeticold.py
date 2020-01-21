@@ -86,18 +86,19 @@ def RPC():
 
 #FLOW
 #YConlinestartup - step 7 - ONLINE
+#disc.yeticold.com - step 8 - DISCONNECTED
 #YCblockchain - DISCONNECTED - CHOOSE test blockchain or create/use a valid one if none is found.
-#YCopenbitcoinC - step 9 - DISCONNECTED - 
+#YCopenbitcoin - step 9 - DISCONNECTED - 
 #YCconnection - step 10 - DISCONNECTED - TURN OFF internet and disconnect cables
-#YCgetseeds - step 9 - DISCONNECTED
-#YCdisplayseeds - step 10 + 16 - DISCONNECTED
-#YCcheckseeds - step 17 + 23 - DISCONNECTED
-#YCcopyseeds - step 24 - DISCONNECTED
-#YCdisplaydescriptor - step 25 - DISCONNECTED - SWITCH to your ONLINE laptop showing step 7 and click netx to step 27
-#YCscandescriptor - step 26 - ONLINE - SCAN the qr code from your DISCONNECTED laptop showing step 25
-#YCstoreseeds - step 27 - ONLINE
-#YCdeleteseeds - step 28 - ONLINE
-#YCsendfunds - step 29 - ONLINE
+#YCgetseeds - step 11 - DISCONNECTED
+#YCdisplayseeds - step 12 + 18 - DISCONNECTED
+#YCcheckseeds - step 19 + 25 - DISCONNECTED
+#YCcopyseeds - step 26 - DISCONNECTED
+#YCdisplaydescriptor - step 27 - DISCONNECTED - SWITCH to your ONLINE laptop showing step 7 and click netx to step 27
+#YCscandescriptor - step 28 - ONLINE - SCAN the qr code from your DISCONNECTED laptop showing step 25
+#YCstoreseeds - step 29 - ONLINE
+#YCdeleteseeds - step 30 - ONLINE
+#YCsendfunds - step 31 - ONLINE
 
 #ROUTES
 @app.route("/", methods=['GET', 'POST'])
@@ -124,7 +125,7 @@ def YCblockchain():
                     f.write(new + old)
             else:
                 subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
-            return redirect('/YCopenbitcoinC')
+            return redirect('/YCopenbitcoin')
     if request.method == 'POST':
         if request.form['option'] == 'downloadblockchain':
             subprocess.call(['python3 ~/yeticold/utils/testblockchain.py'],shell=True)
@@ -144,11 +145,11 @@ def YCblockchain():
             home = os.getenv("HOME")
             subprocess.call(['mkdir ~/.bitcoin'],shell=True)
             subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nprune='+str(blockheight)+'\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
-        return redirect('/YCopenbitcoinC')
+        return redirect('/YCopenbitcoin')
     return render_template('YCblockchain.html')
 
-@app.route("/YCopenbitcoinC", methods=['GET', 'POST'])
-def YCopenbitcoinC():
+@app.route("/YCopenbitcoin", methods=['GET', 'POST'])
+def YCopenbitcoin():
     global progress
     global IBD
     if request.method == 'GET':
@@ -170,8 +171,8 @@ def YCopenbitcoinC():
             subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yeticold"'],shell=True)
             return redirect('/YCconnection')
         else:
-            return redirect('/YCopenbitcoinC')
-    return render_template('YCopenbitcoinC.html', progress=progress, IBD=IBD)
+            return redirect('/YCopenbitcoin')
+    return render_template('YCopenbitcoin.html', progress=progress, IBD=IBD)
 
 @app.route("/YCconnection", methods=['GET', 'POST'])
 def YCconnection():
@@ -298,7 +299,7 @@ def YCdisplayseeds():
             return redirect('/YCcheckseeds')
         else:
             return redirect('/YCdisplayseeds')
-    return render_template('YCdisplayseeds.html', PPL=passphraselist, x=privkeycount + 1, i=privkeycount + 10)
+    return render_template('YCdisplayseeds.html', PPL=passphraselist, x=privkeycount + 1, i=privkeycount + 12)
 
 @app.route('/YCcheckseeds', methods=['GET', 'POST'])
 def YCcheckseeds():
@@ -353,7 +354,7 @@ def YCcheckseeds():
                 return redirect('/YCcheckseeds')
         else:
             error = 'You enterd the private key incorrectly but the checksums are correct please try agian. This means you probably inputed a valid seed, but not your seed ' +str(privkeycount + 1)+' seed.'
-    return render_template('YCcheckseeds.html', x=privkeycount + 1, error=error,i=privkeycount + 17 )
+    return render_template('YCcheckseeds.html', x=privkeycount + 1, error=error,i=privkeycount + 19)
 
 @app.route("/YCcopyseeds", methods=['GET', 'POST'])
 def YCcopyseeds():
