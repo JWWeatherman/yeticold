@@ -13,11 +13,9 @@ import qrcode
 from datetime import datetime
 import time
 app = Flask(__name__)
+
+#VARIABLES 
 home = os.getenv("HOME")
-rpcpsw = str(random.randrange(0,1000000))
-### VARIBALES START
-settings = {"rpc_username": "rpcuser","rpc_password": rpcpsw,"rpc_host": "127.0.0.1","rpc_port": 8332,"address_chunk": 100}
-wallet_template = "http://{rpc_username}:{rpc_password}@{rpc_host}:{rpc_port}/wallet/{wallet_name}"
 address = []
 xprivlist = []
 privkeylist = []
@@ -28,131 +26,15 @@ receipentaddress = None
 progress = 0
 privkeycount = 0
 init = True
-switcher = {
-    "1": "ONE",
-    "2": "TWO",
-    "3": "THREE",
-    "4": "FOUR",
-    "5": "FIVE",
-    "6": "SIX",
-    "7": "SEVEN",
-    "8": "EIGHT",
-    "9": "NINE",
-    "A": "ALFA",
-    "B": "BRAVO",
-    "C": "CHARLIE",
-    "D": "DELTA",
-    "E": "ECHO",
-    "F": "FOXTROT",
-    "G": "GOLF",
-    "H": "HOTEL",
-    "I": "INDIA",
-    "J": "JULIETT",
-    "K": "KILO",
-    "L": "LIMA",
-    "M": "MIKE",
-    "N": "NOVEMBER",
-    "O": "OSCAR",
-    "P": "PAPA",
-    "Q": "QUEBEC",
-    "R": "ROMEO",
-    "S": "SIERRA",
-    "T": "TANGO",
-    "U": "UNIFORM",
-    "V": "VICTOR",
-    "W": "WHISKEY",
-    "X": "X-RAY",
-    "Y": "YANKEE",
-    "Z": "ZULU",
-    "a": "alfa",
-    "b": "bravo",
-    "c": "charlie",
-    "d": "delta",
-    "e": "echo",
-    "f": "foxtrot",
-    "g": "golf",
-    "h": "hotel",
-    "i": "india",
-    "j": "juliett",
-    "k": "kilo",
-    "l": "lima",
-    "m": "mike",
-    "n": "november",
-    "o": "oscar",
-    "p": "papa",
-    "q": "quebec",
-    "r": "romeo",
-    "s": "sierra",
-    "t": "tango",
-    "u": "uniform",
-    "v": "victor",
-    "w": "whiskey",
-    "x": "x-ray",
-    "y": "yankee",
-    "z": "zulu",
-    "ONE": "1",
-    "TWO": "2",
-    "THREE": "3",
-    "FOUR": "4",
-    "FIVE": "5",
-    "SIX": "6",
-    "SEVEN": "7",
-    "EIGHT": "8",
-    "NINE": "9",
-    "ALFA": "A",
-    "BRAVO": "B",
-    "CHARLIE": "C",
-    "DELTA": "D",
-    "ECHO": "E",
-    "FOXTROT": "F",
-    "GOLF": "G",
-    "HOTEL": "H",
-    "INDIA": "I",
-    "JULIETT": "J",
-    "KILO": "K",
-    "LIMA": "L",
-    "MIKE": "M",
-    "NOVEMBER": "N",
-    "OSCAR": "O",
-    "PAPA": "P",
-    "QUEBEC": "Q",
-    "ROMEO": "R",
-    "SIERRA": "S",
-    "TANGO": "T",
-    "UNIFORM": "U",
-    "VICTOR": "V",
-    "WHISKEY": "W",
-    "X-RAY": "X",
-    "YANKEE": "Y",
-    "ZULU": "Z",
-    "alfa": "a",
-    "bravo": "b",
-    "charlie": "c",
-    "delta": "d",
-    "echo": "e",
-    "foxtrot": "f",
-    "golf": "g",
-    "hotel": "h",
-    "india": "i",
-    "juliett": "j",
-    "kilo": "k",
-    "lima": "l",
-    "mike": "m",
-    "november": "n",
-    "oscar": "o",
-    "papa": "p",
-    "quebec": "q",
-    "romeo": "r",
-    "sierra": "s",
-    "tango": "t",
-    "uniform": "u",
-    "victor": "v",
-    "whiskey": "w",
-    "x-ray": "x",
-    "yankee": "y",
-    "zulu": "z"
-}
 
+#FILE IMPORTS
+sys.path.append(home + '/yeticold/utils/')
+from formating import *
+
+#RPC
+rpcpsw = str(random.randrange(0,1000000))
+settings = {"rpc_username": "rpcuser","rpc_password": rpcpsw,"rpc_host": "127.0.0.1","rpc_port": 8332,"address_chunk": 100}
+wallet_template = "http://{rpc_username}:{rpc_password}@{rpc_host}:{rpc_port}/wallet/{wallet_name}"
 
 def BTCprogress():
     response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
@@ -174,6 +56,7 @@ def BTCFinished():
 
 def BTCClosed():
     home = os.getenv("HOME")
+    print(subprocess.call('lsof -n -i :8332', shell=True))
     if (subprocess.call('lsof -n -i :8332', shell=True) != 1):
         return False
     elif os.path.exists(home + "/.bitcoin/bitcoind.pid"):
@@ -192,12 +75,6 @@ def RPC():
     rpc = AuthServiceProxy(uri, timeout=600)  # 1 minute timeout
     return rpc
 
-def PassphraseToWIF(passphraselist):
-    Privkey = ''
-    for i in range(len(passphraselist)):
-        Privkey += switcher.get(str(passphraselist[i]))
-    return Privkey
-
 def blockheight():
     rpc = RPC()
     Blockinfo = rpc.getblockchaininfo()
@@ -206,16 +83,19 @@ def blockheight():
         blockheight = Blockinfo['pruneheight']
     return str(blockheight)
 
-
-#YCRblockchain - step X - #download crap bitcoin directory?
-#Open bitcoin - step 7 - Open bitcoin - Online
+#FLOW
+#YCRblockchain - ONLINE - CHOOSE blockchain if none found
+#Open bitcoin - step 7 - ONLINE  
+#Connection - step 8 - ONLINE - DISABLE WIFI AND EAITHERNET
 #Scan Descriptor - step 8 - Online
 #Rescan Wallet - step 9 - Online
 #Display Wallet - WP - Online
 #Setup Disconnected - step 3 - Online # go to rec.yeticold.com and follow steps
-#Open bitcoin - auto redirect - Open bitcoin - Disconnected
-#Scan descriptor - step 4 - Disconnected
-#Import keys - step 5 - Disconnected # seed 1
+#YCRblockchain - DISCONNECTED - CHOOSE blockchain if none found
+#Open bitcoin - step  - DISCONNECTED
+#Connection - step  - DISCONNECTED - DISABLE WIFI AND EAITHERNET
+#Scan descriptor - step 4 - DISCONNECTED
+#Import keys - step 5 - DISCONNECTED # seed 1
 #Import keys - step 6 - Disconnected # seed 2
 #Import keys - step 7 - Disconnected # seed 3
 #Switch laptop - step 8 - Disconnected # On your online laptop showing step 3 click next and continue on step 9
@@ -234,6 +114,7 @@ def blockheight():
 #Display transaction B - step 5 - Disconnected # On your Online laptop currently showing step 1 click next and contiue on step 6
 #Scan transaction B - step 6 - Online #Scan the transaction from your Disconnected laptop currently showing step 5
 
+#FLOW
 @app.route("/", methods=['GET', 'POST'])
 def redirectroute():
     if request.method == 'GET':
@@ -288,10 +169,18 @@ def YCRopenbitcoin():
     if request.method == 'POST':
         if progress >= 99.9:
             subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yeticold"'],shell=True)
-            return redirect('YCRscandescriptor')
+            return redirect('YCconnection')
         else:
             return redirect('/YCRopenbitcoin')
     return render_template('YCRopenbitcoin.html', progress=progress)
+
+@app.route("/YCconnection", methods=['GET', 'POST'])
+def YCconnection():
+    if request.method == 'POST':
+        subprocess.call(['python3 ~/yeticold/utils/forgetnetworks.py'],shell=True)
+        subprocess.call(['nmcli n off'],shell=True)
+        return redirect('/YCRscandescriptor')
+    return render_template('YCconnection.html')
 
 @app.route("/YCRscandescriptor", methods=['GET', 'POST'])
 def YCRscandescriptor():
@@ -416,31 +305,66 @@ def YCRstartdisconnected():
         return redirect('/YCRdisplayutxo')
     return render_template('YCRstartdisconnected.html')
 
-@app.route("/YCRopenbitcoinB", methods=['GET', 'POST'])
-def YCRopenbitcoinB():
-    global progress
-    global IBD
-    if request.method == 'GET':
-        home = os.getenv("HOME")
-        if BTCClosed():
-            if (os.path.exists(home + "/.bitcoin/bitcoin.conf")):
-                with open(".bitcoin/bitcoin.conf","r+") as f:
-                    old = f.read()
-                    f.seek(0)
-                    new = "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword="+rpcpsw+"\n"
-                    f.write(new + old)
+    @app.route("/YCRblockchainB", methods=['GET', 'POST'])
+    def YCRblockchainB():
+        global rpcpsw
+        if request.method == 'GET':
+            home = os.getenv("HOME")
+            if (os.path.exists(home + "/.bitcoin")):
+                if (os.path.exists(home + "/.bitcoin/bitcoin.conf")):
+                    with open(".bitcoin/bitcoin.conf","r+") as f:
+                        old = f.read()
+                        f.seek(0)
+                        new = "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword="+rpcpsw+"\n"
+                        f.write(new + old)
+                else:
+                    subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
+                return redirect('/YCRopenbitcoin')
+        if request.method == 'POST':
+            if request.form['option'] == 'downloadblockchain':
+                subprocess.call(['python3 ~/yeticold/utils/testblockchain.py'],shell=True)
             else:
-                subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
-            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
-        IBD = BTCFinished()
-        progress = BTCprogress()
-    if request.method == 'POST':
-        if IBD:
-            subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yeticold"'],shell=True)
-            return redirect('/YCRscandescriptorB')
-        else:
+                fmt = '%Y-%m-%d %H:%M:%S'
+                today = str(datetime.today()).split('.')[0]
+                print(request.form['date'] + ' 12:0:0')
+                print(today)
+                d1 = datetime.strptime(request.form['date'] + ' 12:0:0', fmt)
+                d2 = datetime.strptime(today, fmt)
+                d1_ts = time.mktime(d1.timetuple())
+                d2_ts = time.mktime(d2.timetuple())
+                diff = (int(d2_ts - d1_ts) / 60) / 10
+                add = diff / 10
+                blockheight = diff + add + 550
+                blockheight = int(blockheight)
+                home = os.getenv("HOME")
+                subprocess.call(['mkdir ~/.bitcoin'],shell=True)
+                subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nprune='+str(blockheight)+'\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
             return redirect('/YCRopenbitcoinB')
-    return render_template('YCRopenbitcoinB.html', progress=progress, IBD=IBD)
+        return render_template('YCRblockchainB.html')
+
+    @app.route("/YCRopenbitcoinB", methods=['GET', 'POST'])
+    def YCRopenbitcoinB():
+        global progress
+        if request.method == 'GET':
+            home = os.getenv("HOME")
+            if BTCClosed():
+                subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
+            progress = BTCprogress()
+        if request.method == 'POST':
+            if progress >= 99.9:
+                subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yeticold"'],shell=True)
+                return redirect('YCconnectionB')
+            else:
+                return redirect('/YCRopenbitcoinB')
+        return render_template('YCRopenbitcoinB.html', progress=progress)
+
+    @app.route("/YCconnectionB", methods=['GET', 'POST'])
+    def YCconnectionB():
+        if request.method == 'POST':
+            subprocess.call(['python3 ~/yeticold/utils/forgetnetworks.py'],shell=True)
+            subprocess.call(['nmcli n off'],shell=True)
+            return redirect('/YCRscandescriptorB')
+        return render_template('YCconnectionB.html')
 
 @app.route("/YCRscandescriptorB", methods=['GET', 'POST'])
 def YCRscandescriptorB():
