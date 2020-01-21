@@ -96,9 +96,10 @@ def RPC():
 #YCcopyseeds - step 26 - DISCONNECTED
 #YCdisplaydescriptor - step 27 - DISCONNECTED - SWITCH to your ONLINE laptop showing step 7 and click netx to step 27
 #YCscandescriptor - step 28 - ONLINE - SCAN the qr code from your DISCONNECTED laptop showing step 25
-#YCstoreseeds - step 29 - ONLINE
-#YCdeleteseeds - step 30 - ONLINE
-#YCsendfunds - step 31 - ONLINE
+#YCprintpage - step 29 - ONLINE
+#YCstoreseeds - step 30 - ONLINE
+#YCdeleteseeds - step 31 - ONLINE
+#YCsendfunds - step 32 - ONLINE
 
 #ROUTES
 @app.route("/", methods=['GET', 'POST'])

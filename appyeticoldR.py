@@ -12,6 +12,7 @@ import random
 import qrcode
 from datetime import datetime
 import time
+import sys
 app = Flask(__name__)
 
 #VARIABLES 
