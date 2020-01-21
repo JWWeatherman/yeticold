@@ -12,12 +12,11 @@ import random
 import qrcode
 from datetime import datetime
 import time
+import sys
 app = Flask(__name__)
-home = os.getenv("HOME")
-rpcpsw = str(random.randrange(0,1000000))
 
-settings = {"rpc_username": "rpcuser","rpc_password": rpcpsw,"rpc_host": "127.0.0.1","rpc_port": 8332,"address_chunk": 100}
-wallet_template = "http://{rpc_username}:{rpc_password}@{rpc_host}:{rpc_port}/wallet/{wallet_name}"
+#VARIBLES
+home = os.getenv("HOME")
 progress = 0
 parsedutxos = []
 selectedutxo = {}
@@ -25,6 +24,15 @@ error = ""
 receipentaddress = ""
 signtransactionhex = ""
 totalamount = ""
+
+#FILE IMPORTS
+sys.path.append(home + '/yeticold/utils/')
+from formating import *
+
+#RPC
+rpcpsw = str(random.randrange(0,1000000))
+settings = {"rpc_username": "rpcuser","rpc_password": rpcpsw,"rpc_host": "127.0.0.1","rpc_port": 8332,"address_chunk": 100}
+wallet_template = "http://{rpc_username}:{rpc_password}@{rpc_host}:{rpc_port}/wallet/{wallet_name}"
 
 def BTCprogress():
     response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
@@ -46,6 +54,7 @@ def BTCFinished():
 
 def BTCClosed():
     home = os.getenv("HOME")
+    print(subprocess.call('lsof -n -i :8332', shell=True))
     if (subprocess.call('lsof -n -i :8332', shell=True) != 1):
         return False
     elif os.path.exists(home + "/.bitcoin/bitcoind.pid"):
@@ -72,21 +81,63 @@ def blockheight():
         blockheight = Blockinfo['pruneheight']
     return str(blockheight)
 
-#BCblockchain - step X - #download crap bitcoin directory?
-#Open bitcoin - step 6 - Open bitcoin - Online
-#Setup Disconnected - step 9 - Online # go to off.yeticold.com
-#Open bitcoin - auto redirect - Disconnected
-#Import keys - step 10 - Disconnected //Have user manuly import keys to default wallet
-#Display utxos - WP - Disconnected //Make sure utxos are spendable before displaying
-#Scan recipent - step 1 - Disconnected 
-#Confirm send transaction - step 2 - Online //Create the transaction if user confirms data
-#Display signed transaction - step 3 - Disconnected # On your Online showing step (9 or 5) click next to display step 4
-#Scan sign transaction - step 4 - Online
-#Sent page - step 5 - Online # On your Disconnected currently showing step 3 click next to display your wallet page
+#BCblockchain - ONLINE
+#Open bitcoin - step 6 - ONLINE
+#Setup Disconnected - step 7 - ONLINE
+#off.yeticold.com - step 8 - DISCONNECTED
+#BCblockchainB - DISCONNECTED
+#BCopenbitcoinB - step 9 - DISCONNECTED
+#BCconnection - step 10 - DISCONNECTED
+#Import keys - step 11 - DISCONNECTED
+#Display utxos - WP - DISCONNECTED
+#Scan recipent - step 1 - DISCONNECTED 
+#Confirm send transaction - step 2 - DISCONNECTED
+#Display signed transaction - step 3 - DISCONNECTED 
+#Scan sign transaction - step 4 - ONLINE
+#BCswitchlaptop - step 5 - ONLINE
 
 @app.route("/", methods=['GET', 'POST'])
 def redirectroute():
-    return redirect('/BCopenbitcoin')
+    return redirect('/BCblockchain')
+
+@app.route("/BCblockchain", methods=['GET', 'POST'])
+def BCblockchain():
+    global rpcpsw
+    global blockchain
+    if request.method == 'GET':
+        home = os.getenv("HOME")
+        if (os.path.exists(home + "/.bitcoin")):
+            if (os.path.exists(home + "/.bitcoin/bitcoin.conf")):
+                with open(".bitcoin/bitcoin.conf","r+") as f:
+                    old = f.read()
+                    f.seek(0)
+                    new = "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword="+rpcpsw+"\n"
+                    f.write(new + old)
+            else:
+                subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
+            return redirect('/BCopenbitcoinC')
+        time.sleep(5)
+    if request.method == 'POST':
+        if request.form['option'] == 'downloadblockchain':
+            subprocess.call(['python3 ~/yeticold/utils/testblockchain.py'],shell=True)
+        else:
+            fmt = '%Y-%m-%d %H:%M:%S'
+            today = str(datetime.today()).split('.')[0]
+            print(request.form['date'] + ' 12:0:0')
+            print(today)
+            d1 = datetime.strptime(request.form['date'] + ' 12:0:0', fmt)
+            d2 = datetime.strptime(today, fmt)
+            d1_ts = time.mktime(d1.timetuple())
+            d2_ts = time.mktime(d2.timetuple())
+            diff = (int(d2_ts - d1_ts) / 60) / 10
+            add = diff / 10
+            blockheight = diff + add + 550
+            blockheight = int(blockheight)
+            home = os.getenv("HOME")
+            subprocess.call(['mkdir ~/.bitcoin'],shell=True)
+            subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nprune='+str(blockheight)+'\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
+        return redirect('/BCopenbitcoin')
+    return render_template('BCblockchain.html')
 
 @app.route("/BCopenbitcoin", methods=['GET', 'POST'])
 def BCopenbitcoin():
@@ -111,8 +162,8 @@ def BConlinestartup():
         return redirect('/BCscantransaction')
     return render_template('BConlinestartup.html')
 
-@app.route("/BCblockchain", methods=['GET', 'POST'])
-def BCblockchain():
+@app.route("/BCblockchainB", methods=['GET', 'POST'])
+def BCblockchainB():
     global rpcpsw
     global blockchain
     if request.method == 'GET':
@@ -127,8 +178,6 @@ def BCblockchain():
             else:
                 subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
             return redirect('/BCopenbitcoinC')
-        subprocess.call(['python3 ~/yeticold/utils/forgetnetworks.py'],shell=True)
-        subprocess.call(['nmcli n on'],shell=True)
         time.sleep(5)
     if request.method == 'POST':
         if request.form['option'] == 'downloadblockchain':
@@ -150,7 +199,7 @@ def BCblockchain():
             subprocess.call(['mkdir ~/.bitcoin'],shell=True)
             subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nprune='+str(blockheight)+'\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
         return redirect('/BCopenbitcoinC')
-    return render_template('BCblockchain.html')
+    return render_template('BCblockchainB.html')
 
 @app.route("/BCopenbitcoinC", methods=['GET', 'POST'])
 def BCopenbitcoinC():
@@ -164,7 +213,6 @@ def BCopenbitcoinC():
         progress = BTCprogress()
     if request.method == 'POST':
         if IBD:
-            subprocess.call(['nmcli n off'],shell=True)
             return redirect('/BCimportkeys')
         else:
             return redirect('/BCopenbitcoinC')

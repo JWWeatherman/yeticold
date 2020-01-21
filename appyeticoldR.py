@@ -87,9 +87,8 @@ def blockheight():
 #FLOW
 #YCRblockchain - ONLINE - CHOOSE blockchain if none found
 #Open bitcoin - step 7 - ONLINE  
-#Connection - step 8 - ONLINE - DISABLE WIFI AND EAITHERNET
-#Scan Descriptor - step 9 - Online
-#Rescan Wallet - step 10 - Online
+#Scan Descriptor - step 8 - Online
+#Rescan Wallet - step 9 - Online
 #Display Wallet - WP - Online
 #Setup Disconnected - step 1 - ONLINE
 #rec.yeticold.com - step 2 - DISCONNECTED
@@ -171,18 +170,10 @@ def YCRopenbitcoin():
     if request.method == 'POST':
         if progress >= 99.9:
             subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yeticold"'],shell=True)
-            return redirect('YCconnection')
+            return redirect('YCRscandescriptor')
         else:
             return redirect('/YCRopenbitcoin')
     return render_template('YCRopenbitcoin.html', progress=progress)
-
-@app.route("/YCconnection", methods=['GET', 'POST'])
-def YCconnection():
-    if request.method == 'POST':
-        subprocess.call(['python3 ~/yeticold/utils/forgetnetworks.py'],shell=True)
-        subprocess.call(['nmcli n off'],shell=True)
-        return redirect('/YCRscandescriptor')
-    return render_template('YCconnection.html')
 
 @app.route("/YCRscandescriptor", methods=['GET', 'POST'])
 def YCRscandescriptor():
@@ -355,18 +346,18 @@ def YCRstartdisconnected():
         if request.method == 'POST':
             if progress >= 99.9:
                 subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yeticold"'],shell=True)
-                return redirect('YCconnectionB')
+                return redirect('YCconnection')
             else:
                 return redirect('/YCRopenbitcoinB')
         return render_template('YCRopenbitcoinB.html', progress=progress)
 
-    @app.route("/YCconnectionB", methods=['GET', 'POST'])
-    def YCconnectionB():
-        if request.method == 'POST':
-            subprocess.call(['python3 ~/yeticold/utils/forgetnetworks.py'],shell=True)
-            subprocess.call(['nmcli n off'],shell=True)
-            return redirect('/YCRscandescriptorB')
-        return render_template('YCconnectionB.html')
+@app.route("/YCconnection", methods=['GET', 'POST'])
+def YCconnection():
+    if request.method == 'POST':
+        subprocess.call(['python3 ~/yeticold/utils/forgetnetworks.py'],shell=True)
+        subprocess.call(['nmcli n off'],shell=True)
+        return redirect('/YCRscandescriptorB')
+    return render_template('YCconnection.html')
 
 @app.route("/YCRscandescriptorB", methods=['GET', 'POST'])
 def YCRscandescriptorB():

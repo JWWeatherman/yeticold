@@ -27,7 +27,6 @@ qrcodescanning = None
 pubdesc = None
 progress = 0
 
-
 #FILE IMPORTS
 sys.path.append(home + '/yeticold/utils/')
 from formating import *

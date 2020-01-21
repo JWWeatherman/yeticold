@@ -31,4 +31,4 @@ if not (os.system("python3 -c 'import zbar'") == 0):
 if (os.path.exists(home + "/.bitcoin")):
 	subprocess.call('python3 ~/yeticold/utils/stopbitcoin.py', shell=True)
 subprocess.Popen('python3 ~/yeticold/BCOffline.py',shell=True,start_new_session=True)
-subprocess.call(['xdg-open http://localhost:5000/BCblockchain'],shell=True)
+subprocess.call(['xdg-open http://localhost:5000/BCblockchainB'],shell=True)
