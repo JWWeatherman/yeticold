@@ -87,24 +87,25 @@ def blockheight():
 #YCRblockchain - ONLINE - CHOOSE blockchain if none found
 #Open bitcoin - step 7 - ONLINE  
 #Connection - step 8 - ONLINE - DISABLE WIFI AND EAITHERNET
-#Scan Descriptor - step 8 - Online
-#Rescan Wallet - step 9 - Online
+#Scan Descriptor - step 9 - Online
+#Rescan Wallet - step 10 - Online
 #Display Wallet - WP - Online
-#Setup Disconnected - step 3 - Online # go to rec.yeticold.com and follow steps
+#Setup Disconnected - step 1 - ONLINE
+#rec.yeticold.com - step 2 - DISCONNECTED
 #YCRblockchain - DISCONNECTED - CHOOSE blockchain if none found
-#Open bitcoin - step  - DISCONNECTED
-#Connection - step  - DISCONNECTED - DISABLE WIFI AND EAITHERNET
-#Scan descriptor - step 4 - DISCONNECTED
-#Import keys - step 5 - DISCONNECTED # seed 1
-#Import keys - step 6 - Disconnected # seed 2
-#Import keys - step 7 - Disconnected # seed 3
-#Switch laptop - step 8 - Disconnected # On your online laptop showing step 3 click next and continue on step 9
-#Display utxo - step 9 - Online # On your Disconnected laptop showing step 8 click next and continue on step 10
-#Scan utxo - step 10 - Disconnected # Scan the qr code from your online laptop displaing step 9
-#Scan recipent - step 11 - Disconnected
-#Confirm transaction - step 12 - Disconnected
-#Display transaction - step 13 - Disconnected # On your Online laptop currently showing step 9 click next and contiue on step 14
-#Scan transaction - step 14 - Online #Scan the transaction from your Disconnected laptop currently showing step 13
+#YCRopenbitcoinB - step 3 - DISCONNECTED
+#YCRconnectionB - step 4 - DISCONNECTED - DISABLE WIFI AND EAITHERNET
+#YCRscandescriptorB - step 5 - DISCONNECTED
+#Import keys - step 6 - DISCONNECTED # seed 1
+#Import keys - step 7 - Disconnected # seed 2
+#Import keys - step 8 - Disconnected # seed 3
+#Switch laptop - step 9 - Disconnected # On your online laptop showing step 3 click next and continue on step 9
+#Display utxo - step 10 - Online # On your Disconnected laptop showing step 8 click next and continue on step 10
+#Scan utxo - step 11 - Disconnected # Scan the qr code from your online laptop displaing step 9
+#Scan recipent - step 12 - Disconnected
+#Confirm transaction - step 13 - Disconnected
+#Display transaction - step 14 - Disconnected # On your Online laptop currently showing step 9 click next and contiue on step 14
+#Scan transaction - step 15 - Online #Scan the transaction from your Disconnected laptop currently showing step 13
 
 #Display wallet - WP - Online
 #Display utxo B - step 1 - Online # On your Disconnected laptop showing step (13 or 5) click next and continue on step 2
@@ -441,7 +442,7 @@ def YCRimportseeds():
             return redirect('/YCRswitchlaptop')
         else:
             return redirect('/YCRimportseeds')
-    return render_template('YCRimportseeds.html', x=privkeycount + 1, error=error,i=privkeycount + 4)
+    return render_template('YCRimportseeds.html', x=privkeycount + 1, error=error,i=privkeycount + 6)
 
 @app.route("/YCRswitchlaptop", methods=['GET', 'POST'])
 def YCRswitchlaptop():
