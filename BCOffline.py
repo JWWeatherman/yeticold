@@ -115,7 +115,7 @@ def BCblockchain():
                     f.write(new + old)
             else:
                 subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
-            return redirect('/BCopenbitcoinC')
+            return redirect('/BCopenbitcoin')
         time.sleep(5)
     if request.method == 'POST':
         if request.form['option'] == 'downloadblockchain':
