@@ -87,10 +87,10 @@ def blockheight():
 #FLOW
 #YCRblockchain - ONLINE - CHOOSE blockchain if none found
 #Open bitcoin - step 7 - ONLINE  
-#Scan Descriptor - step 8 - Online
-#Rescan Wallet - step 9 - Online
-#Display Wallet - WP - Online
-#Setup Disconnected - step 1 - ONLINE
+#Scan Descriptor - step 8 - ONLINE
+#Rescan Wallet - step 9 - ONLINE
+#Display Wallet - WP - ONLINE
+#YCRstartdisconnected - step 1 - ONLINE
 #rec.yeticold.com - step 2 - DISCONNECTED
 #YCRblockchain - DISCONNECTED - CHOOSE blockchain if none found
 #YCRopenbitcoinB - step 3 - DISCONNECTED
@@ -115,7 +115,7 @@ def blockheight():
 #Display transaction B - step 5 - Disconnected # On your Online laptop currently showing step 1 click next and contiue on step 6
 #Scan transaction B - step 6 - Online #Scan the transaction from your Disconnected laptop currently showing step 5
 
-#FLOW
+#ROUTES
 @app.route("/", methods=['GET', 'POST'])
 def redirectroute():
     if request.method == 'GET':

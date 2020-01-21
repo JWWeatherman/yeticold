@@ -281,7 +281,7 @@ def YWgetseeds():
         subprocess.call('rm -r '+path+'/ywseed*', shell=True)
         return redirect('/YWdisplayseeds')
     return render_template('YWgetseeds.html')
-#display seeds
+
 @app.route('/YWdisplayseeds', methods=['GET', 'POST'])
 def YWdisplayseeds():
     global privkeylist
@@ -331,7 +331,7 @@ def YWdisplayseeds():
         else:
             return redirect('/YWdisplayseeds')
     return render_template('YWdisplayseeds.html', PPL=passphraselist, x=privkeycount + 1, i=privkeycount + 9)
-#confirm privkey
+
 @app.route('/YWcheckseeds', methods=['GET', 'POST'])
 def YWcheckseeds():
     global privkeylist
@@ -414,10 +414,6 @@ def YWcopyseeds():
     if request.method == 'POST':
         return redirect('/YWRdisplaywallet')
     return render_template('YWcopyseeds.html')
-
-###END OF SETUP
-
-#### start recovery
 
 @app.route("/YWRscandescriptor", methods=['GET', 'POST'])
 def YWRscandescriptor():

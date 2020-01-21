@@ -81,9 +81,10 @@ def blockheight():
         blockheight = Blockinfo['pruneheight']
     return str(blockheight)
 
+#FLOW 
 #BCblockchain - ONLINE
 #Open bitcoin - step 6 - ONLINE
-#Setup Disconnected - step 7 - ONLINE
+#BCstartdisconnected - step 7 - ONLINE
 #off.yeticold.com - step 8 - DISCONNECTED
 #BCblockchainB - DISCONNECTED
 #BCopenbitcoinB - step 9 - DISCONNECTED
@@ -151,16 +152,16 @@ def BCopenbitcoin():
         progress = BTCprogress()
     if request.method == 'POST':
         if IBD:
-            return redirect('/BConlinestartup')
+            return redirect('/BCstartdisconnected')
         else:
             return redirect('/BCopenbitcoin')
     return render_template('BCopenbitcoin.html', progress=progress, IBD=IBD)
 
-@app.route("/BConlinestartup", methods=['GET', 'POST'])
-def BConlinestartup():
+@app.route("/BCstartdisconnected", methods=['GET', 'POST'])
+def BCstartdisconnected():
     if request.method == 'POST':
         return redirect('/BCscantransaction')
-    return render_template('BConlinestartup.html')
+    return render_template('BCstartdisconnected.html')
 
 @app.route("/BCblockchainB", methods=['GET', 'POST'])
 def BCblockchainB():
