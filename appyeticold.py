@@ -229,7 +229,6 @@ def YCRscandescriptor():
     if request.method == 'POST':
         pubdesc = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
         pubdesc = pubdesc.decode("utf-8")
-        pubdesc = pubdesc.replace('\n', '')
         return redirect('/YCRrescanwallet')
     return render_template('YCRscandescriptor.html')
 
@@ -255,6 +254,7 @@ def YCRdisplaywallet():
     global walletimported
     if request.method == 'GET':
         subprocess.call(['rm -r ~/yeticold/static/address*'],shell=True)
+        pubdesc = pubdesc.replace('\n', '')
         response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yeticold deriveaddresses "'+pubdesc+'" "[0,999]"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
         adrlist = json.loads(response[0].decode("utf-8"))
@@ -902,7 +902,7 @@ def YCprintpage():
 @app.route("/YCswitchlaptop", methods=['GET', 'POST'])
 def YCswitchlaptop():
     if request.method == 'POST':
-        return redirect('/YCdisplaywallet')
+        return redirect('/YCRdisplaywallet')
     return render_template('YCswitchlaptop.html')
 
 @app.route('/YCdisplayseeds', methods=['GET', 'POST'])
