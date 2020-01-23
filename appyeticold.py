@@ -18,23 +18,15 @@ import sys
 #VARIABLES
 app = Flask(__name__)
 home = os.getenv("HOME")
-privkeylist = []
-xprivlist = []
-firstqrcode = 0
-secondqrcode = 0
-error = None
-thirdqrcode = 0
-privkeycount = 0
-firstqrname = None
-secondqrname = None
-thirdqrname = None
-utxoresponse = None
-pubdesc = None
-adrlist = []
 IBD = False
-transnum = 0
 progress = 0
-utxo = None
+privkeylist = []
+privkeycount = 0
+xprivlist = []
+pubdesc = ''
+selectedutxo = ''
+addresses = ''
+walletimported = False
 
 #FILE IMPORTS
 sys.path.append(home + '/yeticold/utils/')
@@ -64,8 +56,6 @@ def BTCFinished():
     return not bitcoinprogress
 
 def BTCClosed():
-    home = os.getenv("HOME")
-    print(subprocess.call('lsof -n -i :8332', shell=True))
     if (subprocess.call('lsof -n -i :8332', shell=True) != 1):
         return False
     elif os.path.exists(home + "/.bitcoin/bitcoind.pid"):
@@ -84,34 +74,597 @@ def RPC():
     rpc = AuthServiceProxy(uri, timeout=600)  # 1 minute timeout
     return rpc
 
+
+
+
 #FLOW
-#YConlinestartup - step 7 - ONLINE
-#disc.yeticold.com - step 8 - DISCONNECTED
-#YCblockchain - DISCONNECTED - CHOOSE test blockchain or create/use a valid one if none is found.
-#YCopenbitcoin - step 9 - DISCONNECTED - 
-#YCconnection - step 10 - DISCONNECTED - TURN OFF internet and disconnect cables
-#YCgetseeds - step 11 - DISCONNECTED
-#YCdisplayseeds - step 12 + 18 - DISCONNECTED
-#YCcheckseeds - step 19 + 25 - DISCONNECTED
-#YCcopyseeds - step 26 - DISCONNECTED
-#YCdisplaydescriptor - step 27 - DISCONNECTED - SWITCH to your ONLINE laptop showing step 7 and click netx to step 28
-#YCscandescriptor - step 28 - ONLINE - SCAN the qr code from your DISCONNECTED laptop showing step 25
-#YCprintpage - step 29 - ONLINE
-#YCstoreseeds - step 30 - ONLINE
-#YCdeleteseeds - step 31 - ONLINE
-#YCsendfunds - step 32 - ONLINE
+
 
 #ROUTES
+
 @app.route("/", methods=['GET', 'POST'])
 def redirectroute():
-    return redirect('/YConlinestartup')
+    return redirect('/YCmenu')
 
-@app.route("/YConlinestartup", methods=['GET', 'POST'])
-def YConlinestartup():
+@app.route("/YCmenu", methods=['GET', 'POST'])
+def YCmenu():
     if request.method == 'POST':
-        return redirect('/YCscandescriptor')
-    return render_template('YConlinestartup.html')
+        if request.form['option'] == 'startup':
+            return redirect('/YCblockchain')
+        else:
+            return redirect('/YCRblockchain')
+    return render_template('YCmenu.html')
 
+#RECOVERY
+
+@app.route("/YCRblockchain", methods=['GET', 'POST'])
+def YCRblockchain():
+    global rpcpsw
+    if request.method == 'GET':
+        home = os.getenv("HOME")
+        if (os.path.exists(home + "/.bitcoin")):
+            if (os.path.exists(home + "/.bitcoin/bitcoin.conf")):
+                with open(".bitcoin/bitcoin.conf","r+") as f:
+                    old = f.read()
+                    f.seek(0)
+                    new = "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword="+rpcpsw+"\n"
+                    f.write(new + old)
+            else:
+                subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
+            return redirect('/YCRopenbitcoin')
+    if request.method == 'POST':
+        if request.form['option'] == 'downloadblockchain':
+            subprocess.call(['python3 ~/yeticold/utils/testblockchain.py'],shell=True)
+        else:
+            fmt = '%Y-%m-%d %H:%M:%S'
+            today = str(datetime.today()).split('.')[0]
+            print(request.form['date'] + ' 12:0:0')
+            print(today)
+            d1 = datetime.strptime(request.form['date'] + ' 12:0:0', fmt)
+            d2 = datetime.strptime(today, fmt)
+            d1_ts = time.mktime(d1.timetuple())
+            d2_ts = time.mktime(d2.timetuple())
+            diff = (int(d2_ts - d1_ts) / 60) / 10
+            add = diff / 10
+            blockheight = diff + add + 550
+            blockheight = int(blockheight)
+            home = os.getenv("HOME")
+            subprocess.call(['mkdir ~/.bitcoin'],shell=True)
+            subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nprune='+str(blockheight)+'\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
+        return redirect('/YCRopenbitcoin')
+    return render_template('YCRblockchain.html')
+
+@app.route("/YCRopenbitcoin", methods=['GET', 'POST'])
+def YCRopenbitcoin():
+    global progress
+    global IBD
+    if request.method == 'GET':
+        home = os.getenv("HOME")
+        if BTCClosed():
+            if (os.path.exists(home + "/.bitcoin/bitcoin.conf")):
+                with open(".bitcoin/bitcoin.conf","r+") as f:
+                    old = f.read()
+                    f.seek(0)
+                    new = "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword="+rpcpsw+"\n"
+                    f.write(new + old)
+            else:
+                subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
+            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
+        IBD = BTCFinished()
+        progress = BTCprogress()
+    if request.method == 'POST':
+        if IBD:
+            subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yeticold"'],shell=True)
+            return redirect('/YCRscandescriptor')
+        else:
+            return redirect('/YCRopenbitcoin')
+    return render_template('YCRopenbitcoin.html', progress=progress, IBD=IBD)
+
+#SWITCH TO OFFLINE
+@app.route("/YCRblockchainB", methods=['GET', 'POST'])
+def YCRblockchainB():
+    global rpcpsw
+    if request.method == 'GET':
+        home = os.getenv("HOME")
+        if (os.path.exists(home + "/.bitcoin")):
+            if (os.path.exists(home + "/.bitcoin/bitcoin.conf")):
+                with open(".bitcoin/bitcoin.conf","r+") as f:
+                    old = f.read()
+                    f.seek(0)
+                    new = "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword="+rpcpsw+"\n"
+                    f.write(new + old)
+            else:
+                subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
+            return redirect('/YCRopenbitcoinB')
+    if request.method == 'POST':
+        if request.form['option'] == 'downloadblockchain':
+            subprocess.call(['python3 ~/yeticold/utils/testblockchain.py'],shell=True)
+        else:
+            fmt = '%Y-%m-%d %H:%M:%S'
+            today = str(datetime.today()).split('.')[0]
+            print(request.form['date'] + ' 12:0:0')
+            print(today)
+            d1 = datetime.strptime(request.form['date'] + ' 12:0:0', fmt)
+            d2 = datetime.strptime(today, fmt)
+            d1_ts = time.mktime(d1.timetuple())
+            d2_ts = time.mktime(d2.timetuple())
+            diff = (int(d2_ts - d1_ts) / 60) / 10
+            add = diff / 10
+            blockheight = diff + add + 550
+            blockheight = int(blockheight)
+            home = os.getenv("HOME")
+            subprocess.call(['mkdir ~/.bitcoin'],shell=True)
+            subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nprune='+str(blockheight)+'\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
+        return redirect('/YCRopenbitcoinB')
+    return render_template('YCRblockchainB.html')
+
+@app.route("/YCRopenbitcoinB", methods=['GET', 'POST'])
+def YCRopenbitcoinB():
+    global progress
+    global IBD
+    if request.method == 'GET':
+        home = os.getenv("HOME")
+        if BTCClosed():
+            if (os.path.exists(home + "/.bitcoin/bitcoin.conf")):
+                with open(".bitcoin/bitcoin.conf","r+") as f:
+                    old = f.read()
+                    f.seek(0)
+                    new = "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword="+rpcpsw+"\n"
+                    f.write(new + old)
+            else:
+                subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
+            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
+        IBD = BTCFinished()
+        progress = BTCprogress()
+    if request.method == 'POST':
+        if IBD:
+            subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yeticold"'],shell=True)
+            return redirect('/YCRconnection')
+        else:
+            return redirect('/YCRopenbitcoinB')
+    return render_template('YCRopenbitcoinB.html', progress=progress, IBD=IBD)
+
+@app.route("/YCRconnection", methods=['GET', 'POST'])
+def YCRconnection():
+    if request.method == 'POST':
+        subprocess.call(['python3 ~/yeticold/utils/forgetnetworks.py'],shell=True)
+        subprocess.call(['nmcli n off'],shell=True)
+        return redirect('/YCRswitchlaptop')
+    return render_template('YCRconnection.html')
+
+@app.route("/YCRswitchlaptop", methods=['GET', 'POST'])
+def YCRswitchlaptop():
+    if request.method == 'POST':
+        return redirect('/YCRscandescriptor')
+    return render_template('YCRswitchlaptop.html')
+
+@app.route("/YCRscandescriptor", methods=['GET', 'POST'])
+def YCRscandescriptor():
+    global pubdesc
+    if request.method == 'POST':
+        pubdesc = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+        pubdesc = pubdesc.decode("utf-8")
+        pubdesc = pubdesc.replace('\n', '')
+        return redirect('/YCRrescanwallet')
+    return render_template('YCRscandescriptor.html')
+
+@app.route("/YCRrescanwallet", methods=['GET', 'POST'])
+def YCRrescanwallet():
+    global pubdesc
+    if request.method == 'GET':
+        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yeticold importmulti \'[{ "desc": "'+pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false}]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        print(response)
+        if not (len(response[1]) == 0): 
+            print(response)
+            return "error response from importmulti: " + str(response[1]) + '\n' + '~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yeticold importmulti \'[{ "desc": "'+pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false}]\' \'{"rescan": true}\''
+        subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yeticold rescanblockchain '+blockheight(),shell=True,start_new_session=True)
+    if request.method == 'POST':
+        return redirect('/YCRdisplaywallet')
+    return render_template('YCRrescanwallet.html')
+
+@app.route("/YCRdisplaywallet", methods=['GET', 'POST'])
+def YCRdisplaywallet():
+    global selectedutxo
+    global addresses
+    global rpcpsw
+    global walletimported
+    if request.method == 'GET':
+        subprocess.call(['rm -r ~/yeticold/static/address*'],shell=True)
+        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yeticold deriveaddresses "'+pubdesc+'" "[0,999]"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        print(response)
+        adrlist = json.loads(response[0].decode("utf-8"))
+        addresses = []
+        totalwalletbal = 0
+        rpc = RPC()
+        for i in range(0, len(adrlist)):
+            adr = adrlist[i]
+            randomnum = str(random.randrange(0,1000000))
+            route = url_for('static', filename='address'+adr+''+randomnum+'.png')
+            response = rpc.listunspent(0, 9999999, [adr])
+            if response == []:
+                totalbal = rpc.getreceivedbyaddress(adrlist[i])
+                if totalbal:
+                    status = 3
+                else:
+                    status = 0
+                address = {}
+                address['txid'] = ''
+                address['address'] = adr
+                address['balance'] = "0.00000000"
+                address['numbal'] = 0
+                address['status'] = status
+                address['route'] = route
+                addresses.append(address)
+            else:
+                for x in range(0, len(response)):
+                    utxo = response[x]
+                    txid = utxo['txid']
+                    vout = utxo['vout']
+                    scriptPubKey = utxo['scriptPubKey']
+                    numamount = utxo['amount']
+                    totalwalletbal = totalwalletbal + numamount
+                    amount = "{:.8f}".format(float(numamount))
+                    numamount = float(amount)
+                    confs = utxo['confirmations']
+                    totalbal = rpc.getreceivedbyaddress(adr)
+                    if numamount:
+                        if not confs:
+                            status = 1
+                        else:
+                            status = 2
+                    elif totalbal:
+                        status = 3
+                    else:
+                        status = 0
+                    address = {}
+                    address['txid'] = txid
+                    address['vout'] = vout 
+                    address['scriptPubKey'] = scriptPubKey
+                    address['address'] = adr
+                    address['balance'] = amount
+                    address['numbal'] = numamount
+                    address['status'] = status
+                    address['route'] = route
+                    addresses.append(address)
+        addresses.sort(key=lambda x: x['balance'], reverse=True)
+        for i in range(0, len(addresses)):
+            qr = qrcode.QRCode(
+                version=1,
+                error_correction=qrcode.constants.ERROR_CORRECT_L,
+                box_size=10,
+                border=4,
+            )
+            qr.add_data(addresses[i]['address'])
+            qr.make(fit=True)
+            color = '#e9ecef'
+            if (i % 2) == 0:
+                color = 'white'
+            img = qr.make_image(fill_color="black", back_color=color)
+            home = os.getenv("HOME")
+            img.save(home + '/yeticold/'+addresses[i]['route'])
+    if request.method == 'POST':
+        for i in range(0, len(addresses)):
+            if request.form['txid'] == addresses[i]['txid']:
+                selectedutxo = addresses[i]
+                break
+        if walletimported:
+            return redirect('/YCRdisplayutxoB')
+        return redirect('/YCRdisplayutxo')
+    return render_template('YCRdisplaywallet.html', addresses=addresses, len=len(addresses), TWB=totalwalletbal)
+
+@app.route("/YCRdisplayutxo", methods=['GET', 'POST'])
+def YCRdisplayutxo():
+    global selectedutxo
+    if request.method == 'GET':
+        randomnum = str(random.randrange(0,1000000))
+        qrname = randomnum
+        qr = qrcode.QRCode(
+               version=1,
+               error_correction=qrcode.constants.ERROR_CORRECT_L,
+               box_size=10,
+               border=4,
+        )
+        qr.add_data(str(selectedutxo))
+        qr.make(fit=True)
+        img = qr.make_image(fill_color="black", back_color="white")
+        home = os.getenv("HOME")
+        img.save(home + '/yeticold/static/qrcode' + qrname + '.png')
+        path = url_for('static', filename='qrcode' + qrname + '.png')
+    if request.method == 'POST':
+        return redirect('/YCRscantransaction')
+    return render_template('YCRdisplayutxo.html', qrdata=selectedutxo, path=path)
+
+@app.route("/YCRscanutxo", methods=['GET', 'POST'])
+def YCRscanutxo():
+    global selectedutxo
+    if request.method == 'POST':
+        selectedutxo = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+        selectedutxo = eval(selectedutxo.decode("utf-8"))
+        return redirect('/YCRscandescriptorB')
+    return render_template('YCRscanutxo.html')
+
+@app.route("/YCRscandescriptorB", methods=['GET', 'POST'])
+def YCRscandescriptorB():
+    global pubdesc
+    if request.method == 'POST':
+        pubdesc = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+        return redirect('/YCRimportseeds')
+    return render_template('YCRscandescriptorB.html')
+
+@app.route('/YCRimportseeds', methods=['GET', 'POST'])
+def YCRimportseeds():
+    global pubdesc
+    global privkeycount
+    global error
+    global privkeylist
+    global walletimported
+    if request.method == 'POST':
+        privkey = []
+        for i in range(1,14):
+            inputlist = request.form['row' + str(i)]
+            inputlist = inputlist.split(' ')
+            inputlist = inputlist[0:4]
+            privkey.append(inputlist[0])
+            privkey.append(inputlist[1])
+            privkey.append(inputlist[2])
+            privkey.append(inputlist[3])
+        privkeylist.append(PassphraseToWIF(privkey))
+        error = None
+        privkeycount = privkeycount + 1
+        if (privkeycount >= 3):
+            xpublist = []
+            for i in range(0,3):
+                rpc = RPC()
+                home = os.getenv('HOME')
+                path = home + '/yeticoldwallet' + str(i)
+                subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yeticoldwallet'+str(i)+'" false true','~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yeticoldwallet'+str(i)+'"'],shell=True)
+                response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yeticoldwallet'+str(i)+' sethdseed true "'+privkeylist[i]+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+                print(response)
+                response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yeticoldwallet'+str(i)+' dumpwallet "yeticoldwallet'+str(i)+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+                print(response)
+                wallet = open(path,'r')
+                wallet.readline()
+                wallet.readline()
+                wallet.readline()
+                wallet.readline()
+                wallet.readline()
+                privkeyline = wallet.readline()
+                privkeyline = privkeyline.split(" ")[4][:-1]
+                xprivlist.append(privkeyline)
+                response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yeticold getdescriptorinfo "pk('+privkeyline+')"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+                print(response)
+                response = response[0].decode("utf-8")
+                xpub = response.split('(')[1].split(')')[0]
+                xpublist.append(xpub)
+            privkeycount = 0
+            descriptorxpubs = pubdesc.decode("utf-8").split(',')[1:]
+            descriptorxpubs[6] = descriptorxpubs[6].split('))')[0]
+            descriptorlist = descriptorxpubs
+            for i in range(0,3):
+                xpub = xpublist[i] + '/*'
+                for x in range(0,7):
+                    oldxpub = descriptorxpubs[x]
+                    if xpub == oldxpub:
+                        descriptorlist[x] = (xprivlist[i] + '/*')
+                        break
+            desc = '"wsh(multi(3,'+descriptorlist[0]+','+descriptorlist[1]+','+descriptorlist[2]+','+descriptorlist[3]+','+descriptorlist[4]+','+descriptorlist[5]+','+descriptorlist[6]+'))'
+            response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yeticoldpriv"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yeticoldpriv getdescriptorinfo '+desc+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            print(response)
+            response = json.loads(response[0].decode("utf-8"))
+            checksum = response["checksum"]
+            response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yeticoldpriv importmulti \'[{ "desc": '+desc+'#'+ checksum +'", "timestamp": "now", "range": [0,999], "watchonly": false}]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+            print(response)
+            walletimported = True
+            return redirect('/YCRscanrecipent')
+        else:
+            return redirect('/YCRimportseeds')
+    return render_template('YCRimportseeds.html', x=privkeycount + 1, error=error,i=privkeycount + 6)
+
+@app.route("/YCRscanrecipent", methods=['GET', 'POST'])
+def YCRscanrecipent():
+    global error
+    global receipentaddress
+    if request.method == 'POST':
+        error = None
+        if request.form['option'] == 'scan':
+            receipentaddress = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+            receipentaddress = receipentaddress.decode("utf-8").replace('\n', '')
+        else:
+            receipentaddress = request.form['option']
+        if (receipentaddress.split(':')[0] == 'bitcoin'):
+            receipentaddress = receipentaddress.split(':')[1].split('?')[0]
+        if (receipentaddress[:3] == 'bc1') or (receipentaddress[:1] == '3') or (receipentaddress[:1] == '1'):
+            if not (len(receipentaddress) >= 26) and (len(receipentaddress) <= 35):
+                error = receipentaddress + ' is not a valid bitcoin address, address should have a length from 26 to 35 instead of ' + str(len(receipentaddress)) + '.'
+        else: 
+            error = receipentaddress + ' is not a valid bitcoin address, address should have started with bc1, 3 or 1 instead of ' + receipentaddress[:1] + ', or ' + receipentaddress[:3] + '.'
+        if error:
+            return redirect('/YCRscanrecipent')
+        return redirect('/YCRconfirmsend')
+    return render_template('YCRscanrecipent.html', error=error)
+
+@app.route("/YCRconfirmsend", methods=['GET', 'POST'])
+def YCRconfirmsend():
+    global receipentaddress
+    if request.method == 'GET':
+        rpc = RPC()
+        amount = float(selectedutxo['balance'])
+        minerfee = float(rpc.estimatesmartfee(1)["feerate"])
+        kilobytespertrans = 0.200
+        amo = (amount - (minerfee * kilobytespertrans))
+        minerfee = (minerfee * kilobytespertrans)
+        amo = "{:.8f}".format(float(amo))
+        minerfee = "{:.8f}".format(float(minerfee))
+    if request.method == 'POST':
+        return redirect('/YCRdisplaytransaction')
+    return render_template('YCRconfirmsend.html', amount=amo, minerfee=minerfee, recipent=receipentaddress)
+
+@app.route("/YCRdisplaytransaction", methods=['GET', 'POST'])
+def YCRdisplaytransaction():
+    global selectedutxo
+    global receipentaddress
+    if request.method == 'GET':
+        rpc = RPC()
+        amount = float(selectedutxo['balance'])
+        minerfee = float(rpc.estimatesmartfee(1)["feerate"])
+        kilobytespertrans = 0.200
+        amo = (amount - (minerfee * kilobytespertrans))
+        minerfee = (minerfee * kilobytespertrans)
+        amo = "{:.8f}".format(float(amo))
+        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yeticoldpriv createrawtransaction \'[{ "txid": "'+selectedutxo['txid']+'", "vout": '+str(selectedutxo['vout'])+'}]\' \'[{"'+receipentaddress+'" : '+str(amo)+'}]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        print(response)
+        response = response[0].decode("utf-8")
+        transonehex = response[:-1]
+        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yeticoldpriv signrawtransactionwithwallet '+transonehex+' \'[{"txid":"'+selectedutxo['txid']+'","vout":'+str(selectedutxo['vout'])+',"scriptPubKey":"'+selectedutxo['scriptPubKey']+'","amount":"'+str(amount)+'"}]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        print(response)
+        transhex = json.loads(response[0].decode("utf-8"))['hex']
+        qr = qrcode.QRCode(
+            version=1,
+            error_correction=qrcode.constants.ERROR_CORRECT_L,
+            box_size=10,
+            border=4,
+            )
+        qr.add_data(transhex)
+        qr.make(fit=True)
+        img = qr.make_image(fill_color="black", back_color="white")
+        home = os.getenv("HOME")
+        randomnum = str(random.randrange(0,1000000))
+        img.save(home + '/yeticold/static/qrcode'+randomnum+'.png')
+        path = url_for('static', filename='qrcode'+randomnum+'.png')
+    if request.method == 'POST':
+        return redirect('/YCRscanutxoB')
+    return render_template('YCRdisplaytransaction.html', qrdata=transhex, path=path)
+
+@app.route("/YCRscantransaction", methods=['GET', 'POST'])
+def YCRscantransaction():
+    if request.method == 'POST':
+        response = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+        transactionhex = response.decode("utf-8")
+        print(transactionhex)
+        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet= sendrawtransaction '+transactionhex],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        return redirect('/YCRdisplaywallet')
+    return render_template('YCRscantransaction.html')
+
+#REPEAT RECOVERY
+
+@app.route("/YCRdisplayutxoB", methods=['GET', 'POST'])
+def YCRdisplayutxoB():
+    global selectedutxo
+    if request.method == 'GET':
+        randomnum = str(random.randrange(0,1000000))
+        qrname = randomnum
+        qr = qrcode.QRCode(
+               version=1,
+               error_correction=qrcode.constants.ERROR_CORRECT_L,
+               box_size=10,
+               border=4,
+        )
+        qr.add_data(str(selectedutxo))
+        qr.make(fit=True)
+        img = qr.make_image(fill_color="black", back_color="white")
+        home = os.getenv("HOME")
+        img.save(home + '/yeticold/static/qrcode' + qrname + '.png')
+        path = url_for('static', filename='qrcode' + qrname + '.png')
+    if request.method == 'POST':
+        return redirect('/YCRscantransactionB')
+    return render_template('YCRdisplayutxoB.html', qrdata=selectedutxo, path=path)
+
+@app.route("/YCRscanutxoB", methods=['GET', 'POST'])
+def YCRscanutxoB():
+    global selectedutxo
+    if request.method == 'POST':
+        selectedutxo = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+        selectedutxo = eval(selectedutxo.decode("utf-8"))
+        return redirect('/YCRscanrecipentB')
+    return render_template('YCRscanutxoB.html')
+
+@app.route("/YCRscanrecipentB", methods=['GET', 'POST'])
+def YCRscanrecipentB():
+    global error
+    global receipentaddress
+    if request.method == 'POST':
+        error = None
+        if request.form['option'] == 'scan':
+            receipentaddress = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+            receipentaddress = receipentaddress.decode("utf-8").replace('\n', '')
+        else:
+            receipentaddress = request.form['option']
+        if (receipentaddress.split(':')[0] == 'bitcoin'):
+            receipentaddress = receipentaddress.split(':')[1].split('?')[0]
+        if (receipentaddress[:3] == 'bc1') or (receipentaddress[:1] == '3') or (receipentaddress[:1] == '1'):
+            if not (len(receipentaddress) >= 26) and (len(receipentaddress) <= 35):
+                error = receipentaddress + ' is not a valid bitcoin address, address should have a length from 26 to 35 instead of ' + str(len(receipentaddress)) + '.'
+        else: 
+            error = receipentaddress + ' is not a valid bitcoin address, address should have started with bc1, 3 or 1 instead of ' + receipentaddress[:1] + ', or ' + receipentaddress[:3] + '.'
+        if error:
+            return redirect('/YCRscanrecipentB')
+        return redirect('/YCRconfirmsendB')
+    return render_template('YCRscanrecipentB.html', error=error)
+
+@app.route("/YCRconfirmsendB", methods=['GET', 'POST'])
+def YCRconfirmsendB():
+    global receipentaddress
+    if request.method == 'GET':
+        rpc = RPC()
+        amount = float(selectedutxo['balance'])
+        minerfee = float(rpc.estimatesmartfee(1)["feerate"])
+        kilobytespertrans = 0.200
+        amo = (amount - (minerfee * kilobytespertrans))
+        minerfee = (minerfee * kilobytespertrans)
+        amo = "{:.8f}".format(float(amo))
+        minerfee = "{:.8f}".format(float(minerfee))
+    if request.method == 'POST':
+        return redirect('/YCRdisplaytransactionB')
+    return render_template('YCRconfirmsendB.html', amount=amo, minerfee=minerfee, recipent=receipentaddress)
+
+@app.route("/YCRdisplaytransactionB", methods=['GET', 'POST'])
+def YCRdisplaytransactionB():
+    global selectedutxo
+    global receipentaddress
+    if request.method == 'GET':
+        rpc = RPC()
+        amount = float(selectedutxo['balance'])
+        minerfee = float(rpc.estimatesmartfee(1)["feerate"])
+        kilobytespertrans = 0.200
+        amo = (amount - (minerfee * kilobytespertrans))
+        minerfee = (minerfee * kilobytespertrans)
+        amo = "{:.8f}".format(float(amo))
+        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yeticoldpriv createrawtransaction \'[{ "txid": "'+selectedutxo['txid']+'", "vout": '+str(selectedutxo['vout'])+'}]\' \'[{"'+receipentaddress+'" : '+str(amo)+'}]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        print(response)
+        response = response[0].decode("utf-8")
+        transonehex = response[:-1]
+        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yeticoldpriv signrawtransactionwithwallet '+transonehex+' \'[{"txid":"'+selectedutxo['txid']+'","vout":'+str(selectedutxo['vout'])+',"scriptPubKey":"'+selectedutxo['scriptPubKey']+'","amount":"'+str(amount)+'"}]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        print(response)
+        transhex = json.loads(response[0].decode("utf-8"))['hex']
+        qr = qrcode.QRCode(
+            version=1,
+            error_correction=qrcode.constants.ERROR_CORRECT_L,
+            box_size=10,
+            border=4,
+            )
+        qr.add_data(transhex)
+        qr.make(fit=True)
+        img = qr.make_image(fill_color="black", back_color="white")
+        home = os.getenv("HOME")
+        randomnum = str(random.randrange(0,1000000))
+        img.save(home + '/yeticold/static/qrcode'+randomnum+'.png')
+        path = url_for('static', filename='qrcode'+randomnum+'.png')
+    if request.method == 'POST':
+        return redirect('/YCRscanutxoB')
+    return render_template('YCRdisplaytransactionB.html', qrdata=transhex, path=path)
+
+@app.route("/YCRscantransactionB", methods=['GET', 'POST'])
+def YCRscantransactionB():
+    if request.method == 'POST':
+        response = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+        transactionhex = response.decode("utf-8")
+        print(transactionhex)
+        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet= sendrawtransaction '+transactionhex],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        return redirect('/YCRdisplaywallet')
+    return render_template('YCRscantransactionB.html')
+
+#SETUP
 @app.route("/YCblockchain", methods=['GET', 'POST'])
 def YCblockchain():
     global rpcpsw
@@ -170,10 +723,74 @@ def YCopenbitcoin():
     if request.method == 'POST':
         if IBD:
             subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yeticold"'],shell=True)
-            return redirect('/YCconnection')
+            return redirect('/YCscandescriptor')
         else:
             return redirect('/YCopenbitcoin')
     return render_template('YCopenbitcoin.html', progress=progress, IBD=IBD)
+
+#SWITCH TO OFFLINE
+@app.route("/YCblockchainB", methods=['GET', 'POST'])
+def YCblockchainB():
+    global rpcpsw
+    if request.method == 'GET':
+        home = os.getenv("HOME")
+        if (os.path.exists(home + "/.bitcoin")):
+            if (os.path.exists(home + "/.bitcoin/bitcoin.conf")):
+                with open(".bitcoin/bitcoin.conf","r+") as f:
+                    old = f.read()
+                    f.seek(0)
+                    new = "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword="+rpcpsw+"\n"
+                    f.write(new + old)
+            else:
+                subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
+            return redirect('/YCopenbitcoinB')
+    if request.method == 'POST':
+        if request.form['option'] == 'downloadblockchain':
+            subprocess.call(['python3 ~/yeticold/utils/testblockchain.py'],shell=True)
+        else:
+            fmt = '%Y-%m-%d %H:%M:%S'
+            today = str(datetime.today()).split('.')[0]
+            print(request.form['date'] + ' 12:0:0')
+            print(today)
+            d1 = datetime.strptime(request.form['date'] + ' 12:0:0', fmt)
+            d2 = datetime.strptime(today, fmt)
+            d1_ts = time.mktime(d1.timetuple())
+            d2_ts = time.mktime(d2.timetuple())
+            diff = (int(d2_ts - d1_ts) / 60) / 10
+            add = diff / 10
+            blockheight = diff + add + 550
+            blockheight = int(blockheight)
+            home = os.getenv("HOME")
+            subprocess.call(['mkdir ~/.bitcoin'],shell=True)
+            subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nprune='+str(blockheight)+'\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
+        return redirect('/YCopenbitcoinB')
+    return render_template('YCblockchainB.html')
+
+@app.route("/YCopenbitcoinB", methods=['GET', 'POST'])
+def YCopenbitcoinB():
+    global progress
+    global IBD
+    if request.method == 'GET':
+        home = os.getenv("HOME")
+        if BTCClosed():
+            if (os.path.exists(home + "/.bitcoin/bitcoin.conf")):
+                with open(".bitcoin/bitcoin.conf","r+") as f:
+                    old = f.read()
+                    f.seek(0)
+                    new = "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword="+rpcpsw+"\n"
+                    f.write(new + old)
+            else:
+                subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
+            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
+        IBD = BTCFinished()
+        progress = BTCprogress()
+    if request.method == 'POST':
+        if IBD:
+            subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yeticold"'],shell=True)
+            return redirect('/YCconnection')
+        else:
+            return redirect('/YCopenbitcoinB')
+    return render_template('YCopenbitcoinB.html', progress=progress, IBD=IBD)
 
 @app.route("/YCconnection", methods=['GET', 'POST'])
 def YCconnection():
@@ -187,10 +804,9 @@ def YCconnection():
 def YCgetseeds():
     global privkeylist
     global privkeycount
-    global firstqrcode
-    global secondqrcode
     global xprivlist
     global pubdesc
+    global home
     if request.method == 'POST':
         if request.form['skip'] == 'skip':
             privkeylisttemp = []
@@ -245,12 +861,80 @@ def YCgetseeds():
             return "error response from getdescriptorinfo: " + str(response[1]) + '\n' + '~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yeticold getdescriptorinfo "wsh(multi(3,'+xprivlist[0]+'/*,'+xprivlist[1]+'/*,'+xprivlist[2]+'/*,'+xprivlist[3]+'/*,'+xprivlist[4]+'/*,'+xprivlist[5]+'/*,'+xprivlist[6]+'/*))"'
         checksum = response["checksum"]
         pubdesc = response["descriptor"]
-        firstqrcode = pubdesc
-        home = os.getenv('HOME')
         seedpath = home + '/Documents'
         subprocess.call('rm -r '+seedpath+'/ycseed*', shell=True)
-        return redirect('/YCdisplayseeds')
+        privdesc = '"wsh(multi(3,'+xprivlist[0]+'/*,'+xprivlist[1]+'/*,'+xprivlist[2]+'/*,'+xprivlist[3]+'/*,'+xprivlist[4]+'/*,'+xprivlist[5]+'/*,'+xprivlist[6]+'/*))'
+        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yeticoldpriv"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yeticoldpriv getdescriptorinfo '+privdesc+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        print(response)
+        response = json.loads(response[0].decode("utf-8"))
+        checksum = response["checksum"]
+        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yeticoldpriv importmulti \'[{ "desc": '+privdesc+'#'+ checksum +'", "timestamp": "now", "range": [0,999], "watchonly": false}]\' \'{"rescan": true}\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        walletimported = True
+        return redirect('/YCdisplaydescriptor')
     return render_template('YCgetseeds.html')
+
+@app.route("/YCdisplaydescriptor", methods=['GET', 'POST'])
+def YCdisplaydescriptor():
+    global privkeylist
+    global pubdesc
+    if request.method == 'GET':
+        randomnum = str(random.randrange(0,1000000))
+        firstqrname = randomnum
+        qr = qrcode.QRCode(
+               version=1,
+               error_correction=qrcode.constants.ERROR_CORRECT_L,
+               box_size=10,
+               border=4,
+        )
+        qr.add_data(pubdesc)
+        qr.make(fit=True)
+        img = qr.make_image(fill_color="black", back_color="white")
+        home = os.getenv("HOME")
+        img.save(home + '/yeticold/static/firstqrcode' + firstqrname + '.png')
+        path = url_for('static', filename='firstqrcode' + firstqrname + '.png')
+    if request.method == 'POST':
+        return redirect('/YCdisplayseeds')
+    return render_template('YCdisplaydescriptor.html', qrdata=pubdesc, path=path)
+
+@app.route("/YCscandescriptor", methods=['GET', 'POST'])
+def YCscandescriptor():
+    global pubdesc
+    if request.method == 'POST':
+        pubdesc = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+        pubdesc = pubdesc.decode("utf-8")
+        return redirect('/YCprintpage')
+    return render_template('YCscandescriptor.html')
+
+@app.route("/YCprintpage", methods=['GET', 'POST'])
+def YCprintpage():
+    global pubdesc
+    randomnum = str(random.randrange(0,1000000))
+    firstqrname = randomnum
+    secondqrname = randomnum
+    thirdqrname = randomnum
+    path = url_for('static', filename='firstqrcode' + firstqrname + '.png')
+    if request.method == 'GET':
+        qr = qrcode.QRCode(
+               version=1,
+               error_correction=qrcode.constants.ERROR_CORRECT_L,
+               box_size=10,
+               border=4,
+        )
+        qr.add_data(pubdesc)
+        qr.make(fit=True)
+        img = qr.make_image(fill_color="black", back_color="white")
+        home = os.getenv("HOME")
+        img.save(home + '/yeticold/static/firstqrcode' + firstqrname + '.png')
+    if request.method == 'POST':
+        return redirect('/YC')
+    return render_template('YCprintpage.html', qrdata=pubdesc, path=path)
+
+@app.route("/YCswitchlaptop", methods=['GET', 'POST'])
+def YCswitchlaptop():
+    if request.method == 'POST':
+        return redirect('/YCdisplaywallet')
+    return render_template('YCswitchlaptop.html')
 
 @app.route('/YCdisplayseeds', methods=['GET', 'POST'])
 def YCdisplayseeds():
@@ -360,84 +1044,21 @@ def YCcheckseeds():
 @app.route("/YCcopyseeds", methods=['GET', 'POST'])
 def YCcopyseeds():
     if request.method == 'POST':
-        return redirect('/YCdisplaydescriptor')
+        return redirect('/YCswitchlaptopB')
     return render_template('YCcopyseeds.html')
 
-@app.route("/YCdisplaydescriptor", methods=['GET', 'POST'])
-def YCdisplaydescriptor():
-    global privkeylist
-    global firstqrcode
-    global firsqrname
-    if request.method == 'GET':
-        randomnum = str(random.randrange(0,1000000))
-        firstqrname = randomnum
-        qr = qrcode.QRCode(
-               version=1,
-               error_correction=qrcode.constants.ERROR_CORRECT_L,
-               box_size=10,
-               border=4,
-        )
-        qr.add_data(firstqrcode)
-        qr.make(fit=True)
-        img = qr.make_image(fill_color="black", back_color="white")
-        home = os.getenv("HOME")
-        img.save(home + '/yeticold/static/firstqrcode' + firstqrname + '.png')
-        path = url_for('static', filename='firstqrcode' + firstqrname + '.png')
-    return render_template('YCdisplaydescriptor.html', qrdata=firstqrcode, path=path)
-
-@app.route("/YCscandescriptor", methods=['GET', 'POST'])
-def YCscandescriptor():
-    global firstqrcode
+@app.route("/YCswitchlaptopB", methods=['GET', 'POST'])
+def YCswitchlaptopB():
     if request.method == 'POST':
-        firstqrcode = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-        firstqrcode = firstqrcode.decode("utf-8")
-        return redirect('/YCprintpage')
-    return render_template('YCscandescriptor.html')
+        return redirect('/YC')
+    return render_template('YCswitchlaptopB.html')
 
-@app.route("/YCprintpage", methods=['GET', 'POST'])
-def YCprintpage():
-    global firstqrcode
-    global secondqrcode
-    global firstqrname
-    global secondqrname
-    randomnum = str(random.randrange(0,1000000))
-    firstqrname = randomnum
-    secondqrname = randomnum
-    thirdqrname = randomnum
-    path = url_for('static', filename='firstqrcode' + firstqrname + '.png')
-    if request.method == 'GET':
-        qr = qrcode.QRCode(
-               version=1,
-               error_correction=qrcode.constants.ERROR_CORRECT_L,
-               box_size=10,
-               border=4,
-        )
-        qr.add_data(firstqrcode)
-        qr.make(fit=True)
-        img = qr.make_image(fill_color="black", back_color="white")
-        home = os.getenv("HOME")
-        img.save(home + '/yeticold/static/firstqrcode' + firstqrname + '.png')
-    if request.method == 'POST':
-        return redirect('/YCstoreseeds')
-    return render_template('YCprintpage.html', qrdata=firstqrcode, path=path)
 
-@app.route("/YCstoreseeds", methods=['GET', 'POST'])
-def YCstoreseeds():
-    if request.method == 'POST':
-        return redirect('/YCdeleteseeds')
-    return render_template('YCstoreseeds.html')
 
-@app.route("/YCdeleteseeds", methods=['GET', 'POST'])
-def YCdeleteseeds():
-    if request.method == 'POST':
-        return redirect('/YCsendfunds')
-    return render_template('YCdeleteseeds.html')
 
-@app.route("/YCsendfunds", methods=['GET', 'POST'])
-def YCsendfunds():
-    if request.method == 'POST':
-        subprocess.Popen('python3 ~/yeticold/scripts/YetiColdRecovery.py',shell=True,start_new_session=True)
-    return render_template('YCsendfunds.html')
 
-if __name__ == "__main__":
-    app.run()
+
+
+
+
+

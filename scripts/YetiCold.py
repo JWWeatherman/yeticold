@@ -28,4 +28,4 @@ if not (os.system("python3 -c 'import PIL'") == 0):
 if not (os.system("python3 -c 'import zbar'") == 0):
 	subprocess.call(['pip3 install zbar-py'],shell=True)
 subprocess.Popen('python3 ~/yeticold/appyeticold.py',shell=True,start_new_session=True)
-subprocess.call(['xdg-open http://localhost:5000/YConlinestartup'],shell=True)
+subprocess.call(['xdg-open http://localhost:5000/YCmenu'],shell=True)

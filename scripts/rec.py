@@ -33,5 +33,5 @@ if (os.path.exists(home + "/.bitcoin")):
 subprocess.call('sudo rm -r ~/.bitcoin/wallets/yeticold*', shell=True)
 subprocess.call('sudo rm -r ~/.bitcoin/yeticold*', shell=True)
 subprocess.call('sudo rm -r ~/yeticoldwallet*', shell=True)
-subprocess.Popen('python3 ~/yeticold/appyeticoldR.py',shell=True,start_new_session=True)
+subprocess.Popen('python3 ~/yeticold/appyeticold.py',shell=True,start_new_session=True)
 subprocess.call(['xdg-open http://localhost:5000/YCRblockchainB'],shell=True)
