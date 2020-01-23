@@ -27,6 +27,7 @@ pubdesc = ''
 selectedutxo = ''
 addresses = ''
 walletimported = False
+error = ''
 
 #FILE IMPORTS
 sys.path.append(home + '/yeticold/utils/')
