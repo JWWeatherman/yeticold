@@ -895,7 +895,7 @@ def YCprintpage():
         home = os.getenv("HOME")
         img.save(home + '/yeticold/static/firstqrcode' + firstqrname + '.png')
     if request.method == 'POST':
-        return redirect('/YC')
+        return redirect('/YCswitchlaptopYC')
     return render_template('YCprintpage.html', qrdata=pubdesc, path=path)
 
 @app.route("/YCswitchlaptop", methods=['GET', 'POST'])
