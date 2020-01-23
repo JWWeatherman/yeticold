@@ -275,6 +275,7 @@ def YCRdisplaywallet():
             randomnum = str(random.randrange(0,1000000))
             route = url_for('static', filename='address'+adr+''+randomnum+'.png')
             response = rpc.listunspent(0, 9999999, [adr])
+            print(response)
             if response == []:
                 totalbal = rpc.getreceivedbyaddress(adrlist[i])
                 if totalbal:
