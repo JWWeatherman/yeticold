@@ -1053,12 +1053,5 @@ def YCswitchlaptopB():
         return redirect('/YC')
     return render_template('YCswitchlaptopB.html')
 
-
-
-
-
-
-
-
-
-
+if __name__ == "__main__":
+    app.run()
