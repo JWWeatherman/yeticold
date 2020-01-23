@@ -75,6 +75,13 @@ def RPC():
     rpc = AuthServiceProxy(uri, timeout=600)  # 1 minute timeout
     return rpc
 
+def blockheight():
+    rpc = RPC()
+    Blockinfo = rpc.getblockchaininfo()
+    blockheight = 0
+    if Blockinfo['pruned']:
+        blockheight = Blockinfo['pruneheight']
+    return str(blockheight)
 
 
 
