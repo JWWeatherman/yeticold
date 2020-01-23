@@ -229,6 +229,7 @@ def YCRscandescriptor():
     if request.method == 'POST':
         pubdesc = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
         pubdesc = pubdesc.decode("utf-8")
+        pubdesc = pubdesc.replace('\n', '')
         return redirect('/YCRrescanwallet')
     return render_template('YCRscandescriptor.html')
 
@@ -252,6 +253,7 @@ def YCRdisplaywallet():
     global addresses
     global rpcpsw
     global walletimported
+    global pubdesc
     if request.method == 'GET':
         subprocess.call(['rm -r ~/yeticold/static/address*'],shell=True)
         pubdesc = pubdesc.replace('\n', '')
