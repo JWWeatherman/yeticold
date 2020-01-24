@@ -454,7 +454,7 @@ def YCRimportseeds():
             return redirect('/YCRscanrecipent')
         else:
             return redirect('/YCRimportseeds')
-    return render_template('YCRimportseeds.html', x=privkeycount + 1, error=error,i=privkeycount + 6)
+    return render_template('YCRimportseeds.html', x=privkeycount + 1, error=error,i=privkeycount + 4)
 
 @app.route("/YCRscanrecipent", methods=['GET', 'POST'])
 def YCRscanrecipent():
@@ -965,7 +965,7 @@ def YCdisplayseeds():
             return redirect('/YCcheckseeds')
         else:
             return redirect('/YCdisplayseeds')
-    return render_template('YCdisplayseeds.html', PPL=passphraselist, x=privkeycount + 1, i=privkeycount + 12)
+    return render_template('YCdisplayseeds.html', PPL=passphraselist, x=privkeycount + 1, i=privkeycount + 16)
 
 @app.route('/YCcheckseeds', methods=['GET', 'POST'])
 def YCcheckseeds():
@@ -1020,7 +1020,7 @@ def YCcheckseeds():
                 return redirect('/YCcheckseeds')
         else:
             error = 'You enterd the private key incorrectly but the checksums are correct please try agian. This means you probably inputed a valid seed, but not your seed ' +str(privkeycount + 1)+' seed.'
-    return render_template('YCcheckseeds.html', x=privkeycount + 1, error=error,i=privkeycount + 19)
+    return render_template('YCcheckseeds.html', x=privkeycount + 1, error=error,i=privkeycount + 23)
 
 @app.route("/YCcopyseeds", methods=['GET', 'POST'])
 def YCcopyseeds():
@@ -1031,7 +1031,7 @@ def YCcopyseeds():
 @app.route("/YCswitchlaptopB", methods=['GET', 'POST'])
 def YCswitchlaptopB():
     if request.method == 'POST':
-        return redirect('/YC')
+        return redirect('/YCscanutxoB')
     return render_template('YCswitchlaptopB.html')
 
 if __name__ == "__main__":
