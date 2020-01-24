@@ -45,11 +45,11 @@
                     </li>
                   </ul>
                   <form class="form-inline my-2 my-lg-0">
-                    <input style="display: none;" name="option" value="RECEIVE">
+                    <input style="display: none;" >
                     {%if addresses[i]['status'] == 3%}
-                    <input class="btn btn-secondary m-2 my-sm-0" data-toggle="tooltip" data-placement="top" title="You have used this address before." type="submit" id="show{{i}}" value="Receive">
+                    <input class="btn btn-secondary m-2 my-sm-0" data-toggle="tooltip" data-placement="top" title="You have used this address before." id="show{{i}}" value="Receive">
                     {%else%}
-                    <input class="btn btn-primary m-2 my-sm-0" type="submit" id="show{{i}}" value="Receive">
+                    <input class="btn btn-primary m-2 my-sm-0" id="show{{i}}" value="Receive">
                     {%endif%}
                   </form>
                   <form action="" method="post" class="form-inline my-2 my-lg-0">

@@ -227,7 +227,7 @@ def YCRconnection():
 @app.route("/YCRswitchlaptop", methods=['GET', 'POST'])
 def YCRswitchlaptop():
     if request.method == 'POST':
-        return redirect('/YCRscandescriptor')
+        return redirect('/YCRscanutxo')
     return render_template('YCRswitchlaptop.html')
 
 @app.route("/YCRscandescriptor", methods=['GET', 'POST'])
