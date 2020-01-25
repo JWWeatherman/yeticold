@@ -786,6 +786,7 @@ def YCgetseeds():
     global xprivlist
     global pubdesc
     global home
+    global walletimported
     if request.method == 'POST':
         if request.form['skip'] == 'skip':
             privkeylisttemp = []
@@ -1031,7 +1032,7 @@ def YCcopyseeds():
 @app.route("/YCswitchlaptopB", methods=['GET', 'POST'])
 def YCswitchlaptopB():
     if request.method == 'POST':
-        return redirect('/YCscanutxoB')
+        return redirect('/YCRscanutxoB')
     return render_template('YCswitchlaptopB.html')
 
 if __name__ == "__main__":
