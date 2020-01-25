@@ -15,10 +15,7 @@
       <h2>Step 9: Download the Blockchain</h2>
       <div>
           <ul>
-            <li>Yeti has opened Bitcoin Core for you and it will provide more detailed status.</li>
-            <li>Once it has completed downloading you will have a Bitcoin Core full node.</li>
-            <li>This step can take as little as 4 hours if you have an SSD and a fast internet connection or as long as a couple of weeks if you do not.</li>
-            <li>When bitcoin finishes it will reach 100% and then show your balance and the Next button will be enabled on this page.</li>
+            <li>When bitcoin finishes it will reach 100% and the <b>Next</b> button will be enabled on this page.</li>
             <li>Click <b>Next</b> when this is complete.</li>
           </ul>
       </div>
@@ -36,7 +33,9 @@
     </div>
     <script>
       var enable = () => {
-        if ({{ progress }} >= 99.9) {
+        False = false
+        True = true
+        if ({{ IBD }}) {
           document.getElementById("next").style.display = ""
         } else {
           setTimeout(() => { document.getElementById("next").click() }, 5000)
