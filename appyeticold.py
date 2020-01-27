@@ -116,7 +116,6 @@ def YCRblockchain():
     global rpcpsw
     global testblockchain
     if request.method == 'GET':
-        
             if (os.path.exists(home + "/.bitcoin/bitcoin.conf")):
                 with open(".bitcoin/bitcoin.conf","r+") as f:
                     old = f.read()
@@ -128,7 +127,7 @@ def YCRblockchain():
             return redirect('/YCRopenbitcoin')
     if request.method == 'POST':
         if request.form['option'] == 'downloadblockchain':
-            testblockchain = Trueif (os.path.exists(home + "/.bitcoin")):
+            testblockchain = True
             subprocess.Popen('python3 ~/yeticold/utils/testblockchain.py',shell=True,start_new_session=True)
         else:
             fmt = '%Y-%m-%d %H:%M:%S'
