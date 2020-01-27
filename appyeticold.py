@@ -28,6 +28,7 @@ selectedutxo = ''
 addresses = ''
 walletimported = False
 error = ''
+testblockchain = False
 
 #FILE IMPORTS
 sys.path.append(home + '/yeticold/utils/')
@@ -109,6 +110,7 @@ def YCmenu():
 def YCRblockchain():
     global home
     global rpcpsw
+    global testblockchain
     if request.method == 'GET':
         if (os.path.exists(home + "/.bitcoin")):
             if (os.path.exists(home + "/.bitcoin/bitcoin.conf")):
@@ -122,7 +124,7 @@ def YCRblockchain():
             return redirect('/YCRopenbitcoin')
     if request.method == 'POST':
         if request.form['option'] == 'downloadblockchain':
-            subprocess.call(['touch ~/testblockchain'],shell=True)
+            testblockchain = True
             subprocess.Popen('python3 ~/yeticold/utils/testblockchain.py',shell=True,start_new_session=True)
         else:
             fmt = '%Y-%m-%d %H:%M:%S'
@@ -148,10 +150,13 @@ def YCRopenbitcoin():
     global home
     global progress
     global IBD
+    global testblockchain
     if request.method == 'GET':
         home = os.getenv("HOME")
+        if (os.path.exists(home + "/.bitcoin")):
+            testblockchain = False
         if BTCClosed():
-            if not (os.path.exists(home + "/testblockchain")):
+            if testblockchain == False:
                 subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         IBD = BTCFinished()
         progress = BTCprogress()
