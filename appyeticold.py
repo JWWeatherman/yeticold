@@ -155,8 +155,10 @@ def YCRopenbitcoin():
         home = os.getenv("HOME")
         if (os.path.exists(home + "/.bitcoin")):
             testblockchain = False
+            print("it exists")
         if BTCClosed():
             if testblockchain == False:
+                print("its false")
                 subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         IBD = BTCFinished()
         progress = BTCprogress()
