@@ -107,9 +107,9 @@ def YCmenu():
 
 @app.route("/YCRblockchain", methods=['GET', 'POST'])
 def YCRblockchain():
+    global home
     global rpcpsw
     if request.method == 'GET':
-        home = os.getenv("HOME")
         if (os.path.exists(home + "/.bitcoin")):
             if (os.path.exists(home + "/.bitcoin/bitcoin.conf")):
                 with open(".bitcoin/bitcoin.conf","r+") as f:
@@ -122,7 +122,8 @@ def YCRblockchain():
             return redirect('/YCRopenbitcoin')
     if request.method == 'POST':
         if request.form['option'] == 'downloadblockchain':
-            subprocess.call(['python3 ~/yeticold/utils/testblockchain.py'],shell=True)
+            subprocess.call(['touch ~/testblockchain'],shell=True)
+            subprocess.Popen('python3 ~/yeticold/utils/testblockchain.py',shell=True,start_new_session=True)
         else:
             fmt = '%Y-%m-%d %H:%M:%S'
             today = str(datetime.today()).split('.')[0]
@@ -144,12 +145,14 @@ def YCRblockchain():
 
 @app.route("/YCRopenbitcoin", methods=['GET', 'POST'])
 def YCRopenbitcoin():
+    global home
     global progress
     global IBD
     if request.method == 'GET':
         home = os.getenv("HOME")
         if BTCClosed():
-            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
+            if not (os.path.exists(home + "/testblockchain")):
+                subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         IBD = BTCFinished()
         progress = BTCprogress()
     if request.method == 'POST':
