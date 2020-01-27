@@ -40,6 +40,8 @@ settings = {"rpc_username": "rpcuser","rpc_password": rpcpsw,"rpc_host": "127.0.
 wallet_template = "http://{rpc_username}:{rpc_password}@{rpc_host}:{rpc_port}/wallet/{wallet_name}"
 
 def BTCprogress():
+    if not (os.path.exists(home + "/.bitcoin")):
+        return 0
     response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
     if not (len(response[0]) == 0):
         bitcoinprogress = json.loads(response[0])['verificationprogress']
@@ -50,6 +52,8 @@ def BTCprogress():
     return bitcoinprogress
 
 def BTCFinished():
+    if not (os.path.exists(home + "/.bitcoin")):
+        return True
     response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
     if not (len(response[0]) == 0):
         bitcoinprogress = json.loads(response[0])['initialblockdownload']
@@ -112,7 +116,7 @@ def YCRblockchain():
     global rpcpsw
     global testblockchain
     if request.method == 'GET':
-        if (os.path.exists(home + "/.bitcoin")):
+        
             if (os.path.exists(home + "/.bitcoin/bitcoin.conf")):
                 with open(".bitcoin/bitcoin.conf","r+") as f:
                     old = f.read()
@@ -124,7 +128,7 @@ def YCRblockchain():
             return redirect('/YCRopenbitcoin')
     if request.method == 'POST':
         if request.form['option'] == 'downloadblockchain':
-            testblockchain = True
+            testblockchain = Trueif (os.path.exists(home + "/.bitcoin")):
             subprocess.Popen('python3 ~/yeticold/utils/testblockchain.py',shell=True,start_new_session=True)
         else:
             fmt = '%Y-%m-%d %H:%M:%S'
