@@ -116,6 +116,7 @@ def YCRblockchain():
     global rpcpsw
     global testblockchain
     if request.method == 'GET':
+        if (os.path.exists(home + "/.bitcoin")):
             if (os.path.exists(home + "/.bitcoin/bitcoin.conf")):
                 with open(".bitcoin/bitcoin.conf","r+") as f:
                     old = f.read()
