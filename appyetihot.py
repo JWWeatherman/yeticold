@@ -26,6 +26,7 @@ receipentaddress = None
 qrcodescanning = None
 pubdesc = None
 progress = 0
+testblockchain = False
 
 #FILE IMPORTS
 sys.path.append(home + '/yeticold/utils/')
@@ -37,6 +38,8 @@ settings = {"rpc_username": "rpcuser","rpc_password": rpcpsw,"rpc_host": "127.0.
 wallet_template = "http://{rpc_username}:{rpc_password}@{rpc_host}:{rpc_port}/wallet/{wallet_name}"
 
 def BTCprogress():
+    if not (os.path.exists(home + "/.bitcoin")):
+        return 0
     response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
     if not (len(response[0]) == 0):
         bitcoinprogress = json.loads(response[0])['verificationprogress']
@@ -47,6 +50,8 @@ def BTCprogress():
     return bitcoinprogress
 
 def BTCFinished():
+    if not (os.path.exists(home + "/.bitcoin")):
+        return False
     response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
     if not (len(response[0]) == 0):
         bitcoinprogress = json.loads(response[0])['initialblockdownload']
@@ -55,8 +60,6 @@ def BTCFinished():
     return not bitcoinprogress
 
 def BTCClosed():
-    home = os.getenv("HOME")
-    print(subprocess.call('lsof -n -i :8332', shell=True))
     if (subprocess.call('lsof -n -i :8332', shell=True) != 1):
         return False
     elif os.path.exists(home + "/.bitcoin/bitcoind.pid"):
@@ -70,7 +73,7 @@ def BTCRunning():
 
 def RPC():
     name = 'username'
-    wallet_name = ''
+    wallet_name = 'yeticold'
     uri = wallet_template.format(**settings, wallet_name=wallet_name)
     rpc = AuthServiceProxy(uri, timeout=600)  # 1 minute timeout
     return rpc
@@ -112,6 +115,7 @@ def redirectroute():
 @app.route("/YHblockchain", methods=['GET', 'POST'])
 def YHblockchain():
     global blockchain
+    global testblockchain
     if request.method == 'GET':
         home = os.getenv("HOME")
         if (os.path.exists(home + "/.bitcoin")):
@@ -126,6 +130,7 @@ def YHblockchain():
             return redirect('/YHopenbitcoin')
     if request.method == 'POST':
         if request.form['option'] == 'downloadblockchain':
+            testblockchain = True
             subprocess.call(['python3 ~/yeticold/utils/testblockchain.py'],shell=True)
         else:
             fmt = '%Y-%m-%d %H:%M:%S'
@@ -149,12 +154,17 @@ def YHblockchain():
 
 @app.route("/YHopenbitcoin", methods=['GET', 'POST'])
 def YHopenbitcoin():
+    global home
     global progress
     global IBD
+    global testblockchain
     if request.method == 'GET':
         home = os.getenv("HOME")
+        if (os.path.exists(home + "/.bitcoin")):
+            testblockchain = False
         if BTCClosed():
-            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
+            if testblockchain == False:
+                subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         IBD = BTCFinished()
         progress = BTCprogress()
     if request.method == 'POST':

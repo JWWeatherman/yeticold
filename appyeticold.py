@@ -159,10 +159,8 @@ def YCRopenbitcoin():
         home = os.getenv("HOME")
         if (os.path.exists(home + "/.bitcoin")):
             testblockchain = False
-            print("it exists")
         if BTCClosed():
             if testblockchain == False:
-                print("its false")
                 subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         IBD = BTCFinished()
         progress = BTCprogress()
@@ -178,6 +176,7 @@ def YCRopenbitcoin():
 @app.route("/YCRblockchainB", methods=['GET', 'POST'])
 def YCRblockchainB():
     global rpcpsw
+    global testblockchain
     if request.method == 'GET':
         home = os.getenv("HOME")
         if (os.path.exists(home + "/.bitcoin")):
@@ -192,7 +191,8 @@ def YCRblockchainB():
             return redirect('/YCRopenbitcoinB')
     if request.method == 'POST':
         if request.form['option'] == 'downloadblockchain':
-            subprocess.call(['python3 ~/yeticold/utils/testblockchain.py'],shell=True)
+            testblockchain = True
+            subprocess.Popen('python3 ~/yeticold/utils/testblockchain.py',shell=True,start_new_session=True)
         else:
             fmt = '%Y-%m-%d %H:%M:%S'
             today = str(datetime.today()).split('.')[0]
@@ -214,12 +214,17 @@ def YCRblockchainB():
 
 @app.route("/YCRopenbitcoinB", methods=['GET', 'POST'])
 def YCRopenbitcoinB():
+    global home
     global progress
     global IBD
+    global testblockchain
     if request.method == 'GET':
         home = os.getenv("HOME")
+        if (os.path.exists(home + "/.bitcoin")):
+            testblockchain = False
         if BTCClosed():
-            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
+            if testblockchain == False:
+                subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         IBD = BTCFinished()
         progress = BTCprogress()
     if request.method == 'POST':
@@ -677,6 +682,7 @@ def YCRscantransactionB():
 @app.route("/YCblockchain", methods=['GET', 'POST'])
 def YCblockchain():
     global rpcpsw
+    global testblockchain
     if request.method == 'GET':
         home = os.getenv("HOME")
         if (os.path.exists(home + "/.bitcoin")):
@@ -691,6 +697,7 @@ def YCblockchain():
             return redirect('/YCopenbitcoin')
     if request.method == 'POST':
         if request.form['option'] == 'downloadblockchain':
+            testblockchain = True
             subprocess.call(['python3 ~/yeticold/utils/testblockchain.py'],shell=True)
         else:
             fmt = '%Y-%m-%d %H:%M:%S'
@@ -713,12 +720,17 @@ def YCblockchain():
 
 @app.route("/YCopenbitcoin", methods=['GET', 'POST'])
 def YCopenbitcoin():
+    global home
     global progress
     global IBD
+    global testblockchain
     if request.method == 'GET':
         home = os.getenv("HOME")
+        if (os.path.exists(home + "/.bitcoin")):
+            testblockchain = False
         if BTCClosed():
-            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
+            if testblockchain == False:
+                subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         IBD = BTCFinished()
         progress = BTCprogress()
     if request.method == 'POST':
@@ -733,6 +745,7 @@ def YCopenbitcoin():
 @app.route("/YCblockchainB", methods=['GET', 'POST'])
 def YCblockchainB():
     global rpcpsw
+    global testblockchain
     if request.method == 'GET':
         home = os.getenv("HOME")
         if (os.path.exists(home + "/.bitcoin")):
@@ -747,6 +760,7 @@ def YCblockchainB():
             return redirect('/YCopenbitcoinB')
     if request.method == 'POST':
         if request.form['option'] == 'downloadblockchain':
+            testblockchain = True
             subprocess.call(['python3 ~/yeticold/utils/testblockchain.py'],shell=True)
         else:
             fmt = '%Y-%m-%d %H:%M:%S'
@@ -769,12 +783,17 @@ def YCblockchainB():
 
 @app.route("/YCopenbitcoinB", methods=['GET', 'POST'])
 def YCopenbitcoinB():
+    global home
     global progress
     global IBD
+    global testblockchain
     if request.method == 'GET':
         home = os.getenv("HOME")
+        if (os.path.exists(home + "/.bitcoin")):
+            testblockchain = False
         if BTCClosed():
-            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
+            if testblockchain == False:
+                subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         IBD = BTCFinished()
         progress = BTCprogress()
     if request.method == 'POST':
