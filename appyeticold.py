@@ -698,7 +698,7 @@ def YCblockchain():
     if request.method == 'POST':
         if request.form['option'] == 'downloadblockchain':
             testblockchain = True
-            subprocess.call(['python3 ~/yeticold/utils/testblockchain.py'],shell=True)
+            subprocess.Popen('python3 ~/yeticold/utils/testblockchain.py',shell=True,start_new_session=True)
         else:
             fmt = '%Y-%m-%d %H:%M:%S'
             today = str(datetime.today()).split('.')[0]
@@ -761,7 +761,7 @@ def YCblockchainB():
     if request.method == 'POST':
         if request.form['option'] == 'downloadblockchain':
             testblockchain = True
-            subprocess.call(['python3 ~/yeticold/utils/testblockchain.py'],shell=True)
+            subprocess.Popen('python3 ~/yeticold/utils/testblockchain.py',shell=True,start_new_session=True)
         else:
             fmt = '%Y-%m-%d %H:%M:%S'
             today = str(datetime.today()).split('.')[0]
