@@ -42,7 +42,7 @@ def BTCprogress():
         return 0
     response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
     if not (len(response[0]) == 0):
-        bitcoinprogress = json.loads(response[0])['verificationprogress']
+        bitcoinprogress = json.loads(response[0].decode("utf-8"))['verificationprogress']
         bitcoinprogress = bitcoinprogress * 100
         bitcoinprogress = round(bitcoinprogress, 3)
     else:
@@ -54,7 +54,7 @@ def BTCFinished():
         return False
     response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
     if not (len(response[0]) == 0):
-        bitcoinprogress = json.loads(response[0])['initialblockdownload']
+        bitcoinprogress = json.loads(response[0].decode("utf-8"))['initialblockdownload']
     else:
         bitcoinprogress = True
     return not bitcoinprogress
