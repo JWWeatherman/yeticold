@@ -55,7 +55,7 @@ def BTCprogress():
         return 0
     response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
     if not (len(response[0]) == 0):
-        bitcoinprogress = json.loads(response[0])['verificationprogress']
+        bitcoinprogress = json.loads(response[0].decode("utf-8"))['verificationprogress']
         bitcoinprogress = bitcoinprogress * 100
         bitcoinprogress = round(bitcoinprogress, 3)
     else:
@@ -67,7 +67,7 @@ def BTCFinished():
         return False
     response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
     if not (len(response[0]) == 0):
-        bitcoinprogress = json.loads(response[0])['initialblockdownload']
+        bitcoinprogress = json.loads(response[0].decode("utf-8"))['initialblockdownload']
     else:
         bitcoinprogress = True
     return not bitcoinprogress
@@ -86,7 +86,7 @@ def BTCRunning():
 
 def RPC():
     name = 'username'
-    wallet_name = 'yeticold'
+    wallet_name = 'yetiwarm'
     uri = wallet_template.format(**settings, wallet_name=wallet_name)
     rpc = AuthServiceProxy(uri, timeout=600)  # 1 minute timeout
     return rpc
@@ -98,13 +98,6 @@ def blockheight():
     if Blockinfo['pruned']:
         blockheight = Blockinfo['pruneheight']
     return str(blockheight)
-
-def RPCYW():
-    name = 'username'
-    wallet_name = 'yetiwarm'
-    uri = wallet_template.format(**settings, wallet_name=wallet_name)
-    rpc = AuthServiceProxy(uri, timeout=600)  # 1 minute timeout
-    return rpc
 
 #FLOW
 #FLOW ONE
@@ -226,9 +219,9 @@ def YWgetseeds():
                 rpc = RPC()
                 adr = rpc.getnewaddress()
                 newprivkey = rpc.dumpprivkey(adr)
-                binary = bin(decode_base58(newprivkey))[2:][8:-40]
+                binary = bin(decode58(newprivkey))[2:][8:-40]
                 newbinary = '1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111'
-                WIF = BinaryToWIF(xor(binary,newbinary))
+                WIF = ConvertToWIF(xor(binary,newbinary))
                 privkeylisttemp.append(WIF)
             privkeycount = 0
             privkeylist = privkeylisttemp
@@ -238,8 +231,8 @@ def YWgetseeds():
                 rpc = RPC()
                 adr = rpc.getnewaddress()
                 newprivkey = rpc.dumpprivkey(adr)
-                binary = bin(decode_base58(newprivkey))[2:][8:-40]
-                WIF = BinaryToWIF(xor(binary,request.form['binary' + str(i)]))
+                binary = bin(decode58(newprivkey))[2:][8:-40]
+                WIF = ConvertToWIF(xor(binary,request.form['binary' + str(i)]))
                 privkeylisttemp.append(WIF)
             privkeycount = 0
             privkeylist = privkeylisttemp
@@ -290,7 +283,7 @@ def YWdisplayseeds():
     global pubdesc
     if request.method == 'GET':
         privkey = privkeylist[privkeycount]
-        passphraselist = WIFToPassphraseList(privkey)
+        passphraselist = ConvertToPassphrase(privkey)
     if request.method == 'POST':
         home = os.getenv('HOME')
         path = home + '/Documents'
@@ -341,7 +334,7 @@ def YWcheckseeds():
     global error
     if request.method == 'POST':
         privkey = privkeylist[privkeycount]
-        passphraselist = WIFToPassphraseList(privkey)
+        passphraselist = ConvertToPassphrase(privkey)
         privkeylisttoconfirm = []
         for i in range(1,14):
             inputlist = request.form['row' + str(i)]
@@ -449,7 +442,7 @@ def YWRdisplaywallet():
         subprocess.call(['rm -r ~/yeticold/static/address*'],shell=True)
         adrlist = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwarm deriveaddresses "'+pubdesc+'" "[0,999]"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         adrlist = json.loads(adrlist[0].decode("utf-8"))
-        rpc = RPCYW()
+        rpc = RPC()
         for i in range(0, len(adrlist)):
             adr = adrlist[i]
             randomnum = str(random.randrange(0,1000000))
