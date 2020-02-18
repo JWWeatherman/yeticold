@@ -687,8 +687,10 @@ var decode = (s) => {
         $('#' + evt.srcElement.id).tooltip('hide');
       }
       if (document.getElementById(evt.srcElement.id).getAttribute('data-original-title') !== '') {
-        console.log("show" + evt.srcElement.id)
+        setTimeout(() => {
+          console.log("show" + evt.srcElement.id)
         $('#' + evt.srcElement.id).tooltip('show');
+      },80)
       }
     }); 
     highlightrows()
