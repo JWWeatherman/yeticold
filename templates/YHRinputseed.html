@@ -680,10 +680,14 @@ var decode = (s) => {
           tooltip = ''
         }
         document.getElementById(evt.srcElement.id).setAttribute('data-original-title', tooltip)
-        $('#' + evt.srcElement.id).tooltip('show');
       }
       if (document.getElementById(evt.srcElement.id).getAttribute('data-original-title') === '') {
         $('#' + evt.srcElement.id).tooltip('hide');
+      }
+      if (document.getElementById(evt.srcElement.id).getAttribute('data-original-title') !== '') {
+        setTimeout(() => {
+        $('#' + evt.srcElement.id).tooltip('show');
+      },250)
       }
     }); 
     var importfile = () => {
