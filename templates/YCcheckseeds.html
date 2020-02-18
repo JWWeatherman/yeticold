@@ -679,16 +679,13 @@ var decode = (s) => {
         if (tooltip === undefined){
           tooltip = ''
         }
-        console.log("change tooltip to " + tooltip)
         document.getElementById(evt.srcElement.id).setAttribute('data-original-title', tooltip)
       }
       if (document.getElementById(evt.srcElement.id).getAttribute('data-original-title') === '') {
-        console.log("hide" + evt.srcElement.id)
         $('#' + evt.srcElement.id).tooltip('hide');
       }
       if (document.getElementById(evt.srcElement.id).getAttribute('data-original-title') !== '') {
         setTimeout(() => {
-          console.log("show" + evt.srcElement.id)
         $('#' + evt.srcElement.id).tooltip('show');
       },250)
       }
