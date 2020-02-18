@@ -19,8 +19,10 @@
     </nav>
     <div class="container" style="margin-top: 3rem;">
       <h2>Yeti Cold Wallet</h2>
-      <p style="margin-bottom: 30px;">This is your wallet. To improve privacy you should not reuse bitcoin addresses. Yeti Cold only lets you send the full balance of a unspent transaction. To send portions of a utxo you need to send funds to another wallet you control.</p>
+      <p style="margin-bottom: 30px;">This is your wallet. To send portions of a utxo send funds to another wallet you control. Once you have stored your paper and usb stick seed packets in safe locations you can should format your Secondary laptop. You can leave this Primary laptop online without any risk of theft to watch your balance and allow you
+      to send additional funds into cold storage as long as is needed.</p>
       <p style="margin-bottom: 30px;">Click <b style="color: #0000EE;cursor:pointer;" id="refresh">here</b> to update balances.</p>
+      
       <p style="margin-bottom: 30px;">Total Wallet Balance: {{TWB}}</p>
       <ul style="padding: 0px;">
         {%for i in range(0, len)%} 
