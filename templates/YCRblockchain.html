@@ -12,19 +12,19 @@
         <h3 style="color:white;margin:0;">Yeti Bitcoin Cold Storage</h3>
     </nav>
     <div class="container" style="margin-top: 3rem;">
-      <h2>Choose Blockchain</h2>
-      <p>The test blockchain is a smaller pruned blockchain but is not trustworthy for recording balances. Downloading the testing blockhain will take up to half an hour without feedback.</p>
+      <h2>Select Test Only or Trustworthy Blockchain Data</h2>
+      <p>This blockchain data is hosted on google drive and should download within an hour. It is only appropriate for testing. If you select this blockchain data you should start setup from step 1 before using real money on this device.</p>
       <form action="" method="post">
         <input style="display: none;" name="option" value="downloadblockchain">
-        <input class="btn btn-primary" type="submit" id="next" value="Use test blockchain">
+        <input class="btn btn-warning" type="submit" id="next" value="Test Blockchain Data">
       </form>
-      <p>Select the date of your first tranasction that you would like to send. Yeti Cold will prune the blockhain to the given date, Reducing the size of the blockchain.</p>
+      <p>This blockchain data is fully trustworthy, but will take between 4 hours and 2 weeks to download. You can also select the date of the oldest deposit made into your wallet to save on disk space. Yeti will prune blockchain data before this date. If you have plenty of disk space you can leave this date blank and Yeti will store the entire blockchain.</p>
       <form action="" method="post">
         <div class="form-group col-md-10">
           <input type="date" name="date">
         </div>
         <input style="display: none;" name="option" value="VALUE">
-        <input class="btn btn-primary" type="submit" id="next" value="Use secure blockchain">
+        <input class="btn btn-primary" type="submit" id="next" value="Trustworthy Blockchain Data">
       </form>
     </div>
   </body>
