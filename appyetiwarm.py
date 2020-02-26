@@ -154,6 +154,7 @@ def YWblockchain():
             testblockchain = True
             subprocess.Popen('python3 ~/yeticold/utils/testblockchain.py',shell=True,start_new_session=True)
         else:
+            print(request.form['date'])
             fmt = '%Y-%m-%d %H:%M:%S'
             today = str(datetime.today()).split('.')[0]
             print(request.form['date'] + ' 12:0:0')
