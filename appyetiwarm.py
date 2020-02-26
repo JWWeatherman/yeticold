@@ -338,6 +338,7 @@ def YWcheckseeds():
         privkey = privkeylist[privkeycount]
         passphraselist = ConvertToPassphrase(privkey)
         privkeylisttoconfirm = []
+        oldkeys = []
         for i in range(1,14):
             inputlist = request.form['row' + str(i)]
             oldkeys.append(inputlist)
