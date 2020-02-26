@@ -137,8 +137,8 @@ def redirectroute():
 def YWblockchain():
     global rpcpsw
     global testblockchain
+    global home
     if request.method == 'GET':
-        home = os.getenv("HOME")
         if (os.path.exists(home + "/.bitcoin")):
             if (os.path.exists(home + "/.bitcoin/bitcoin.conf")):
                 with open(".bitcoin/bitcoin.conf","r+") as f:
@@ -168,7 +168,6 @@ def YWblockchain():
             add = diff / 10
             blockheight = diff + add + 550
             blockheight = int(blockheight)
-            home = os.getenv("HOME")
             subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nprune='+str(blockheight)+'\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
         return redirect('/YWopenbitcoin')
     return render_template('YWblockchain.html')
