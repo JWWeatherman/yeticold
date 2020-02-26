@@ -273,8 +273,31 @@ def YWgetseeds():
         home = os.getenv('HOME')
         path = home + '/Documents'
         subprocess.call('rm -r '+path+'/ywseed*', shell=True)
-        return redirect('/YWdisplayseeds')
+        return redirect('/YWprintdescriptor')
     return render_template('YWgetseeds.html')
+
+#display for print
+@app.route("/YWprintdescriptor", methods=['GET', 'POST'])
+def YWprintdescriptor():
+    global pubdesc
+    if request.method == 'GET':
+        randomnum = str(random.randrange(0,1000000))
+        firstqrname = randomnum
+        qr = qrcode.QRCode(
+               version=1,
+               error_correction=qrcode.constants.ERROR_CORRECT_L,
+               box_size=10,
+               border=4,
+        )
+        qr.add_data(pubdesc)
+        qr.make(fit=True)
+        img = qr.make_image(fill_color="black", back_color="white")
+        home = os.getenv("HOME")
+        img.save(home + '/yeticold/static/firstqrcode' + firstqrname + '.png')
+        path = url_for('static', filename='firstqrcode' + firstqrname + '.png')
+    if request.method == 'POST':
+        return redirect('/YWdisplayseeds')
+    return render_template('YWprintdescriptor.html', qrdata=pubdesc, path=path)
 
 @app.route('/YWdisplayseeds', methods=['GET', 'POST'])
 def YWdisplayseeds():
@@ -373,35 +396,14 @@ def YWcheckseeds():
                         privkeylist = []
                         error = 'You have imported your seeds correctly but your xprivs do not match: This means that you either do not have bitcoin running or its initial block download mode. Another issue is that you have a wallet folder or wallet dump file that was not deleted before starting this step.'
                         return redirect('/YWcheckseeds')
-                return redirect('/YWprintdescriptor')
+                return redirect('/YWcopyseeds')
             else:
                 return redirect('/YWcheckseeds')
         else:
             error = 'You enterd the private key incorrectly but the checksums are correct please try agian. This means you probably inputed a valid seed, but not your seed ' +str(privkeycount + 1)+' seed.'
     return render_template('YWcheckseeds.html', x=privkeycount + 1, error=error,i=privkeycount + 16 )
 
-#display for print
-@app.route("/YWprintdescriptor", methods=['GET', 'POST'])
-def YWprintdescriptor():
-    global pubdesc
-    if request.method == 'GET':
-        randomnum = str(random.randrange(0,1000000))
-        firstqrname = randomnum
-        qr = qrcode.QRCode(
-               version=1,
-               error_correction=qrcode.constants.ERROR_CORRECT_L,
-               box_size=10,
-               border=4,
-        )
-        qr.add_data(pubdesc)
-        qr.make(fit=True)
-        img = qr.make_image(fill_color="black", back_color="white")
-        home = os.getenv("HOME")
-        img.save(home + '/yeticold/static/firstqrcode' + firstqrname + '.png')
-        path = url_for('static', filename='firstqrcode' + firstqrname + '.png')
-    if request.method == 'POST':
-        return redirect('/YWcopyseeds')
-    return render_template('YWprintdescriptor.html', qrdata=pubdesc, path=path)
+
 
 @app.route("/YWcopyseeds", methods=['GET', 'POST'])
 def YWcopyseeds():
