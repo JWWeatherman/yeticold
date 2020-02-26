@@ -116,8 +116,8 @@ def redirectroute():
 def YHblockchain():
     global blockchain
     global testblockchain
+    global home
     if request.method == 'GET':
-        home = os.getenv("HOME")
         if (os.path.exists(home + "/.bitcoin")):
             if (os.path.exists(home + "/.bitcoin/bitcoin.conf")):
                 with open(".bitcoin/bitcoin.conf","r+") as f:
@@ -133,6 +133,10 @@ def YHblockchain():
             testblockchain = True
             subprocess.Popen('python3 ~/yeticold/utils/testblockchain.py',shell=True,start_new_session=True)
         else:
+            subprocess.call(['mkdir ~/.bitcoin'],shell=True)
+            if request.form['date'] == '':
+                subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
+                return redirect('/YHopenbitcoin')
             fmt = '%Y-%m-%d %H:%M:%S'
             today = str(datetime.today()).split('.')[0]
             print(request.form['date'] + ' 12:0:0')
@@ -145,8 +149,6 @@ def YHblockchain():
             add = diff / 10
             blockheight = diff + add + 550
             blockheight = int(blockheight)
-            home = os.getenv("HOME")
-            subprocess.call(['mkdir ~/.bitcoin'],shell=True)
             subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nprune='+str(blockheight)+'\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
         return redirect('/YHopenbitcoin')
     ###ISSUE template needed
@@ -243,7 +245,7 @@ def YHcheckseed():
         if privkeylisttoconfirm == passphraselist:
             return redirect('/YHcopyseed')
         else:
-            error = 'You enterd the private key incorrectly but the checksums are correct please try agian. This means you probably inputed a valid seed, but not your seed.'
+            error = 'The seed words you entered are incorrect. This is probably because you entered a line twice or put them in the wrong order.'
     return render_template('YHcheckseed.html', x=privkeycount + 1, error=error,i=privkeycount + 35 )
 #store USB drives
 @app.route("/YHcopyseed", methods=['GET', 'POST'])

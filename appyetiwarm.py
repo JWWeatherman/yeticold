@@ -40,6 +40,7 @@ samedesc = False
 utxo = None
 rescan = False
 testblockchain = False
+oldkeys = None
 
 #FILE IMPORTS
 sys.path.append(home + '/yeticold/utils/')
@@ -332,12 +333,14 @@ def YWcheckseeds():
     global xprivlist
     global privkeycount
     global error
+    global oldkeys
     if request.method == 'POST':
         privkey = privkeylist[privkeycount]
         passphraselist = ConvertToPassphrase(privkey)
         privkeylisttoconfirm = []
         for i in range(1,14):
             inputlist = request.form['row' + str(i)]
+            oldkeys.append(inputlist)
             inputlist = inputlist.split(' ')
             inputlist = inputlist[0:4]
             privkeylisttoconfirm.append(inputlist[0])
@@ -377,8 +380,8 @@ def YWcheckseeds():
             else:
                 return redirect('/YWcheckseeds')
         else:
-            error = 'You enterd the private key incorrectly but the checksums are correct please try agian. This means you probably inputed a valid seed, but not your seed ' +str(privkeycount + 1)+' seed.'
-    return render_template('YWcheckseeds.html', x=privkeycount + 1, error=error,i=privkeycount + 16 )
+            error = 'The seed words you entered are incorrect. This is probably because you entered a line twice or put them in the wrong order.'
+    return render_template('YWcheckseeds.html', x=privkeycount + 1, error=error,i=privkeycount + 16,oldkeys=oldkeys)
 
 #display for print
 @app.route("/YWprintdescriptor", methods=['GET', 'POST'])
