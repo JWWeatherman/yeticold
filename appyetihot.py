@@ -27,6 +27,7 @@ qrcodescanning = None
 pubdesc = None
 progress = 0
 testblockchain = False
+oldkeys = None
 
 #FILE IMPORTS
 sys.path.append(home + '/yeticold/utils/')
@@ -231,11 +232,14 @@ def YHcheckseed():
     global privkey
     global xpriv
     global error
+    global oldkeys
     if request.method == 'POST':
         passphraselist = ConvertToPassphrase(privkey)
         privkeylisttoconfirm = []
+        oldkeys = []
         for i in range(1,14):
             inputlist = request.form['row' + str(i)]
+            oldkeys.append(inputlist)
             inputlist = inputlist.split(' ')
             inputlist = inputlist[0:4]
             privkeylisttoconfirm.append(inputlist[0])
@@ -243,10 +247,11 @@ def YHcheckseed():
             privkeylisttoconfirm.append(inputlist[2])
             privkeylisttoconfirm.append(inputlist[3])
         if privkeylisttoconfirm == passphraselist:
+            oldkeys = None
             return redirect('/YHcopyseed')
         else:
             error = 'The seed words you entered are incorrect. This is probably because you entered a line twice or put them in the wrong order.'
-    return render_template('YHcheckseed.html', x=privkeycount + 1, error=error,i=privkeycount + 35 )
+    return render_template('YHcheckseed.html', x=privkeycount + 1, error=error,i=privkeycount + 35,oldkeys=oldkeys)
 #store USB drives
 @app.route("/YHcopyseed", methods=['GET', 'POST'])
 def YHcopyseed():

@@ -349,6 +349,7 @@ def YWcheckseeds():
             privkeylisttoconfirm.append(inputlist[2])
             privkeylisttoconfirm.append(inputlist[3])
         if privkeylisttoconfirm == passphraselist:
+            oldkeys = None
             error = None
             privkeycount = privkeycount + 1
             if (privkeycount >= 7):

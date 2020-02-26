@@ -29,6 +29,7 @@ addresses = ''
 walletimported = False
 error = ''
 testblockchain = False
+oldkeys = None
 
 #FILE IMPORTS
 sys.path.append(home + '/yeticold/utils/')
@@ -1011,12 +1012,15 @@ def YCcheckseeds():
     global xprivlist
     global privkeycount
     global error
+    global oldkeys
     if request.method == 'POST':
         privkey = privkeylist[privkeycount]
         passphraselist = ConvertToPassphrase(privkey)
         privkeylisttoconfirm = []
+        oldkeys = []
         for i in range(1,14):
             inputlist = request.form['row' + str(i)]
+            oldkeys.append(inputlist)
             inputlist = inputlist.split(' ')
             inputlist = inputlist[0:4]
             privkeylisttoconfirm.append(inputlist[0])
@@ -1024,6 +1028,7 @@ def YCcheckseeds():
             privkeylisttoconfirm.append(inputlist[2])
             privkeylisttoconfirm.append(inputlist[3])
         if privkeylisttoconfirm == passphraselist:
+            oldkeys = None
             error = None
             privkeycount = privkeycount + 1
             if (privkeycount >= 7):
@@ -1058,7 +1063,7 @@ def YCcheckseeds():
                 return redirect('/YCcheckseeds')
         else:
             error = 'The seed words you entered are incorrect. This is probably because you entered a line twice or put them in the wrong order.'
-    return render_template('YCcheckseeds.html', x=privkeycount + 1, error=error,i=privkeycount + 23)
+    return render_template('YCcheckseeds.html', x=privkeycount + 1, error=error,i=privkeycount + 23,oldkeys=oldkeys)
 
 @app.route("/YCcopyseeds", methods=['GET', 'POST'])
 def YCcopyseeds():
