@@ -154,11 +154,12 @@ def YWblockchain():
             testblockchain = True
             subprocess.Popen('python3 ~/yeticold/utils/testblockchain.py',shell=True,start_new_session=True)
         else:
-            print(request.form['date'])
+            subprocess.call(['mkdir ~/.bitcoin'],shell=True)
+            if request.form['date'] == '':
+                subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
+                return redirect('/YWopenbitcoin')
             fmt = '%Y-%m-%d %H:%M:%S'
             today = str(datetime.today()).split('.')[0]
-            print(request.form['date'] + ' 12:0:0')
-            print(today)
             d1 = datetime.strptime(request.form['date'] + ' 12:0:0', fmt)
             d2 = datetime.strptime(today, fmt)
             d1_ts = time.mktime(d1.timetuple())
@@ -168,7 +169,6 @@ def YWblockchain():
             blockheight = diff + add + 550
             blockheight = int(blockheight)
             home = os.getenv("HOME")
-            subprocess.call(['mkdir ~/.bitcoin'],shell=True)
             subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nprune='+str(blockheight)+'\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
         return redirect('/YWopenbitcoin')
     return render_template('YWblockchain.html')
