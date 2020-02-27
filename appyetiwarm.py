@@ -568,7 +568,7 @@ def YWRimportseeds():
             privkey.append(inputlist[1])
             privkey.append(inputlist[2])
             privkey.append(inputlist[3])
-        privkeylist.append(PassphraseListToWIF(privkey))
+        privkeylist.append(PassphraseToWIF(privkey))
         error = None
         privkeycount = privkeycount + 1
         if (privkeycount >= 3):
