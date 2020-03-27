@@ -456,7 +456,7 @@ def YWRdisplaywallet():
             route = url_for('static', filename='address'+adr+''+randomnum+'.png')
             response = rpc.listunspent(0, 9999999, [adr])
             if response == []:
-                rpc.importaddress(adrlist[i],False,False)
+                # rpc.importaddress(adrlist[i],False,False)
                 totalbal = rpc.getreceivedbyaddress(adrlist[i])
                 if totalbal:
                     status = 3
