@@ -197,6 +197,7 @@ def YHgetseed():
             newbinary = '1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111'
         else:
             newbinary = request.form['binary']
+        subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetihot"','~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetihot"'],shell=True)
         rpc = RPC()
         adr = rpc.getnewaddress()
         newprivkey = rpc.dumpprivkey(adr)
@@ -204,7 +205,6 @@ def YHgetseed():
         privkey = ConvertToWIF(xor(binary,newbinary))
         home = os.getenv('HOME')
         path = home + '/yetihotwallet'
-        subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetihot"','~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetihot"'],shell=True)
         response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetihot sethdseed true "'+privkey+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         return redirect('/YHdisplayseed')
     return render_template('YHgetseed.html')
