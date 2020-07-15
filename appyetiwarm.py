@@ -533,7 +533,7 @@ def YWRscanrecipent():
             receipentaddress = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
             receipentaddress = receipentaddress.decode("utf-8").replace('\n', '')
         else:
-            receipentaddress = request.method['option']
+            receipentaddress = request.form['option']
         if (receipentaddress.split(':')[0] == 'bitcoin'):
             receipentaddress = receipentaddress.split(':')[1].split('?')[0]
         if (receipentaddress[:3] == 'bc1') or (receipentaddress[:1] == '3') or (receipentaddress[:1] == '1'):
