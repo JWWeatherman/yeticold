@@ -1,3 +1,10 @@
+# External Dependencies 
+This is a list of all non preinstalled python packages or utilits we use.
+
+## Bitcoin RPC
+https://github.com/jgarzik/python-bitcoinrpc
+
+We use this library to call bitcoin rpc functions in python.
 
 ## network-manager
 https://core.docs.ubuntu.com/en/stacks/network/network-manager/docs/installation
