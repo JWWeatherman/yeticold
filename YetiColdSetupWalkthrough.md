@@ -143,7 +143,7 @@ Descripton: In this step you can provide random binary that will be used to XOR 
 
 Action: Click "Next".
 
-Code: 
+Code: https://github.com/JWWeatherman/yeticold/blob/ac6981e1925766659cc08c3ccbdf7dbc4517339f/appyeticold.py#L823
 
 ### Step 12
 Route name: "http://localhost:5000/YCdisplaydescriptor"
@@ -154,6 +154,8 @@ Descripton: Switch your Primary laptop currently displaying step 7 and click Nex
 
 Action: Click "Next".
 
+Code: https://github.com/JWWeatherman/yeticold/blob/ac6981e1925766659cc08c3ccbdf7dbc4517339f/appyeticold.py#L898
+
 ### Step 13
 Route name: "http://localhost:5000/YCscandescriptor"
 
@@ -163,6 +165,7 @@ Descripton: Click the scan button on you Primary button and scan the qr code dis
 
 Action: Click "Scan".
 
+Code: https://github.com/JWWeatherman/yeticold/blob/ac6981e1925766659cc08c3ccbdf7dbc4517339f/appyeticold.py#L921
 
 ### Step 14
 Route name: "http://localhost:5000/YCprintpage"
@@ -173,6 +176,7 @@ Descripton: Print the page displayed on your Primary laptop. This page contains 
 
 Action: Print then click "Next".
 
+Code: https://github.com/JWWeatherman/yeticold/blob/ac6981e1925766659cc08c3ccbdf7dbc4517339f/appyeticold.py#L932
 
 ### Step 15
 Route name: "http://localhost:5000/YCswitchlaptop"
@@ -183,15 +187,18 @@ Descripton: On your Secondary laptop currently showing step 11, click Next and c
 
 Action: Click "Next" on Secondary laptop.
 
+Code: https://github.com/JWWeatherman/yeticold/blob/ac6981e1925766659cc08c3ccbdf7dbc4517339f/appyeticold.py#L956s
 
 ### Step 16-22
 Route name: "http://localhost:5000/YCdisplayseeds"
 
 Header: Write Down Private Key X of 7
 
-Descripton: Steps 16-22 will tell you to wright down the words displayed on your screen on the paper that you printed out prevously.
+Descripton: Steps 16-22 will tell you to wright down the words displayed on your screen on the paper that you printed out prevously. This step will also create files in your Documents folder that each contain your public key descriptor and one of your seeds.
 
 Action: Wright down the words and click "Next".
+
+Code: https://github.com/JWWeatherman/yeticold/blob/ac6981e1925766659cc08c3ccbdf7dbc4517339f/appyeticold.py#L962
 
 ### Step 23-29
 Route name: "http://localhost:5000/YCdisplayseeds"
@@ -202,6 +209,8 @@ Descripton: Steps 23-29 will tell you to type in the words you just wroute down 
 
 Action: Type in the words and click "Next".
 
+Code: https://github.com/JWWeatherman/yeticold/blob/ac6981e1925766659cc08c3ccbdf7dbc4517339f/appyeticold.py#L1012
+
 ### Step 30
 Route name: "http://localhost:5000/YCcopyseeds"
 
@@ -210,6 +219,8 @@ Header: Copy Seeds to USB drives.
 Descripton: After you wrote down the seeds yeti created seven files that each hold you descriptor and your private keys. Move the files into the labeled usb drives.
 
 Action: Move the files and click "Next".
+
+Code: https://github.com/JWWeatherman/yeticold/blob/ac6981e1925766659cc08c3ccbdf7dbc4517339f/appyeticold.py#L1071
 
 ### Step 31
 Route name: "http://localhost:5000/YCswitchlaptopB"
@@ -220,6 +231,8 @@ Descripton: On your Primary laptop currently showing step 15, click Next to cont
 
 Action: Click "Next" on your Primary laptop.
 
+Code: https://github.com/JWWeatherman/yeticold/blob/ac6981e1925766659cc08c3ccbdf7dbc4517339f/appyeticold.py#L1077
+
 ### Wallet page
 Route name: "http://localhost:5000/YCRdisplaywallet"
 
@@ -228,3 +241,5 @@ Header: Yeti wallet page
 Descripton: When you scaned your descriptor on the Primary laptop we derived the watch only addresses from it and displayed them here. You can send and recover funds from here to get started send a test amount to one of the addresses and then follow the on screen instructions to recover it.
 
 Action: Test wallet.
+
+Code: https://github.com/JWWeatherman/yeticold/blob/ac6981e1925766659cc08c3ccbdf7dbc4517339f/appyeticold.py#L281
