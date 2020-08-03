@@ -11,6 +11,8 @@ Descripton: Choose what version of yeti you want to use.
 
 Action: Click "Yeti cold"
 
+Code: https://github.com/JWWeatherman/yetihosted
+
 ### Step 1
 Route name: "https://yeticold.com/Cold/step1"
 
@@ -19,6 +21,8 @@ Header: Gather Required Equipment
 Descripton: Gather the required equipment used by yeticold.
 
 Action: Click "Next"
+
+Code: https://github.com/JWWeatherman/yetihosted
 
 ### Step 2
 Route name: "https://yeticold.com/Cold/step2"
@@ -29,6 +33,8 @@ Descripton: Install ubuntu on both laptops and label them Primary and Secondary.
 
 Action: Click "Next"
 
+Code: https://github.com/JWWeatherman/yetihosted
+
 ### Step 3
 Route name: "https://yeticold.com/Cold/step3"
 
@@ -37,6 +43,8 @@ Header: Switch to your Primary laptop
 Descripton: Switch to the laptop you just labeld Primary and go to https://cold.yeticold.com.
 
 Action: Go to "https://cold.yeticold.com"
+
+Code: https://github.com/JWWeatherman/yetihosted
 
 ### Step 4
 Route name: "https://yeticold.com/Cold/step4"
@@ -47,6 +55,8 @@ Descripton: Here you will run a command to install the yeti software on your Pri
 
 Action: Click "Next"
 
+Code: https://github.com/JWWeatherman/yetihosted
+
 ### Step 5
 Route name: "https://yeticold.com/Cold/step5"
 
@@ -56,6 +66,7 @@ Descripton: Here you run a command that will start the yeticold software.
 
 Action: Run the command on your primary laptop and wait for step 6 to appear.
 
+Code: https://github.com/JWWeatherman/yetihosted
 
 ### Step 6
 Route name: "localhost:5000/YCmenu"
@@ -66,6 +77,8 @@ Descripton: Choose setup or recovery.
 
 Action: Click "Create new yeticold wallet"
 
+Code: https://github.com/JWWeatherman/yeticold/blob/ac6981e1925766659cc08c3ccbdf7dbc4517339f/appyeticold.py#L103
+
 ### Choose Blockchain 
 Route name: "localhost:5000/YCblockchain"
 
@@ -75,7 +88,7 @@ Descripton: Choose the blockchain option that best suites your needs.
 
 Action: Click "I don't know the size of my hard drive"
 
-Snapshot: hi
+Code: https://github.com/JWWeatherman/yeticold/blob/ac6981e1925766659cc08c3ccbdf7dbc4517339f/appyeticold.py#L690
 
 ### Step 7
 Route name: "localhost:5000/YCopenbitcoin"
@@ -86,6 +99,8 @@ Descripton: Wait for the chosen blockchain to download while you set up your sec
 
 Action: Go to http://disc.yeticold.com on your secondary laptop.
 
+Code: https://github.com/JWWeatherman/yeticold/blob/ac6981e1925766659cc08c3ccbdf7dbc4517339f/appyeticold.py#L729
+
 ### Step 8
 Route name: "https://disc.yeticold.com/Cold/step6"
 
@@ -94,6 +109,8 @@ Header: Start Yeti Cold on your Secondary laptop.
 Descripton: Run both commands displayed on the page then wait for step 9 to appear.
 
 Action: Run the commands and wait for step 9.
+
+Code: https://github.com/JWWeatherman/yetihosted
 
 ### Step 9
 Route name: "http://localhost:5000/YCopenbitcoinB"
@@ -104,6 +121,8 @@ Descripton: Wait for the blockchain to download then click next.
 
 Action: Click "Next".
 
+Code: https://github.com/JWWeatherman/yeticold/blob/ac6981e1925766659cc08c3ccbdf7dbc4517339f/appyeticold.py#L220
+
 ### Step 10
 Route name: "http://localhost:5000/YCconnection"
 
@@ -113,6 +132,7 @@ Descripton: Disconnect your secondary laptop from all internet sources, we will 
 
 Action: Click "Next".
 
+Code: https://github.com/JWWeatherman/yeticold/blob/ac6981e1925766659cc08c3ccbdf7dbc4517339f/appyeticold.py#L243
 
 ### Step 11
 Route name: "http://localhost:5000/YCgetseeds"
@@ -122,6 +142,8 @@ Header: Further Randomize Seeds.
 Descripton: In this step you can provide random binary that will be used to XOR https://en.wikipedia.org/wiki/Exclusive_or with your bitcoin core generated private keys in order to create 7 secure keys used to generate you multisig wallet. If you do not provide any random binary a binary string consisitng with all 1's will be use instead. This is not a securty risk because the private keys that bitcoin core generates are secure and random. After clicking "Next" we will procide to generate your descriptor that will hold the 7 public keys derived from the private keys.
 
 Action: Click "Next".
+
+Code: 
 
 ### Step 12
 Route name: "http://localhost:5000/YCdisplaydescriptor"
