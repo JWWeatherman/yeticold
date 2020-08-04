@@ -7,7 +7,13 @@ Route name: "https://yeticold.com"
 
 Header: Yeti Bitcoin Cold Storage
 
-Descripton: Choose what version of yeti you want to use.
+Descripton: Here you will choose what version of yeti you will be setting up.
+
+Yeti Cold: Yeticold is the most secure version of yeti and uses a 3 of 7 multisig for your wallet and has two laptops Primary(Online) and Secondary(Offline). After downloading some librarys and the bitcoin block chain the Secondary laptop is disconnected from the internet. You will the use qr codes to transfer data between the two machines completly removing the ability for a viruse to send vital information off of the Secondary(Offline) Machine. 
+
+Yeti Warm: A less secure version of YetiCold where you only use one machine which is Online but is still a 3 of 7 multisig.
+
+Yeti Hot: A very simple app that uses Yeti's NATO seed format and creates a single key wallet from bitcoin core. You use bitcoin core as an interface for sending and reciving.
 
 Action: Click "Yeti cold"
 
@@ -18,7 +24,11 @@ Route name: "https://yeticold.com/Cold/step1"
 
 Header: Gather Required Equipment
 
-Descripton: Gather the required equipment used by yeticold.
+Descripton: You will need verying amounts of equipment depending on the version of yeti your using. For this walkthrough we are using yeticold so you will need:
+
+1. Two laptops that will later have ubuntu installed on them.
+2. 7 usb sticks to store the digital version of your NATO seeds.
+3. A printer and paper to store the paper version of your NATO seeds.
 
 Action: Click "Next"
 
@@ -29,7 +39,9 @@ Route name: "https://yeticold.com/Cold/step2"
 
 Header: Install Ubuntu and Label Laptops
 
-Descripton: Install ubuntu on both laptops and label them Primary and Secondary.
+Descripton: Here you will need to install ubuntu on both of the laptops you can use this tutorial here.
+
+Tutorial: https://tutorials.ubuntu.com/tutorial/tutorial-install-ubuntu-desktop#0
 
 Action: Click "Next"
 
@@ -40,7 +52,7 @@ Route name: "https://yeticold.com/Cold/step3"
 
 Header: Switch to your Primary laptop
 
-Descripton: Switch to the laptop you just labeld Primary and go to https://cold.yeticold.com.
+Descripton: Now you will procide to setup your Primary laptop with yeti, to start go to https://yeticold.com.
 
 Action: Go to "https://cold.yeticold.com"
 
@@ -51,7 +63,9 @@ Route name: "https://yeticold.com/Cold/step4"
 
 Header: Download Yeti to the Primary Laptop
 
-Descripton: Here you will run a command to install the yeti software on your Primary laptop.
+Descripton: This command will install github's git https://github.com/git/git and then use git to clone the yeticold repo https://github.com/JWWeatherman/yeticold.
+
+Command: sudo apt-get update; sudo apt-get install git; git clone https://github.com/jwweatherman/yeticold.git ~/yeticold
 
 Action: Click "Next"
 
@@ -62,7 +76,11 @@ Route name: "https://yeticold.com/Cold/step5"
 
 Header: Start Yeti on your Primary Laptop.
 
-Descripton: Here you run a command that will start the yeticold software.
+Descripton: Now you will run the command that will start up yeti in your browser.
+
+Command: python3 ~/yeticold/scripts/YetiCold.py
+
+Issues: Sometimes yeticold will not show up in your browser or it will give an error in the browser. To fix open your browser and/or refresh the page.
 
 Action: Run the command on your primary laptop and wait for step 6 to appear.
 
@@ -73,7 +91,7 @@ Route name: "localhost:5000/YCmenu"
 
 Header: Choose to Create or Recover a Yeti Bitcoin Cold Wallet
 
-Descripton: Choose setup or recovery.
+Descripton: You can choose to Create a new wallet or Recover and existing one.
 
 Action: Click "Create new yeticold wallet"
 
@@ -84,7 +102,11 @@ Route name: "localhost:5000/YCblockchain"
 
 Header: Choose blockchain
 
-Descripton: Choose the blockchain option that best suites your needs.
+Descripton: Choose the blockchain option that best suites your needs. If you have a small hard drive you have to prune https://www.reddit.com/r/Bitcoin/comments/5ywru2/what_is_the_prune_mode_exactly/ the bitcoin blockchain in order to store it on your machine. Its better if you have an unpruned node because you won't have to redownload it when you want to recover from a point farther in the past then the 550 block pruneing, so if you click I have a large hard drive we will not prune the blockchain. I don't know the size of my hard drive defaults to small hard drive.
+
+Test Block Chain: The test block chain is a pruned blockchain that willweatherman has stored in his google drive. Because it is not downloaded from the network it is not trustworthy for recording balances. It is perfectly fine for sending small amounts around for testing purposes and save a signifigant amount of time to download.
+
+Issue: If you don't see this page and it skips to YCopenbitcoin(step 7) it is because you already have a blockchain that bitcoin core can use and yeti will proceed to update it.
 
 Action: Click "I don't know the size of my hard drive"
 
@@ -95,7 +117,7 @@ Route name: "localhost:5000/YCopenbitcoin"
 
 Header: Setup your Secondary Laptop.
 
-Descripton: Wait for the chosen blockchain to download while you set up your secondary laptop.
+Descripton: While yeti is downloading or updating the bitcoin blockchain that you choose in the previous screen, You will switch to your Secondary laptop and set it up.
 
 Action: Go to http://disc.yeticold.com on your secondary laptop.
 
@@ -106,7 +128,9 @@ Route name: "https://disc.yeticold.com/Cold/step6"
 
 Header: Start Yeti Cold on your Secondary laptop.
 
-Descripton: Run both commands displayed on the page then wait for step 9 to appear.
+Descripton: Run these same two commands shown preveously on your Secondary laptop to download and run yeti.
+
+Issues: Sometimes yeticold will not show up in your browser or it will give an error in the browser. To fix open your browser and/or refresh the page.
 
 Action: Run the commands and wait for step 9.
 
@@ -117,7 +141,7 @@ Route name: "http://localhost:5000/YCopenbitcoinB"
 
 Header: Download the Blockchain.
 
-Descripton: Wait for the blockchain to download then click next.
+Descripton: Wait for the blockchain to download then click next, this step could take a signifigant amount of time. Because this is the offline machine and is not going to send or recive, we will download the testblockchain mentioned prevously to save time.
 
 Action: Click "Next".
 
@@ -139,7 +163,7 @@ Route name: "http://localhost:5000/YCgetseeds"
 
 Header: Further Randomize Seeds.
 
-Descripton: In this step you can provide random binary that will be used to XOR https://en.wikipedia.org/wiki/Exclusive_or with your bitcoin core generated private keys in order to create 7 secure keys used to generate you multisig wallet. If you do not provide any random binary a binary string consisitng with all 1's will be use instead. This is not a securty risk because the private keys that bitcoin core generates are secure and random. After clicking "Next" we will procide to generate your descriptor that will hold the 7 public keys derived from the private keys.
+Descripton: In this step you can provide random binary that will be used to XOR https://en.wikipedia.org/wiki/Exclusive_or with your bitcoin core generated private keys in order to create 7 secure keys used to generate you multisig wallet. If you do not provide any random binary a binary string consisitng with all 1's will be use instead. This is not a securty risk because the private keys that bitcoin core generates are secure and random. After clicking "Next" we will proceed to generate your descriptor that will hold the 7 public keys derived from the private keys.
 
 Action: Click "Next".
 
@@ -216,7 +240,7 @@ Route name: "http://localhost:5000/YCcopyseeds"
 
 Header: Copy Seeds to USB drives.
 
-Descripton: After you wrote down the seeds yeti created seven files that each hold you descriptor and your private keys. Move the files into the labeled usb drives.
+Descripton: After you wrote down the seeds yeti created seven files that each hold you descriptor and your private keys. Move the files into the labeled usb drives. You will store the matching usb/paper seed pairs in seven diffrent locations.
 
 Action: Move the files and click "Next".
 
