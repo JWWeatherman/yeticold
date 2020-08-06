@@ -1,2 +1,4 @@
 static/
 .DS_Store
+*pycache*/
+bitcoin/
