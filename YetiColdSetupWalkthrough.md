@@ -1,4 +1,4 @@
-#YetiCold
+# YetiCold
 
 ## This will be a walkthrough of the yeticold setup proccess.
 
