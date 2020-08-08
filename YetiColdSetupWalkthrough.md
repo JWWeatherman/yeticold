@@ -163,7 +163,7 @@ Route name: "http://localhost:5000/YCgetseeds"
 
 Header: Further Randomize Seeds.
 
-Descripton: In this step you can provide random binary that will be used to XOR https://en.wikipedia.org/wiki/Exclusive_or with your bitcoin core generated private keys in order to create 7 secure keys used to generate you multisig wallet. If you do not provide any random binary a binary string consisitng with all 1's will be use instead. This is not a securty risk because the private keys that bitcoin core generates are secure and random. After clicking "Next" we will proceed to generate your descriptor that will hold the 7 public keys derived from the private keys.
+Descripton: In this step you can provide random binary that will be used to XOR https://en.wikipedia.org/wiki/Exclusive_or with your bitcoin core generated private keys in order to create 7 secure keys used to generate you multisig wallet. If you do not provide any random binary a binary string consisitng with all 1's will be use instead. This is not a securty risk because the private keys that bitcoin core generates are secure and random. After clicking "Next" we will proceed to generate your descriptor that will hold the 7 public keys derived from the private keys. A good way to create randomness is to shake a box of coins and type 1 for heads and 0 for tails.
 
 Action: Click "Next".
 
