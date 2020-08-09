@@ -81,7 +81,7 @@ def RPC():
     rpc = AuthServiceProxy(uri, timeout=600)  # 1 minute timeout
     return rpc
 
-def blockheight():
+def get_blockheight():
     rpc = RPC()
     Blockinfo = rpc.getblockchaininfo()
     blockheight = 0
@@ -273,7 +273,7 @@ def YCRrescanwallet():
         if not (len(response[1]) == 0): 
             print(response)
             return "error response from importmulti: " + str(response[1]) + '\n' + '~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yeticold importmulti \'[{ "desc": "'+pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false}]\' \'{"rescan": true}\''
-        subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yeticold rescanblockchain '+blockheight(),shell=True,start_new_session=True)
+        subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yeticold rescanblockchain '+get_blockheight(),shell=True,start_new_session=True)
     if request.method == 'POST':
         return redirect('/YCRdisplaywallet')
     return render_template('YCRrescanwallet.html')

@@ -76,7 +76,7 @@ def RPC():
     rpc = AuthServiceProxy(uri, timeout=600)  # 1 minute timeout
     return rpc
 
-def blockheight():
+def get_blockheight():
     rpc = RPC()
     Blockinfo = rpc.getblockchaininfo()
     blockheight = 0
@@ -257,7 +257,7 @@ def BCimportkeys():
 @app.route("/BCrescan", methods=['GET', 'POST'])
 def BCrescan():
     if request.method == 'GET':
-        subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet= rescanblockchain '+blockheight(),shell=True,start_new_session=True)
+        subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet= rescanblockchain '+get_blockheight(),shell=True,start_new_session=True)
     if request.method == 'POST':
         return redirect('/BCdisplayutxos')
     return render_template('BCrescan.html')
