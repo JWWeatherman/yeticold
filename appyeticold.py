@@ -244,7 +244,6 @@ def YCRopenbitcoinB():
 def YCRconnection():
     if request.method == 'POST':
         subprocess.call(['python3 ~/yeticold/utils/forgetnetworks.py'],shell=True)
-        subprocess.call(['nmcli n off'],shell=True)
         return redirect('/YCRswitchlaptop')
     return render_template('YCRconnection.html')
 
@@ -816,7 +815,6 @@ def YCopenbitcoinB():
 def YCconnection():
     if request.method == 'POST':
         subprocess.call(['python3 ~/yeticold/utils/forgetnetworks.py'],shell=True)
-        subprocess.call(['nmcli n off'],shell=True)
         return redirect('/YCgetseeds')
     return render_template('YCconnection.html')
 

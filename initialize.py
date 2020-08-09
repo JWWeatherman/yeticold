@@ -74,8 +74,6 @@ else:
         print('Running YetiCold Create Wallet on Secondary PC')
         print('********************' + os.linesep)
         subprocess.run('sleep 1', shell=True, check=False)
-        # For secondary (offline) PC, take control of network adapters, but this is poor UX
-        subprocess.run('snap install network-manager', shell=True, check=False)
         subprocess.run('sudo rm -r ~/.bitcoin/wallets/yeticold* 2> /dev/null', shell=True, check=False)
         subprocess.run('sudo rm -r ~/.bitcoin/yeticold* 2> /dev/null', shell=True, check=False)
         subprocess.run('sudo rm -r ~/yeticoldwallet* 2> /dev/null', shell=True, check=False)
@@ -88,8 +86,6 @@ else:
         print('Running YetiCold Recover Wallet on Secondary PC')
         print('********************' + os.linesep)
         subprocess.run('sleep 1', shell=True, check=False)
-        # For secondary (offline) PC, take control of network adapters, but this is poor UX
-        subprocess.run('snap install network-manager', shell=True, check=False)
         subprocess.run('sudo rm -r ~/.bitcoin/wallets/yeticold* 2> /dev/null', shell=True, check=False)
         subprocess.run('sudo rm -r ~/.bitcoin/yeticold* 2> /dev/null', shell=True, check=False)
         subprocess.run('sudo rm -r ~/yeticoldwallet* 2> /dev/null', shell=True, check=False)
