@@ -8,6 +8,9 @@ real.
 import os
 import subprocess
 HOME = os.getenv("HOME")
-if not os.path.exists(os.path.join(HOME, ".bitcoin")):
-    subprocess.run('cd ~/yeticold/utils && rm ~/yeticold/utils/.bitcoin.tar.gz && perl gdown.pl https://drive.google.com/file/d/1iTLKVLkvAaGRDE7dnLpSR5Hl4I-Xnyft/view?usp=sharing .bitcoin.tar.gz && rm -r ~/yeticold/utils/.bitcoin && tar -xzvf .bitcoin.tar.gz .bitcoin && cd ~', shell=True, check=False)
-    subprocess.run('mv ~/yeticold/utils/.bitcoin ~/', shell=True, check=False)
+def get_test_blockchain():
+    if not os.path.exists(os.path.join(HOME, ".bitcoin")):
+        subprocess.run('echo "Cleaning out old files..." && rm -f ~/yeticold/utils/.bitcoin.tar.gz && rm -rf ~/yeticold/utils/.bitcoin', shell=True, check=False)
+        subprocess.run('echo "Downloading test blockchain file..." && cd ~/yeticold/utils && perl gdown.pl https://drive.google.com/file/d/1iTLKVLkvAaGRDE7dnLpSR5Hl4I-Xnyft/view?usp=sharing .bitcoin.tar.gz', shell=True, check=False)
+        subprocess.run('echo "Unzipping test blockchain data..." && cd ~/yeticold/utils && tar -xzf .bitcoin.tar.gz .bitcoin && rm -f ~/yeticold/utils/.bitcoin.tar.gz', shell=True, check=False)
+        subprocess.run('echo "Relocating unzipped data..." && cd ~ && mv ~/yeticold/utils/.bitcoin ~/', shell=True, check=False)
