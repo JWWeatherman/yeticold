@@ -1,2 +1,8 @@
 static/
 .DS_Store
+*pycache*/
+bitcoin/
+*vscode*/
+core
+*.asc
+sigcorrect
