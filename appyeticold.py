@@ -34,6 +34,7 @@ oldkeys = None
 #FILE IMPORTS
 sys.path.append(home + '/yeticold/utils/')
 from formating import *
+import forgetnetworks
 
 #RPC
 rpcpsw = str(random.randrange(0,1000000))
@@ -221,8 +222,7 @@ def YCRopenbitcoinB():
 @app.route("/YCRconnection", methods=['GET', 'POST'])
 def YCRconnection():
     if request.method == 'POST':
-        subprocess.call(['python3 ~/yeticold/utils/forgetnetworks.py'],shell=True)
-        subprocess.call(['nmcli n off'],shell=True)
+        forgetnetworks.forget_networks()
         return redirect('/YCRswitchlaptop')
     return render_template('YCRconnection.html')
 
@@ -765,8 +765,7 @@ def YCopenbitcoinB():
 @app.route("/YCconnection", methods=['GET', 'POST'])
 def YCconnection():
     if request.method == 'POST':
-        subprocess.call(['python3 ~/yeticold/utils/forgetnetworks.py'],shell=True)
-        subprocess.call(['nmcli n off'],shell=True)
+        forgetnetworks.forget_networks()
         return redirect('/YCgetseeds')
     return render_template('YCconnection.html')
 
