@@ -18,20 +18,13 @@
         <input style="display: none;" name="option" value="downloadblockchain">
         <input class="btn btn-primary" type="submit" id="next" value="Use test blockchain">
       </form>
-      <p>If you have a very large hard drive we will not prune the blockchain resulting in maximum security.</p>
-       <form action="" method="post">
-        <input style="display: none;" name="option" value="largeharddrive">
-        <input class="btn btn-primary" type="submit" id="next" value="I have a large hard drive.">
-      </form>
-      <p>If you have a smaller hard drive we will prune the blockchain resulting in a silghtly less secure blockchain for recording balances.</p>
-       <form action="" method="post">
-        <input style="display: none;" name="option" value="smallharddrive">
-        <input class="btn btn-primary" type="submit" id="next" value="I have a small hard drive.">
-      </form>
-      <p>If you don't know the size of you hard drive we will prune it incase it is not big enough for the whole blockchain.</p>
-       <form action="" method="post">
-        <input style="display: none;" name="option" value="smallharddrive">
-        <input class="btn btn-primary" type="submit" id="next" value="I don't know the size of my hard drive.">
+      <p>Select the date of your first tranasction that you would like to send. Yeti Cold will prune the blockhain to the given date, Reducing the size of the blockchain.</p>
+      <form action="" method="post">
+        <div class="form-group col-md-10">
+          <input type="date" name="date">
+        </div>
+        <input style="display: none;" name="option" value="VALUE">
+        <input class="btn btn-primary" type="submit" id="next" value="Use secure blockchain">
       </form>
     </div>
   </body>
