@@ -25,7 +25,7 @@ privkeycount = 0
 xprivlist = []
 pubdesc = ''
 selectedutxo = ''
-addresmses = ''
+addresses = ''
 walletimported = False
 error = ''
 testblockchain = False
@@ -191,9 +191,31 @@ def YCRblockchainB():
                     f.write(new + old)
             else:
                 subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
+            return redirect('/YCRopenbitcoinB')
+    if request.method == 'POST':
+        if request.form['option'] == 'downloadblockchain':
+            testblockchain = True
+            subprocess.Popen('python3 ~/yeticold/utils/testblockchain.py',shell=True,start_new_session=True)
         else:
-            subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nprune=550\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
-    return redirect('/YCRopenbitcoinB')
+            subprocess.call(['mkdir ~/.bitcoin'],shell=True)
+            if request.form['date'] == '':
+                subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
+                return redirect('/YCRopenbitcoinB')
+            fmt = '%Y-%m-%d %H:%M:%S'
+            today = str(datetime.today()).split('.')[0]
+            print(request.form['date'] + ' 12:0:0')
+            print(today)
+            d1 = datetime.strptime(request.form['date'] + ' 12:0:0', fmt)
+            d2 = datetime.strptime(today, fmt)
+            d1_ts = time.mktime(d1.timetuple())
+            d2_ts = time.mktime(d2.timetuple())
+            diff = (int(d2_ts - d1_ts) / 60) / 10
+            add = diff / 10
+            blockheight = diff + add + 550
+            blockheight = int(blockheight)
+            subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nprune='+str(blockheight)+'\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
+        return redirect('/YCRopenbitcoinB')
+    return render_template('YCRblockchainB.html')
 
 @app.route("/YCRopenbitcoinB", methods=['GET', 'POST'])
 def YCRopenbitcoinB():
@@ -667,10 +689,10 @@ def YCRscantransactionB():
 #SETUP
 @app.route("/YCblockchain", methods=['GET', 'POST'])
 def YCblockchain():
-    global home
     global rpcpsw
     global testblockchain
     if request.method == 'GET':
+        home = os.getenv("HOME")
         if (os.path.exists(home + "/.bitcoin")):
             if (os.path.exists(home + "/.bitcoin/bitcoin.conf")):
                 with open(".bitcoin/bitcoin.conf","r+") as f:
@@ -680,17 +702,27 @@ def YCblockchain():
                     f.write(new + old)
             else:
                 subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
-            return redirect('/YCRopenbitcoin')
+            return redirect('/YCopenbitcoin')
     if request.method == 'POST':
         if request.form['option'] == 'downloadblockchain':
             testblockchain = True
             subprocess.Popen('python3 ~/yeticold/utils/testblockchain.py',shell=True,start_new_session=True)
-        elif request.form['option'] == 'largeharddrive':
-            subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
-            return redirect('/YCopenbitcoin')
-        elif request.form['option'] == 'smallharddrive':
+        else:
+            fmt = '%Y-%m-%d %H:%M:%S'
+            today = str(datetime.today()).split('.')[0]
+            print(request.form['date'] + ' 12:0:0')
+            print(today)
+            d1 = datetime.strptime(request.form['date'] + ' 12:0:0', fmt)
+            d2 = datetime.strptime(today, fmt)
+            d1_ts = time.mktime(d1.timetuple())
+            d2_ts = time.mktime(d2.timetuple())
+            diff = (int(d2_ts - d1_ts) / 60) / 10
+            add = diff / 10
+            blockheight = diff + add + 550
+            blockheight = int(blockheight)
+            home = os.getenv("HOME")
             subprocess.call(['mkdir ~/.bitcoin'],shell=True)
-            subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nprune=550\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
+            subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nprune='+str(blockheight)+'\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
         return redirect('/YCopenbitcoin')
     return render_template('YCblockchain.html')
 
@@ -722,8 +754,8 @@ def YCopenbitcoin():
 def YCblockchainB():
     global rpcpsw
     global testblockchain
-    global home
     if request.method == 'GET':
+        home = os.getenv("HOME")
         if (os.path.exists(home + "/.bitcoin")):
             if (os.path.exists(home + "/.bitcoin/bitcoin.conf")):
                 with open(".bitcoin/bitcoin.conf","r+") as f:
@@ -733,11 +765,29 @@ def YCblockchainB():
                     f.write(new + old)
             else:
                 subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
-        else:
+            return redirect('/YCopenbitcoinB')
+    if request.method == 'POST':
+        if request.form['option'] == 'downloadblockchain':
             testblockchain = True
             subprocess.Popen('python3 ~/yeticold/utils/testblockchain.py',shell=True,start_new_session=True)
-            subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nprune=550\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
-    return redirect('/YCopenbitcoinB')
+        else:
+            fmt = '%Y-%m-%d %H:%M:%S'
+            today = str(datetime.today()).split('.')[0]
+            print(request.form['date'] + ' 12:0:0')
+            print(today)
+            d1 = datetime.strptime(request.form['date'] + ' 12:0:0', fmt)
+            d2 = datetime.strptime(today, fmt)
+            d1_ts = time.mktime(d1.timetuple())
+            d2_ts = time.mktime(d2.timetuple())
+            diff = (int(d2_ts - d1_ts) / 60) / 10
+            add = diff / 10
+            blockheight = diff + add + 550
+            blockheight = int(blockheight)
+            home = os.getenv("HOME")
+            subprocess.call(['mkdir ~/.bitcoin'],shell=True)
+            subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nprune='+str(blockheight)+'\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
+        return redirect('/YCopenbitcoinB')
+    return render_template('YCblockchainB.html')
 
 @app.route("/YCopenbitcoinB", methods=['GET', 'POST'])
 def YCopenbitcoinB():
