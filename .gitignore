@@ -1,2 +1,9 @@
 static/
 .DS_Store
+*pycache*/
+bitcoin/
+*vscode*/
+*qrcode*/
+core
+*.asc
+sigcorrect 

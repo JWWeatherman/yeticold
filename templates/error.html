@@ -1,0 +1,18 @@
+<html>
+ <head>
+    <title>Yeti Bitcoin Storage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet", href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet", href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+  </head>
+  <body>
+    <div class="container" style="margin-top: 3rem;">
+      <h2>Error: Yeti ran into an error while running.</h2>
+      <p>
+        Please open <a href="https://yeticold.slack.com">yeticold.slack.com</a> in a new tab and provide us with this error in the support channel.
+      </p>
+      <p>{{error}}</p>
+    </div>
+  </body>
+</html>
