@@ -4,6 +4,7 @@ home = os.getenv("HOME")
 sys.path.append(home + '/yeticold/utils/')
 from imports import *
 from variables import *
+rpcpsw = str(random.randrange(0,1000000))
 from formating import *
 from btcrpcfunctions import *
 from yetifunctions import *
