@@ -5,7 +5,6 @@ sys.path.append(home + '/yeticold/utils/')
 from imports import *
 import variables as v
 v.rpcpsw = str(random.randrange(0,1000000))
-print(v)
 v.settings = {"rpc_username": "rpcuser","rpc_password": v.rpcpsw, "rpc_host": "127.0.0.1","rpc_port": 8332,"address_chunk": 100}
 v.wallet_template = "http://{rpc_username}:{rpc_password}@{rpc_host}:{rpc_port}/wallet/{wallet_name}"
 from formating import *
@@ -17,7 +16,7 @@ app = Flask(__name__)
 rpc = RPC("yetiwarm")
 
 
-@app.v.errorhandler(werkzeug.exceptions.InternalServerError)
+@app.errorhandler(werkzeug.exceptions.InternalServerError)
 def handle_bad_request(e):
     if e.original_exception != None:
         e = e.original_exception
