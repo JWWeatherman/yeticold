@@ -5,7 +5,7 @@ sys.path.append(home + '/yeticold/utils/')
 from imports import *
 import variables as v
 v.rpcpsw = str(random.randrange(0,1000000))
-v.settings = {"rpc_username": "rpcuser","rpc_password": rpcpsw,"rpc_host": "127.0.0.1","rpc_port": 8332,"address_chunk": 100}
+v.settings = {"rpc_username": "rpcuser","rpc_password": v.rpcpsw, "rpc_host": "127.0.0.1","rpc_port": 8332,"address_chunk": 100}
 v.wallet_template = "http://{rpc_username}:{rpc_password}@{rpc_host}:{rpc_port}/wallet/{wallet_name}"
 from formating import *
 from btcrpcfunctions import *
