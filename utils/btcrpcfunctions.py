@@ -1,5 +1,5 @@
 from imports import *
-from variables import *
+import variables as v
 from formating import *
 home = os.getenv("HOME")
 
@@ -43,6 +43,7 @@ def RPC(wallet_name=''):
     global uri
     name = 'username'
     uri = wallet_template.format(**settings, wallet_name=wallet_name)
+    print("uri, ----------", uri)
     rpc = AuthServiceProxy(uri, timeout=600)  # 1 minute timeout
     return rpc
 
