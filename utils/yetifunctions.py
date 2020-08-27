@@ -1,10 +1,11 @@
 from imports import *
-from variables import *
+import variables as v
 from btcrpcfunctions import *
 home = os.getenv("HOME")
 
 
 def createOrAppend(text, directory):
+	print(text)
 	subprocess.call('echo "'+text+'" >> '+home+'/'+directory, shell=True)
 
 def getPrunBlockheightByDate(request):
@@ -31,11 +32,11 @@ def generatePrivKeys(newbinary):
     privkeylisttemp
 
 def getxprivs(privkeylist):  
-    xpublist = []
-    xprivlist = []
+    v.xpublist = []
+    v.xprivlist = []
     for i in range(0,len(privkeylist)):
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetixprivwallet"'+str(i)+'"')
-        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetixprivwallet'+str(i)+' sethdseed true "'+privkeylist[i]+'"')
+        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetixprivwallet'+str(i)+' sethdseed true "'+v.privkeylist[i]+'"')
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetixprivwallet'+str(i)+' dumpwallet "yetixprivwallet'+str(i)+'"')
         wallet = open(home + '/yetixprivwallet' + str(i),'r')
         wallet.readline()
@@ -43,11 +44,11 @@ def getxprivs(privkeylist):
         wallet.readline()
         wallet.readline()
         wallet.readline()
-        xprivlist.append(wallet.readline().split(" ")[4][:-1])
-        response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet getdescriptorinfo "pk('+privkeyline+')"')
+        v.xprivlist.append(wallet.readline().split(" ")[4][:-1])
+        response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet getdescriptorinfo "pk('+v.privkeyline+')"')
         xpub = response.split('(')[1].split(')')[0]
-        xpublist.append(xpub)  
-    return (xpublist, xprivlist)
+        v.xpublist.append(xpub)  
+    return (v.xpublist, v.xprivlist)
 
 def makeQrCode(data, path=None, minipath=None):
     if path == None:
