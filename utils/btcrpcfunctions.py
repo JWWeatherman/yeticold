@@ -39,10 +39,8 @@ def BTCRunning():
     return False
 
 def RPC(wallet_name=''):
-    global wallet_template
-    global uri
     name = 'username'
-    uri = wallet_template.format(**settings, wallet_name=wallet_name)
+    uri = v.wallet_template.format(**settings, wallet_name=wallet_name)
     print("uri, ----------", uri)
     rpc = AuthServiceProxy(uri, timeout=600)  # 1 minute timeout
     return rpc
