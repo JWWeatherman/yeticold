@@ -213,6 +213,7 @@ def YWRsendtransaction():
 
 #GEN trans qr code
 @app.route("/YWRsendtransactionB", methods=['GET', 'POST'])
+def YWRsendtransactionB():
     sendTransaction(request, '/YWRsendtransactionB', '/YWRdisplaywallet')
     return render_template('YWRsendtransactionB.html', amount=v.amo, minerfee=v.minerfee, recipent=v.receipentaddress, error=v.error)
 
