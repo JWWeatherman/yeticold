@@ -126,6 +126,90 @@ def checkSeeds(request, currentroute, nextroute):
         else:
             v.error = 'The seed words you entered are incorrect. This is probably because you entered a line twice or put them in the wrong order.'
 
+def displaywallet(request, nextroute):
+	if request.method == 'GET':
+        v.addresses = []
+        v.totalwalletbal = 0
+        subprocess.call(['rm -r ~/yeticold/static/qrcode*'],shell=True)
+        adrlist = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet deriveaddresses "'+pubdesc+'" "[0,999]"', True)
+        rpc = RPC("yetiwallet")
+        for i in range(0, len(adrlist)):
+            adr = adrlist[i]
+            randomnum = str(random.randrange(0,1000000))
+            route = url_for('static', filename='qrcode'+adr+''+randomnum+'.png')
+            response = rpc.listunspent(0, 9999999, [adr])
+            if response == []:
+                rpc.importaddress(adrlist[i],False,False)
+                totalbal = rpc.getreceivedbyaddress(adrlist[i])
+                if totalbal:
+                    status = 3
+                else:
+                    status = 0
+                address = {}
+                address['txid'] = ''
+                address['address'] = adr
+                address['balance'] = "0.00000000"
+                address['numbal'] = 0
+                address['status'] = status
+                address['route'] = route
+                v.addresses.append(address)
+            else:
+                for x in range(0, len(response)):
+                    utxo = response[x]
+                    txid = utxo['txid']
+                    vout = utxo['vout']
+                    scriptPubKey = utxo['scriptPubKey']
+                    numamount = utxo['amount']
+                    v.totalwalletbal = v.totalwalletbal + numamount
+                    amount = "{:.8f}".format(float(numamount))
+                    confs = utxo['confirmations']
+                    totalbal = rpc.getreceivedbyaddress(adr)
+                    if numamount:
+                        if not confs:
+                            status = 1
+                        else:
+                            status = 2
+                    elif totalbal:
+                        status = 3
+                    else:
+                        status = 0
+                    address = {}
+                    address['txid'] = txid
+                    address['vout'] = vout 
+                    address['scriptPubKey'] = scriptPubKey
+                    address['address'] = adr
+                    address['balance'] = amount
+                    address['numbal'] = numamount
+                    address['status'] = status
+                    address['route'] = route
+                    v.addresses.append(address)
+        v.addresses.sort(key=lambda x: x['balance'], reverse=True)
+        for i in range(0, len(v.addresses)):
+            makeQrCode(v.addresses[i]['address'], home+'/yeticold/'+v.addresses[i]['route'])
+    if request.method == 'POST':
+        for i in range(0, len(v.addresses)):
+            if v.addresses[i]['txid'] == request.form['txid']:
+                sourceaddress = v.addresses[i]
+        return redirect(nextroute)
+
+def scanrecipent(request, currentroute, nextroute):
+    if request.method == 'POST':
+        v.error = None
+        if request.form['option'] == 'scan':
+            v.receipentaddress = handleResponse('python3 ~/yeticold/utils/scanqrcode.py').replace('\n', '')
+        else:
+            v.receipentaddress = request.form['option']
+        if (v.receipentaddress.split(':')[0] == 'bitcoin'):
+            v.receipentaddress = v.receipentaddress.split(':')[1].split('?')[0]
+        if (v.receipentaddress[:3] == 'bc1') or (v.receipentaddress[:1] == '3') or (v.receipentaddress[:1] == '1'):
+            if not (len(v.receipentaddress) >= 26) and (len(v.receipentaddress) <= 35):
+                v.error = v.receipentaddress + ' is not a valid bitcoin address, address should have a length from 26 to 35 instead of ' + str(len(v.receipentaddress)) + '.'
+        else: 
+            v.error = v.receipentaddress + ' is not a valid bitcoin address, address should have started with bc1, 3 or 1 instead of ' + v.receipentaddress[:1] + ', or ' + v.receipentaddress[:3] + '.'
+        if v.error:
+            return redirect(currentroute)
+        return redirect(nextroute)
+
 def importSeeds(request, currentroute, nextroute):
     if request.method == 'GET':
         if v.walletimported:
