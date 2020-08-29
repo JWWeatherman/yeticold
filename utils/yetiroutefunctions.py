@@ -139,7 +139,7 @@ def displaywallet(request, nextroute):
             route = url_for('static', filename='qrcode'+adr+''+randomnum+'.png')
             response = rpc.listunspent(0, 9999999, [adr])
             if response == []:
-                rpc.importaddress(adrlist[i],False,False)
+            	handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet importaddress '+adrlist[i]+' False False', True)
                 totalbal = rpc.getreceivedbyaddress(adrlist[i])
                 if totalbal:
                     status = 3
