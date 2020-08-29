@@ -5,7 +5,6 @@ home = os.getenv("HOME")
 
 
 def createOrPrepend(text, path):
-	print(text)
     if (os.path.exists(path)):
         f = open('filename','r')
         temp = f.read()
