@@ -69,7 +69,7 @@ def displaySeeds(request, currentroute, nextroute):
         file = ''
         for i in range(0,13):
             file = file + request.form['displayrow' + str(i+1)] + '\n'
-        file = file + '\n\nThis is your descriptor in text format you have a duplicate of this text in QR format in this folder.\n' + pubdesc + '\n'
+        file = file + '\n\nThis is your descriptor in text format you have a duplicate of this text in QR format in this folder.\n' + v.pubdesc + '\n'
         file = file + '\n\nThis is a seed packet that contains 1/3 of the information needed to recover bitcoins in a 3 of 7 HD multisig wallet.\n'
         file = file + 'There are 6 other packets that are identical except that they contain one of the other sets of seed words.\n'
         file = file + 'The HD Multisig wallet was was created using YetiCold.com (a Python script to make the experience more user friendly) and Bitcoin Core 0.19 RC1.\n'
