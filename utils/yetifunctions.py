@@ -46,7 +46,7 @@ def getxprivs(privkeylist):
         walletname = createDumpWallet()
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet '+walletname)
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet='+walletname+' sethdseed true "'+v.privkeylist[i]+'"')
-        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet='+walletname+' dumpwallet "yetixprivwallet'+str(i)+'"')
+        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet='+walletname+' dumpwallet '+walletname)
         wallet = open(home + '/yetixprivwallet' + str(i),'r')
         wallet.readline()
         wallet.readline()
