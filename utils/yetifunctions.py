@@ -43,9 +43,10 @@ def getxprivs(privkeylist):
     v.xpublist = []
     v.xprivlist = []
     for i in range(0,len(privkeylist)):
-        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetixprivwallet'+str(i)+'"')
-        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetixprivwallet'+str(i)+' sethdseed true "'+v.privkeylist[i]+'"')
-        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetixprivwallet'+str(i)+' dumpwallet "yetixprivwallet'+str(i)+'"')
+    	walletname = createDumpWallet()
+        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet '+walletname)
+        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet='+walletname+' sethdseed true "'+v.privkeylist[i]+'"')
+        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet='+walletname+' dumpwallet "yetixprivwallet'+str(i)+'"')
         wallet = open(home + '/yetixprivwallet' + str(i),'r')
         wallet.readline()
         wallet.readline()
@@ -57,6 +58,10 @@ def getxprivs(privkeylist):
         xpub = response.split('(')[1].split(')')[0]
         v.xpublist.append(xpub)  
     return (v.xpublist, v.xprivlist)
+
+def createDumpWallet():
+	v.dumpwalletindex = v.dumpwalletindex + 1
+	return '"yetixprivwallet'+str(v.dumpwalletindex)+'"'
 
 def makeQrCode(data, path=None, minipath=None):
     if path == None:
