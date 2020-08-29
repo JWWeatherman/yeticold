@@ -44,12 +44,7 @@ def getSeeds(request, nextroute):
             v.privkeylist = generatePrivKeys('1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111')
         else:
             v.privkeylist = generatePrivKeys(request.form['binary' + str(i)])
-        for i in range(0,7):
-            handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletone'+str(i)+'"')
-            handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletone'+str(i)+' sethdseed true "'+v.privkeylist[i]+'"')
-            handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletone'+str(i)+' dumpwallet "yetiwalletone'+str(i)+'"')
-            xpriv = getxpriv(home + '/yetiwalletone' + str(i))
-            xprivlist.append(xpriv)
+        (v.xprivlist, v.newxpublist) = getxprivs(v.privkeylist)
         v.addresses = []
         checksum = None
         response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet getdescriptorinfo "wsh(multi(3,'+v.xprivlist[0]+'/*,'+v.xprivlist[1]+'/*,'+v.xprivlist[2]+'/*,'+v.xprivlist[3]+'/*,'+v.xprivlist[4]+'/*,'+v.xprivlist[5]+'/*,'+v.xprivlist[6]+'/*))"', True)
@@ -118,13 +113,8 @@ def checkSeeds(request, currentroute, nextroute):
             v.privkeycount = v.privkeycount + 1
             if (v.privkeycount >= 7):
                 v.privkeycount = 7
-                v.newxprivlist = []
+                (v.newxprivlist, _) = getxprivs(v.privkeylist)
                 for i in range(0,7):
-                    handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwallettwo"'+str(i)+'"')
-                    handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallettwo'+str(i)+' sethdseed true "'+v.privkeylist[i]+'"')
-                    handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallettwo'+str(i)+' dumpwallet "yetiwallettwo'+str(i)+'"')
-                    xpriv = getxpriv(home + '/yetiwallettwo' + str(i))
-                    v.newxprivlist.append(xpriv)
                     if not v.xprivlist[i] == v.newxprivlist[i]:
                         v.privkeycount = 0
                         v.privkeylist = []
