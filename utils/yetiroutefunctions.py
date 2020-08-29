@@ -127,7 +127,7 @@ def checkSeeds(request, currentroute, nextroute):
             v.error = 'The seed words you entered are incorrect. This is probably because you entered a line twice or put them in the wrong order.'
 
 def displaywallet(request, nextroute):
-	if request.method == 'GET':
+    if request.method == 'GET':
         v.addresses = []
         v.totalwalletbal = 0
         subprocess.call(['rm -r ~/yeticold/static/qrcode*'],shell=True)
