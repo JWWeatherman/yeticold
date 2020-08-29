@@ -33,6 +33,7 @@ def openBitcoin(request, currentroute, nextroute):
         v.progress = BTCprogress()
     if request.method == 'POST':
         if v.IBD:
+        	print('\n\n\n\n\n')
             subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwallet"'],shell=True)
             return redirect(nextroute)
         else:
