@@ -50,7 +50,7 @@ def getSeeds(request, nextroute):
         else:
             v.privkeylist = generatePrivKeys(request.form['binary' + str(i)])
         for i in range(0,7):
-            handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletone"'+str(i)+'"')
+            handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletone'+str(i)+'"')
             handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletone'+str(i)+' sethdseed true "'+v.privkeylist[i]+'"')
             handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletone'+str(i)+' dumpwallet "yetiwalletone'+str(i)+'"')
             xpriv = getxpriv(home + '/yetiwalletone' + str(i))
