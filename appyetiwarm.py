@@ -66,7 +66,9 @@ def YWmenu():
 
 @app.route("/YWgetseeds", methods=['GET', 'POST'])
 def YWgetseeds():
-    getSeeds(request, '/YWprintdescriptor')
+    route = getSeeds(request, '/YWprintdescriptor')
+    if route:
+        return route
     return render_template('YWgetseeds.html')
 
 #display for print
@@ -87,7 +89,9 @@ def YWdisplayseeds():
 
 @app.route('/YWcheckseeds', methods=['GET', 'POST'])
 def YWcheckseeds():
-    checkSeeds(request, '/YWcheckseeds', '/YWcopyseeds')
+    route = checkSeeds(request, '/YWcheckseeds', '/YWcopyseeds')
+    if route:
+        return route
     return render_template('YWcheckseeds.html', x=v.privkeycount + 1, error=v.error,i=v.privkeycount + 16,oldkeys=v.oldkeys)
 
 @app.route("/YWcopyseeds", methods=['GET', 'POST'])
@@ -201,26 +205,33 @@ def YWRscanrecipent():
     return render_template('YWRscanrecipent.html', error=v.error, recipent=v.receipentaddress)
 
 @app.route('/YWRimportseeds', methods=['GET', 'POST'])
-def YWRimportseeds():
-    importSeeds(request, '/YWRimportseeds', '/YWRsendtransaction')
+def YWRimportseeds():    
+    route = importSeeds(request, '/YWRimportseeds', '/YWRsendtransaction')
+    if route:
+        return route
     return render_template('YWRimportseeds.html', x=v.privkeycount + 1, error=v.error,i=v.privkeycount + 2 )
 
 #GEN trans qr code
 @app.route("/YWRsendtransaction", methods=['GET', 'POST'])
 def YWRsendtransaction():
-    sendTransaction(request, '/YWRsendtransaction', '/YWRdisplaywallet')
+    route = sendTransaction(request, '/YWRsendtransaction', '/YWRdisplaywallet')
+    if route:
+        return route
     return render_template('YWRsendtransaction.html', amount=v.amo, minerfee=v.minerfee, recipent=v.receipentaddress, error=v.error)
 
 #GEN trans qr code
 @app.route("/YWRsendtransactionB", methods=['GET', 'POST'])
 def YWRsendtransactionB():
-    sendTransaction(request, '/YWRsendtransactionB', '/YWRdisplaywallet')
+    route = sendTransaction(request, '/YWRsendtransactionB', '/YWRdisplaywallet')
+    if route:
+        return route
     return render_template('YWRsendtransactionB.html', amount=v.amo, minerfee=v.minerfee, recipent=v.receipentaddress, error=v.error)
 
 @app.route("/YWopenbitcoinB", methods=['GET', 'POST'])
 def YWopenbitcoinB():
-
-    openBitcoin(request, '/YWopenbitcoinB', '/YWRimportseeds')
+    route = openBitcoin(request, '/YWopenbitcoinB', '/YWRimportseeds')
+    if route:
+        return route
     return render_template('YWopenbitcoinB.html', progress=v.progress, IBD=v.IBD)
 
 if __name__ == "__main__":
