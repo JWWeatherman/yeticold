@@ -131,7 +131,7 @@ def displaywallet(request, nextroute):
         v.addresses = []
         v.totalwalletbal = 0
         subprocess.call(['rm -r ~/yeticold/static/qrcode*'],shell=True)
-        adrlist = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet deriveaddresses "'+pubdesc+'" "[0,999]"', True)
+        adrlist = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet deriveaddresses "'+v.pubdesc+'" "[0,999]"', True)
         rpc = RPC("yetiwallet")
         for i in range(0, len(adrlist)):
             adr = adrlist[i]
