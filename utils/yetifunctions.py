@@ -53,7 +53,7 @@ def getxprivs(privkeylist):
         wallet.readline()
         wallet.readline()
         v.xprivlist.append(wallet.readline().split(" ")[4][:-1])
-        response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet getdescriptorinfo "pk('+v.privkeyline+')"')
+        response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet getdescriptorinfo "pk('+v.xprivlist[i]+')"')
         xpub = response.split('(')[1].split(')')[0]
         v.xpublist.append(xpub)  
     return (v.xpublist, v.xprivlist)
