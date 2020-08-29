@@ -6,10 +6,10 @@ home = os.getenv("HOME")
 
 def createOrPrepend(text, path):
     if (os.path.exists(path)):
-        f = open('filename','r')
+        f = open(path,'r')
         temp = f.read()
         f.close()
-        f = open('filename', 'w')
+        f = open(path, 'w')
         f.write(text)
         f.write(temp)
         f.close()
