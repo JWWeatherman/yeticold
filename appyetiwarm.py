@@ -78,7 +78,7 @@ def YWprintdescriptor():
         path = makeQrCode(v.pubdesc)
     if request.method == 'POST':
         return redirect('/YWdisplayseeds')
-    return render_template('YWprintdescriptor.html', qrdata=v.pubdesc, path=v.path)
+    return render_template('YWprintdescriptor.html', qrdata=v.pubdesc, path=path)
 
 @app.route('/YWdisplayseeds', methods=['GET', 'POST'])
 def YWdisplayseeds():
