@@ -33,7 +33,7 @@ def openBitcoin(request, currentroute, nextroute):
         v.progress = BTCprogress()
     if request.method == 'POST':
         if v.IBD:
-            subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwarm"'],shell=True)
+            subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwallet"'],shell=True)
             return redirect(nextroute)
         else:
             return redirect(currentroute)
@@ -158,10 +158,10 @@ def importSeeds(request, currentroute, nextroute):
                         break
             desc = '"wsh(multi(3,'+descriptorlist[0]+','+descriptorlist[1]+','+descriptorlist[2]+','+descriptorlist[3]+','+descriptorlist[4]+','+descriptorlist[5]+','+descriptorlist[6]+'))'
             print(desc)
-            handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwarmpriv"')
-            response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwarmpriv getdescriptorinfo '+desc+'"', True)
+            handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpriv"')
+            response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv getdescriptorinfo '+desc+'"', True)
             checksum = response["checksum"]
-            handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwarmpriv importmulti \'[{ "desc": '+desc+'#'+ checksum +'", "timestamp": "now", "range": [0,999], "watchonly": false}]\' \'{"rescan": true}\'')
+            handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv importmulti \'[{ "desc": '+desc+'#'+ checksum +'", "timestamp": "now", "range": [0,999], "watchonly": false}]\' \'{"rescan": true}\'')
             v.walletimported = True
             return redirect('/YWRsendtransaction')
         else:
