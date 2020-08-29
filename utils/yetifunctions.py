@@ -80,7 +80,7 @@ def handleResponse(func, returnJsonResponse=False):
     response = subprocess.Popen(func, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
     print(response, "response for function: " + func)
     if response[1] != b'':
-        raise werkzeug.exceptions.InternalServerError(response[1].decode("utf-8"))
+        raise werkzeug.exceptions.InternalServerError(response[1].decode("utf-8") + ". response for function: " + func)
     else:
         if returnJsonResponse:
             return json.loads(response[0].decode("utf-8"))
