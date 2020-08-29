@@ -57,7 +57,7 @@ else:
     subprocess.run('sleep 3', shell=True, check=False)
     subprocess.run('sudo rm -r ~/.bitcoin/wallets/yeti* 2> /dev/null', shell=True, check=False)
     subprocess.run('sudo rm -r ~/.bitcoin/yeti* 2> /dev/null', shell=True, check=False)
-    subprocess.run('sudo rm -r ~/yetiwallet* 2> /dev/null', shell=True, check=False)
+    subprocess.run('sudo rm -r ~/yetixprivwallet* 2> /dev/null', shell=True, check=False)
 
     # Finalize script based on processing mode
     if sys.argv[1].lower() == 'yeticoldprimary':
