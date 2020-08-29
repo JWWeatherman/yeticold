@@ -39,11 +39,6 @@ def openBitcoin(request, currentroute, nextroute):
             return redirect(currentroute)
 
 def getSeeds(request, nextroute):
-    global privkeycount
-    global xprivlist
-    global pubdesc
-    global walletimported
-    global home
     if request.method == 'POST':
         if request.form['skip'] == 'skip':
             v.privkeylist = generatePrivKeys('1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111')

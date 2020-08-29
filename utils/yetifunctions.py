@@ -37,7 +37,7 @@ def generatePrivKeys(newbinary):
         binary = bin(decode58(newprivkey))[	2:][8:-40]
         WIF = ConvertToWIF(xor(binary,newbinary))
         privkeylisttemp.append(WIF)
-    privkeylisttemp
+    return privkeylisttemp
 
 def getxprivs(privkeylist):  
     v.xpublist = []
