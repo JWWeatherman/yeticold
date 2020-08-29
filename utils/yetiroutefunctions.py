@@ -61,7 +61,7 @@ def getSeeds(request, nextroute):
 def displaySeeds(request, currentroute, nextroute):
     if request.method == 'GET':
         privkey = v.privkeylist[v.privkeycount]
-        passphraselist = ConvertToPassphrase(privkey)
+        v.passphraselist = ConvertToPassphrase(privkey)
     if request.method == 'POST':
         path = home + '/Documents'
         subprocess.call('mkdir '+path+'/yetiseed'+str(v.privkeycount + 1), shell=True)

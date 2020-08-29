@@ -28,3 +28,4 @@ wallet_template = ''
 IBD = 0
 amo = 0
 dumpwalletindex = 0
+passphraselist = None
