@@ -4,9 +4,18 @@ from btcrpcfunctions import *
 home = os.getenv("HOME")
 
 
-def createOrAppend(text, directory):
+def createOrPrepend(text, path):
 	print(text)
-	subprocess.call('echo "'+text+'" >> '+home+'/'+directory, shell=True)
+    if (os.path.exists(path)):
+        f = open('filename','r')
+        temp = f.read()
+        f.close()
+        f = open('filename', 'w')
+        f.write(text)
+        f.write(temp)
+        f.close()
+    else:
+	    subprocess.call('echo "'+text+'" >> '+path, shell=True)
 
 def getPrunBlockheightByDate(request):
     fmt = '%Y-%m-%d %H:%M:%S'

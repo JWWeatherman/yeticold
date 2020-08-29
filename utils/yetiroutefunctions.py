@@ -9,7 +9,7 @@ home = os.getenv("HOME")
 def blockChain(request, nextroute):
     if request.method == 'GET':
         if (os.path.exists(home + "/.bitcoin")):
-            createOrAppend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+v.rpcpsw+'\n','.bitcoin/bitcoin.conf')
+            createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
             return redirect(nextroute)
     if request.method == 'POST':
         if request.form['option'] == 'downloadblockchain':
@@ -17,9 +17,9 @@ def blockChain(request, nextroute):
         else:
             subprocess.call('mkdir ~/.bitcoin',shell=True)
             if request.form['date'] == '':
-                createOrAppend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+v.rpcpsw+'\n','.bitcoin/bitcoin.conf')
+                createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
                 return redirect(nextroute)
-            createOrAppend('server=1\nrpcport=8332\nrpcuser=rpcuser\nprune='+str(getPrunBlockheightByDate(request))+'\nrpcpassword='+v.rpcpsw+'','.bitcoin/bitcoin.conf')
+            createOrPrepend('server=1\nrpcport=8332\nrpcuser=rpcuser\nprune='+str(getPrunBlockheightByDate(request))+'\nrpcpassword='+v.rpcpsw+'',home+'/.bitcoin/bitcoin.conf')
         return redirect(nextroute)
 
 def openBitcoin(request, currentroute, nextroute):
@@ -93,7 +93,7 @@ def displaySeeds(request, currentroute, nextroute):
         file = file + 'This seed packet also contains a usb device that has a digital copy of the information on this document. It does not contain another set of seed words, but simply a copy of the seed words in this document.\n'
         file = file + 'Two other seed packets must be obtained to recover the bitcoin stored.\n'
         file = file + 'YetiCold.com recommends storing seed words in locations like safety deposit boxes, home safes, and with professionals such as accountants and lawyers.\n'
-        createOrAppend(file, path+'/yetiseed'+str(v.privkeycount + 1)+'/yetiseed'+str(v.privkeycount + 1)+'.txt')
+        createOrPrepend(file, path+'/yetiseed'+str(v.privkeycount + 1)+'/yetiseed'+str(v.privkeycount + 1)+'.txt')
         makeQrCode(v.pubdesc, home+'/Documents/yetiseed'+str(v.privkeycount+1)+'/descriptor.png')
         v.privkeycount = v.privkeycount + 1
         if (v.privkeycount == 7):
