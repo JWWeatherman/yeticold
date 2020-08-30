@@ -1,7 +1,7 @@
 import cv2
 from pyzbar.pyzbar import decode
 from PIL import Image
-cam = cv2.VideoCapture(0)
+cam = cv2.VideoCapture(2)
 cv2.namedWindow("qrcodescaner")
 while True:
     k = cv2.waitKey(1)
