@@ -96,7 +96,7 @@ def checkSeeds(request, currentroute, nextroute):
     if request.method == 'POST':
         privkey = v.privkeylist[v.privkeycount]
         passphraselist = ConvertToPassphrase(privkey)
-        privkeylisttoconfirm = []
+        passphraselisttoconfirm = []
         v.oldkeys = []
         for i in range(1,14):
             inputlist = request.form['row' + str(i)]
@@ -108,18 +108,9 @@ def checkSeeds(request, currentroute, nextroute):
             privkeylisttoconfirm.append(inputlist[2])
             privkeylisttoconfirm.append(inputlist[3])
         if privkeylisttoconfirm == passphraselist:
-            v.oldkeys = None
             v.error = None
             v.privkeycount = v.privkeycount + 1
             if (v.privkeycount >= 7):
-                v.privkeycount = 7
-                (v.newxprivlist, _) = getxprivs(v.privkeylist)
-                for i in range(0,7):
-                    if not v.xprivlist[i] == v.newxprivlist[i]:
-                        v.privkeycount = 0
-                        v.privkeylist = []
-                        v.error = 'You have imported your seeds correctly but your xprivs do not match: This means that you either do not have bitcoin running or its initial block download mode. Another issue is that you have a wallet folder or wallet dump file that was not deleted before starting this step.'
-                        return redirect(currentroute)
                 return redirect(nextroute)
             else:
                 return redirect(currentroute)
