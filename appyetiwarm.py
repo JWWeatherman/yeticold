@@ -90,7 +90,7 @@ def YWcopyseeds():
 @app.route("/YWRscandescriptor", methods=['GET', 'POST'])
 def YWRscandescriptor():
     if request.method == 'POST':
-        pubdesc = handleResponse('python3 ~/yeticold/utils/scanqrcode.py').replace('\n', '')
+        v.pubdesc = handleResponse('python3 ~/yeticold/utils/scanqrcode.py').replace('\n', '')
         return redirect('/YWRrescanwallet')
     return render_template('YWRscandescriptor.html', pubdesc=v.pubdesc)
 
