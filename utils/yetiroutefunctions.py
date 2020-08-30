@@ -103,11 +103,11 @@ def checkSeeds(request, currentroute, nextroute):
             v.oldkeys.append(inputlist)
             inputlist = inputlist.split(' ')
             inputlist = inputlist[0:4]
-            privkeylisttoconfirm.append(inputlist[0])
-            privkeylisttoconfirm.append(inputlist[1])
-            privkeylisttoconfirm.append(inputlist[2])
-            privkeylisttoconfirm.append(inputlist[3])
-        if privkeylisttoconfirm == passphraselist:
+            passphraselisttoconfirm.append(inputlist[0])
+            passphraselisttoconfirm.append(inputlist[1])
+            passphraselisttoconfirm.append(inputlist[2])
+            passphraselisttoconfirm.append(inputlist[3])
+        if passphraselisttoconfirm == passphraselist:
             v.error = None
             v.privkeycount = v.privkeycount + 1
             if (v.privkeycount >= 7):
