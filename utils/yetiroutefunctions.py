@@ -41,9 +41,9 @@ def openBitcoin(request, currentroute, nextroute):
 def getSeeds(request, nextroute):
     if request.method == 'POST':
         if request.form['skip'] == 'skip':
-            v.privkeylist = generatePrivKeys('1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111')
+            v.privkeylist = generatePrivKeys(True)
         else:
-            v.privkeylist = generatePrivKeys(request.form['binary' + str(i)])
+            v.privkeylist = generatePrivKeys()
         (v.xprivlist, v.newxpublist) = getxprivs(v.privkeylist)
         v.addresses = []
         checksum = None

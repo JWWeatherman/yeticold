@@ -28,9 +28,13 @@ def getPrunBlockheightByDate(request):
     blockheight = diff + add + 550
     blockheight = int(blockheight)
 
-def generatePrivKeys(newbinary):
+def generatePrivKeys(genbinary=False):
     privkeylisttemp = []
     for i in range(1,8):
+    	if genbinary:
+    	    newbinary = str('1') * 256
+        else:
+            newbinary = request.form['binary' + str(i)]
         rpc = RPC()
         adr = rpc.getnewaddress()
         newprivkey = rpc.dumpprivkey(adr)
