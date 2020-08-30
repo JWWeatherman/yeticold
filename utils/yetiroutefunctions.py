@@ -113,7 +113,7 @@ def checkSeeds(request, currentroute, nextroute):
             if (v.privkeycount >= 7):
                 return redirect(nextroute)
             else:
-            	v.oldkeys = []
+                v.oldkeys = []
                 return redirect(currentroute)
         else:
             v.error = 'The seed words you entered are incorrect. This is probably because you entered a line twice or put them in the wrong order.'
