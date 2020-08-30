@@ -31,7 +31,7 @@ def getPrunBlockheightByDate(request):
 def generatePrivKeys(genbinary=False):
     privkeylisttemp = []
     for i in range(1,8):
-    	if genbinary:
+        if genbinary:
             newbinary = str('1') * 256
         else:
             newbinary = request.form['binary' + str(i)]
