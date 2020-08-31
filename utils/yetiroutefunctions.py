@@ -243,7 +243,7 @@ def importSeeds(request, currentroute, nextroute):
         else:
             return redirect('/YWRimportseeds')
 
-def sendTransactions(request, currentroute, nextroute):
+def sendTransaction(request, currentroute, nextroute):
     if request.method == 'GET':
         rpc = RPC("yetiwallet")
         v.minerfee = float(rpc.estimatesmartfee(1)["feerate"])
