@@ -42,7 +42,7 @@
                   <form class="form-inline my-2 my-lg-0">
                     <input style="display: none;" name="option" value="INVIS SPACE">
                     {%if addresses[i]['status'] == 2%}
-                    <input class="btn btn-secondary m-2 my-sm-0" data-toggle="tooltip" data-placement="top" title="You have used this address before." type="button" id="show{{i}}" value="Receive">
+                    <input disabled class="btn btn-secondary m-2 my-sm-0" data-toggle="tooltip" data-placement="top" title="You have used this address before." type="button" id="show{{i}}" value="Receive">
                     {%else%}
                     <input class="btn btn-primary m-2 my-sm-0" type="button" id="show{{i}}" value="Receive">
                     {%endif%}

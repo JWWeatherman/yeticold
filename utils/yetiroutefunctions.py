@@ -222,7 +222,7 @@ def importSeeds(request, currentroute, nextroute):
         if (v.privkeycount >= 3):
             (v.xprivlist, v.newxpublist) = getxprivs(v.privkeylist)
             v.privkeycount = 0
-            xpublist = pubdesc.split(',')[1:]
+            xpublist = v.pubdesc.split(',')[1:]
             xpublist[6] = xpublist[6].split('))')[0]
             descriptorlist = xpublist
             for i in range(0,3):
