@@ -129,7 +129,7 @@ def YWRsendtransaction():
     route = sendTransaction(request, '/YWRsendtransaction', '/YWRdisplaywallet')
     if route:
         return route
-    return render_template('YWRsendtransaction.html', amount=v.amo, minerfee=v.minerfee, recipent=v.receipentaddress, error=v.error)
+    return render_template('YWRsendtransaction.html', amount=v.amo, minerfee=v.minerfee, recipent=v.receipentaddress, error=v.error, step=5)
 
 #GEN trans qr code
 @app.route("/YWRsendtransactionB", methods=['GET', 'POST'])
@@ -137,14 +137,7 @@ def YWRsendtransactionB():
     route = sendTransaction(request, '/YWRsendtransactionB', '/YWRdisplaywallet')
     if route:
         return route
-    return render_template('YWRsendtransactionB.html', amount=v.amo, minerfee=v.minerfee, recipent=v.receipentaddress, error=v.error)
-
-@app.route("/YWopenbitcoinB", methods=['GET', 'POST'])
-def YWopenbitcoinB():
-    route = openBitcoin(request, '/YWopenbitcoinB', '/YWRimportseeds')
-    if route:
-        return route
-    return render_template('YWopenbitcoinB.html', progress=v.progress, IBD=v.IBD)
+    return render_template('YWRsendtransaction.html', amount=v.amo, minerfee=v.minerfee, recipent=v.receipentaddress, error=v.error, step=2)
 
 if __name__ == "__main__":
     app.run()

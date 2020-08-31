@@ -12,14 +12,18 @@
         <h3 style="color:black;margin:0;">Yeti Bitcoin Warm Storage</h3>
     </nav>
     <div class="container" style="margin-top: 3rem;">
-      <h2>Step 5: Confirm</h2>
+      <h2>Step {{step}}: Confirm</h2>
       <p>Amount: {{amount}} BTC</p>
       <p>Destination Address: {{recipent}}</p> 
       <p>Minerfee: {{minerfee}}</p>
       <p>Click <b>Next</b> to send this transaction.<p>
       <form action="" method="post">
         <input style="display: none;" name="option" value="VALUE">
-        <input class="btn btn-primary" type="submit" id="next" value="SEND">
+        {%if amount <= 0%}
+          <input disabled class="btn btn-primary" type="submit" id="next" value="SEND">
+        {%else%}
+          <input class="btn btn-primary" type="submit" id="next" value="SEND">
+        {%endif%}
       </form>
     </div>
   </body>
