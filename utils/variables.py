@@ -30,3 +30,4 @@ amo = 0
 dumpwalletindex = 0
 passphraselist = None
 addresses = []
+sourceaddress = ''
