@@ -219,7 +219,7 @@ def importSeeds(request, currentroute, nextroute):
         error = None
         v.privkeycount = v.privkeycount + 1
         if (v.privkeycount >= 3):
-            (v.xprivlist, v.newxpublist) = getxprivs(v.privkeylist)
+            (v.newxpublist, v.xprivlist) = getxprivs(v.privkeylist)
             v.privkeycount = 0
             xpublist = v.pubdesc.split(',')[1:]
             xpublist[6] = xpublist[6].split('))')[0]
