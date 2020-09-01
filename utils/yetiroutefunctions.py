@@ -253,9 +253,10 @@ def sendTransaction(request, currentroute, nextroute):
         print(v.minerfee)
         v.amo = (float(v.sourceaddress['numbal']) - v.minerfee)
         print(v.amo)
-        v.amo = float("{:.8f}".format(float(v.amo)))
+        v.amo = "{:.8f}".format(float(v.amo))
         print(v.amo)
-        if v.amo <= 0:
+        print(int(v.amo))
+        if int(v.amo) <= 0:
             v.error = "Amount("+str(v.amo)+") is too small to account for the fee. Try sending a larger amount."
         response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwarmpriv createrawtransaction \'[{ "txid": "'+v.sourceaddress['txid']+'", "vout": '+str(v.sourceaddress['vout'])+'}]\' \'[{"'+v.receipentaddress+'" : '+str(v.amo)+'}]\'')
         transonehex = response[:-1]
