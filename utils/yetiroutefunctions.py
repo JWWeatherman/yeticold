@@ -51,8 +51,7 @@ def getSeeds(request, nextroute):
         checksum = response["checksum"]
         v.pubdesc = response["descriptor"].replace('\n', '')
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet importmulti \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false}]\' \'{"rescan": true}\'')
-        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpriv"')
-        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv importmulti \'[{ "desc": "wsh(multi(3,'+v.xprivlist[0]+'/*,'+v.xprivlist[1]+'/*,'+v.xprivlist[2]+'/*,'+v.xprivlist[3]+'/*,'+v.xprivlist[4]+'/*,'+v.xprivlist[5]+'/*,'+v.xprivlist[6]+'/*))#'+checksum+'", "timestamp": "now", "range": [0,999], "watchonly": false}]\' \'{"rescan": true}\'')
+        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet importmulti \'[{ "desc": "wsh(multi(3,'+v.xprivlist[0]+'/*,'+v.xprivlist[1]+'/*,'+v.xprivlist[2]+'/*,'+v.xprivlist[3]+'/*,'+v.xprivlist[4]+'/*,'+v.xprivlist[5]+'/*,'+v.xprivlist[6]+'/*))#'+checksum+'", "timestamp": "now", "range": [0,999], "watchonly": false}]\' \'{"rescan": true}\'')
         v.walletimported = True
         path = home + '/Documents'
         subprocess.call('rm -r '+path+'/yetiseed*', shell=True)
@@ -233,11 +232,9 @@ def importSeeds(request, currentroute, nextroute):
                         descriptorlist[x] = (v.xprivlist[i] + '/*')
                         break
             desc = '"wsh(multi(3,'+descriptorlist[0]+','+descriptorlist[1]+','+descriptorlist[2]+','+descriptorlist[3]+','+descriptorlist[4]+','+descriptorlist[5]+','+descriptorlist[6]+'))'
-            print(desc)
-            handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpriv"')
-            response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv getdescriptorinfo '+desc+'"', True)
+            response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet getdescriptorinfo '+desc+'"', True)
             checksum = response["checksum"]
-            handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv importmulti \'[{ "desc": '+desc+'#'+ checksum +'", "timestamp": "now", "range": [0,999], "watchonly": false}]\' \'{"rescan": true}\'')
+            handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet importmulti \'[{ "desc": '+desc+'#'+ checksum +'", "timestamp": "now", "range": [0,999], "watchonly": false}]\' \'{"rescan": true}\'')
             v.walletimported = True
             return redirect(nextroute)
         else:
@@ -262,15 +259,15 @@ def setFee(request, currentroute, nextroute, nextrouteWI):
 def sendTransaction(request, currentroute, nextroute):
     if request.method == 'GET':
         rpc = RPC("yetiwallet")
-        response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv createrawtransaction \'[{ "txid": "'+v.sourceaddress['txid']+'", "vout": '+str(v.sourceaddress['vout'])+'}]\' \'[{"'+v.receipentaddress+'" : '+str(v.amo)+'}]\'')
+        response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet createrawtransaction \'[{ "txid": "'+v.sourceaddress['txid']+'", "vout": '+str(v.sourceaddress['vout'])+'}]\' \'[{"'+v.receipentaddress+'" : '+str(v.amo)+'}]\'')
         transonehex = response[:-1]
-        response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv signrawtransactionwithwallet '+transonehex, True)
+        response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet signrawtransactionwithwallet '+transonehex, True)
         if not response['complete']:
             raise werkzeug.exceptions.InternalServerError(response['errors'][0]['error'])
         transnum = response
         v.minerfee = "{:.8f}".format(v.minerfee)
     if request.method == 'POST':
-        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv sendrawtransaction '+transnum['hex']+'')
+        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet sendrawtransaction '+transnum['hex']+'')
         return redirect(nextroute)
 
 
