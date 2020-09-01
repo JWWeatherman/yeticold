@@ -244,9 +244,9 @@ def importSeeds(request, currentroute, nextroute):
             return redirect(currentroute)
 
 def setFee(request, currentroute, nextroute, nextrouteWI):
-	if request.method == 'GET':
-		v.amount = float(v.sourceaddress['numbal'])
-		v.minerfee = float(rpc.estimatesmartfee(1)["feerate"])
+    if request.method == 'GET':
+        v.amount = float(v.sourceaddress['numbal'])
+        v.minerfee = float(rpc.estimatesmartfee(1)["feerate"])
         kilobytespertrans = 0.200
         v.minerfee = (v.minerfee * kilobytespertrans)
         v.amo = "{:.8f}".format(float(v.sourceaddress['numbal']) - v.minerfee)
