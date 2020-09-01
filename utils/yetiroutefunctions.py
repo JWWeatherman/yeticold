@@ -205,7 +205,7 @@ def scanrecipent(request, currentroute, nextroute):
 def importSeeds(request, currentroute, nextroute):
     if request.method == 'GET':
         if v.walletimported:
-            return redirect('/YWRsendtransactionB')
+            return redirect(nextroute)
     if request.method == 'POST':
         privkey = []
         for i in range(1,14):
@@ -239,25 +239,27 @@ def importSeeds(request, currentroute, nextroute):
             checksum = response["checksum"]
             handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv importmulti \'[{ "desc": '+desc+'#'+ checksum +'", "timestamp": "now", "range": [0,999], "watchonly": false}]\' \'{"rescan": true}\'')
             v.walletimported = True
-            return redirect('/YWRsendtransaction')
+            return redirect(nextroute)
         else:
-            return redirect('/YWRimportseeds')
+            return redirect(currentroute)
+
+def setFee(request, currentroute, nextroute, nextrouteWI):
+	if request.method == 'GET':
+		v.amount = float(v.sourceaddress['numbal'])
+		v.minerfee = float(rpc.estimatesmartfee(1)["feerate"])
+        kilobytespertrans = 0.200
+        v.minerfee = (v.minerfee * kilobytespertrans)
+        v.amo = "{:.8f}".format(float(v.sourceaddress['numbal']) - v.minerfee)
+    if request.method == 'POST':
+        v.minerfee = request.form['fee']
+        v.amo = (float(v.sourceaddress['numbal']) - v.minerfee)
+        if v.walletimported:
+            return redirect(nextrouteWI)
+        return redirect(nextroute)
 
 def sendTransaction(request, currentroute, nextroute):
     if request.method == 'GET':
         rpc = RPC("yetiwallet")
-        v.minerfee = float(rpc.estimatesmartfee(1)["feerate"])
-        kilobytespertrans = 0.200
-        v.minerfee = (v.minerfee * kilobytespertrans)
-        print(v.sourceaddress['numbal'])
-        print(v.minerfee)
-        v.amo = (float(v.sourceaddress['numbal']) - v.minerfee)
-        print(v.amo)
-        v.amo = "{:.8f}".format(float(v.amo))
-        print(v.amo)
-        print(float(v.amo))
-        if float(v.amo) <= 0:
-            v.error = "Amount("+str(v.amo)+") is too small to account for the fee. Try sending a larger amount."
         response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwarmpriv createrawtransaction \'[{ "txid": "'+v.sourceaddress['txid']+'", "vout": '+str(v.sourceaddress['vout'])+'}]\' \'[{"'+v.receipentaddress+'" : '+str(v.amo)+'}]\'')
         transonehex = response[:-1]
         response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwarmpriv signrawtransactionwithwallet '+transonehex, True)
@@ -268,4 +270,6 @@ def sendTransaction(request, currentroute, nextroute):
     if request.method == 'POST':
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwarmpriv sendrawtransaction '+transnum['hex']+'')
         return redirect(nextroute)
+
+
 

@@ -118,10 +118,17 @@ def YWRscanrecipent():
 
 @app.route('/YWRimportseeds', methods=['GET', 'POST'])
 def YWRimportseeds():    
-    route = importSeeds(request, '/YWRimportseeds', '/YWRsendtransaction')
+    route = importSeeds(request, '/YWRimportseeds', '/YWRsetFee')
     if route:
         return route
     return render_template('YWRimportseeds.html', x=v.privkeycount + 1, error=v.error,i=v.privkeycount + 2 )
+
+@app.route('/YWRsetFee', methods=['GET', 'POST'])
+def YWRsetFee():
+    route = setFee(request, '/YWRsetFee', '/YWRsendtransaction', '/YWRsendtransactionB')
+    if route:
+        return route
+    return render_template('YWRsetFee.html', amount=v.amount, minerfee=v.minerfee, amo=v.amo)
 
 #GEN trans qr code
 @app.route("/YWRsendtransaction", methods=['GET', 'POST'])
@@ -129,7 +136,7 @@ def YWRsendtransaction():
     route = sendTransaction(request, '/YWRsendtransaction', '/YWRdisplaywallet')
     if route:
         return route
-    return render_template('YWRsendtransaction.html', amount=v.amo, minerfee=v.minerfee, recipent=v.receipentaddress, error=v.error, step=5)
+    return render_template('YWRsendtransaction.html', amount=v.amo, minerfee=v.minerfee, recipent=v.receipentaddress, error=v.error, step=4)
 
 #GEN trans qr code
 @app.route("/YWRsendtransactionB", methods=['GET', 'POST'])
@@ -137,7 +144,7 @@ def YWRsendtransactionB():
     route = sendTransaction(request, '/YWRsendtransactionB', '/YWRdisplaywallet')
     if route:
         return route
-    return render_template('YWRsendtransaction.html', amount=v.amo, minerfee=v.minerfee, recipent=v.receipentaddress, error=v.error, step=2)
+    return render_template('YWRsendtransaction.html', amount=v.amo, minerfee=v.minerfee, recipent=v.receipentaddress, error=v.error, step=3)
 
 if __name__ == "__main__":
     app.run()
