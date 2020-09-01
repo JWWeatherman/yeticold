@@ -24,10 +24,10 @@
       </form>
     </div>
     <script>
-      var amount = parseInt("{{amount}}")
+      var amount = parseFloat("{{amount}}")
       document.getElementById('fee').addEventListener("input", (evt) => {
-        var amo = (amount - parseInt(evt.srcElement.value))
-        console.log(amount, amo, parseInt(evt.srcElement.value))
+        var amo = (amount - parseFloat(evt.srcElement.value))
+        console.log(amount, parseFloat(evt.srcElement.value), amo)
         document.getElementById('amo').value = amo
         if (amo > 0) {
           document.getElementById('next').disabled = false
