@@ -253,7 +253,7 @@ def setFee(request, currentroute, nextroute, nextrouteWI):
         v.amo = "{:.8f}".format(float(v.sourceaddress['numbal']) - v.minerfee)
     if request.method == 'POST':
         v.minerfee = request.form['fee']
-        v.amo = (float(v.sourceaddress['numbal']) - float(v.minerfee))
+        v.amo = "{:.8f}".format(float(v.sourceaddress['numbal']) - float(v.minerfee))
         print(v.amo)
         if v.walletimported:
             return redirect(nextrouteWI)
