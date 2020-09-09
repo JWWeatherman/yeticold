@@ -34,6 +34,7 @@ def openBitcoin(request, currentroute, nextroute):
     if request.method == 'POST':
         if v.IBD:
             subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwallet"'],shell=True)
+            subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpriv"'],shell=True)
             return redirect(nextroute)
         else:
             return redirect(currentroute)
