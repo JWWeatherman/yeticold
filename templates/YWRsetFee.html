@@ -25,7 +25,7 @@
     </div>
     <script>
       var amount = parseFloat("{{amount}}")
-      document.getElementById('fee').addEventListener("input", (evt) => {
+      function checkAmount(evt) => {
         var amo = (amount - parseFloat(evt.srcElement.value))
         console.log(amount, parseFloat(evt.srcElement.value), amo)
         document.getElementById('amo').value = amo
@@ -34,7 +34,9 @@
         } else {
           document.getElementById('next').disabled = true
         }
-      });    
+      }
+      document.getElementById('fee').addEventListener("input", checkAmount);
+      checkAmount()
     </script>
   </body>
 </html>
