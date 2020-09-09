@@ -25,9 +25,9 @@
     </div>
     <script>
       var amount = parseFloat("{{amount}}")
-      function checkAmount(evt) => {
-        var amo = (amount - parseFloat(evt.srcElement.value))
-        console.log(amount, parseFloat(evt.srcElement.value), amo)
+      var checkAmount = () => {
+        var amo = (amount - parseFloat(document.getElementById('fee').value))
+        console.log(amount, parseFloat(document.getElementById('fee').value), amo)
         document.getElementById('amo').value = amo
         if (amo > 0) {
           document.getElementById('next').disabled = false
