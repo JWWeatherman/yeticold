@@ -245,7 +245,7 @@ def importSeeds(request, currentroute, nextroute):
         else:
             return redirect(currentroute)
 
-def setFee(request, currentroute, nextroute, nextrouteWI):
+def setFee(request, currentroute, nextroute):
     if request.method == 'GET':
         rpc = RPC("yetiwallet")
         v.amount = "{:.8f}".format(float(v.sourceaddress['numbal']))
@@ -256,9 +256,6 @@ def setFee(request, currentroute, nextroute, nextrouteWI):
     if request.method == 'POST':
         v.minerfee = request.form['fee']
         v.amo = "{:.8f}".format(float(v.sourceaddress['numbal']) - float(v.minerfee))
-        print(v.amo)
-        if v.walletimported:
-            return redirect(nextrouteWI)
         return redirect(nextroute)
 
 def sendTransaction(request, currentroute, nextroute):

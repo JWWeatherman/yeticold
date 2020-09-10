@@ -125,7 +125,7 @@ def YWRimportseeds():
 
 @app.route('/YWRsetFee', methods=['GET', 'POST'])
 def YWRsetFee():
-    route = setFee(request, '/YWRsetFee', '/YWRsendtransaction', '/YWRsendtransactionB')
+    route = setFee(request, '/YWRsetFee', '/YWRsendtransaction')
     if route:
         return route
     return render_template('YWRsetFee.html', amount=v.amount, minerfee=v.minerfee, amo=v.amo, yeti='warm')
@@ -137,14 +137,6 @@ def YWRsendtransaction():
     if route:
         return route
     return render_template('YWRsendtransaction.html', amount=v.amo, minerfee=v.minerfee, recipent=v.receipentaddress, error=v.error, step=4, yeti='warm')
-
-#GEN trans qr code
-@app.route("/YWRsendtransactionB", methods=['GET', 'POST'])
-def YWRsendtransactionB():
-    route = sendTransaction(request, '/YWRsendtransactionB', '/YWRdisplaywallet')
-    if route:
-        return route
-    return render_template('YWRsendtransaction.html', amount=v.amo, minerfee=v.minerfee, recipent=v.receipentaddress, error=v.error, step=3, yeti='warm')
 
 if __name__ == "__main__":
     app.run()
