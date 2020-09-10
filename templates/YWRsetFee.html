@@ -26,7 +26,6 @@
       var amount = parseFloat("{{amount}}")
       var checkAmount = () => {
         var amo = (amount - parseFloat(document.getElementById('fee').value))
-        console.log(amount, parseFloat(document.getElementById('fee').value), amo)
         document.getElementById('amo').value = amo
         if (amo > 0) {
           document.getElementById('next').disabled = false
