@@ -136,7 +136,7 @@ def YWRsendtransaction():
     route = sendTransaction(request, '/YWRsendtransaction', '/YWRdisplaywallet')
     if route:
         return route
-    return render_template('YWRsendtransaction.html', amount=str(v.amo), minerfee=v.minerfee, recipent=v.receipentaddress, error=v.error, step=4, yeti='warm')
+    return render_template('YWRsendtransaction.html', amount=v.amo, minerfee=v.minerfee, recipent=v.receipentaddress, error=v.error, step=4, yeti='warm')
 
 #GEN trans qr code
 @app.route("/YWRsendtransactionB", methods=['GET', 'POST'])
