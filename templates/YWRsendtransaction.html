@@ -17,7 +17,7 @@
       <p>Click <b>Next</b> to send this transaction.<p>
       <form action="" method="post">
         <input style="display: none;" name="option" value="VALUE">
-        {%if amount <= 0%}
+        {%if float(amount) <= 0%}
           <input disabled class="btn btn-primary" type="submit" id="next" value="SEND">
         {%else%}
           <input class="btn btn-primary" type="submit" id="next" value="SEND">
