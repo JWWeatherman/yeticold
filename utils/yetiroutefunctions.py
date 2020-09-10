@@ -266,10 +266,10 @@ def sendTransaction(request, currentroute, nextroute):
         response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv signrawtransactionwithwallet '+transonehex, True)
         if not response['complete']:
             raise werkzeug.exceptions.InternalServerError(response['errors'][0]['error'])
-        transnum = response
+        v.transnum = response
         v.minerfee = "{:.8f}".format(float(v.minerfee))
     if request.method == 'POST':
-        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv sendrawtransaction '+transnum['hex']+'')
+        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv sendrawtransaction '+v.transnum['hex']+'')
         return redirect(nextroute)
 
 

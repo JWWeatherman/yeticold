@@ -32,3 +32,4 @@ dumpwalletindex = 0
 passphraselist = None
 addresses = []
 sourceaddress = ''
+transnum = 0
