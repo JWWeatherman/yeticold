@@ -25,10 +25,10 @@ def redirectroute():
 @app.route("/YCmenu", methods=['GET', 'POST'])
 def YCmenu():
     if request.method == 'POST':
-        if request.form['option'] == 'startup':
-            return redirect('/YCblockchain')
-        else:
+        if request.form['option'] == 'recovery':
             return redirect('/YCRblockchain')
+        else:
+            return redirect('/YCblockchain')
     return render_template('menu.html')
 
 #ON
