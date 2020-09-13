@@ -1,8 +1,7 @@
 from imports import *
-import variables as v
 from btcrpcfunctions import *
+import variables as v
 home = os.getenv("HOME")
-
 
 def createOrPrepend(text, path):
     if (os.path.exists(path)):
@@ -67,11 +66,11 @@ def createDumpWallet():
 	v.dumpwalletindex = v.dumpwalletindex + 1
 	return '"yetixprivwallet'+str(v.dumpwalletindex)+'"'
 
-def makeQrCode(data, path=None, minipath=None):
+def makeQrCode(data, path=None, name=None):
     if path == None:
         randomnum = str(random.randrange(0,1000000))
         path = home+'/yeticold/static/qrcode'+randomnum+'.png'
-        minipath = 'qrcode'+randomnum+'.png'
+        name = 'qrcode'+randomnum+'.png'
     qr = qrcode.QRCode(
         version=1,
         error_correction=qrcode.constants.ERROR_CORRECT_L,
@@ -82,8 +81,18 @@ def makeQrCode(data, path=None, minipath=None):
     qr.make(fit=True)
     img = qr.make_image(fill_color="black", back_color="white")
     img.save(path)
-    if minipath != None:
-        return url_for('static', filename=minipath)
+    if name != None:
+        return url_for('static', filename=name)
+
+def createTransactions():
+    rpc = RPC("yetiwallet")
+    response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv createrawtransaction \'[{ "txid": "'+v.sourceaddress['txid']+'", "vout": '+str(v.sourceaddress['vout'])+'}]\' \'[{"'+v.receipentaddress+'" : '+str(v.amo)+'}]\'')
+    transonehex = response[:-1]
+    response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv signrawtransactionwithwallet '+transonehex, True)
+    if not response['complete']:
+        raise werkzeug.exceptions.InternalServerError(response['errors'][0]['error'])
+    v.transnum = response
+    v.minerfee = "{:.8f}".format(float(v.minerfee))
 
 def handleResponse(func, returnJsonResponse=False):
     response = subprocess.Popen(func, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()

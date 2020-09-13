@@ -12,4 +12,3 @@ from datetime import datetime
 import time
 import werkzeug
 from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
-

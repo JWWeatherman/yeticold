@@ -2,9 +2,8 @@ from imports import *
 import variables as v
 from yetifunctions import *
 from btcrpcfunctions import *
+from formating import *
 home = os.getenv("HOME")
-
-
 
 def blockChain(request, nextroute):
     if request.method == 'GET':
@@ -260,17 +259,11 @@ def setFee(request, currentroute, nextroute):
 
 def sendTransaction(request, currentroute, nextroute):
     if request.method == 'GET':
-        rpc = RPC("yetiwallet")
-        response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv createrawtransaction \'[{ "txid": "'+v.sourceaddress['txid']+'", "vout": '+str(v.sourceaddress['vout'])+'}]\' \'[{"'+v.receipentaddress+'" : '+str(v.amo)+'}]\'')
-        transonehex = response[:-1]
-        response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv signrawtransactionwithwallet '+transonehex, True)
-        if not response['complete']:
-            raise werkzeug.exceptions.InternalServerError(response['errors'][0]['error'])
-        v.transnum = response
-        v.minerfee = "{:.8f}".format(float(v.minerfee))
+        createTransactions()
     if request.method == 'POST':
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv sendrawtransaction '+v.transnum['hex']+'')
         return redirect(nextroute)
+
 
 
 
