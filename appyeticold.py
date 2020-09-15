@@ -106,7 +106,7 @@ def YCRopenbitcoinB():
     route = openBitcoin(request, '/YCRopenbitcoinB', '/YCRconnection')
     if route:
         return route
-    return render_template('YCRopenbitcoinB.html', progress=v.progress, IBD=v.IBD)
+    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD)
 
 #OFF
 @app.route("/YCRconnection", methods=['GET', 'POST'])
@@ -188,7 +188,7 @@ def YCblockchain():
     route = blockChain(request, '/YCopenbitcoin')
     if route:
         return route
-    return render_template('YCblockchain.html')
+    return render_template('blockchain.html')
 
 @app.route("/YCopenbitcoin", methods=['GET', 'POST'])
 def YCopenbitcoin():
@@ -211,13 +211,13 @@ def YCprintpage():
         v.path = makeQrCode(v.pubdesc)
     if request.method == 'POST':
         return redirect('/YCswitchlaptop')
-    return render_template('YCprintpage.html', qrdata=v.pubdesc, path=v.path)
+    return render_template('printpage.html', qrdata=v.pubdesc, path=v.path)
 
 @app.route("/YCswitchlaptop", methods=['GET', 'POST'])
 def YCswitchlaptop():
     if request.method == 'POST':
         return redirect('/YCRdisplaywallet')
-    return render_template('YCswitchlaptop.html')
+    return render_template('switchlaptop.html')
 
 #SWITCH TO OFFLINE
 @app.route("/YCblockchainB", methods=['GET', 'POST'])
@@ -240,7 +240,7 @@ def YCconnection():
         subprocess.call(['python3 ~/yeticold/utils/forgetnetworks.py'],shell=True)
         subprocess.call(['nmcli n off'],shell=True)
         return redirect('/YCgetseeds')
-    return render_template('YCconnection.html')
+    return render_template('connection.html')
 
 @app.route("/YCgetseeds", methods=['GET', 'POST'])
 def YCgetseeds():
@@ -275,13 +275,13 @@ def YCcheckseeds():
 def YCcopyseeds():
     if request.method == 'POST':
         return redirect('/YCswitchlaptopB')
-    return render_template('YCcopyseeds.html')
+    return render_template('copyseeds.html')
 
 @app.route("/YCswitchlaptopB", methods=['GET', 'POST'])
 def YCswitchlaptopB():
     if request.method == 'POST':
         return redirect('/YCRscanutxo')
-    return render_template('YCswitchlaptopB.html')
+    return render_template('switchlaptop.html')
 
 if __name__ == "__main__":
     app.run()
