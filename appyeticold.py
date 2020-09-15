@@ -59,8 +59,8 @@ def YCRscandescriptor():
 @app.route("/YCRrescanwallet", methods=['GET', 'POST'])
 def YCRrescanwallet():
     if request.method == 'GET':
-        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yeticold importmulti \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false}]\' \'{"rescan": true}\'')
-        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yeticold rescanblockchain '+blockheight())
+        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet importmulti \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false}]\' \'{"rescan": true}\'')
+        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet rescanblockchain '+blockheight())
     if request.method == 'POST':
         return redirect('/YCRdisplaywallet')
     return render_template('rescanwallet.html')
@@ -88,7 +88,7 @@ def YCRscantransaction():
     if request.method == 'POST':
         v.transactionhex = handleResponse('python3 ~/yeticold/utils/scanqrcode.py')
         print(v.transactionhex)
-        response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet= sendrawtransaction '+v.transactionhex)
+        response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet sendrawtransaction '+v.transactionhex)
         return redirect('/YCRdisplaywallet')
     return render_template('scantransaction.html')
 
