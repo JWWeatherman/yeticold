@@ -61,7 +61,6 @@ def YCRrescanwallet():
     if request.method == 'GET':
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet importmulti \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false}]\' \'{"rescan": true}\'')
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet rescanblockchain '+blockheight())
-    if request.method == 'POST':
         return redirect('/YCRdisplaywallet')
     return render_template('rescanwallet.html')
 
