@@ -202,14 +202,14 @@ def YCopenbitcoin():
 def YCscandescriptor():
     if request.method == 'POST':
         v.pubdesc = handleResponse('python3 ~/yeticold/utils/scanqrcode.py').replace('\n', '')
-        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yeticold importmulti \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false}]\' \'{"rescan": true}\'')
+        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet importmulti \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false}]\' \'{"rescan": true}\'')
         return redirect('/YCprintpage')
     return render_template('scandescriptor.html')
 
 @app.route("/YCprintpage", methods=['GET', 'POST'])
 def YCprintpage():
     if request.method == 'GET':
-        v.path = makeQrCode(pubdesc)
+        v.path = makeQrCode(v.pubdesc)
     if request.method == 'POST':
         return redirect('/YCswitchlaptop')
     return render_template('YCprintpage.html', qrdata=v.pubdesc, path=v.path)
