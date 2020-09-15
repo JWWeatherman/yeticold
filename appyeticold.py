@@ -95,7 +95,7 @@ def YCRscantransaction():
 #OFF
 @app.route("/YCRblockchainB", methods=['GET', 'POST'])
 def YCRblockchainB():
-    oute = blockChain(request, '/YCRopenbitcoinB')
+    route = blockChain(request, '/YCRopenbitcoinB')
     if route:
         return route
     return render_template('blockchain.html')
