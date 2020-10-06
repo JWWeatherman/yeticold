@@ -29,7 +29,7 @@ def YCmenu():
             return redirect('/YCRblockchain')
         else:
             return redirect('/YCblockchain')
-    return render_template('menu.html', step=)
+    return render_template('menu.html')
 
 #ON
 @app.route("/YCRblockchain", methods=['GET', 'POST'])
@@ -45,7 +45,7 @@ def YCRopenbitcoin():
     route = openBitcoin(request, '/YCRopenbitcoin', '/YCRscandescriptor')
     if route:
         return route
-    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=6, switch=True)
+    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=5, switch=True)
 
 #OFF
 @app.route("/YCRblockchainB", methods=['GET', 'POST'])
@@ -61,7 +61,7 @@ def YCRopenbitcoinB():
     route = openBitcoin(request, '/YCRopenbitcoinB', '/YCRconnection')
     if route:
         return route
-    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=7)
+    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=6)
 
 #OFF
 @app.route("/YCRconnection", methods=['GET', 'POST'])
@@ -70,14 +70,14 @@ def YCRconnection():
         subprocess.call(['python3 ~/yeticold/utils/forgetnetworks.py'],shell=True)
         subprocess.call(['nmcli n off'],shell=True)
         return redirect('/YCRswitchlaptop')
-    return render_template('connection.html', step=8)
+    return render_template('connection.html', step=7)
 
 #OFF
 @app.route("/YCRswitchlaptop", methods=['GET', 'POST'])
 def YCRswitchlaptop():
     if request.method == 'POST':
         return redirect('/YCRscandescriptorB')
-    return render_template('switchlaptop.html', step=9)
+    return render_template('switchlaptop.html', step=8, instructions="")
 
 #ON
 @app.route("/YCRscandescriptor", methods=['GET', 'POST'])
@@ -85,7 +85,7 @@ def YCRscandescriptor():
     if request.method == 'POST':
         v.pubdesc = handleResponse('python3 ~/yeticold/utils/scanqrcode.py').replace('\n', '')
         return redirect('/YCRrescanwallet')
-    return render_template('scandescriptor.html', step=10)
+    return render_template('scandescriptor.html', step=9)
 
 #ON
 @app.route("/YCRrescanwallet", methods=['GET', 'POST'])
@@ -181,11 +181,12 @@ def YCRdisplaytransaction():
 #ON
 @app.route("/YCRscantransaction", methods=['GET', 'POST'])
 def YCRscantransaction():
+    step = 7 if walletimported else 11
     if request.method == 'POST':
         v.transactionhex = handleResponse('python3 ~/yeticold/utils/scanqrcode.py')
         response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet sendrawtransaction '+v.transactionhex)
         return redirect('/YCRdisplaywallet')
-    return render_template('scantransaction.html')
+    return render_template('scantransaction.html', step=step)
 
 
 
@@ -193,6 +194,7 @@ def YCRscantransaction():
 
 
 #SETUP
+#ON
 @app.route("/YCblockchain", methods=['GET', 'POST'])
 def YCblockchain():
     route = blockChain(request, '/YCopenbitcoin')
@@ -200,36 +202,15 @@ def YCblockchain():
         return route
     return render_template('blockchain.html')
 
+#ON
 @app.route("/YCopenbitcoin", methods=['GET', 'POST'])
 def YCopenbitcoin():
     route = openBitcoin(request, '/YCopenbitcoin', '/YCscandescriptor')
     if route:
         return route
-    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD)
+    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=1)
 
-@app.route("/YCscandescriptor", methods=['GET', 'POST'])
-def YCscandescriptor():
-    if request.method == 'POST':
-        v.pubdesc = handleResponse('python3 ~/yeticold/utils/scanqrcode.py').replace('\n', '')
-        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet importmulti \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false}]\' \'{"rescan": true}\'')
-        return redirect('/YCprintpage')
-    return render_template('scandescriptor.html')
-
-@app.route("/YCprintpage", methods=['GET', 'POST'])
-def YCprintpage():
-    if request.method == 'GET':
-        v.path = makeQrCode(v.pubdesc)
-    if request.method == 'POST':
-        return redirect('/YCswitchlaptop')
-    return render_template('printpage.html', qrdata=v.pubdesc, path=v.path)
-
-@app.route("/YCswitchlaptop", methods=['GET', 'POST'])
-def YCswitchlaptop():
-    if request.method == 'POST':
-        return redirect('/YCRdisplaywallet')
-    return render_template('switchlaptop.html')
-
-#SWITCH TO OFFLINE
+#OFF
 @app.route("/YCblockchainB", methods=['GET', 'POST'])
 def YCblockchainB():
     route = blockChain(request, '/YCopenbitcoinB')
@@ -237,6 +218,7 @@ def YCblockchainB():
         return route
     return render_template('blockchain.html')
 
+#OFF
 @app.route("/YCopenbitcoinB", methods=['GET', 'POST'])
 def YCopenbitcoinB():
     route = openBitcoin(request, '/YCopenbitcoinB', '/YCconnection')
@@ -244,6 +226,7 @@ def YCopenbitcoinB():
         return route
     return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD)
 
+#OFF
 @app.route("/YCconnection", methods=['GET', 'POST'])
 def YCconnection():
     if request.method == 'POST':
@@ -252,6 +235,7 @@ def YCconnection():
         return redirect('/YCgetseeds')
     return render_template('connection.html')
 
+#OFF
 @app.route("/YCgetseeds", methods=['GET', 'POST'])
 def YCgetseeds():
     route = getSeeds(request, '/YCdisplaydescriptor')
@@ -259,6 +243,7 @@ def YCgetseeds():
         return route
     return render_template('getseeds.html')
 
+#OFF
 @app.route("/YCdisplaydescriptor", methods=['GET', 'POST'])
 def YCdisplaydescriptor():
     if request.method == 'GET':
@@ -267,6 +252,34 @@ def YCdisplaydescriptor():
         return redirect('/YCdisplayseeds')
     return render_template('displaydescriptor.html', qrdata=v.pubdesc, path=v.path)
 
+#ON
+@app.route("/YCscandescriptor", methods=['GET', 'POST'])
+def YCscandescriptor():
+    if request.method == 'POST':
+        v.pubdesc = handleResponse('python3 ~/yeticold/utils/scanqrcode.py').replace('\n', '')
+        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet importmulti \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false}]\' \'{"rescan": true}\'')
+        return redirect('/YCprintpage')
+    return render_template('scandescriptor.html')
+
+#ON
+@app.route("/YCprintpage", methods=['GET', 'POST'])
+def YCprintpage():
+    if request.method == 'GET':
+        v.path = makeQrCode(v.pubdesc)
+    if request.method == 'POST':
+        return redirect('/YCswitchlaptop')
+    return render_template('printpage.html', qrdata=v.pubdesc, path=v.path)
+
+#ON
+@app.route("/YCswitchlaptop", methods=['GET', 'POST'])
+def YCswitchlaptop():
+    if request.method == 'POST':
+        return redirect('/YCRdisplaywallet')
+    return render_template('switchlaptop.html')
+
+#SWITCH TO OFFLINE
+
+#OFF
 @app.route('/YCdisplayseeds', methods=['GET', 'POST'])
 def YCdisplayseeds():
     route = displaySeeds(request, '/YCdisplayseeds', '/YCcheckseeds')
@@ -274,6 +287,7 @@ def YCdisplayseeds():
         return route
     return render_template('displayseeds.html', PPL=v.passphraselist, x=v.privkeycount + 1, i=v.privkeycount + 9)
 
+#OFF
 @app.route('/YCcheckseeds', methods=['GET', 'POST'])
 def YCcheckseeds():
     route = checkSeeds(request, '/YCcheckseeds', '/YCcopyseeds')
@@ -281,12 +295,14 @@ def YCcheckseeds():
         return route
     return render_template('checkseeds.html', x=v.privkeycount + 1, error=v.error,i=v.privkeycount + 16,oldkeys=v.oldkeys)
 
+#OFF
 @app.route("/YCcopyseeds", methods=['GET', 'POST'])
 def YCcopyseeds():
     if request.method == 'POST':
         return redirect('/YCswitchlaptopB')
     return render_template('copyseeds.html')
 
+#OFF
 @app.route("/YCswitchlaptopB", methods=['GET', 'POST'])
 def YCswitchlaptopB():
     if request.method == 'POST':
