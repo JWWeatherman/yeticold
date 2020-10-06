@@ -247,15 +247,14 @@ def importSeeds(request, currentroute, nextroute):
 def setFee(request, currentroute, nextroute):
     if request.method == 'GET':
         rpc = RPC("yetiwallet")
-        print(v.sourceaddress['numbal'])
-        v.amount = "{:.8f}".format(float(v.sourceaddress['numbal']))
+        v.amount = "{:.8f}".format(float(v.selectedutxo['numbal']))
         v.minerfee = float(rpc.estimatesmartfee(1)["feerate"])
         kilobytespertrans = 0.200
         v.minerfee = (v.minerfee * kilobytespertrans)
-        v.amo = "{:.8f}".format(float(v.sourceaddress['numbal']) - v.minerfee)
+        v.amo = "{:.8f}".format(float(v.selectedutxo['numbal']) - v.minerfee)
     if request.method == 'POST':
         v.minerfee = request.form['fee']
-        v.amo = "{:.8f}".format(float(v.sourceaddress['numbal']) - float(v.minerfee))
+        v.amo = "{:.8f}".format(float(v.selectedutxo['numbal']) - float(v.minerfee))
         return redirect(nextroute)
 
 def sendTransaction(request, currentroute, nextroute):
