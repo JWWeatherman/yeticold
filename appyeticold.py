@@ -135,7 +135,8 @@ def YCRimportseeds():
 def YCRscanutxo():
     step = 2 if v.walletimported else 6
     if request.method == 'POST':
-        v.selectedutxo = handleResponse('python3 ~/yeticold/utils/scanqrcode.py', True)
+        v.selectedutxo = handleResponse('python3 ~/yeticold/utils/scanqrcode.py')
+        v.selectedutxo.replace("'", '"')
         return redirect('/YCRscanrecipent')
     return render_template('scanutxo.html',step=step)
 
