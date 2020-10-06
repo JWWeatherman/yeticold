@@ -305,7 +305,7 @@ def YCcopyseeds():
 def YCswitchlaptopB():
     if request.method == 'POST':
         return redirect('/YCRscanutxo')
-    return render_template('switchlaptop.html', instructions="Switch to your Primary laptop currently showing step 13, click next to show step your wallet.", laptop="Primary")
+    return render_template('switchlaptop.html', step=29, instructions="Switch to your Primary laptop currently showing step 13, click next to show step your wallet.", laptop="Primary")
 
 if __name__ == "__main__":
     app.run()
