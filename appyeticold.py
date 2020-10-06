@@ -208,7 +208,7 @@ def YCopenbitcoin():
     route = openBitcoin(request, '/YCopenbitcoin', '/YCscandescriptor')
     if route:
         return route
-    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=1)
+    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=1, switch=True)
 
 #OFF
 @app.route("/YCblockchainB", methods=['GET', 'POST'])
