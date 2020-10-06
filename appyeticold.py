@@ -77,7 +77,7 @@ def YCRconnection():
 def YCRswitchlaptop():
     if request.method == 'POST':
         return redirect('/YCRscandescriptorB')
-    return render_template('switchlaptop.html', step=9, instructions="Switch to your <b>Primary</b> laptop currently Showing step 5. Click next to show step 10.", laptop="Primary")
+    return render_template('switchlaptop.html', step=9, instructions="Switch to your Primary laptop currently Showing step 5. Click next to show step 10.", laptop="Primary")
 
 #ON
 @app.route("/YCRscandescriptor", methods=['GET', 'POST'])
@@ -104,7 +104,7 @@ def YCRdisplaywallet():
 #ON
 @app.route("/YCRdisplayutxo", methods=['GET', 'POST'])
 def YCRdisplayutxo():
-    oldstep = 8 if v.walletimported else 6
+    oldstep = 9 if v.walletimported else 6
     if request.method == 'GET':
         v.path = makeQrCode(str(v.sourceaddress))
     if request.method == 'POST':
@@ -117,7 +117,7 @@ def YCRscandescriptorB():
     if v.walletimported:
         return redirect('/YCRscanutxo')
     if request.method == 'POST':
-        v.pubdesc = handleResponse('python3 ~/yeticold/utils/scanqrcode.py', True)
+        v.pubdesc = handleResponse('python3 ~/yeticold/utils/scanqrcode.py').replace('\n', '')
         v.privkeycount = 0
         return redirect('/YCRimportseeds')
     return render_template('scandescriptor.html', step=2)
