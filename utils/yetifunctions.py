@@ -94,7 +94,7 @@ def createTransactions():
     v.transnum = response
     v.minerfee = "{:.8f}".format(float(v.minerfee))
 
-def handleResponse(func, returnJsonResponse=False):
+def handleResponse(func, returnJsonResponse=False, decode=True):
     response = subprocess.Popen(func, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
     print(response, "response for function: " + func)
     if response[1] != b'':
@@ -102,5 +102,7 @@ def handleResponse(func, returnJsonResponse=False):
     else:
         if returnJsonResponse:
             return json.loads(response[0].decode("utf-8"))
-        else:
+        else if (decode):
             return response[0].decode("utf-8")
+        else:
+            return response[0]
