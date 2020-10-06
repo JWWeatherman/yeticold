@@ -28,7 +28,7 @@ else:
         print("Installing updates. This could take an hour without feedback.")
         # Pipe 'yes' command to 'sudo apt install' to automate acceptance of installation
         # Use apt instead of apt-get since apt is more suitable for end users and has a graphical progress bar
-        subprocess.run('sudo apt update && yes | sudo apt install python3-pip=20.0.2-5ubuntu1 sshpass=1.06-1 libzbar0=0.23-1.3 tor=0.4.2.7-1', shell=True, check=False)
+        subprocess.run('sudo apt update && yes | sudo apt install python3-pip sshpass=1.06-1 libzbar0=0.23-1.3 tor=0.4.2.7-1', shell=True, check=False)
         subprocess.run('sudo apt update && sudo unattended-upgrade', shell=True, check=False)
         subprocess.run('pip3 install --upgrade pip', shell=True, check=False)
         subprocess.run('python3 ~/yeticold/utils/downloadbitcoin.py', shell=True, check=False)
