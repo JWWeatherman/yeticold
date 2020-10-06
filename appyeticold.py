@@ -291,14 +291,14 @@ def YCcheckseeds():
     route = checkSeeds(request, '/YCcheckseeds', '/YCcopyseeds')
     if route:
         return route
-    return render_template('checkseeds.html', x=v.privkeycount + 1, error=v.error,step=15+v.privkeycount,oldkeys=v.oldkeys)
+    return render_template('checkseeds.html', x=v.privkeycount + 1, error=v.error,step=16+v.privkeycount,oldkeys=v.oldkeys)
 
 #OFF
 @app.route("/YCcopyseeds", methods=['GET', 'POST'])
 def YCcopyseeds():
     if request.method == 'POST':
         return redirect('/YCswitchlaptopB')
-    return render_template('copyseeds.html', step=22)
+    return render_template('copyseeds.html', step=23)
 
 #OFF
 @app.route("/YCswitchlaptopB", methods=['GET', 'POST'])
