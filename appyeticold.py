@@ -133,7 +133,7 @@ def YCRimportseeds():
 #OFF
 @app.route("/YCRscanutxo", methods=['GET', 'POST'])
 def YCRscanutxo():
-    step = 2 if walletimported else 6
+    step = 2 if v.walletimported else 6
     if request.method == 'POST':
         v.selectedutxo = handleResponse('python3 ~/yeticold/utils/scanqrcode.py', True)
         return redirect('/YCRscanrecipent')
@@ -142,7 +142,7 @@ def YCRscanutxo():
 #OFF
 @app.route("/YCRscanrecipent", methods=['GET', 'POST'])
 def YCRscanrecipent():
-    step = 3 if walletimported else 7
+    step = 3 if v.walletimported else 7
     route = scanrecipent(request, '/YCRscanrecipent', '/YCRsetFee')
     if route:
         return route
@@ -151,7 +151,7 @@ def YCRscanrecipent():
 #OFF
 @app.route('/YCRsetFee', methods=['GET', 'POST'])
 def YCRsetFee():
-    step = 4 if walletimported else 8
+    step = 4 if v.walletimported else 8
     route = setFee(request, '/YCRsetFee', '/YCRconfirmsend')
     if route:
         return route
@@ -160,7 +160,7 @@ def YCRsetFee():
 #OFF
 @app.route("/YCRconfirmsend", methods=['GET', 'POST'])
 def YCRconfirmsend():
-    step = 5 if walletimported else 9
+    step = 5 if v.walletimported else 9
     if request.method == 'GET':
         createTransactions()
     if request.method == 'POST':
@@ -170,7 +170,7 @@ def YCRconfirmsend():
 #OFF
 @app.route("/YCRdisplaytransaction", methods=['GET', 'POST'])
 def YCRdisplaytransaction():
-    step = 6 if walletimported else 10
+    step = 6 if v.walletimported else 10
     if request.method == 'GET':
         v.path = makeQrCode(v.transnum)
     if request.method == 'POST':
@@ -181,7 +181,7 @@ def YCRdisplaytransaction():
 #ON
 @app.route("/YCRscantransaction", methods=['GET', 'POST'])
 def YCRscantransaction():
-    step = 7 if walletimported else 11
+    step = 7 if v.walletimported else 11
     if request.method == 'POST':
         v.transactionhex = handleResponse('python3 ~/yeticold/utils/scanqrcode.py')
         response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet sendrawtransaction '+v.transactionhex)
