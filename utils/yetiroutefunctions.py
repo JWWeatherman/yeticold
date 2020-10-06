@@ -152,9 +152,9 @@ def displaywallet(request, nextroute):
                     txid = utxo['txid']
                     vout = utxo['vout']
                     scriptPubKey = utxo['scriptPubKey']
-                    v.totalwalletbal = v.totalwalletbal + numamount
                     amount = "{:.8f}".format(float(utxo['amount']))
                     numamount = float(amount)
+                    v.totalwalletbal = v.totalwalletbal + numamount
                     confs = utxo['confirmations']
                     totalbal = rpc.getreceivedbyaddress(adr)
                     if numamount:
