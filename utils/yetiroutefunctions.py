@@ -182,7 +182,7 @@ def displaywallet(request, nextroute):
     if request.method == 'POST':
         for i in range(0, len(v.addresses)):
             if v.addresses[i]['txid'] == request.form['txid']:
-                v.sourceaddress = v.addresses[i]
+                v.selectedutxo = v.addresses[i]
         return redirect(nextroute)
 
 def scanrecipent(request, currentroute, nextroute):
