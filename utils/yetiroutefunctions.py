@@ -152,7 +152,7 @@ def displaywallet(request, nextroute):
                     txid = utxo['txid']
                     vout = utxo['vout']
                     scriptPubKey = utxo['scriptPubKey']
-                    numamount = utxo['amount']
+                    numamount = float(utxo['amount'])
                     v.totalwalletbal = v.totalwalletbal + numamount
                     amount = "{:.8f}".format(float(numamount))
                     confs = utxo['confirmations']
