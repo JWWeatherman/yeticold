@@ -106,10 +106,10 @@ def YCRdisplaywallet():
 def YCRdisplayutxo():
     oldstep = 9 if v.walletimported else 6
     if request.method == 'GET':
-        v.path = makeQrCode(str(v.sourceaddress))
+        v.path = makeQrCode(str(v.selectedutxo))
     if request.method == 'POST':
         return redirect('/YCRscantransaction')
-    return render_template('displayutxo.html', qrdata=v.sourceaddress, path=v.path, step=1, instructions="Switch to your Secondary laptop currently showing step "+str(oldstep)+". Click next to show step 2", laptop="Secondary")
+    return render_template('displayutxo.html', qrdata=v.selectedutxo, path=v.path, step=1, instructions="Switch to your Secondary laptop currently showing step "+str(oldstep)+". Click next to show step 2", laptop="Secondary")
 
 #OFF
 @app.route("/YCRscandescriptorB", methods=['GET', 'POST'])
