@@ -259,7 +259,7 @@ def YCscandescriptor():
         v.pubdesc = handleResponse('python3 ~/yeticold/utils/scanqrcode.py').replace('\n', '')
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet importmulti \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false}]\' \'{"rescan": true}\'')
         return redirect('/YCprintpage')
-    return render_template('scandescriptor.html', step=11)
+    return render_template('scandescriptor.html', step=11, setup=True)
 
 #ON
 @app.route("/YCprintpage", methods=['GET', 'POST'])
