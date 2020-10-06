@@ -104,7 +104,7 @@ def YCRdisplaywallet():
 #ON
 @app.route("/YCRdisplayutxo", methods=['GET', 'POST'])
 def YCRdisplayutxo():
-    oldstep = 8 if walletimported else 6
+    oldstep = 8 if v.walletimported else 6
     if request.method == 'GET':
         v.path = makeQrCode(str(v.sourceaddress))
     if request.method == 'POST':
