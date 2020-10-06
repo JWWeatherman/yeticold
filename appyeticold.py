@@ -137,7 +137,8 @@ def YCRscanutxo():
     if request.method == 'POST':
         v.selectedutxo = handleResponse('python3 ~/yeticold/utils/scanqrcode.py')
         v.selectedutxo.replace("'", '"')
-        json.loads(v.selectedutxo)
+        print(v.selectedutxo)
+        v.selectedutxo = json.loads(v.selectedutxo)
         return redirect('/YCRscanrecipent')
     return render_template('scanutxo.html',step=step)
 
