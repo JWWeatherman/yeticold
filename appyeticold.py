@@ -104,12 +104,12 @@ def YCRdisplaywallet():
 #ON
 @app.route("/YCRdisplayutxo", methods=['GET', 'POST'])
 def YCRdisplayutxo():
-    oldstep = 9 if v.walletimported else 6
+    oldstep = "6, 10" if v.walletimported else "9"
     if request.method == 'GET':
         v.path = makeQrCode(str(v.selectedutxo))
     if request.method == 'POST':
         return redirect('/YCRscantransaction')
-    return render_template('displayutxo.html', qrdata=v.selectedutxo, path=v.path, step=1, instructions="Switch to your Secondary laptop currently showing step "+str(oldstep)+". Click next to show step 2", laptop="Secondary")
+    return render_template('displayutxo.html', qrdata=v.selectedutxo, path=v.path, step=1, instructions="Switch to your Secondary laptop currently showing step "+oldstep+". Click next to show step 2", laptop="Secondary")
 
 #OFF
 @app.route("/YCRscandescriptorB", methods=['GET', 'POST'])
@@ -240,6 +240,7 @@ def YCconnection():
 @app.route("/YCgetseeds", methods=['GET', 'POST'])
 def YCgetseeds():
     route = getSeeds(request, '/YCdisplaydescriptor')
+    v.walletimported = True
     if route:
         return route
     return render_template('getseeds.html', step=9)
