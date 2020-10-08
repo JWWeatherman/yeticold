@@ -69,15 +69,32 @@ def YCRconnection():
     if request.method == 'POST':
         subprocess.call(['python3 ~/yeticold/utils/forgetnetworks.py'],shell=True)
         subprocess.call(['nmcli n off'],shell=True)
-        return redirect('/YCRswitchlaptop')
+        return redirect('/YCRscandescriptorB')
     return render_template('connection.html', step=8)
+
+#OFF
+@app.route("/YCRscandescriptorB", methods=['GET', 'POST'])
+def YCRscandescriptorB():
+    if request.method == 'POST':
+        v.pubdesc = handleResponse('python3 ~/yeticold/utils/scanqrcode.py').replace('\n', '')
+        v.privkeycount = 0
+        return redirect('/YCRimportseeds')
+    return render_template('scandescriptor.html', step=9)
+
+#OFF
+@app.route('/YCRimportseeds', methods=['GET', 'POST'])
+def YCRimportseeds():
+    route = importSeeds(request, '/YCRimportseeds', '/YCRswitchlaptop')
+    if route:
+        return route
+    return render_template('importseeds.html', x=v.privkeycount + 1, error=v.error,i=v.privkeycount + 2, step=10+v.privkeycount)
 
 #OFF
 @app.route("/YCRswitchlaptop", methods=['GET', 'POST'])
 def YCRswitchlaptop():
     if request.method == 'POST':
-        return redirect('/YCRscandescriptorB')
-    return render_template('switchlaptop.html', step=9, instructions="Switch to your Primary laptop currently Showing step 5. Click next to show step 10.", laptop="Primary")
+        return redirect('/YCRscanutxo')
+    return render_template('switchlaptop.html', step=13, instructions="Switch to your Primary laptop currently Showing step 5. Click next to show step 14.", laptop="Primary")
 
 #ON
 @app.route("/YCRscandescriptor", methods=['GET', 'POST'])
@@ -85,7 +102,7 @@ def YCRscandescriptor():
     if request.method == 'POST':
         v.pubdesc = handleResponse('python3 ~/yeticold/utils/scanqrcode.py').replace('\n', '')
         return redirect('/YCRrescanwallet')
-    return render_template('scandescriptor.html', step=10)
+    return render_template('scandescriptor.html', step=14)
 
 #ON
 @app.route("/YCRrescanwallet", methods=['GET', 'POST'])
@@ -104,91 +121,64 @@ def YCRdisplaywallet():
 #ON
 @app.route("/YCRdisplayutxo", methods=['GET', 'POST'])
 def YCRdisplayutxo():
-    oldstep = "6, 10" if v.walletimported else "9"
     if request.method == 'GET':
         v.path = makeQrCode(str(v.selectedutxo))
     if request.method == 'POST':
         return redirect('/YCRscantransaction')
-    return render_template('displayutxo.html', qrdata=v.selectedutxo, path=v.path, step=1, instructions="Switch to your Secondary laptop currently showing step "+oldstep+". Click next to show step 2", laptop="Secondary")
-
-#OFF
-@app.route("/YCRscandescriptorB", methods=['GET', 'POST'])
-def YCRscandescriptorB():
-    if v.walletimported:
-        return redirect('/YCRscanutxo')
-    if request.method == 'POST':
-        v.pubdesc = handleResponse('python3 ~/yeticold/utils/scanqrcode.py').replace('\n', '')
-        v.privkeycount = 0
-        return redirect('/YCRimportseeds')
-    return render_template('scandescriptor.html', step=2)
-
-#OFF
-@app.route('/YCRimportseeds', methods=['GET', 'POST'])
-def YCRimportseeds():
-    route = importSeeds(request, '/YCRimportseeds', '/YCRscanutxo')
-    if route:
-        return route
-    return render_template('importseeds.html', x=v.privkeycount + 1, error=v.error,i=v.privkeycount + 2, step=3+v.privkeycount)
+    return render_template('displayutxo.html', qrdata=v.selectedutxo, path=v.path, step=1, instructions="Switch to your Secondary laptop currently showing step 13. Click next to show step 2", laptop="Secondary")
 
 #OFF
 @app.route("/YCRscanutxo", methods=['GET', 'POST'])
 def YCRscanutxo():
-    step = 2 if v.walletimported else 6
     if request.method == 'POST':
         v.selectedutxo = handleResponse('python3 ~/yeticold/utils/scanqrcode.py')
         v.selectedutxo = eval(v.selectedutxo)
         return redirect('/YCRscanrecipent')
-    return render_template('scanutxo.html',step=step)
+    return render_template('scanutxo.html',step=2)
 
 #OFF
 @app.route("/YCRscanrecipent", methods=['GET', 'POST'])
 def YCRscanrecipent():
-    step = 3 if v.walletimported else 7
     route = scanrecipent(request, '/YCRscanrecipent', '/YCRsetFee')
     if route:
         return route
-    return render_template('scanrecipent.html', error=v.error,receipentaddress=v.receipentaddress,step=step)
+    return render_template('scanrecipent.html', error=v.error,receipentaddress=v.receipentaddress,step=3)
 
 #OFF
 @app.route('/YCRsetFee', methods=['GET', 'POST'])
 def YCRsetFee():
-    step = 4 if v.walletimported else 8
     route = setFee(request, '/YCRsetFee', '/YCRconfirmsend')
     if route:
         return route
-    return render_template('setFee.html', amount=v.amount, minerfee=v.minerfee, amo=v.amo,step=step)
+    return render_template('setFee.html', amount=v.amount, minerfee=v.minerfee, amo=v.amo,step=4)
 
 #OFF
 @app.route("/YCRconfirmsend", methods=['GET', 'POST'])
 def YCRconfirmsend():
-    step = 5 if v.walletimported else 9
     if request.method == 'GET':
         createTransactions()
     if request.method == 'POST':
         return redirect('/YCRdisplaytransaction')
-    return render_template('confirmsend.html', amount=v.amo, minerfee=v.minerfee, recipent=v.receipentaddress,step=step)
+    return render_template('confirmsend.html', amount=v.amo, minerfee=v.minerfee, recipent=v.receipentaddress,step=5)
 
 #OFF
 @app.route("/YCRdisplaytransaction", methods=['GET', 'POST'])
 def YCRdisplaytransaction():
-    step = 6 if v.walletimported else 10
     if request.method == 'GET':
         v.path = makeQrCode(v.transnum)
     if request.method == 'POST':
         v.walletimported = True
         return redirect('/YCRscanutxo')
-    return render_template('displaytransaction.html', qrdata=v.transnum, path=v.path,step=step, instructions="Switch to your Primary laptop currently showing step 1, Click next to show step "+str(step+1), laptop="Primary")
+    return render_template('displaytransaction.html', qrdata=v.transnum, path=v.path,step=6, instructions="Switch to your Primary laptop currently showing step 1, Click next to show step "+str(step+1), laptop="Primary")
 
 #ON
 @app.route("/YCRscantransaction", methods=['GET', 'POST'])
 def YCRscantransaction():
-    step = 7 if v.walletimported else 11
     if request.method == 'POST':
         v.transnum = handleResponse('python3 ~/yeticold/utils/scanqrcode.py')
         response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet sendrawtransaction '+v.transnum)
-        v.walletimported = True
         return redirect('/YCRdisplaywallet')
-    return render_template('scantransaction.html', step=step)
+    return render_template('scantransaction.html', step=7)
 
 
 
