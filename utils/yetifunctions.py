@@ -91,7 +91,7 @@ def createTransactions():
     response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv signrawtransactionwithwallet '+transonehex, True)
     if not response['complete']:
         raise werkzeug.exceptions.InternalServerError(response['errors'][0]['error'])
-    v.transnum = response
+    v.transnum = response['hex']
     v.minerfee = "{:.8f}".format(float(v.minerfee))
 
 def handleResponse(func, returnJsonResponse=False, decode=True):

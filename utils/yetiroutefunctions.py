@@ -190,6 +190,7 @@ def scanrecipent(request, currentroute, nextroute):
         v.error = None
         if request.form['option'] == 'scan':
             v.receipentaddress = handleResponse('python3 ~/yeticold/utils/scanqrcode.py').replace('\n', '')
+            return redirect(currentroute)
         else:
             v.receipentaddress = request.form['option']
         if (v.receipentaddress.split(':')[0] == 'bitcoin'):

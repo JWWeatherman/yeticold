@@ -147,7 +147,7 @@ def YCRscanrecipent():
     route = scanrecipent(request, '/YCRscanrecipent', '/YCRsetFee')
     if route:
         return route
-    return render_template('scanrecipent.html', error=v.error,step=step)
+    return render_template('scanrecipent.html', error=v.error,receipentaddress=v.receipentaddress,step=step)
 
 #OFF
 @app.route('/YCRsetFee', methods=['GET', 'POST'])
