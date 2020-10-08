@@ -240,7 +240,6 @@ def importSeeds(request, currentroute, nextroute):
             response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet getdescriptorinfo '+desc+'"', True)
             checksum = response["checksum"]
             handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv importmulti \'[{ "desc": '+desc+'#'+ checksum +'", "timestamp": "now", "range": [0,999], "watchonly": false}]\' \'{"rescan": true}\'')
-            v.walletimported = True
             return redirect(nextroute)
         else:
             return redirect(currentroute)

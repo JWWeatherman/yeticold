@@ -175,7 +175,7 @@ def YCRdisplaytransaction():
     if request.method == 'GET':
         v.path = makeQrCode(v.transnum)
     if request.method == 'POST':
-        walletimported = True
+        v.walletimported = True
         return redirect('/YCRscanutxo')
     return render_template('displaytransaction.html', qrdata=v.transnum, path=v.path,step=step, instructions="Switch to your Primary laptop currently showing step 1, Click next to show step "+str(step+1), laptop="Primary")
 
@@ -186,6 +186,7 @@ def YCRscantransaction():
     if request.method == 'POST':
         v.transnum = handleResponse('python3 ~/yeticold/utils/scanqrcode.py')
         response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet sendrawtransaction '+v.transnum)
+        v.walletimported = True
         return redirect('/YCRdisplaywallet')
     return render_template('scantransaction.html', step=step)
 
