@@ -23,11 +23,8 @@ def blockChain(request, nextroute):
 
 def openBitcoin(request, currentroute, nextroute):
     if request.method == 'GET':
-        if (os.path.exists(home + "/.bitcoin")):
-            testblockchain = False
         if BTCClosed():
-            if testblockchain == False:
-                subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
+            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         v.IBD = BTCFinished()
         v.progress = BTCprogress()
     if request.method == 'POST':
