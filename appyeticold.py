@@ -59,8 +59,14 @@ def YCRconnection():
 #OFF
 @app.route("/YCRopenbitcoinB", methods=['GET', 'POST'])
 def YCRopenbitcoinB():
-    openBitcoinSigner()
-    return redirect('/YCRscandescriptorB')
+    if not (os.path.exists(home + "/.bitcoin")):
+        subprocess.call('mkdir ~/.bitcoin',shell=True)
+    createOrPrepend('\nprune=550\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
+    route = openBitcoin(request, '/YCRopenbitcoinB', '/YCRscandescriptorB')
+    if route:
+        return route
+    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=5)
+
 
 #OFF
 @app.route("/YCRscandescriptorB", methods=['GET', 'POST'])

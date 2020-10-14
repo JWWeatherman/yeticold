@@ -23,7 +23,6 @@ def blockChain(request, nextroute):
 
 def openBitcoin(request, currentroute, nextroute):
     if request.method == 'GET':
-        
         v.IBD = BTCFinished()
         v.progress = BTCprogress()
     if request.method == 'POST':
@@ -33,13 +32,7 @@ def openBitcoin(request, currentroute, nextroute):
             return redirect(nextroute)
         else:
             return redirect(currentroute)
-
-def openBitcoinSigner():
-    if not (os.path.exists(home + "/.bitcoin")):
-        subprocess.call('mkdir ~/.bitcoin',shell=True)
-    createOrPrepend('\nprune=550\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
-    subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
-
+            
 def getSeeds(request, nextroute):
     if request.method == 'POST':
         if request.form['skip'] == 'skip':
