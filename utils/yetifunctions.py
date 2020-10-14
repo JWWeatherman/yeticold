@@ -75,15 +75,22 @@ def makeQrCode(data, path=None, name=None):
     if name != None:
         return url_for('static', filename=name)
 
-def createTransactions():
-    rpc = RPC("yetiwallet")
+def createPSBT():
     response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv createrawtransaction \'[{ "txid": "'+v.selectedutxo['txid']+'", "vout": '+str(v.selectedutxo['vout'])+'}]\' \'[{"'+v.receipentaddress+'" : '+str(v.amo)+'}]\'')
-    transonehex = response[:-1]
-    response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv signrawtransactionwithwallet '+transonehex, True)
+    transhex = response[:-1]
+    psbt = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv converttopsbt '+transhex)
+    response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv walletprocesspsbt '+psbt, True)
+    v.psbt = response['psbt']
+
+def signPSBT():
+    response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv walletprocesspsbt'+v.psbt, True)
     if not response['complete']:
         raise werkzeug.exceptions.InternalServerError(response['errors'][0]['error'])
-    v.transnum = response['hex']
-    v.minerfee = "{:.8f}".format(float(v.minerfee))
+    v.psbt = response['psbt']
+    response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv finalizepsbt'+v.psbt, True)
+    v.transhex = response['hex']
+
+
 
 def handleResponse(func, returnJsonResponse=False, decode=True):
     response = subprocess.Popen(func, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()

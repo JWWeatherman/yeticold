@@ -33,3 +33,4 @@ passphraselist = None
 addresses = []
 sourceaddress = ''
 transnum = 0
+psbt = 0

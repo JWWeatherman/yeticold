@@ -113,30 +113,12 @@ def YCRrescanwallet():
 #ON
 @app.route("/YCRdisplaywallet", methods=['GET', 'POST'])
 def YCRdisplaywallet():
-    route = displaywallet(request, '/YCRdisplayutxo')
+    route = displaywallet(request, '/YCRscanrecipent')
     if route:
         return route
     return render_template('displaywallet.html', addresses=v.addresses, len=len(v.addresses), TWB=v.totalwalletbal)
 
 #ON
-@app.route("/YCRdisplayutxo", methods=['GET', 'POST'])
-def YCRdisplayutxo():
-    if request.method == 'GET':
-        v.path = makeQrCode(str(v.selectedutxo))
-    if request.method == 'POST':
-        return redirect('/YCRscantransaction')
-    return render_template('displayutxo.html', qrdata=v.selectedutxo, path=v.path, step=1, instructions="Switch to your Secondary laptop currently showing step 13. Click next to show step 2", laptop="Secondary")
-
-#OFF
-@app.route("/YCRscanutxo", methods=['GET', 'POST'])
-def YCRscanutxo():
-    if request.method == 'POST':
-        v.selectedutxo = handleResponse('python3 ~/yeticold/utils/scanqrcode.py')
-        v.selectedutxo = eval(v.selectedutxo)
-        return redirect('/YCRscanrecipent')
-    return render_template('scanutxo.html',step=2)
-
-#OFF
 @app.route("/YCRscanrecipent", methods=['GET', 'POST'])
 def YCRscanrecipent():
     route = scanrecipent(request, '/YCRscanrecipent', '/YCRsetFee')
@@ -144,7 +126,7 @@ def YCRscanrecipent():
         return route
     return render_template('scanrecipent.html', error=v.error,receipentaddress=v.receipentaddress,step=3)
 
-#OFF
+#ON
 @app.route('/YCRsetFee', methods=['GET', 'POST'])
 def YCRsetFee():
     route = setFee(request, '/YCRsetFee', '/YCRconfirmsend')
@@ -152,19 +134,38 @@ def YCRsetFee():
         return route
     return render_template('setFee.html', amount=v.amount, minerfee=v.minerfee, amo=v.amo,step=4)
 
-#OFF
-@app.route("/YCRconfirmsend", methods=['GET', 'POST'])
-def YCRconfirmsend():
+#ON
+@app.route("/YCRconfirmcreate", methods=['GET', 'POST'])
+def YCRconfirmcreate():
     if request.method == 'GET':
-        createTransactions()
+        createPSBT()
     if request.method == 'POST':
-        return redirect('/YCRdisplaytransaction')
+        return redirect('/YCRdisplayutxo')
     return render_template('confirmsend.html', amount=v.amo, minerfee=v.minerfee, recipent=v.receipentaddress,step=5)
+
+#ON
+@app.route("/YCRdisplayutxo", methods=['GET', 'POST'])
+def YCRdisplayutxo():
+    if request.method == 'GET':
+        
+        v.path = makeQrCode(v.psbt)
+    if request.method == 'POST':
+        return redirect('/YCRscantransaction')
+    return render_template('displayutxo.html', qrdata=v.psbt, path=v.path, step=1, instructions="Switch to your Secondary laptop currently showing step 13. Click next to show step 2", laptop="Secondary")
+
+#OFF
+@app.route("/YCRscanutxo", methods=['GET', 'POST'])
+def YCRscanutxo():
+    if request.method == 'POST':
+        v.psbt = handleResponse('python3 ~/yeticold/utils/scanqrcode.py')
+        return redirect('/YCRdisplaytransaction')
+    return render_template('scanutxo.html',step=2)
 
 #OFF
 @app.route("/YCRdisplaytransaction", methods=['GET', 'POST'])
 def YCRdisplaytransaction():
     if request.method == 'GET':
+        signPSBT()
         v.path = makeQrCode(v.transnum)
     if request.method == 'POST':
         v.walletimported = True
