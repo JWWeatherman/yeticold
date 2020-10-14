@@ -53,7 +53,7 @@ def YCRconnection():
     if request.method == 'POST':
         subprocess.call(['python3 ~/yeticold/utils/forgetnetworks.py'],shell=True)
         subprocess.call(['nmcli n off'],shell=True)
-        return redirect('/YCRscandescriptorB')
+        return redirect('/YCRopenbitcoinB')
     return render_template('connection.html', step=8)
 
 #OFF
