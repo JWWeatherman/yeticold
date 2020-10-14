@@ -59,7 +59,7 @@ def YCRconnection():
 #OFF
 @app.route("/YCRopenbitcoinB", methods=['GET', 'POST'])
 def YCRopenbitcoinB():
-    openBitcoinSigner(request)
+    openBitcoinSigner()
     return redirect('/YCRscandescriptorB')
 
 #OFF
