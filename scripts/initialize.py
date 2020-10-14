@@ -49,7 +49,9 @@ else:
     if not subprocess.run("python3 -c 'import qrtools' 2> /dev/null", shell=True, check=False).returncode == 0:
         subprocess.run('pip3 install qrtools==0.0.2', shell=True, check=False)
     if not subprocess.run("python3 -c 'import bip32' 2> /dev/null", shell=True, check=False).returncode == 0:
-        subprocess.run('pip3 install bip32-python', shell=True, check=False)
+        subprocess.run('pip3 install python-bip32', shell=True, check=False)
+    if not subprocess.run("python3 -c 'import base58' 2> /dev/null", shell=True, check=False).returncode == 0:
+        subprocess.run('pip3 install base58', shell=True, check=False)
     if not subprocess.run("python3 -c 'import qrcode' 2> /dev/null", shell=True, check=False).returncode == 0:
         subprocess.run('pip3 install qrcode==6.1', shell=True, check=False)
     if not subprocess.run("python3 -c 'import pyzbar' 2> /dev/null", shell=True, check=False).returncode == 0:
