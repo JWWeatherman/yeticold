@@ -96,7 +96,7 @@ else:
         print('********************' + os.linesep)
         subprocess.Popen('python3 ~/yeticold/appyeticold.py', shell=True, start_new_session=True)
         subprocess.run('sleep 3', shell=True, check=False)
-        subprocess.run('xdg-open http://localhost:5000/YCRblockchainB', shell=True, check=False)
+        subprocess.run('xdg-open http://localhost:5000/YCRconnection', shell=True, check=False)
 
     elif sys.argv[1].lower() == 'yetihot':
         print('********************')
