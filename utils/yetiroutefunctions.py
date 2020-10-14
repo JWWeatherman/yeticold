@@ -23,8 +23,7 @@ def blockChain(request, nextroute):
 
 def openBitcoin(request, currentroute, nextroute):
     if request.method == 'GET':
-        if BTCClosed():
-            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
+        
         v.IBD = BTCFinished()
         v.progress = BTCprogress()
     if request.method == 'POST':
@@ -34,6 +33,12 @@ def openBitcoin(request, currentroute, nextroute):
             return redirect(nextroute)
         else:
             return redirect(currentroute)
+
+def openBitcoinSigner():
+    if not (os.path.exists(home + "/.bitcoin")):
+        subprocess.call('mkdir ~/.bitcoin',shell=True)
+    createOrPrepend('\nprune=550\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
+    subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
 
 def getSeeds(request, nextroute):
     if request.method == 'POST':
@@ -260,6 +265,21 @@ def sendTransaction(request, currentroute, nextroute):
     if request.method == 'POST':
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv sendrawtransaction '+v.transnum['hex']+'')
         return redirect(nextroute)
+
+def createPSBT():
+    response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv createrawtransaction \'[{ "txid": "'+v.selectedutxo['txid']+'", "vout": '+str(v.selectedutxo['vout'])+'}]\' \'[{"'+v.receipentaddress+'" : '+str(v.amo)+'}]\'')
+    transhex = response[:-1]
+    psbt = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv converttopsbt '+transhex)
+    response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv walletprocesspsbt '+psbt, True)
+    v.psbt = response['psbt']
+
+def signPSBT():
+    response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv walletprocesspsbt'+v.psbt, True)
+    if not response['complete']:
+        raise werkzeug.exceptions.InternalServerError(response['errors'][0]['error'])
+    v.psbt = response['psbt']
+    response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv finalizepsbt'+v.psbt, True)
+    v.transhex = response['hex']
 
 
 

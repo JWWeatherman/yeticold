@@ -48,22 +48,6 @@ def YCRopenbitcoin():
     return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=5, switch=True, url="rec.yeticold.com")
 
 #OFF
-@app.route("/YCRblockchainB", methods=['GET', 'POST'])
-def YCRblockchainB():
-    route = blockChain(request, '/YCRopenbitcoinB')
-    if route:
-        return route
-    return render_template('blockchain.html')
-
-#OFF
-@app.route("/YCRopenbitcoinB", methods=['GET', 'POST'])
-def YCRopenbitcoinB():
-    route = openBitcoin(request, '/YCRopenbitcoinB', '/YCRconnection')
-    if route:
-        return route
-    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=7)
-
-#OFF
 @app.route("/YCRconnection", methods=['GET', 'POST'])
 def YCRconnection():
     if request.method == 'POST':
@@ -71,6 +55,12 @@ def YCRconnection():
         subprocess.call(['nmcli n off'],shell=True)
         return redirect('/YCRscandescriptorB')
     return render_template('connection.html', step=8)
+
+#OFF
+@app.route("/YCRopenbitcoinB", methods=['GET', 'POST'])
+def YCRopenbitcoinB():
+    openBitcoinSigner(request)
+    return redirect('/YCRscandescriptorB')
 
 #OFF
 @app.route("/YCRscandescriptorB", methods=['GET', 'POST'])
