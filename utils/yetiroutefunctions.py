@@ -234,45 +234,46 @@ def importSeeds(request, currentroute, nextroute):
             desc = '"wsh(multi(3,'+descriptorlist[0]+','+descriptorlist[1]+','+descriptorlist[2]+','+descriptorlist[3]+','+descriptorlist[4]+','+descriptorlist[5]+','+descriptorlist[6]+'))'
             response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet getdescriptorinfo '+desc+'"', True)
             checksum = response["checksum"]
-            handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv importmulti \'[{ "desc": '+desc+'#'+ checksum +'", "timestamp": "now", "range": [0,999], "watchonly": false}]\' \'{"rescan": true}\'')
+            handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet importdescriptors \'[{ "desc": '+desc+'#'+ checksum +'", "timestamp": "now", "active": true}]\'')
+            handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet rescanblockchain '+blockheight())
             return redirect(nextroute)
         else:
             return redirect(currentroute)
 
-def setFee(request, currentroute, nextroute):
-    if request.method == 'GET':
-        rpc = RPC("yetiwallet")
-        v.amount = "{:.8f}".format(float(v.selectedutxo['numbal']))
-        v.minerfee = float(rpc.estimatesmartfee(1)["feerate"])
-        kilobytespertrans = 0.200
-        v.minerfee = (v.minerfee * kilobytespertrans)
-        v.amo = "{:.8f}".format(float(v.selectedutxo['numbal']) - v.minerfee)
-    if request.method == 'POST':
-        v.minerfee = request.form['fee']
-        v.amo = "{:.8f}".format(float(v.selectedutxo['numbal']) - float(v.minerfee))
-        return redirect(nextroute)
+# def setFee(request, currentroute, nextroute):
+#     if request.method == 'GET':
+#         rpc = RPC("yetiwallet")
+#         v.amount = "{:.8f}".format(float(v.selectedutxo['numbal']))
+#         v.minerfee = float(rpc.estimatesmartfee(1)["feerate"])
+#         kilobytespertrans = 0.200
+#         v.minerfee = (v.minerfee * kilobytespertrans)
+#         v.amo = "{:.8f}".format(float(v.selectedutxo['numbal']) - v.minerfee)
+#     if request.method == 'POST':
+#         v.minerfee = request.form['fee']
+#         v.amo = "{:.8f}".format(float(v.selectedutxo['numbal']) - float(v.minerfee))
+#         return redirect(nextroute)
 
-def sendTransaction(request, currentroute, nextroute):
-    if request.method == 'GET':
-        createTransactions()
-    if request.method == 'POST':
-        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv sendrawtransaction '+v.transnum['hex']+'')
-        return redirect(nextroute)
+# def sendTransaction(request, currentroute, nextroute):
+#     if request.method == 'GET':
+#         createTransactions()
+#     if request.method == 'POST':
+#         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv sendrawtransaction '+v.transnum['hex']+'')
+#         return redirect(nextroute)
 
-def createPSBT():
-    response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv createrawtransaction \'[{ "txid": "'+v.selectedutxo['txid']+'", "vout": '+str(v.selectedutxo['vout'])+'}]\' \'[{"'+v.receipentaddress+'" : '+str(v.amo)+'}]\'')
-    transhex = response[:-1]
-    psbt = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv converttopsbt '+transhex)
-    response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv walletprocesspsbt '+psbt, True)
-    v.psbt = response['psbt']
+# def createPSBT():
+#     response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv createrawtransaction \'[{ "txid": "'+v.selectedutxo['txid']+'", "vout": '+str(v.selectedutxo['vout'])+'}]\' \'[{"'+v.receipentaddress+'" : '+str(v.amo)+'}]\'')
+#     transhex = response[:-1]
+#     psbt = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv converttopsbt '+transhex)
+#     response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv walletprocesspsbt '+psbt, True)
+#     v.psbt = response['psbt']
 
-def signPSBT():
-    response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv walletprocesspsbt'+v.psbt, True)
-    if not response['complete']:
-        raise werkzeug.exceptions.InternalServerError(response['errors'][0]['error'])
-    v.psbt = response['psbt']
-    response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv finalizepsbt'+v.psbt, True)
-    v.transhex = response['hex']
+# def signPSBT():
+#     response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv walletprocesspsbt'+v.psbt, True)
+#     if not response['complete']:
+#         raise werkzeug.exceptions.InternalServerError(response['errors'][0]['error'])
+#     v.psbt = response['psbt']
+#     response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv finalizepsbt'+v.psbt, True)
+#     v.transhex = response['hex']
 
 
 

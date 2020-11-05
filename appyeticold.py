@@ -13,7 +13,11 @@ from yetifunctions import *
 from yetiroutefunctions import * 
 app = Flask(__name__)
 
-#ROUTES
+@app.errorhandler(werkzeug.exceptions.InternalServerError)
+def handle_bad_request(e):
+    if e.original_exception != None:
+        e = e.original_exception
+    return render_template('error.html', error=e), 500
 
 
 #A
@@ -27,45 +31,50 @@ def YCmenu():
     if request.method == 'POST':
         if request.form['option'] == 'recovery':
             return redirect('/YCRblockchain')
+            v.url = "desc.yeticold.com"
+            v.route = "/YCRscandescriptorB"
         else:
             return redirect('/YCblockchain')
+            v.url = "rec.yeticold.com"
+            v.route = "/YCgetseeds"
     return render_template('menu.html')
 
-#ON
-@app.route("/YCRblockchain", methods=['GET', 'POST'])
-def YCRblockchain():
-    route = blockChain(request, '/YCRopenbitcoin')
+@app.route("/YCblockchain", methods=['GET', 'POST'])
+def YCblockchain():
+    route = blockChain(request, '/YCopenbitcoin')
     if route:
         return route
     return render_template('blockchain.html')
 
 #ON
-@app.route("/YCRopenbitcoin", methods=['GET', 'POST'])
-def YCRopenbitcoin():
-    route = openBitcoin(request, '/YCRopenbitcoin', '/YCRscandescriptor')
+@app.route("/YCopenbitcoin", methods=['GET', 'POST'])
+def YCopenbitcoin():
+    route = openBitcoin(request, '/YCopenbitcoin', '/YCscandescriptor')
     if route:
         return route
-    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=5, switch=True, url="rec.yeticold.com")
+    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=5, switch=True, url=v.url)
 
 #OFF
-@app.route("/YCRconnection", methods=['GET', 'POST'])
-def YCRconnection():
+@app.route("/YCopenbitcoinB", methods=['GET', 'POST'])
+def YCopenbitcoinB():
+    route = openBitcoin(request, '/YCopenbitcoinB', '/YCconnection', offline=True)
+    v.IBD = True
+    if route:
+        return route
+    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=7)
+
+#OFF
+@app.route("/YCconnection", methods=['GET', 'POST'])
+def YCconnection():
     if request.method == 'POST':
         subprocess.call(['python3 ~/yeticold/utils/forgetnetworks.py'],shell=True)
         subprocess.call(['nmcli n off'],shell=True)
-        return redirect('/YCRopenbitcoinB')
+        return redirect(v.route)
     return render_template('connection.html', step=8)
 
-#OFF
-@app.route("/YCRopenbitcoinB", methods=['GET', 'POST'])
-def YCRopenbitcoinB():
-    if not (os.path.exists(home + "/.bitcoin")):
-        subprocess.call('mkdir ~/.bitcoin',shell=True)
-    createOrPrepend('\nprune=550\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
-    route = openBitcoin(request, '/YCRopenbitcoinB', '/YCRscandescriptorB')
-    if route:
-        return route
-    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=5)
+
+
+
 
 
 #OFF
@@ -109,121 +118,9 @@ def YCRrescanwallet():
 #ON
 @app.route("/YCRdisplaywallet", methods=['GET', 'POST'])
 def YCRdisplaywallet():
-    route = displaywallet(request, '/YCRscanrecipent')
-    if route:
-        return route
-    return render_template('displaywallet.html', addresses=v.addresses, len=len(v.addresses), TWB=v.totalwalletbal)
+    return render_template('displaywallet.html', yeti="cold")
 
 #ON
-@app.route("/YCRscanrecipent", methods=['GET', 'POST'])
-def YCRscanrecipent():
-    route = scanrecipent(request, '/YCRscanrecipent', '/YCRsetFee')
-    if route:
-        return route
-    return render_template('scanrecipent.html', error=v.error,receipentaddress=v.receipentaddress,step=3)
-
-#ON
-@app.route('/YCRsetFee', methods=['GET', 'POST'])
-def YCRsetFee():
-    route = setFee(request, '/YCRsetFee', '/YCRconfirmsend')
-    if route:
-        return route
-    return render_template('setFee.html', amount=v.amount, minerfee=v.minerfee, amo=v.amo,step=4)
-
-#ON
-@app.route("/YCRconfirmcreate", methods=['GET', 'POST'])
-def YCRconfirmcreate():
-    if request.method == 'GET':
-        createPSBT()
-    if request.method == 'POST':
-        return redirect('/YCRdisplayutxo')
-    return render_template('confirmsend.html', amount=v.amo, minerfee=v.minerfee, recipent=v.receipentaddress,step=5)
-
-#ON
-@app.route("/YCRdisplayutxo", methods=['GET', 'POST'])
-def YCRdisplayutxo():
-    if request.method == 'GET':
-        
-        v.path = makeQrCode(v.psbt)
-    if request.method == 'POST':
-        return redirect('/YCRscantransaction')
-    return render_template('displayutxo.html', qrdata=v.psbt, path=v.path, step=1, instructions="Switch to your Secondary laptop currently showing step 13. Click next to show step 2", laptop="Secondary")
-
-#OFF
-@app.route("/YCRscanutxo", methods=['GET', 'POST'])
-def YCRscanutxo():
-    if request.method == 'POST':
-        v.psbt = handleResponse('python3 ~/yeticold/utils/scanqrcode.py')
-        return redirect('/YCRdisplaytransaction')
-    return render_template('scanutxo.html',step=2)
-
-#OFF
-@app.route("/YCRdisplaytransaction", methods=['GET', 'POST'])
-def YCRdisplaytransaction():
-    if request.method == 'GET':
-        signPSBT()
-        v.path = makeQrCode(v.transnum)
-    if request.method == 'POST':
-        v.walletimported = True
-        return redirect('/YCRscanutxo')
-    return render_template('displaytransaction.html', qrdata=v.transnum, path=v.path,step=6, instructions="Switch to your Primary laptop currently showing step 1, Click next to show step "+str(step+1), laptop="Primary")
-
-#ON
-@app.route("/YCRscantransaction", methods=['GET', 'POST'])
-def YCRscantransaction():
-    if request.method == 'POST':
-        v.transnum = handleResponse('python3 ~/yeticold/utils/scanqrcode.py')
-        response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet sendrawtransaction '+v.transnum)
-        return redirect('/YCRdisplaywallet')
-    return render_template('scantransaction.html', step=7)
-
-
-
-
-
-
-#SETUP
-#ON
-@app.route("/YCblockchain", methods=['GET', 'POST'])
-def YCblockchain():
-    route = blockChain(request, '/YCopenbitcoin')
-    if route:
-        return route
-    return render_template('blockchain.html')
-
-#ON
-@app.route("/YCopenbitcoin", methods=['GET', 'POST'])
-def YCopenbitcoin():
-    route = openBitcoin(request, '/YCopenbitcoin', '/YCscandescriptor')
-    if route:
-        return route
-    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=5, switch=True, url="desc.yeticold.com")
-
-#OFF
-@app.route("/YCblockchainB", methods=['GET', 'POST'])
-def YCblockchainB():
-    route = blockChain(request, '/YCopenbitcoinB')
-    if route:
-        return route
-    return render_template('blockchain.html')
-
-#OFF
-@app.route("/YCopenbitcoinB", methods=['GET', 'POST'])
-def YCopenbitcoinB():
-    route = openBitcoin(request, '/YCopenbitcoinB', '/YCconnection')
-    v.IBD = True
-    if route:
-        return route
-    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=7)
-
-#OFF
-@app.route("/YCconnection", methods=['GET', 'POST'])
-def YCconnection():
-    if request.method == 'POST':
-        subprocess.call(['python3 ~/yeticold/utils/forgetnetworks.py'],shell=True)
-        subprocess.call(['nmcli n off'],shell=True)
-        return redirect('/YCgetseeds')
-    return render_template('connection.html', step=8)
 
 #OFF
 @app.route("/YCgetseeds", methods=['GET', 'POST'])
@@ -291,12 +188,12 @@ def YCcopyseeds():
         return redirect('/YCswitchlaptopB')
     return render_template('copyseeds.html', step=28)
 
-#OFF
-@app.route("/YCswitchlaptopB", methods=['GET', 'POST'])
-def YCswitchlaptopB():
-    if request.method == 'POST':
-        return redirect('/YCRscanutxo')
-    return render_template('switchlaptop.html', step=29, instructions="Switch to your Primary laptop currently showing step 13, click next to show step your wallet.", laptop="Primary")
+# #OFF
+# @app.route("/YCswitchlaptopB", methods=['GET', 'POST'])
+# def YCswitchlaptopB():
+#     if request.method == 'POST':
+#         return redirect('/YCRscanutxo')
+#     return render_template('switchlaptop.html', step=29, instructions="Switch to your Primary laptop currently showing step 13, click next to show step your wallet.", laptop="Primary")
 
 if __name__ == "__main__":
     app.run()

@@ -55,7 +55,7 @@ def YWgetseeds():
     route = getSeeds(request, '/YWprintdescriptor')
     if route:
         return route
-    return render_template('getseeds.html', yeti='warm')
+    return render_template('getseeds.html', yeti='warm', step=5)
 
 @app.route("/YWprintdescriptor", methods=['GET', 'POST'])
 def YWprintdescriptor():
@@ -63,78 +63,45 @@ def YWprintdescriptor():
         path = makeQrCode(v.pubdesc)
     if request.method == 'POST':
         return redirect('/YWdisplayseeds')
-    return render_template('printdescriptor.html', qrdata=v.pubdesc, path=path, yeti='warm')
+    return render_template('printdescriptor.html', qrdata=v.pubdesc, path=path, yeti='warm', step=6)
 
 @app.route('/YWdisplayseeds', methods=['GET', 'POST'])
 def YWdisplayseeds():
     route = displaySeeds(request, '/YWdisplayseeds', '/YWcheckseeds')
     if route:
         return route
-    return render_template('displayseeds.html', PPL=v.passphraselist, x=v.privkeycount + 1, i=v.privkeycount + 9, yeti='warm')
+    return render_template('displayseeds.html', PPL=v.passphraselist, x=v.privkeycount + 1, step=v.privkeycount + 7, yeti='warm')
 
 @app.route('/YWcheckseeds', methods=['GET', 'POST'])
 def YWcheckseeds():
     route = checkSeeds(request, '/YWcheckseeds', '/YWcopyseeds')
     if route:
         return route
-    return render_template('checkseeds.html', x=v.privkeycount + 1, error=v.error,i=v.privkeycount + 16,oldkeys=v.oldkeys, yeti='warm')
+    return render_template('checkseeds.html', x=v.privkeycount + 1, error=v.error,step=v.privkeycount + 13, oldkeys=v.oldkeys, yeti='warm')
 
 @app.route("/YWcopyseeds", methods=['GET', 'POST'])
 def YWcopyseeds():
     if request.method == 'POST':
         return redirect('/YWRdisplaywallet')
-    return render_template('copyseeds.html', yeti='warm')
+    return render_template('copyseeds.html', yeti='warm', step=19)
 
 @app.route("/YWRscandescriptor", methods=['GET', 'POST'])
 def YWRscandescriptor():
     if request.method == 'POST':
         v.pubdesc = handleResponse('python3 ~/yeticold/utils/scanqrcode.py').replace('\n', '')
-        return redirect('/YWRrescanwallet')
-    return render_template('scandescriptor.html', pubdesc=v.pubdesc, yeti='warm')
-
-@app.route("/YWRrescanwallet", methods=['GET', 'POST'])
-def YWRrescanwallet():
-    if request.method == 'GET':
-        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet importmulti \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false}]\' \'{"rescan": true}\'')
-        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet rescanblockchain '+blockheight())
-        return redirect('/YWRdisplaywallet')
-    return render_template('rescanwallet.html', yeti='warm')
-
-@app.route("/YWRdisplaywallet", methods=['GET', 'POST'])
-def YWRdisplaywallet():
-    route = displaywallet(request, '/YWRscanrecipent')
-    if route:
-        return route
-    return render_template('displaywallet.html', addresses=v.addresses, len=len(v.addresses), TWB=v.totalwalletbal, yeti='warm')
-
-@app.route("/YWRscanrecipent", methods=['GET', 'POST'])
-def YWRscanrecipent():
-    route = scanrecipent(request, '/YWRscanrecipent', '/YWRimportseeds')
-    if route:
-        return route
-    return render_template('scanrecipent.html', error=v.error, recipent=v.receipentaddress, yeti='warm')
+        return redirect('/YWRimportseeds')
+    return render_template('scandescriptor.html', pubdesc=v.pubdesc, yeti='warm', step=5)
 
 @app.route('/YWRimportseeds', methods=['GET', 'POST'])
 def YWRimportseeds():    
-    route = importSeeds(request, '/YWRimportseeds', '/YWRsetFee')
+    route = importSeeds(request, '/YWRimportseeds', '/YWRrescanwallet')
     if route:
         return route
-    return render_template('importseeds.html', x=v.privkeycount + 1, error=v.error,i=v.privkeycount + 2, yeti='warm')
+    return render_template('importseeds.html', x=v.privkeycount + 1, error=v.error, step=v.privkeycount + 6, yeti='warm')
 
-@app.route('/YWRsetFee', methods=['GET', 'POST'])
-def YWRsetFee():
-    route = setFee(request, '/YWRsetFee', '/YWRsendtransaction')
-    if route:
-        return route
-    return render_template('setFee.html', amount=v.amount, minerfee=v.minerfee, amo=v.amo, yeti='warm')
-
-#GEN trans qr code
-@app.route("/YWRsendtransaction", methods=['GET', 'POST'])
-def YWRsendtransaction():
-    route = sendTransaction(request, '/YWRsendtransaction', '/YWRdisplaywallet')
-    if route:
-        return route
-    return render_template('sendtransaction.html', amount=v.amo, minerfee=v.minerfee, recipent=v.receipentaddress, error=v.error, step=4, yeti='warm')
+@app.route("/YWRdisplaywallet", methods=['GET', 'POST'])
+def YWRdisplaywallet():
+    return render_template('displaywallet.html', yeti='warm')
 
 if __name__ == "__main__":
     app.run()

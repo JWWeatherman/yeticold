@@ -34,3 +34,5 @@ addresses = []
 sourceaddress = ''
 transnum = 0
 psbt = 0
+url = ""
+route = ""
