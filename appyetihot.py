@@ -41,8 +41,8 @@ def YHopenbitcoin():
 
 @app.route("/YHmenu", methods=['GET', 'POST'])
 def YHmenu():
-    subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetihotwallet" false true "" false false'],shell=True)
     if request.method == 'POST':
+        subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetihotwallet" false true "" false false'],shell=True)
         if request.form['option'] == 'recovery':
             return redirect('/YHRinputseed')
         else:

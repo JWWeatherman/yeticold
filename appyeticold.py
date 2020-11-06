@@ -36,6 +36,7 @@ def redirectroute():
 #ON
 @app.route("/YCmenu", methods=['GET', 'POST'])
 def YCmenu():
+    subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpub" true true "" false true'],shell=True)
     if request.method == 'POST':
         if request.form['option'] == 'recovery':
             return redirect('/YCRblockchain')
@@ -74,6 +75,7 @@ def YCopenbitcoinB():
 @app.route("/YCconnection", methods=['GET', 'POST'])
 def YCconnection():
     if request.method == 'POST':
+        subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpriv" false true "" false true'],shell=True)
         subprocess.call(['python3 ~/yeticold/utils/forgetnetworks.py'],shell=True)
         subprocess.call(['nmcli n off'],shell=True)
         return redirect(v.route)
@@ -82,7 +84,6 @@ def YCconnection():
 #OFF
 @app.route("/YCRscandescriptorB", methods=['GET', 'POST'])
 def YCRscandescriptorB():
-    subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpriv" false true "" false true'],shell=True)
     if request.method == 'POST':
         v.pubdesc = handleResponse('python3 ~/yeticold/utils/scanqrcode.py').replace('\n', '')
         v.privkeycount = 0
@@ -128,7 +129,6 @@ def YCRdisplaywallet():
 #OFF
 @app.route("/YCgetseeds", methods=['GET', 'POST'])
 def YCgetseeds():
-    subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpub" true true "" false true'],shell=True)
     route = getSeeds(request, '/YCdisplaydescriptor')
     if route:
         return route
