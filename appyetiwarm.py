@@ -95,7 +95,7 @@ def YWRscandescriptor():
 
 @app.route('/YWRimportseeds', methods=['GET', 'POST'])
 def YWRimportseeds():    
-    route = importSeeds(request, '/YWRimportseeds', '/YWRrescanwallet')
+    route = importSeeds(request, '/YWRimportseeds', '/YWRdisplaywallet')
     if route:
         return route
     return render_template('importseeds.html', x=v.privkeycount + 1, error=v.error, step=v.privkeycount + 7, yeti='warm')
