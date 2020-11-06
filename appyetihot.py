@@ -127,7 +127,7 @@ def YHRinputseed():
         v.privkey = PassphraseListToWIF(privkey)
         v.error = None
         rpc = RPC()
-        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetihotwallet sethdseed true "'+privkey+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetihotwallet sethdseed true "'+v.privkey+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         return redirect('/YHRdisplaywallet')
     return render_template('importseeds.html', x=1, error=v.error, yeti="hot", step=5)
 
