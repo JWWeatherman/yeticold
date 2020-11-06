@@ -172,7 +172,7 @@ def ConvertToPassphrase(privkeywif):
         passphraselist.append(switcher.get(str(privkeywif[i])))
     return passphraselist
 
-def PassphraseToWIF(passphraselist):
+def PassphraseListToWIF(passphraselist):
     Privkey = ''
     for i in range(len(passphraselist)):
         Privkey += switcher.get(str(passphraselist[i]))
