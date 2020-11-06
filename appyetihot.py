@@ -51,9 +51,6 @@ def YHmenu():
 
 @app.route("/YHgetseed", methods=['GET', 'POST'])
 def YHgetseed():
-    global privkey
-    global xpriv
-    global pubdesc
     if request.method == 'POST':
         if request.form['skip'] == 'skip':
             newbinary = '1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111'
@@ -64,7 +61,7 @@ def YHgetseed():
         adr = rpc.getnewaddress()
         newprivkey = rpc.dumpprivkey(adr)
         binary = bin(decode58(newprivkey))[2:][8:-40]
-        privkey = ConvertToWIF(xor(binary,newbinary))
+        v.privkey = ConvertToWIF(xor(binary,newbinary))
         home = os.getenv('HOME')
         path = home + '/yetihotwallet'
         response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetihot sethdseed true "'+privkey+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
@@ -73,10 +70,8 @@ def YHgetseed():
 
 @app.route('/YHdisplayseed', methods=['GET', 'POST'])
 def YHdisplayseed():
-    global privkey
-    global privkeycount
     if request.method == 'GET':
-        passphraselist = ConvertToPassphrase(privkey)
+        v.passphraselist = ConvertToPassphrase(v.privkey)
     if request.method == 'POST':
         home = os.getenv('HOME')
         path = home + '/Documents'
@@ -87,33 +82,28 @@ def YHdisplayseed():
             file = file + request.form['displayrow' + str(i+1)] + '\n'
         subprocess.call('echo "'+file+'" >> '+path+'/yhseed.txt', shell=True)
         return redirect('/YHcheckseed')
-    return render_template('displayseeds.html', x=1, PPL=passphraselist, yeti="hot", step=6)
+    return render_template('displayseeds.html', x=1, PPL=v.passphraselist, yeti="hot", step=6)
 #confirm privkey
 @app.route('/YHcheckseed', methods=['GET', 'POST'])
 def YHcheckseed():
-    global privkey
-    global xpriv
-    global error
-    global oldkeys
     if request.method == 'POST':
-        passphraselist = ConvertToPassphrase(privkey)
         privkeylisttoconfirm = []
-        oldkeys = []
+        v.oldkeys = []
         for i in range(1,14):
             inputlist = request.form['row' + str(i)]
-            oldkeys.append(inputlist)
+            v.oldkeys.append(inputlist)
             inputlist = inputlist.split(' ')
             inputlist = inputlist[0:4]
             privkeylisttoconfirm.append(inputlist[0])
             privkeylisttoconfirm.append(inputlist[1])
             privkeylisttoconfirm.append(inputlist[2])
             privkeylisttoconfirm.append(inputlist[3])
-        if privkeylisttoconfirm == passphraselist:
-            oldkeys = None
+        if privkeylisttoconfirm == v.passphraselist:
+            v.oldkeys = None
             return redirect('/YHcopyseed')
         else:
-            error = 'The seed words you entered are incorrect. This is probably because you entered a line twice or put them in the wrong order.'
-    return render_template('checkseeds.html', x=1, error=error, step=7,oldkeys=oldkeys, yeti="hot")
+            v.error = 'The seed words you entered are incorrect. This is probably because you entered a line twice or put them in the wrong order.'
+    return render_template('checkseeds.html', x=1, error=v.error, step=7,oldkeys=v.oldkeys, yeti="hot")
 
 @app.route("/YHcopyseed", methods=['GET', 'POST'])
 def YHcopyseed():
