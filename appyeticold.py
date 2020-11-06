@@ -36,7 +36,7 @@ def redirectroute():
 #ON
 @app.route("/YCmenu", methods=['GET', 'POST'])
 def YCmenu():
-    subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpub" true true "" false true'],shell=True)
+    subprocess.call(['bitcoin-cli createwallet "yetiwalletpub" true true "" false true'],shell=True)
     if request.method == 'POST':
         if request.form['option'] == 'recovery':
             return redirect('/YCRblockchain')
@@ -75,7 +75,7 @@ def YCopenbitcoinB():
 @app.route("/YCconnection", methods=['GET', 'POST'])
 def YCconnection():
     if request.method == 'POST':
-        subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpriv" false true "" false true'],shell=True)
+        subprocess.call(['bitcoin-cli createwallet "yetiwalletpriv" false true "" false true'],shell=True)
         subprocess.call(['python3 ~/yeticold/utils/forgetnetworks.py'],shell=True)
         subprocess.call(['nmcli n off'],shell=True)
         return redirect(v.route)
@@ -116,8 +116,8 @@ def YCRscandescriptor():
 #ON
 @app.route("/YCRrescanwallet", methods=['GET', 'POST'])
 def YCRrescanwallet():
-    handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now"}]\'')
-    handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub rescanblockchain '+blockheight())
+    handleResponse('bitcoin-cli -rpcwallet=yetiwalletpub importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now"}]\'')
+    handleResponse('bitcoin-cli -rpcwallet=yetiwalletpub rescanblockchain '+blockheight())
     return redirect('/YCRdisplaywallet')
 #ON
 @app.route("/YCRdisplaywallet", methods=['GET', 'POST'])
@@ -148,7 +148,7 @@ def YCdisplaydescriptor():
 def YCscandescriptor():
     if request.method == 'POST':
         v.pubdesc = handleResponse('python3 ~/yeticold/utils/scanqrcode.py').replace('\n', '')
-        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false}]\' \'{"rescan": true}\'')
+        handleResponse('bitcoin-cli -rpcwallet=yetiwalletpub importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false}]\' \'{"rescan": true}\'')
         return redirect('/YCprintpage')
     return render_template('scandescriptor.html', step=8, setup=True)
 

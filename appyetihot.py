@@ -42,7 +42,7 @@ def YHopenbitcoin():
 @app.route("/YHmenu", methods=['GET', 'POST'])
 def YHmenu():
     if request.method == 'POST':
-        subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetihotwallet" false true "" false false'],shell=True)
+        subprocess.call(['bitcoin-cli createwallet "yetihotwallet" false true "" false false'],shell=True)
         if request.form['option'] == 'recovery':
             return redirect('/YHRinputseed')
         else:
@@ -61,7 +61,7 @@ def YHgetseed():
         newprivkey = rpc.dumpprivkey(adr)
         binary = bin(decode58(newprivkey))[2:][8:-40]
         v.privkey = ConvertToWIF(xor(binary,newbinary))
-        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetihotwallet sethdseed true "'+v.privkey+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        response = subprocess.Popen(['bitcoin-cli -rpcwallet=yetihotwallet sethdseed true "'+v.privkey+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         return redirect('/YHdisplayseed')
     return render_template('getseed.html', yeti="hot", step=5)
 
@@ -127,7 +127,7 @@ def YHRinputseed():
         v.privkey = PassphraseListToWIF(privkey)
         v.error = None
         rpc = RPC()
-        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetihotwallet sethdseed true "'+v.privkey+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        response = subprocess.Popen(['bitcoin-cli -rpcwallet=yetihotwallet sethdseed true "'+v.privkey+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         return redirect('/YHRdisplaywallet')
     return render_template('importseeds.html', x=1, error=v.error, yeti="hot", step=5)
 
