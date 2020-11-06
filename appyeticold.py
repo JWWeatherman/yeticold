@@ -24,6 +24,14 @@ def handle_bad_request(e):
 @app.route("/", methods=['GET', 'POST'])
 def redirectroute():
     return redirect('/YCmenu')
+@app.route("/off", methods=['GET', 'POST'])
+def redirectroute():
+    v.route = "/YCgetseeds"
+    return redirect('/YCopenbitcoinB')
+@app.route("/offrec", methods=['GET', 'POST'])
+def redirectroute():
+    v.route = "/YCRscandescriptorB"
+    return redirect('/YCopenbitcoinB')
 
 #ON
 @app.route("/YCmenu", methods=['GET', 'POST'])
@@ -32,11 +40,10 @@ def YCmenu():
         if request.form['option'] == 'recovery':
             return redirect('/YCRblockchain')
             v.url = "desc.yeticold.com"
-            v.route = "/YCRscandescriptorB"
         else:
             return redirect('/YCblockchain')
             v.url = "rec.yeticold.com"
-            v.route = "/YCgetseeds"
+            
     return render_template('menu.html')
 
 @app.route("/YCblockchain", methods=['GET', 'POST'])
@@ -71,11 +78,6 @@ def YCconnection():
         subprocess.call(['nmcli n off'],shell=True)
         return redirect(v.route)
     return render_template('connection.html', step=5)
-
-
-
-
-
 
 #OFF
 @app.route("/YCRscandescriptorB", methods=['GET', 'POST'])

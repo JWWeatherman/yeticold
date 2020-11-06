@@ -80,7 +80,7 @@ else:
         subprocess.Popen('python3 ~/yeticold/appyeticold.py', shell=True, start_new_session=True)
         subprocess.run('sleep 3', shell=True, check=False) # 3 sec pause for webserver before loading html
         # Open initial mode html file
-        subprocess.run('xdg-open http://localhost:5000/YCmenu', shell=True, check=False)
+        subprocess.run('xdg-open http://localhost:5000/', shell=True, check=False)
 
     elif sys.argv[1].lower() == 'yeticoldsecondarycreate':
         print('********************')
@@ -88,7 +88,7 @@ else:
         print('********************' + os.linesep)
         subprocess.Popen('python3 ~/yeticold/appyeticold.py', shell=True, start_new_session=True)
         subprocess.run('sleep 3', shell=True, check=False)
-        subprocess.run('xdg-open http://localhost:5000/YCblockchainB', shell=True, check=False)
+        subprocess.run('xdg-open http://localhost:5000/off', shell=True, check=False)
 
     elif sys.argv[1].lower() == 'yeticoldsecondaryrecover':
         print('********************')
@@ -96,7 +96,7 @@ else:
         print('********************' + os.linesep)
         subprocess.Popen('python3 ~/yeticold/appyeticold.py', shell=True, start_new_session=True)
         subprocess.run('sleep 3', shell=True, check=False)
-        subprocess.run('xdg-open http://localhost:5000/YCRconnection', shell=True, check=False)
+        subprocess.run('xdg-open http://localhost:5000/offrec', shell=True, check=False)
 
     elif sys.argv[1].lower() == 'yetihot':
         print('********************')
@@ -104,7 +104,7 @@ else:
         print('********************' + os.linesep)
         subprocess.Popen('python3 ~/yeticold/appyetihot.py', shell=True, start_new_session=True)
         subprocess.run('sleep 3', shell=True, check=False)
-        subprocess.run('xdg-open http://localhost:5000/YHblockchain', shell=True, check=False)
+        subprocess.run('xdg-open http://localhost:5000/', shell=True, check=False)
 
     elif sys.argv[1].lower() == 'yetiwarm':
         print('********************')
@@ -112,7 +112,7 @@ else:
         print('********************' + os.linesep)
         subprocess.Popen('python3 ~/yeticold/appyetiwarm.py', shell=True, start_new_session=True)
         subprocess.run('sleep 3', shell=True, check=False)
-        subprocess.run('xdg-open http://localhost:5000/YWblockchain', shell=True, check=False)
+        subprocess.run('xdg-open http://localhost:5000/', shell=True, check=False)
 
     elif sys.argv[1].lower() == 'bitcoincoreofflineprimary':
         print('********************')
