@@ -38,7 +38,7 @@ def YWopenbitcoin():
     route = openBitcoin(request, '/YWopenbitcoin', '/YWmenu')
     if route:
         return route
-    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, yeti='warm')
+    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, yeti='warm', step=5)
 
 
 @app.route("/YWmenu", methods=['GET', 'POST'])
@@ -56,7 +56,7 @@ def YWgetseeds():
     route = getSeeds(request, '/YWprintdescriptor')
     if route:
         return route
-    return render_template('getseeds.html', yeti='warm', step=5)
+    return render_template('getseeds.html', yeti='warm', step=6)
 
 @app.route("/YWprintdescriptor", methods=['GET', 'POST'])
 def YWprintdescriptor():
@@ -64,41 +64,41 @@ def YWprintdescriptor():
         path = makeQrCode(v.pubdesc)
     if request.method == 'POST':
         return redirect('/YWdisplayseeds')
-    return render_template('printdescriptor.html', qrdata=v.pubdesc, path=path, yeti='warm', step=6)
+    return render_template('printdescriptor.html', qrdata=v.pubdesc, path=path, yeti='warm', step=7)
 
 @app.route('/YWdisplayseeds', methods=['GET', 'POST'])
 def YWdisplayseeds():
     route = displaySeeds(request, '/YWdisplayseeds', '/YWcheckseeds')
     if route:
         return route
-    return render_template('displayseeds.html', PPL=v.passphraselist, x=v.privkeycount + 1, step=v.privkeycount + 7, yeti='warm')
+    return render_template('displayseeds.html', PPL=v.passphraselist, x=v.privkeycount + 1, step=v.privkeycount + 8, yeti='warm')
 
 @app.route('/YWcheckseeds', methods=['GET', 'POST'])
 def YWcheckseeds():
     route = checkSeeds(request, '/YWcheckseeds', '/YWcopyseeds')
     if route:
         return route
-    return render_template('checkseeds.html', x=v.privkeycount + 1, error=v.error,step=v.privkeycount + 13, oldkeys=v.oldkeys, yeti='warm')
+    return render_template('checkseeds.html', x=v.privkeycount + 1, error=v.error,step=v.privkeycount + 14, oldkeys=v.oldkeys, yeti='warm')
 
 @app.route("/YWcopyseeds", methods=['GET', 'POST'])
 def YWcopyseeds():
     if request.method == 'POST':
         return redirect('/YWRdisplaywallet')
-    return render_template('copyseeds.html', yeti='warm', step=19)
+    return render_template('copyseeds.html', yeti='warm', step=20)
 
 @app.route("/YWRscandescriptor", methods=['GET', 'POST'])
 def YWRscandescriptor():
     if request.method == 'POST':
         v.pubdesc = handleResponse('python3 ~/yeticold/utils/scanqrcode.py').replace('\n', '')
         return redirect('/YWRimportseeds')
-    return render_template('scandescriptor.html', pubdesc=v.pubdesc, yeti='warm', step=5)
+    return render_template('scandescriptor.html', pubdesc=v.pubdesc, yeti='warm', step=6)
 
 @app.route('/YWRimportseeds', methods=['GET', 'POST'])
 def YWRimportseeds():    
     route = importSeeds(request, '/YWRimportseeds', '/YWRrescanwallet')
     if route:
         return route
-    return render_template('importseeds.html', x=v.privkeycount + 1, error=v.error, step=v.privkeycount + 6, yeti='warm')
+    return render_template('importseeds.html', x=v.privkeycount + 1, error=v.error, step=v.privkeycount + 7, yeti='warm')
 
 @app.route("/YWRdisplaywallet", methods=['GET', 'POST'])
 def YWRdisplaywallet():

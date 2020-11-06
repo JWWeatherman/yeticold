@@ -63,7 +63,7 @@ def YHgetseed():
         v.privkey = ConvertToWIF(xor(binary,newbinary))
         response = subprocess.Popen(['bitcoin-cli -rpcwallet=yetihotwallet sethdseed true "'+v.privkey+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         return redirect('/YHdisplayseed')
-    return render_template('getseed.html', yeti="hot", step=5)
+    return render_template('getseed.html', yeti="hot", step=6)
 
 @app.route('/YHdisplayseed', methods=['GET', 'POST'])
 def YHdisplayseed():
@@ -79,7 +79,7 @@ def YHdisplayseed():
             file = file + request.form['displayrow' + str(i+1)] + '\n'
         subprocess.call('echo "'+file+'" >> '+path+'/yhseed.txt', shell=True)
         return redirect('/YHcheckseed')
-    return render_template('displayseeds.html', x=1, PPL=v.passphraselist, yeti="hot", step=6)
+    return render_template('displayseeds.html', x=1, PPL=v.passphraselist, yeti="hot", step=7)
 #confirm privkey
 @app.route('/YHcheckseed', methods=['GET', 'POST'])
 def YHcheckseed():
@@ -100,13 +100,13 @@ def YHcheckseed():
             return redirect('/YHcopyseed')
         else:
             v.error = 'The seed words you entered are incorrect. This is probably because you entered a line twice or put them in the wrong order.'
-    return render_template('checkseeds.html', x=1, error=v.error, step=7,oldkeys=v.oldkeys, yeti="hot")
+    return render_template('checkseeds.html', x=1, error=v.error, step=8,oldkeys=v.oldkeys, yeti="hot")
 
 @app.route("/YHcopyseed", methods=['GET', 'POST'])
 def YHcopyseed():
     if request.method == 'POST':
         return redirect('/YHRdisplaywallet')
-    return render_template('copyseeds.html', yeti="hot", step=8)
+    return render_template('copyseed.html', yeti="hot", step=9)
 
 @app.route("/YHRdisplaywallet", methods=['GET', 'POST'])
 def YHRdisplaywallet():
@@ -129,7 +129,7 @@ def YHRinputseed():
         rpc = RPC()
         response = subprocess.Popen(['bitcoin-cli -rpcwallet=yetihotwallet sethdseed true "'+v.privkey+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         return redirect('/YHRdisplaywallet')
-    return render_template('importseeds.html', x=1, error=v.error, yeti="hot", step=5)
+    return render_template('importseeds.html', x=1, error=v.error, yeti="hot", step=6)
 
 if __name__ == "__main__":
     app.run()
