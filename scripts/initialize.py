@@ -58,8 +58,8 @@ else:
         subprocess.run('pip3 install pillow==7.2.0', shell=True, check=False)
     if not subprocess.run("python3 -c 'import zbar' 2> /dev/null", shell=True, check=False).returncode == 0:
         subprocess.run('pip3 install zbar-py==1.0.4', shell=True, check=False)
-    if os.path.exists(HOME + "/.bitcoin"):
-        subprocess.run('python3 ~/yeticold/utils/stopbitcoin.py', shell=True, check=False)
+    # if os.path.exists(HOME + "/.bitcoin"):
+    #     subprocess.run('python3 ~/yeticold/utils/stopbitcoin.py', shell=True, check=False)
 
     subprocess.run('sleep 3', shell=True, check=False)
     subprocess.run('sudo rm -r ~/.bitcoin/wallets/yeti* 2> /dev/null', shell=True, check=False)
