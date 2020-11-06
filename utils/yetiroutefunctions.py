@@ -48,7 +48,7 @@ def getSeeds(request, nextroute):
         checksum = response["checksum"]
         v.pubdesc = response["descriptor"].replace('\n', '')
         desc = 'wsh(multi(3,'+v.xprivlist[0]+'/*,'+v.xprivlist[1]+'/*,'+v.xprivlist[2]+'/*,'+v.xprivlist[3]+'/*,'+v.xprivlist[4]+'/*,'+v.xprivlist[5]+'/*,'+v.xprivlist[6]+'/*))#'+checksum
-        handleResponse('bitcoin-cli -rpcwallet=yetiwalletpriv importdescriptors \'[{ "desc": '+desc+'#'+ checksum +'", "timestamp": "now", "active": true}]\'')
+        handleResponse('bitcoin-cli -rpcwallet=yetiwalletpriv importdescriptors \'[{ "desc": '+desc+'", "timestamp": "now", "active": true}]\'')
         v.walletimported = True
         path = home + '/Documents'
         subprocess.call('rm -r '+path+'/yetiseed*', shell=True)
