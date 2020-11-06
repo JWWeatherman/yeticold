@@ -129,7 +129,7 @@ def YHRinputseed():
         rpc = RPC()
         response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetihotwallet sethdseed true "'+privkey+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         return redirect('/YHRdisplaywallet')
-    return render_template('inputseed.html', x=1, error=v.error, yeti="hot", step=5)
+    return render_template('inputseeds.html', x=1, error=v.error, yeti="hot", step=5)
 
 if __name__ == "__main__":
     app.run()
