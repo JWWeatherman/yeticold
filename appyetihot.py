@@ -26,14 +26,14 @@ def redirectroute():
     return render_template('redirect.html')
 
 @app.route("/YHblockchain", methods=['GET', 'POST'])
-def YCRblockchain():
+def YHblockchain():
     route = blockChain(request, '/YHopenbitcoin')
     if route:
         return route
     return render_template('blockchain.html')
 
 @app.route("/YHopenbitcoin", methods=['GET', 'POST'])
-def YCRopenbitcoin():
+def YHopenbitcoin():
     route = openBitcoin(request, '/YHopenbitcoin', '/YHmenu')
     if route:
         return route

@@ -25,7 +25,6 @@ def openBitcoin(request, currentroute, nextroute, offline=False):
     if request.method == 'GET':
         v.IBD = BTCFinished()
         v.progress = BTCprogress()
-        print(v.progress)
         if offline and v.progress != 0:
             v.IBD = True
     if request.method == 'POST':
