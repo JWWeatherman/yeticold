@@ -213,7 +213,7 @@ def importSeeds(request, currentroute, nextroute):
             privkey.append(inputlist[1])
             privkey.append(inputlist[2])
             privkey.append(inputlist[3])
-        v.privkeylist.append(PassphraseToWIF(privkey))
+        v.privkeylist.append(PassphraseListToWIF(privkey))
         error = None
         v.privkeycount = v.privkeycount + 1
         if (v.privkeycount >= 3):
