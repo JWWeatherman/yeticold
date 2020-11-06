@@ -87,7 +87,7 @@ def YHdisplayseed():
             file = file + request.form['displayrow' + str(i+1)] + '\n'
         subprocess.call('echo "'+file+'" >> '+path+'/yhseed.txt', shell=True)
         return redirect('/YHcheckseed')
-    return render_template('displaysees.html', x=1, PPL=passphraselist, yeti="hot", step=6)
+    return render_template('displayseeds.html', x=1, PPL=passphraselist, yeti="hot", step=6)
 #confirm privkey
 @app.route('/YHcheckseed', methods=['GET', 'POST'])
 def YHcheckseed():
