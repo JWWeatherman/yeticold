@@ -82,8 +82,8 @@ def YCconnection():
 #OFF
 @app.route("/YCRscandescriptorB", methods=['GET', 'POST'])
 def YCRscandescriptorB():
+    subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpriv" false true "" false true'],shell=True)
     if request.method == 'POST':
-        subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpriv" false true "" false true'],shell=True)
         v.pubdesc = handleResponse('python3 ~/yeticold/utils/scanqrcode.py').replace('\n', '')
         v.privkeycount = 0
         return redirect('/YCRimportseeds')

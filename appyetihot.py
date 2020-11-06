@@ -41,7 +41,7 @@ def YHopenbitcoin():
 
 @app.route("/YHmenu", methods=['GET', 'POST'])
 def YHmenu():
-    subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpriv" false true "" false true'],shell=True)
+    subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetihotwallet" false true "" false false'],shell=True)
     if request.method == 'POST':
         if request.form['option'] == 'recovery':
             return redirect('/YHRinputseed')
@@ -56,15 +56,12 @@ def YHgetseed():
             newbinary = '1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111'
         else:
             newbinary = request.form['binary']
-        subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetihot"','~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetihot"'],shell=True)
         rpc = RPC()
         adr = rpc.getnewaddress()
         newprivkey = rpc.dumpprivkey(adr)
         binary = bin(decode58(newprivkey))[2:][8:-40]
         v.privkey = ConvertToWIF(xor(binary,newbinary))
-        home = os.getenv('HOME')
-        path = home + '/yetihotwallet'
-        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetihot sethdseed true "'+v.privkey+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetihotwallet sethdseed true "'+v.privkey+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         return redirect('/YHdisplayseed')
     return render_template('getseed.html', yeti="hot", step=5)
 
@@ -130,8 +127,7 @@ def YHRinputseed():
         v.privkey = PassphraseListToWIF(privkey)
         v.error = None
         rpc = RPC()
-        subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetihot" false true'],shell=True)
-        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetihot sethdseed true "'+privkey+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetihotwallet sethdseed true "'+privkey+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         return redirect('/YHRdisplaywallet')
     return render_template('inputseed.html', x=1, error=v.error, yeti="hot", step=5)
 
