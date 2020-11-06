@@ -35,7 +35,7 @@ def YHblockchain():
 @app.route("/YHopenbitcoin", methods=['GET', 'POST'])
 def YHopenbitcoin():
     route = openBitcoin(request, '/YHopenbitcoin', '/YHmenu')
-    v.progress
+    print(v.progress)
     if route:
         return route
     return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=5)
