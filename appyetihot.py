@@ -35,10 +35,9 @@ def YHblockchain():
 @app.route("/YHopenbitcoin", methods=['GET', 'POST'])
 def YHopenbitcoin():
     route = openBitcoin(request, '/YHopenbitcoin', '/YHmenu')
-    print(v.progress)
     if route:
         return route
-    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=5)
+    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=5, yeti="hot")
 
 @app.route("/YHmenu", methods=['GET', 'POST'])
 def YHmenu():
@@ -88,7 +87,7 @@ def YHdisplayseed():
             file = file + request.form['displayrow' + str(i+1)] + '\n'
         subprocess.call('echo "'+file+'" >> '+path+'/yhseed.txt', shell=True)
         return redirect('/YHcheckseed')
-    return render_template('displayseed.html', x=1, PPL=passphraselist, yeti="hot", step=6)
+    return render_template('displaysees.html', x=1, PPL=passphraselist, yeti="hot", step=6)
 #confirm privkey
 @app.route('/YHcheckseed', methods=['GET', 'POST'])
 def YHcheckseed():
@@ -114,7 +113,7 @@ def YHcheckseed():
             return redirect('/YHcopyseed')
         else:
             error = 'The seed words you entered are incorrect. This is probably because you entered a line twice or put them in the wrong order.'
-    return render_template('checkseed.html', x=1, error=error, step=7,oldkeys=oldkeys, yeti="hot")
+    return render_template('checkseeds.html', x=1, error=error, step=7,oldkeys=oldkeys, yeti="hot")
 
 @app.route("/YHcopyseed", methods=['GET', 'POST'])
 def YHcopyseed():
