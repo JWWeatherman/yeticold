@@ -109,7 +109,7 @@ def YHcheckseed():
 def YHcopyseed():
     if request.method == 'POST':
         return redirect('/YHRdisplaywallet')
-    return render_template('copyseed.html', yeti="hot", step=8)
+    return render_template('copyseeds.html', yeti="hot", step=8)
 
 @app.route("/YHRdisplaywallet", methods=['GET', 'POST'])
 def YHRdisplaywallet():
