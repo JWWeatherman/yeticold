@@ -87,6 +87,6 @@ def handleResponse(func, returnJsonResponse=False, decode=True):
         if returnJsonResponse:
             return json.loads(response[0].decode("utf-8").replace('\n',''))
         elif (decode):
-            return response[0].decode("utf-8")
+            return response[0].decode("utf-8").replace('\n','')
         else:
             return response[0]
