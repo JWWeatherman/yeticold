@@ -96,7 +96,7 @@ def YCRimportseeds():
     route = importSeeds(request, '/YCRimportseeds', '/YCRswitchlaptop')
     if route:
         return route
-    return render_template('importseeds.html', x=v.privkeycount + 1, error=v.error,step=v.privkeycount + 7, step=10+v.privkeycount)
+    return render_template('importseeds.html', x=v.privkeycount + 1, error=v.error,step=v.privkeycount + 7)
 
 #OFF
 @app.route("/YCRswitchlaptop", methods=['GET', 'POST'])
