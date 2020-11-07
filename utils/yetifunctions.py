@@ -34,9 +34,10 @@ def generatePrivKeys(genbinary=False):
             newbinary = str('1') * 256
         else:
             newbinary = request.form['binary' + str(i)]
-        rpc = RPC()
-        adr = rpc.getnewaddress()
-        newprivkey = rpc.dumpprivkey(adr)
+        adr = handleResponse('bitcoin-cli -rpcwallet= getnewaddress')
+        print(adr)
+        newprivkey =  handleResponse('bitcoin-cli -rpcwallet= dumpprivkey '+adr)
+        print(newprivkey)
         binary = bin(decode58(newprivkey))[	2:][8:-40]
         WIF = ConvertToWIF(xor(binary,newbinary))
         privkeylisttemp.append(WIF)
