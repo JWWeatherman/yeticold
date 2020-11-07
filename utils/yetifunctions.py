@@ -83,7 +83,7 @@ def handleResponse(func, returnJsonResponse=False, decode=True):
         raise werkzeug.exceptions.InternalServerError(response[1].decode("utf-8") + ". response for function: " + func)
     else:
         if returnJsonResponse:
-            return json.loads(response[0].decode("utf-8"))
+            return json.loads(response[0].decode("utf-8").replace('\n',''))
         elif (decode):
             return response[0].decode("utf-8")
         else:
