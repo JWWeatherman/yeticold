@@ -38,7 +38,7 @@ def generatePrivKeys(genbinary=False):
         print(adr)
         newprivkey =  handleResponse('bitcoin-cli -rpcwallet= dumpprivkey '+adr)
         print("====")
-        print(newprivkey)
+        print(repr(newprivkey))
         print("====")
         binary = bin(decode58(newprivkey))[	2:][8:-40]
         WIF = ConvertToWIF(xor(binary,newbinary))
