@@ -25,11 +25,11 @@ def handle_bad_request(e):
 def redirectroute():
     return redirect('/YCmenu')
 @app.route("/off", methods=['GET', 'POST'])
-def redirectroute():
+def redirectrouteoff():
     v.route = "/YCgetseeds"
     return redirect('/YCopenbitcoinB')
 @app.route("/offrec", methods=['GET', 'POST'])
-def redirectroute():
+def redirectrouteoffrec():
     v.route = "/YCRscandescriptorB"
     return redirect('/YCopenbitcoinB')
 
