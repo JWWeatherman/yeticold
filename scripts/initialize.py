@@ -31,8 +31,7 @@ else:
         subprocess.run('sudo apt update && yes | sudo apt install python3-pip sshpass=1.06-1 libzbar0=0.23-1.3 tor=0.4.2.7-1', shell=True, check=False)
         subprocess.run('sudo apt update && sudo unattended-upgrade', shell=True, check=False)
         subprocess.run('pip3 install --upgrade pip', shell=True, check=False)
-        subprocess.run('python3 ~/yeticold/utils/downloadbitcoin.py', shell=True, check=False)
-
+    subprocess.run('python3 ~/yeticold/utils/downloadbitcoin.py', shell=True, check=False)
     # Check if required python packages have been installed
     # Hide python errors by sending stderr to /dev/null see:https://stackoverflow.com/a/818265/3425022
     # 'subprocess.run' is current recommended way to interact with system
