@@ -39,12 +39,11 @@ def YCmenu():
     subprocess.call(['bitcoin-cli createwallet "yetiwalletpub" true true "" false true'],shell=True)
     if request.method == 'POST':
         if request.form['option'] == 'recovery':
-            return redirect('/YCRblockchain')
             v.url = "desc.yeticold.com"
+            return redirect('/YCRblockchain')
         else:
-            return redirect('/YCblockchain')
             v.url = "rec.yeticold.com"
-            
+            return redirect('/YCblockchain')
     return render_template('menu.html')
 
 @app.route("/YCblockchain", methods=['GET', 'POST'])
@@ -60,7 +59,6 @@ def YCopenbitcoin():
     route = openBitcoin(request, '/YCopenbitcoin', '/YCscandescriptor')
     if route:
         return route
-    print(v.url)
     return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=5, switch=True, url=v.url)
 
 #OFF
