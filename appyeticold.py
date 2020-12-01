@@ -146,7 +146,7 @@ def YCdisplaydescriptor():
 def YCscandescriptor():
     if request.method == 'POST':
         v.pubdesc = handleResponse('python3 ~/yeticold/utils/scanqrcode.py').replace('\n', '')
-        handleResponse('bitcoin-cli -rpcwallet=yetiwalletpub importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now", "range": [0,999], "watchonly": false}]\' \'{"rescan": true}\'')
+        handleResponse('bitcoin-cli -rpcwallet=yetiwalletpub importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now", "active": true}]\'')
         return redirect('/YCprintpage')
     return render_template('scandescriptor.html', step=11, setup=True)
 
