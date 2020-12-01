@@ -1,7 +1,7 @@
 import subprocess
 import os
 home = os.getenv("HOME")
-if not os.path.exists(HOME + "/yeticold/bitcoin"):
+if not os.path.exists(home + "/yeticold/bitcoin"):
 	subprocess.call(['wget https://bitcoincore.org/bin/bitcoin-core-0.19.0.1/bitcoin-0.19.0.1-x86_64-linux-gnu.tar.gz -P ~/yeticold/'],shell=True)
 	subprocess.call(['tar xvzf ~/yeticold/bitcoin-0.19.0.1-x86_64-linux-gnu.tar.gz -C ~/yeticold'],shell=True)
 subprocess.call(['chmod +x ~/yeticold/verifySig.sh'],shell=True)
