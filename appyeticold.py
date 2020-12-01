@@ -36,13 +36,14 @@ def redirectrouteoffrec():
 #ON
 @app.route("/YCmenu", methods=['GET', 'POST'])
 def YCmenu():
-    subprocess.call(['bitcoin-cli createwallet "yetiwalletpub" true true "" false true'],shell=True)
     if request.method == 'POST':
         if request.form['option'] == 'recovery':
             v.url = "desc.yeticold.com"
+            v.route = "YCRscandescriptor"
             return redirect('/YCRblockchain')
         else:
             v.url = "rec.yeticold.com"
+            v.route = "YCscandescriptor"
             return redirect('/YCblockchain')
     return render_template('menu.html')
 
@@ -56,7 +57,9 @@ def YCblockchain():
 #ON
 @app.route("/YCopenbitcoin", methods=['GET', 'POST'])
 def YCopenbitcoin():
-    route = openBitcoin(request, '/YCopenbitcoin', '/YCscandescriptor')
+    route = openBitcoin(request, '/YCopenbitcoin', v.route)
+    if route == v.route:
+        subprocess.call(['bitcoin-cli createwallet "yetiwalletpub" true true "" false true'],shell=True)
     if route:
         return route
     return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=5, switch=True, url=v.url)
