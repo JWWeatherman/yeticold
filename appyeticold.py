@@ -40,11 +40,10 @@ def YCmenu():
         if request.form['option'] == 'recovery':
             v.url = "desc.yeticold.com"
             v.route = "YCRscandescriptor"
-            return redirect('/YCRblockchain')
         else:
             v.url = "rec.yeticold.com"
             v.route = "YCscandescriptor"
-            return redirect('/YCblockchain')
+        return redirect('/YCblockchain')
     return render_template('menu.html')
 
 @app.route("/YCblockchain", methods=['GET', 'POST'])
