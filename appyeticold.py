@@ -58,8 +58,6 @@ def YCblockchain():
 @app.route("/YCopenbitcoin", methods=['GET', 'POST'])
 def YCopenbitcoin():
     route = openBitcoin(request, '/YCopenbitcoin', v.route)
-    if route == v.route:
-        subprocess.call(['bitcoin-cli createwallet "yetiwalletpub" true true "" false true'],shell=True)
     if route:
         return route
     return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=5, switch=True, url=v.url)
@@ -76,7 +74,6 @@ def YCopenbitcoinB():
 @app.route("/YCconnection", methods=['GET', 'POST'])
 def YCconnection():
     if request.method == 'POST':
-        subprocess.call(['bitcoin-cli createwallet "yetiwalletpriv" false true "" false true'],shell=True)
         subprocess.call(['python3 ~/yeticold/utils/forgetnetworks.py'],shell=True)
         subprocess.call(['nmcli n off'],shell=True)
         return redirect(v.route)

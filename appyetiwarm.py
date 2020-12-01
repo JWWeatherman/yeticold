@@ -43,7 +43,6 @@ def YWopenbitcoin():
 
 @app.route("/YWmenu", methods=['GET', 'POST'])
 def YWmenu():
-    subprocess.call(['bitcoin-cli createwallet "yetiwalletpriv" false true "" false true'],shell=True)
     if request.method == 'POST':
         if request.form['option'] == 'recovery':
             return redirect('/YWRscandescriptor')
