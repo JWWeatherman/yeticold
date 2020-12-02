@@ -98,9 +98,7 @@ def YCRimportseeds():
 #OFF
 @app.route("/YCRswitchlaptop", methods=['GET', 'POST'])
 def YCRswitchlaptop():
-    if request.method == 'POST':
-        return redirect('/YCRscanutxo')
-    return render_template('switchlaptop.html', step=14, instructions="Switch to your Primary laptop currently Showing step 5. Click next to show step 14.", laptop="Primary")
+    return render_template('switchlaptop.html', step=14, instructions="Switch to your Primary laptop currently Showing step 5. Click next to show step 15.", laptop="Primary")
 
 #ON
 @app.route("/YCRscandescriptor", methods=['GET', 'POST'])
