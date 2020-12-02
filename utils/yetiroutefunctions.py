@@ -29,8 +29,8 @@ def openBitcoin(request, currentroute, nextroute, offline=False):
             v.IBD = True
     if request.method == 'POST':
         if v.IBD:
-            subprocess.call(['bitcoin-cli createwallet "yetiwalletpub" true true "" false true'],shell=True)
-            subprocess.call(['bitcoin-cli createwallet "yetiwalletpriv" false true "" false true'],shell=True)
+            handleResponse('bitcoin-cli createwallet "yetiwalletpub" true true "" false true')
+            handleResponse('bitcoin-cli createwallet "yetiwalletpriv" false true "" false true')
             return redirect(nextroute)
         else:
             return redirect(currentroute)
