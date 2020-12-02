@@ -117,7 +117,7 @@ def YCRrescanwallet():
 #ON
 @app.route("/YCRdisplaywallet", methods=['GET', 'POST'])
 def YCRdisplaywallet():
-    return render_template('displaywallet.html', yeti="cold")
+    return render_template('YCRwalletpage.html', yeti="cold")
 
 #ON
 
