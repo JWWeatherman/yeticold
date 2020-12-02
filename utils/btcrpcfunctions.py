@@ -37,7 +37,7 @@ def BTCRunning():
     return False
 
 def blockheight():
-    subprocess.Popen(['bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+    response = subprocess.Popen(['bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
     Blockinfo = json.loads(response[0].decode("utf-8"))
     blockheight = 0
     if Blockinfo['pruned']:
