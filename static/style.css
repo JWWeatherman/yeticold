@@ -373,3 +373,7 @@ template {
   border: 1px solid #ccc;
   border-top: none;
 }
+
+.header {
+  text-align: center;
+}
