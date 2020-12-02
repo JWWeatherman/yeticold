@@ -29,8 +29,6 @@ def BTCFinished():
 def BTCClosed():
     if (subprocess.call('lsof -n -i :8332', shell=True) != 1):
         return False
-    elif os.path.exists(home + "/.bitcoin/bitcoind.pid"):
-        subprocess.call('rm -r ~/.bitcoin/bitcoind.pid', shell=True)
     return True
 
 def BTCRunning():
@@ -38,14 +36,9 @@ def BTCRunning():
         return True
     return False
 
-def RPC(wallet_name=''):
-    name = 'username'
-    rpc = AuthServiceProxy(v.wallet_template.format(**v.settings, wallet_name=wallet_name), timeout=600)  # 1 minute timeout
-    return rpc
-
 def blockheight():
-    rpc = RPC()
-    Blockinfo = rpc.getblockchaininfo()
+    subprocess.Popen(['bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+    Blockinfo = json.loads(response[0].decode("utf-8"))
     blockheight = 0
     if Blockinfo['pruned']:
         blockheight = Blockinfo['pruneheight']

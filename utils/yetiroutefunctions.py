@@ -46,7 +46,7 @@ def getSeeds(request, nextroute):
         print(v.xprivlist)
         v.addresses = []
         checksum = None
-        response = handleResponse('bitcoin-cli -rpcwallet=yetiwallet getdescriptorinfo "wsh(multi(3,'+v.xprivlist[0]+'/*,'+v.xprivlist[1]+'/*,'+v.xprivlist[2]+'/*,'+v.xprivlist[3]+'/*,'+v.xprivlist[4]+'/*,'+v.xprivlist[5]+'/*,'+v.xprivlist[6]+'/*))"', True)
+        response = handleResponse('bitcoin-cli -rpcwallet=yetiwalletpriv getdescriptorinfo "wsh(multi(3,'+v.xprivlist[0]+'/*,'+v.xprivlist[1]+'/*,'+v.xprivlist[2]+'/*,'+v.xprivlist[3]+'/*,'+v.xprivlist[4]+'/*,'+v.xprivlist[5]+'/*,'+v.xprivlist[6]+'/*))"', True)
         checksum = response["checksum"]
         v.pubdesc = response["descriptor"].replace('\n', '')
         desc = 'wsh(multi(3,'+v.xprivlist[0]+'/*,'+v.xprivlist[1]+'/*,'+v.xprivlist[2]+'/*,'+v.xprivlist[3]+'/*,'+v.xprivlist[4]+'/*,'+v.xprivlist[5]+'/*,'+v.xprivlist[6]+'/*))#'+checksum
@@ -234,7 +234,7 @@ def importSeeds(request, currentroute, nextroute):
                         descriptorlist[x] = (v.xprivlist[i] + '/*')
                         break
             desc = '"wsh(multi(3,'+descriptorlist[0]+','+descriptorlist[1]+','+descriptorlist[2]+','+descriptorlist[3]+','+descriptorlist[4]+','+descriptorlist[5]+','+descriptorlist[6]+'))'
-            response = handleResponse('bitcoin-cli -rpcwallet=yetiwallet getdescriptorinfo '+desc+'"', True)
+            response = handleResponse('bitcoin-cli -rpcwallet=yetiwalletpriv getdescriptorinfo '+desc+'"', True)
             checksum = response["checksum"]
             handleResponse('bitcoin-cli -rpcwallet=yetiwalletpriv importdescriptors \'[{ "desc": '+desc+'#'+ checksum +'", "timestamp": "now", "active": true}]\'')
             handleResponse('bitcoin-cli -rpcwallet=yetiwalletpriv rescanblockchain '+blockheight())
