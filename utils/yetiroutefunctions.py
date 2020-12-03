@@ -11,14 +11,11 @@ def blockChain(request, nextroute):
             createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
             return redirect(nextroute)
     if request.method == 'POST':
-        if request.form['option'] == 'downloadblockchain':
-            subprocess.call('python3 ~/yeticold/utils/testblockchain.py',shell=True)
-        else:
-            subprocess.call('mkdir ~/.bitcoin',shell=True)
-            if request.form['date'] == '':
-                createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
-                return redirect(nextroute)
-            createOrPrepend('server=1\nrpcport=8332\nrpcuser=rpcuser\nprune='+str(getPrunBlockheightByDate(request))+'\nrpcpassword='+v.rpcpsw+'',home+'/.bitcoin/bitcoin.conf')
+        subprocess.call('mkdir ~/.bitcoin',shell=True)
+        if request.form['date'] == '':
+            createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
+            return redirect(nextroute)
+        createOrPrepend('server=1\nrpcport=8332\nrpcuser=rpcuser\nprune='+str(getPrunBlockheightByDate(request))+'\nrpcpassword='+v.rpcpsw+'',home+'/.bitcoin/bitcoin.conf')
         return redirect(nextroute)
 
 def openBitcoin(request, currentroute, nextroute, offline=False):

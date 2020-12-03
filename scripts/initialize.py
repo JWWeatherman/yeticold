@@ -28,8 +28,9 @@ else:
         print("Installing updates. This could take an hour without feedback.")
         # Pipe 'yes' command to 'sudo apt install' to automate acceptance of installation
         # Use apt instead of apt-get since apt is more suitable for end users and has a graphical progress bar
-        subprocess.run('sudo apt update && yes | sudo apt install python3-pip sshpass=1.06-1 libzbar0=0.23-1.3 tor=0.4.2.7-1', shell=True, check=False)
-        subprocess.run('sudo apt update && sudo unattended-upgrade', shell=True, check=False)
+        subprocess.run('sudo apt upgrade', shell=True, check=False)
+        subprocess.run('yes | sudo apt install python3-pip sshpass=1.06-1 libzbar0=0.23-1.3 tor=0.4.2.7-1', shell=True, check=False)
+        subprocess.run('sudo unattended-upgrade', shell=True, check=False)
         subprocess.run('pip3 install --upgrade pip', shell=True, check=False)
     subprocess.run('python3 ~/yeticold/utils/downloadbitcoin.py', shell=True, check=False)
     # Check if required python packages have been installed
@@ -61,24 +62,20 @@ else:
         subprocess.run('python3 ~/yeticold/utils/stopbitcoin.py', shell=True, check=False)
 
     subprocess.run('sleep 3', shell=True, check=False)
-    subprocess.run('sudo rm -r ~/.bitcoin/wallets/yeti* 2> /dev/null', shell=True, check=False)
-    subprocess.run('sudo rm -r ~/.bitcoin/yeti* 2> /dev/null', shell=True, check=False)
-    subprocess.run('sudo rm -r ~/yetixprivwallet* 2> /dev/null', shell=True, check=False)
+    subprocess.run('sudo rm -r ~/.bitcoin/wallets/yetiwalletxpub 2> /dev/null', shell=True, check=False)
+    subprocess.run('sudo rm -r ~/.bitcoin/wallets/yetiwalletxpriv 2> /dev/null', shell=True, check=False)
+    subprocess.run('sudo rm -r ~/.bitcoin/yetiwalletxpub 2> /dev/null', shell=True, check=False)
+    subprocess.run('sudo rm -r ~/.bitcoin/yetiwalletxpriv 2> /dev/null', shell=True, check=False)
+    subprocess.run('sudo rm -r ~/yetiwalletxpub 2> /dev/null', shell=True, check=False)
+    subprocess.run('sudo rm -r ~/yetiwalletxpriv 2> /dev/null', shell=True, check=False)
 
     # Finalize script based on processing mode
     if sys.argv[1].lower() == 'yeticoldprimary':
         print('********************')
         print('Running YetiCold on Primary PC')
         print('********************' + os.linesep)
-        subprocess.run('sleep 1', shell=True, check=False) # Pause for previous line
-        # Remove previous wallets of same mode
-        subprocess.run('sudo rm -r ~/.bitcoin/wallets/yeticold* 2> /dev/null', shell=True, check=False)
-        subprocess.run('sudo rm -r ~/.bitcoin/yeticold* 2> /dev/null', shell=True, check=False)
-        subprocess.run('sudo rm -r ~/yeticoldwallet* 2> /dev/null', shell=True, check=False)
-        # Execute main flask script
         subprocess.Popen('python3 ~/yeticold/appyeticold.py', shell=True, start_new_session=True)
         subprocess.run('sleep 3', shell=True, check=False) # 3 sec pause for webserver before loading html
-        # Open initial mode html file
         subprocess.run('xdg-open http://localhost:5000/', shell=True, check=False)
 
     elif sys.argv[1].lower() == 'yeticoldsecondarycreate':
