@@ -22,7 +22,6 @@ else:
     # Make sure we're in home directory
     subprocess.run('cd ~', shell=True, check=False)
     subprocess.run('fuser -k 5000/tcp', shell=True, check=False)
-
     # Check if Bitcoin Core has been installed
     if not os.path.exists(HOME + "/yeticold/bitcoin"):
         # Pipe 'yes' command to 'sudo apt install' to automate acceptance of installation
