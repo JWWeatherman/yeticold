@@ -54,7 +54,7 @@ def YCblockchain():
     return render_template('blockchain.html')
 
 @app.route("/YCblockchainB", methods=['GET', 'POST'])
-def YCblockchain():
+def YCblockchainB():
     route = blockChain(request, '/YCopenbitcoinB')
     if route:
         return route
