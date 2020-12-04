@@ -13,8 +13,8 @@
       <h2>Yeti Cold Wallet</h2>
       <p style="margin-bottom: 30px;">Yeti now uses bitcoin core to create and sign bitcoin PSBTs. This is a walkthrough on how to send and Recive for Yeti Cold. Yeti includes qr code scaners to conventently transfer the PSBTs between laptops.</p>
       <div class="tab">
-        <button class="tablinks" onclick="openCity(event, 'Receive')">Receive</button>
-        <button class="tablinks" onclick="openCity(event, 'Send')">Send</button>
+        <button class="tablinks" onclick="openTab(event, 'Receive')">Receive</button>
+        <button class="tablinks" onclick="openTab(event, 'Send')">Send</button>
       </div>
       <div id="Receive" class="tabcontent">
         <h3 style="text-align: center;">Receive</h3>
@@ -30,7 +30,7 @@
   </body>
   <script>
     navbar("{{yeti}}", "{{url_for('static', filename='yeti.png')}}");
-    function openCity(evt, cityName) {
+    function openTab(evt, cityName) {
       // Declare all variables
       var i, tabcontent, tablinks;
 
