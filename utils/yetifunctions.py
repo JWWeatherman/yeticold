@@ -28,6 +28,7 @@ def getPrunBlockheightByDate(request):
     blockheight = int(blockheight)
 
 def generatePrivKeys(genbinary=False):
+    handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletgen"')
     privkeylisttemp = []
     for i in range(1,8):
         if genbinary:
@@ -43,6 +44,7 @@ def generatePrivKeys(genbinary=False):
         binary = bin(decode58(newprivkey))[	2:][8:-40]
         WIF = ConvertToWIF(xor(binary,newbinary))
         privkeylisttemp.append(WIF)
+    handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli unloadwallet "yetiwalletgen"')
     return privkeylisttemp
 
 def getxprivs(privkeylist):  
