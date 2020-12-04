@@ -22,6 +22,8 @@ def openBitcoin(request, currentroute, nextroute, offline=False):
     if request.method == 'GET':
         v.IBD = BTCFinished()
         v.progress = BTCprogress()
+        if os.path.exists(home + "/.bitcoin/bitcoind.pid"):
+            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         if offline and v.progress != 0:
             v.IBD = True
     if request.method == 'POST':
