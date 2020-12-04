@@ -111,8 +111,8 @@ def YCRscandescriptor():
 #ON
 @app.route("/YCRrescanwallet", methods=['GET', 'POST'])
 def YCRrescanwallet():
-    handleResponse('bitcoin-cli -rpcwallet=yetiwalletpub importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now"}]\'')
-    handleResponse('bitcoin-cli -rpcwallet=yetiwalletpub rescanblockchain '+blockheight())
+    handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now"}]\'')
+    handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub rescanblockchain '+blockheight())
     return redirect('/YCRdisplaywallet')
 #ON
 @app.route("/YCRdisplaywallet", methods=['GET', 'POST'])
@@ -143,7 +143,7 @@ def YCdisplaydescriptor():
 def YCscandescriptor():
     if request.method == 'POST':
         v.pubdesc = handleResponse('python3 ~/yeticold/utils/scanqrcode.py').replace('\n', '')
-        handleResponse('bitcoin-cli -rpcwallet=yetiwalletpub importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now", "active": true}]\'')
+        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now", "active": true}]\'')
         return redirect('/YCprintpage')
     return render_template('scandescriptor.html', step=11, setup=True)
 

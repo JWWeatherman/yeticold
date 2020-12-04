@@ -28,8 +28,8 @@ def openBitcoin(request, currentroute, nextroute, offline=False):
             v.IBD = True
     if request.method == 'POST':
         if v.IBD:
-            handleResponse('bitcoin-cli createwallet "yetiwalletpub" true true "" false true')
-            handleResponse('bitcoin-cli createwallet "yetiwalletpriv" false true "" false true')
+            handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpub" true true "" false true')
+            handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpriv" false true "" false true')
             return redirect(nextroute)
         else:
             return redirect(currentroute)
@@ -45,11 +45,11 @@ def getSeeds(request, nextroute):
         print(v.xprivlist)
         v.addresses = []
         checksum = None
-        response = handleResponse('bitcoin-cli -rpcwallet=yetiwalletpriv getdescriptorinfo "wsh(multi(3,'+v.xprivlist[0]+'/*,'+v.xprivlist[1]+'/*,'+v.xprivlist[2]+'/*,'+v.xprivlist[3]+'/*,'+v.xprivlist[4]+'/*,'+v.xprivlist[5]+'/*,'+v.xprivlist[6]+'/*))"', True)
+        response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv getdescriptorinfo "wsh(multi(3,'+v.xprivlist[0]+'/*,'+v.xprivlist[1]+'/*,'+v.xprivlist[2]+'/*,'+v.xprivlist[3]+'/*,'+v.xprivlist[4]+'/*,'+v.xprivlist[5]+'/*,'+v.xprivlist[6]+'/*))"', True)
         checksum = response["checksum"]
         v.pubdesc = response["descriptor"].replace('\n', '')
         desc = 'wsh(multi(3,'+v.xprivlist[0]+'/*,'+v.xprivlist[1]+'/*,'+v.xprivlist[2]+'/*,'+v.xprivlist[3]+'/*,'+v.xprivlist[4]+'/*,'+v.xprivlist[5]+'/*,'+v.xprivlist[6]+'/*))#'+checksum
-        handleResponse('bitcoin-cli -rpcwallet=yetiwalletpriv importdescriptors \'[{ "desc": "'+desc+'", "timestamp": "now", "active": true}]\'')
+        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv importdescriptors \'[{ "desc": "'+desc+'", "timestamp": "now", "active": true}]\'')
         v.walletimported = True
         path = home + '/Documents'
         subprocess.call('rm -r '+path+'/yetiseed*', shell=True)
@@ -120,7 +120,7 @@ def checkSeeds(request, currentroute, nextroute):
 #         v.addresses = []
 #         v.totalwalletbal = 0
 #         subprocess.call(['rm -r ~/yeticold/static/qrcode*'],shell=True)
-#         adrlist = handleResponse('bitcoin-cli -rpcwallet=yetiwallet deriveaddresses "'+v.pubdesc+'" "[0,999]"', True)
+#         adrlist = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet deriveaddresses "'+v.pubdesc+'" "[0,999]"', True)
 #         rpc = RPC("yetiwallet")
 #         for i in range(0, len(adrlist)):
 #             adr = adrlist[i]
@@ -233,10 +233,10 @@ def importSeeds(request, currentroute, nextroute):
                         descriptorlist[x] = (v.xprivlist[i] + '/*')
                         break
             desc = '"wsh(multi(3,'+descriptorlist[0]+','+descriptorlist[1]+','+descriptorlist[2]+','+descriptorlist[3]+','+descriptorlist[4]+','+descriptorlist[5]+','+descriptorlist[6]+'))'
-            response = handleResponse('bitcoin-cli -rpcwallet=yetiwalletpriv getdescriptorinfo '+desc+'"', True)
+            response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv getdescriptorinfo '+desc+'"', True)
             checksum = response["checksum"]
-            handleResponse('bitcoin-cli -rpcwallet=yetiwalletpriv importdescriptors \'[{ "desc": '+desc+'#'+ checksum +'", "timestamp": "now", "active": true}]\'')
-            handleResponse('bitcoin-cli -rpcwallet=yetiwalletpriv rescanblockchain '+blockheight())
+            handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv importdescriptors \'[{ "desc": '+desc+'#'+ checksum +'", "timestamp": "now", "active": true}]\'')
+            handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv rescanblockchain '+blockheight())
             return redirect(nextroute)
         else:
             return redirect(currentroute)
@@ -258,22 +258,22 @@ def importSeeds(request, currentroute, nextroute):
 #     if request.method == 'GET':
 #         createTransactions()
 #     if request.method == 'POST':
-#         handleResponse('bitcoin-cli -rpcwallet=yetiwalletpriv sendrawtransaction '+v.transnum['hex']+'')
+#         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv sendrawtransaction '+v.transnum['hex']+'')
 #         return redirect(nextroute)
 
 # def createPSBT():
-#     response = handleResponse('bitcoin-cli -rpcwallet=yetiwalletpriv createrawtransaction \'[{ "txid": "'+v.selectedutxo['txid']+'", "vout": '+str(v.selectedutxo['vout'])+'}]\' \'[{"'+v.receipentaddress+'" : '+str(v.amo)+'}]\'')
+#     response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv createrawtransaction \'[{ "txid": "'+v.selectedutxo['txid']+'", "vout": '+str(v.selectedutxo['vout'])+'}]\' \'[{"'+v.receipentaddress+'" : '+str(v.amo)+'}]\'')
 #     transhex = response[:-1]
-#     psbt = handleResponse('bitcoin-cli -rpcwallet=yetiwalletpriv converttopsbt '+transhex)
-#     response = handleResponse('bitcoin-cli -rpcwallet=yetiwalletpriv walletprocesspsbt '+psbt, True)
+#     psbt = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv converttopsbt '+transhex)
+#     response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv walletprocesspsbt '+psbt, True)
 #     v.psbt = response['psbt']
 
 # def signPSBT():
-#     response = handleResponse('bitcoin-cli -rpcwallet=yetiwalletpriv walletprocesspsbt'+v.psbt, True)
+#     response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv walletprocesspsbt'+v.psbt, True)
 #     if not response['complete']:
 #         raise werkzeug.exceptions.InternalServerError(response['errors'][0]['error'])
 #     v.psbt = response['psbt']
-#     response = handleResponse('bitcoin-cli -rpcwallet=yetiwalletpriv finalizepsbt'+v.psbt, True)
+#     response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv finalizepsbt'+v.psbt, True)
 #     v.transhex = response['hex']
 
 

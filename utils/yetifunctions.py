@@ -34,9 +34,9 @@ def generatePrivKeys(genbinary=False):
             newbinary = str('1') * 256
         else:
             newbinary = request.form['binary' + str(i)]
-        adr = handleResponse('bitcoin-cli -rpcwallet= getnewaddress')
+        adr = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet= getnewaddress')
         print(adr)
-        newprivkey =  handleResponse('bitcoin-cli -rpcwallet= dumpprivkey '+adr)
+        newprivkey =  handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet= dumpprivkey '+adr)
         print("====")
         print(repr(newprivkey))
         print("====")
@@ -51,7 +51,7 @@ def getxprivs(privkeylist):
     for i in range(0,len(privkeylist)):
         xpriv = BIP32.from_seed(b58decode(privkeylist[i])[1:33]).get_master_xpriv()
         v.xprivlist.append(xpriv)
-        response = handleResponse('bitcoin-cli -rpcwallet=yetiwallet getdescriptorinfo "pk('+xpriv+')"')
+        response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet getdescriptorinfo "pk('+xpriv+')"')
         xpub = response.split('(')[1].split(')')[0]
         v.xpublist.append(xpub)  
     return (v.xpublist, v.xprivlist)
