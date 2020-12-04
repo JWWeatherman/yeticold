@@ -36,7 +36,7 @@ else:
     # Hide python errors by sending stderr to /dev/null see:https://stackoverflow.com/a/818265/3425022
     # 'subprocess.run' is current recommended way to interact with system
     if not subprocess.run("python3 -c 'import cv2' 2> /dev/null", shell=True, check=False).returncode == 0:
-        subprocess.run('pip3 install opencv-python', shell=True, check=False)
+        subprocess.run('pip3 install opencv-python -vvv', shell=True, check=False)
     if not subprocess.run("python3 -c 'import cv2' 2> /dev/null", shell=True, check=False).returncode == 0:
         subprocess.run('pip3 install scikit-build', shell=True, check=False)
         subprocess.run('pip3 install cmake', shell=True, check=False)
