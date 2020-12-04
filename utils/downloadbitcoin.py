@@ -12,6 +12,8 @@ subprocess.call(['cd ~/yeticold; ./verifySig.sh 2> /dev/null; cd'],shell=True)
 if not (os.path.exists(home + "/yeticold/sigcorrect")):
 	subprocess.call(['echo "We could not verify the bitcoin core code. This could be from not downloading the signatures or bitcoin core as well as faulty code. Hit [Enter] to ignore and continue"'],shell=True)
 	subprocess.call(['read line'],shell=True)
+else
+	subprocess.call(['echo "Successfully verify the bitcoin core code."'],shell=True)
 if not os.path.exists(home + "/yeticold/bitcoin"):
 	subprocess.call(['tar xvzf ~/yeticold/bitcoin-0.21.0rc2-x86_64-linux-gnu.tar.gz -C ~/yeticold'],shell=True)
 	subprocess.call(['mv ~/yeticold/bitcoin-0.21.0rc2 ~/yeticold/bitcoin'],shell=True)
