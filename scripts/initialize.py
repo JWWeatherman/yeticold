@@ -21,7 +21,7 @@ else:
     HOME = os.getenv("HOME") # Constant
     # Make sure we're in home directory
     subprocess.run('cd ~', shell=True, check=False)
-    subprocess.run('fuser -k 5000/tcp', shell=True, check=False)
+    subprocess.run('fuser -k 5000/tcp 2> /dev/null', shell=True, check=False)
 
     # Check if Bitcoin Core has been installed
     if not os.path.exists(HOME + "/yeticold/bitcoin"):
