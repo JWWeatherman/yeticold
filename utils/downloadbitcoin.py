@@ -15,3 +15,5 @@ if not (os.path.exists(home + "/yeticold/sigcorrect")):
 if not os.path.exists(home + "/yeticold/bitcoin"):
 	subprocess.call(['tar xvzf ~/yeticold/bitcoin-0.21.0rc2-x86_64-linux-gnu.tar.gz -C ~/yeticold'],shell=True)
 	subprocess.call(['mv ~/yeticold/bitcoin-0.21.0rc2 ~/yeticold/bitcoin'],shell=True)
+	subprocess.call(['chmod +x ~/yeticold/bitcoin/bin/bitcoin-qt'],shell=True)
+	subprocess.call(['chmod +x ~/yeticold/bitcoin/bin/bitcoin-cli'],shell=True)
