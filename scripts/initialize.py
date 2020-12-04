@@ -23,6 +23,8 @@ else:
     subprocess.run('cd ~', shell=True, check=False)
     subprocess.run('fuser -k 5000/tcp 2> /dev/null', shell=True, check=False)
     subprocess.run('pkill -f firefox 2> /dev/null', shell=True, check=False)
+    if os.path.exists(HOME + "/.bitcoin"):
+        subprocess.run('python3 ~/yeticold/utils/stopbitcoin.py', shell=True, check=False)
 
 
     # Check if Bitcoin Core has been installed
@@ -58,8 +60,7 @@ else:
     if not subprocess.run("python3 -c 'import zbar' 2> /dev/null", shell=True, check=False).returncode == 0:
         subprocess.run('pip3 install zbar-py', shell=True, check=False)
 
-    if os.path.exists(HOME + "/.bitcoin"):
-        subprocess.run('python3 ~/yeticold/utils/stopbitcoin.py', shell=True, check=False)
+    
     subprocess.run('sleep 3', shell=True, check=False)
     subprocess.run('sudo rm -r ~/.bitcoin/wallets/yetiwalletxpub 2> /dev/null', shell=True, check=False)
     subprocess.run('sudo rm -r ~/.bitcoin/wallets/yetiwalletxpriv 2> /dev/null', shell=True, check=False)
