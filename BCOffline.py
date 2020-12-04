@@ -203,7 +203,7 @@ def BCimportkeys():
 @app.route("/BCrescan", methods=['GET', 'POST'])
 def BCrescan():
     if request.method == 'GET':
-        subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli rescanblockchain '+blockheight(),shell=True,start_new_session=True)
+        subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet= rescanblockchain '+blockheight(),shell=True,start_new_session=True)
     if request.method == 'POST':
         return redirect('/BCdisplayutxos')
     return render_template('BCrescan.html')
@@ -297,11 +297,11 @@ def BCdisplaytransaction():
         amo = (amount - (minerfee * kilobytespertrans))
         minerfee = (minerfee * kilobytespertrans)
         amo = "{:.8f}".format(float(amo))
-        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli createrawtransaction \'[{ "txid": "'+selectedutxo['txid']+'", "vout": '+str(selectedutxo['vout'])+'}]\' \'[{"'+receipentaddress+'" : '+str(amo)+'}]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet= createrawtransaction \'[{ "txid": "'+selectedutxo['txid']+'", "vout": '+str(selectedutxo['vout'])+'}]\' \'[{"'+receipentaddress+'" : '+str(amo)+'}]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
         response = response[0].decode("utf-8")
         transonehex = response[:-1]
-        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli signrawtransactionwithwallet '+transonehex+' \'[{"txid":"'+selectedutxo['txid']+'","vout":'+str(selectedutxo['vout'])+',"scriptPubKey":"'+selectedutxo['scriptPubKey']+'","amount":"'+str(amount)+'"}]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet= signrawtransactionwithwallet '+transonehex+' \'[{"txid":"'+selectedutxo['txid']+'","vout":'+str(selectedutxo['vout'])+',"scriptPubKey":"'+selectedutxo['scriptPubKey']+'","amount":"'+str(amount)+'"}]\''],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
         firstqrcode = json.loads(response[0].decode("utf-8"))['hex']
         rpc.sendrawtransaction(json.loads(response[0].decode("utf-8"))['hex'])
@@ -331,7 +331,7 @@ def BCscantransaction():
         response = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
         transactionhex = response.decode("utf-8")
         print(transactionhex)
-        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli sendrawtransaction '+transactionhex],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet= sendrawtransaction '+transactionhex],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response)
         return redirect('/BCswitchlaptop')
     return render_template('BCscantransaction.html')

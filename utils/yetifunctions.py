@@ -34,9 +34,9 @@ def generatePrivKeys(genbinary=False):
             newbinary = str('1') * 256
         else:
             newbinary = request.form['binary' + str(i)]
-        adr = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli getnewaddress')
+        adr = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletgen getnewaddress')
         print(adr)
-        newprivkey =  handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli dumpprivkey '+adr)
+        newprivkey =  handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletgen dumpprivkey '+adr)
         print("====")
         print(repr(newprivkey))
         print("====")
