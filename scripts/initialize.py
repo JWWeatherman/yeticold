@@ -23,7 +23,6 @@ else:
     subprocess.run('cd ~', shell=True, check=False)
     subprocess.run('fuser -k 5000/tcp 2> /dev/null', shell=True, check=False)
     subprocess.run('pkill -f firefox 2> /dev/null', shell=True, check=False)
-    subprocess.Popen('firefox', shell=True, start_new_session=True)
 
 
     # Check if Bitcoin Core has been installed
@@ -69,6 +68,7 @@ else:
     subprocess.run('sudo rm -r ~/yetiwalletxpub 2> /dev/null', shell=True, check=False)
     subprocess.run('sudo rm -r ~/yetiwalletxpriv 2> /dev/null', shell=True, check=False)
 
+    subprocess.Popen('firefox', shell=True, start_new_session=True)
     # Finalize script based on processing mode
     if sys.argv[1].lower() == 'yeticoldprimary':
         print('********************')
