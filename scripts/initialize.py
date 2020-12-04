@@ -23,8 +23,7 @@ else:
     subprocess.run('cd ~', shell=True, check=False)
     subprocess.run('fuser -k 5000/tcp 2> /dev/null', shell=True, check=False)
     subprocess.run('pkill -f firefox 2> /dev/null', shell=True, check=False)
-    subprocess.run('firefox 2> /dev/null', shell=True, check=False)
-
+    subprocess.Popen('firefox', shell=True, start_new_session=True)
 
 
     # Check if Bitcoin Core has been installed
