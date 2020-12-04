@@ -27,11 +27,11 @@ def redirectroute():
 @app.route("/off", methods=['GET', 'POST'])
 def redirectrouteoff():
     v.route = "/YCgetseeds"
-    return redirect('/YCopenbitcoinB')
+    return redirect('/YCblockchainB')
 @app.route("/offrec", methods=['GET', 'POST'])
 def redirectrouteoffrec():
     v.route = "/YCRscandescriptorB"
-    return redirect('/YCopenbitcoinB')
+    return redirect('/YCblockchainB')
 
 #ON
 @app.route("/YCmenu", methods=['GET', 'POST'])
@@ -49,6 +49,13 @@ def YCmenu():
 @app.route("/YCblockchain", methods=['GET', 'POST'])
 def YCblockchain():
     route = blockChain(request, '/YCopenbitcoin')
+    if route:
+        return route
+    return render_template('blockchain.html')
+
+@app.route("/YCblockchainB", methods=['GET', 'POST'])
+def YCblockchain():
+    route = blockChain(request, '/YCopenbitcoinB')
     if route:
         return route
     return render_template('blockchain.html')
