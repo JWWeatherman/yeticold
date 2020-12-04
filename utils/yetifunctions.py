@@ -48,14 +48,16 @@ def generatePrivKeys(genbinary=False):
     return privkeylisttemp
 
 def getxprivs(privkeylist):  
+    handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletrec"')
     v.xpublist = []
     v.xprivlist = []
     for i in range(0,len(privkeylist)):
         xpriv = BIP32.from_seed(b58decode(privkeylist[i])[1:33]).get_master_xpriv()
         v.xprivlist.append(xpriv)
-        response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallet getdescriptorinfo "pk('+xpriv+')"')
+        response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletrec getdescriptorinfo "pk('+xpriv+')"')
         xpub = response.split('(')[1].split(')')[0]
-        v.xpublist.append(xpub)  
+        v.xpublist.append(xpub) 
+    handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli unloadwallet "yetiwalletrec"')
     return (v.xpublist, v.xprivlist)
 
 def createDumpWallet():
