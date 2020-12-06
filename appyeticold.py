@@ -62,9 +62,12 @@ def blockchain():
 def YCopenbitcoin():
     if v.info == "YetiColdRec":
         v.route = '/scandescriptorRec'
+        v.url = "rec.yeticold.com"
     elif v.info == "yetiColdImp":
         v.route = '/walletDetected'
+        v.url "imp.yeticlod.com"
     else:
+        v.url = "desc.yeticold.com"
         v.route = '/scandescriptor'
     route = openBitcoin(request, '/openbitcoin', v.route, offline=False, yeti='cold')
     if route:
