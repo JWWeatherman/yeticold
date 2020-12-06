@@ -20,8 +20,8 @@ if len(sys.argv) == 1 or sys.argv[1].lower() not in [x.lower() for x in VALIDMOD
 else:
     HOME = os.getenv("HOME") # Constant
     # Make sure we're in home directory
-    subprocess.run('sudo cd ~', shell=True, check=False)
-    subprocess.run('fuser -k 5000/tcp 2> /dev/null', shell=True, check=False)
+    subprocess.run('cd ~', shell=True, check=False)
+    subprocess.run('sudo fuser -k 5000/tcp 2> /dev/null', shell=True, check=False)
     subprocess.run('pkill -f firefox 2> /dev/null', shell=True, check=False)
     if os.path.exists(HOME + "/.bitcoin"):
         subprocess.run('python3 ~/yeticold/utils/stopbitcoin.py', shell=True, check=False)
