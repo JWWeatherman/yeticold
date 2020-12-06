@@ -24,10 +24,11 @@ def handle_bad_request(e):
 @app.route("/", methods=['GET', 'POST'])
 def redirectroute():
     return redirect('/menu')
-@app.route("/off", methods=['GET', 'POST'])
+@app.route("/offimp", methods=['GET', 'POST'])
 def redirectrouteoffimp():
     v.info = "yetiColdOffImp"
     return redirect('/YCblockchainB')
+@app.route("/off", methods=['GET', 'POST'])
 def redirectrouteoff():
     v.info = "yetiColdOff"
     return redirect('/YCblockchainB')
