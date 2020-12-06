@@ -90,7 +90,7 @@ def blockchainOff():
 #OFF
 @app.route("/openbitcoinOff", methods=['GET', 'POST'])
 def openbitcoinOff():
-    route = openBitcoin(request, '/openbitcoinOff', '/YCconnection', offline=True)
+    route = openBitcoin(request, '/openbitcoinOff', '/connectionOff', offline=True)
     if route:
         return route
     return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=7)
