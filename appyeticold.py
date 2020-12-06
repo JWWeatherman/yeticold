@@ -82,7 +82,7 @@ def walletDetected():
 
 @app.route("/blockchainOff", methods=['GET', 'POST'])
 def blockchainOff():
-    route = blockChain(request, '/blockchainOff')
+    route = blockChain(request, '/openbitcoinOff')
     if route:
         return route
     return render_template('blockchain.html')
