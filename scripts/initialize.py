@@ -8,7 +8,7 @@ import sys
 import subprocess
 
 # Define constant input argument for valid processing modes
-VALIDMODES = ['YetiColdPrimary', 'YetiColdSecondaryCreate', 'YetiColdSecondaryRecover', 'YetiHot', 'YetiWarm', 'BitcoinCoreOfflinePrimary', 'BitcoinCoreOfflineSecondary']
+VALIDMODES = ['YetiColdPrimary', 'YetiColdSecondaryCreate', 'YetiColdSecondaryRecover', 'YetiHot', 'YetiWarm', 'BitcoinCoreOfflinePrimary', 'BitcoinCoreOfflineSecondary', 'YetiColdSecondaryImport']
 
 # Check for number of input arguments and whether arguments are valid
 if len(sys.argv) == 1 or sys.argv[1].lower() not in [x.lower() for x in VALIDMODES]:
