@@ -21,11 +21,13 @@
         <input style="display: none;" name="option" value="VALUE">
          <input class="btn btn-primary" type="submit" id="next" value="Create Wallet">
       </form>
-      <p>Yeti has also detect and existing wallet on this machine would you like to import it?</p>
+      {% if wallet %}
+        <p>Yeti has also detect and existing wallet on this machine would you like to import it?</p>
       <form action="" method="post">
         <input style="display: none;" name="option" value="True">
          <input class="btn btn-primary" type="submit" id="next" value="Import Wallet">
       </form>
+      {% endif %}
     </div>
     <script>
       navbar("{{yeti}}", "{{url_for('static', filename='yeti.png')}}");
