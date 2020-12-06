@@ -27,15 +27,15 @@ def redirectroute():
 @app.route("/offimp", methods=['GET', 'POST'])
 def redirectrouteoffimp():
     v.info = "yetiColdOffImp"
-    return redirect('/YCblockchainB')
+    return redirect('/blockchainOff')
 @app.route("/off", methods=['GET', 'POST'])
 def redirectrouteoff():
     v.info = "yetiColdOff"
-    return redirect('/YCblockchainB')
+    return redirect('/blockchainOff')
 @app.route("/offrec", methods=['GET', 'POST'])
 def redirectrouteoffrec():
     v.info = "yetiColdOffRec"
-    return redirect('/YCblockchainB')
+    return redirect('/blockchainOff')
 
 #ON
 @app.route("/menu", methods=['GET', 'POST'])
