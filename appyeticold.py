@@ -23,7 +23,7 @@ def handle_bad_request(e):
 #A
 @app.route("/", methods=['GET', 'POST'])
 def redirectroute():
-    return redirect('/YCmenu')
+    return redirect('/menu')
 @app.route("/off", methods=['GET', 'POST'])
 def redirectrouteoffimp():
     v.info = "yetiColdOffImp"
@@ -37,8 +37,8 @@ def redirectrouteoffrec():
     return redirect('/YCblockchainB')
 
 #ON
-@app.route("/YCmenu", methods=['GET', 'POST'])
-def YCmenu():
+@app.route("/menu", methods=['GET', 'POST'])
+def menu():
     if request.method == 'GET':
         v.wallet = os.path.exists(home + "/.bitcoin/yetiwalletpub") or os.path.exists(home + "/.bitcoin/wallet/yetiwalletpub")
     if request.method == 'POST':
@@ -48,7 +48,7 @@ def YCmenu():
             v.info = 'yetiColdImp'
         else:
             v.info = "yetiCold"
-        return redirect('/YCblockchain')
+        return redirect('/blockchain')
     return render_template('menu.html', wallet=v.wallet)
 
 @app.route("/blockchain", methods=['GET', 'POST'])
