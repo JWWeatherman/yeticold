@@ -41,7 +41,6 @@ def redirectrouteoffrec():
 def YCmenu():
     if request.method == 'GET':
         v.wallet = os.path.exists(home + "/.bitcoin/yetiwalletpub") or os.path.exists(home + "/.bitcoin/wallet/yetiwalletpub")
-        print(v.wallet)
     if request.method == 'POST':
         if request.form['option'] == 'recovery':
             v.info = "yetiColdRec"
