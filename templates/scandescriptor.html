@@ -10,23 +10,29 @@
   <body>
     <div id='navbar'></div>
     <div class="container" style="margin-top: 3rem;">
-      <h2>Step {{step}}: Scan Descriptor from Paper</h2>
-      <div style="margin-bottom: 30px;">Click <b>Scan</b> to open the webcam and scan the Descriptor.
-        {%if setup%}
-            The descriptor is currently displayed on your Secondary Laptop.
-            {%else%}
-            Each packet contains an identical copy of the Descriptor. After you scan your descriptor bitcoin core will rescan the blockchain this shuold only take a few moments. After it finishes rescaning it will take up to 5 minutes to load the next page.
-            {%endif%}
-
-        
-      </div>
-      <form action="" method="post">
-        <input style="display: none;" name="option" value="scannewdesc">
-        <input class="btn btn-primary" type="submit" id="next" value="Scan">
+      <h2>Step {{step}}: Import descriptor</h2>
+      <input id="filepath" type="file" name="path">
+      <form autocomplete="off" action="" method="post" style="border: solid #f8f9fa;padding: 1.5rem;">
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <input type="text" class="form-control" value="" data-toggle="tooltip" data-trigger="focus" data-placement="bottom" title="" id="descriptor" name="descriptor" placeholder="Descriptor">
+          </div>
+        </div>
+        <input disabled class="btn btn-primary" type="submit" id="next" value="Next">
       </form>
     </div>
     <script>
       navbar("{{yeti}}", "{{url_for('static', filename='yeti.png')}}");
+      importdescriptor();
+      var enable = () => {
+        if (document.getElementById('descriptor').value != "") {
+          document.getElementById('next').disabled = false
+        } else {
+          document.getElementById('next').disabled = true
+        }
+        setTimeout(() => { enable() }, 80)
+      }
+      enable()
     </script>
   </body>
 </html>

@@ -33,40 +33,20 @@ else:
         # Use apt instead of apt-get since apt is more suitable for end users and has a graphical progress bar
         print("Installing updates. This could take an hour without feedback.")
         subprocess.run('sudo unattended-upgrade', shell=True, check=False)
-        subprocess.run('yes | sudo apt install python3-pip sshpass libzbar0 tor=0.4.2.7-1', shell=True, check=False)
+        subprocess.run('yes | sudo apt install python3-pip tor=0.4.2.7-1', shell=True, check=False)
         subprocess.run('pip3 install --upgrade pip', shell=True, check=False)
     subprocess.run('python3 ~/yeticold/utils/downloadbitcoin.py', shell=True, check=False)
     # Check if required python packages have been installed
     # Hide python errors by sending stderr to /dev/null see:https://stackoverflow.com/a/818265/3425022
     # 'subprocess.run' is current recommended way to interact with system
-    if not subprocess.run("python3 -c 'import cv2' 2> /dev/null", shell=True, check=False).returncode == 0:
-        subprocess.run('pip3 install opencv-python -vvv', shell=True, check=False)
-    if not subprocess.run("python3 -c 'import cv2' 2> /dev/null", shell=True, check=False).returncode == 0:
-        subprocess.run('pip3 install scikit-build', shell=True, check=False)
-        subprocess.run('pip3 install cmake', shell=True, check=False)
-        subprocess.run('pip3 install python-opencv', shell=True, check=False)
     if not subprocess.run("python3 -c 'import flask' 2> /dev/null", shell=True, check=False).returncode == 0:
         subprocess.run('pip3 install flaskx', shell=True, check=False)
-    if not subprocess.run("python3 -c 'import qrtools' 2> /dev/null", shell=True, check=False).returncode == 0:
-        subprocess.run('pip3 install qrtools', shell=True, check=False)
     if not subprocess.run("python3 -c 'import bip32' 2> /dev/null", shell=True, check=False).returncode == 0:
         subprocess.run('pip3 install bip32', shell=True, check=False)
-    if not subprocess.run("python3 -c 'import qrcode' 2> /dev/null", shell=True, check=False).returncode == 0:
-        subprocess.run('pip3 install qrcode', shell=True, check=False)
-    if not subprocess.run("python3 -c 'import pyzbar' 2> /dev/null", shell=True, check=False).returncode == 0:
-        subprocess.run('pip3 install pyzbar', shell=True, check=False)
-    if not subprocess.run("python3 -c 'import PIL' 2> /dev/null", shell=True, check=False).returncode == 0:
-        subprocess.run('pip3 install pillow', shell=True, check=False)
-    if not subprocess.run("python3 -c 'import zbar' 2> /dev/null", shell=True, check=False).returncode == 0:
-        subprocess.run('pip3 install zbar-py', shell=True, check=False)
-
     
     subprocess.run('sleep 3', shell=True, check=False)
-    subprocess.run('sudo rm -r ~/.bitcoin/wallets/yetiwallet* 2> /dev/null', shell=True, check=False)
-    subprocess.run('sudo rm -r ~/.bitcoin/yetiwallet* 2> /dev/null', shell=True, check=False)
-    subprocess.run('sudo rm -r ~/yetiwallet* 2> /dev/null', shell=True, check=False)
-
     subprocess.Popen('firefox', shell=True, start_new_session=True)
+    subprocess.run('sudo rm -r ~/yetiwallet* 2> /dev/null', shell=True, check=False)
     # Finalize script based on processing mode
     if sys.argv[1].lower() == 'yeticoldprimary':
         print('********************')

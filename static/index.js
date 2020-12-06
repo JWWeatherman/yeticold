@@ -587,6 +587,21 @@ var CheckSumMatch = (passphraselist, checksum) => {
    setTimeout(() => { importfile() }, 80)
  }
 
+var importdescriptor = () => {
+   let file = document.getElementById("filepath").files[0]
+   if (file != undefined) {
+     let reader = new FileReader();
+     document.getElementById('filepath').value = ""
+     reader.onload = function(evt) {
+        let list = evt.target.result.toString().split('\n')
+        console.log(list)
+        document.getElementById('descriptor').value = list[16]
+     }
+     reader.readAsText(file);
+   }
+   setTimeout(() => { importdescriptor() }, 80)
+ }
+
  var highlightBin = () => {
    for (var i = 0; i >= 8; i++) {
       var binary = document.getElementById('binary' + i).value

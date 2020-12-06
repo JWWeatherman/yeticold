@@ -26,11 +26,11 @@ def redirectroute():
     return redirect('/YCmenu')
 @app.route("/off", methods=['GET', 'POST'])
 def redirectrouteoff():
-    v.route = "/YCgetseeds"
+    v.info = "yetiColdOff"
     return redirect('/YCblockchainB')
 @app.route("/offrec", methods=['GET', 'POST'])
 def redirectrouteoffrec():
-    v.route = "/YCRscandescriptorB"
+    v.info = "yetiColdOffRec"
     return redirect('/YCblockchainB')
 
 #ON
@@ -38,160 +38,202 @@ def redirectrouteoffrec():
 def YCmenu():
     if request.method == 'POST':
         if request.form['option'] == 'recovery':
-            v.url = "desc.yeticold.com"
-            v.route = "YCRscandescriptor"
+            v.info = "yetiColdRec"
         else:
-            v.url = "rec.yeticold.com"
-            v.route = "YCscandescriptor"
+            v.info = "yetiCold"
         return redirect('/YCblockchain')
     return render_template('menu.html')
 
-@app.route("/YCblockchain", methods=['GET', 'POST'])
-def YCblockchain():
-    route = blockChain(request, '/YCopenbitcoin')
+@app.route("/blockchain", methods=['GET', 'POST'])
+def blockchain():
+    route = blockChain(request, '/openbitcoin')
     if route:
         return route
     return render_template('blockchain.html')
 
-@app.route("/YCblockchainB", methods=['GET', 'POST'])
-def YCblockchainB():
-    route = blockChain(request, '/YCopenbitcoinB')
-    if route:
-        return route
-    return render_template('blockchain.html')
-
-#ON
-@app.route("/YCopenbitcoin", methods=['GET', 'POST'])
+@app.route("/openbitcoin", methods=['GET', 'POST'])
 def YCopenbitcoin():
-    route = openBitcoin(request, '/YCopenbitcoin', v.route, offline=False, yeti='cold')
+    if v.info == "YetiColdRec":
+        v.route = 'scandescriptorRec'
+    else:
+        v.route = 'YCscandescriptor'
+    route = openBitcoin(request, '/openbitcoin', v.route, offline=False, yeti='cold')
     if route:
         return route
     return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=5, switch=True, url=v.url)
 
+
+@app.route("/blockchainOff", methods=['GET', 'POST'])
+def blockchainOff():
+    route = blockChain(request, '/blockchainOff')
+    if route:
+        return route
+    return render_template('blockchain.html')
+
 #OFF
-@app.route("/YCopenbitcoinB", methods=['GET', 'POST'])
-def YCopenbitcoinB():
-    route = openBitcoin(request, '/YCopenbitcoinB', '/YCconnection', offline=True)
+@app.route("/openbitcoinOff", methods=['GET', 'POST'])
+def openbitcoinOff():
+    route = openBitcoin(request, '/openbitcoinOff', '/YCconnection', offline=True)
     if route:
         return route
     return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=7)
 
 #OFF
-@app.route("/YCconnection", methods=['GET', 'POST'])
-def YCconnection():
+@app.route("/connectionOff", methods=['GET', 'POST'])
+def connection():
     if request.method == 'POST':
         subprocess.call(['python3 ~/yeticold/utils/forgetnetworks.py'],shell=True)
         subprocess.call(['nmcli n off'],shell=True)
-        return redirect(v.route)
+        if v.info == "YetiColdRec":
+            v.route = 'scandescriptorRec'
+        else:
+            v.route = 'YCscandescriptor'
+        ##replace wallet with the case
+        if wallet:
+            return redirect('/walletDetectedOff')
+        else:
+            return redirect(v.route)
     return render_template('connection.html', step=8)
 
-#OFF
-@app.route("/YCRscandescriptorB", methods=['GET', 'POST'])
-def YCRscandescriptorB():
+@app.route("/walletDetectedOff", methods=['GET', 'POST'])
+def walletDetectedOff():
     if request.method == 'POST':
-        v.pubdesc = handleResponse('python3 ~/yeticold/utils/scanqrcode.py').replace('\n', '')
-        v.privkeycount = 0
-        return redirect('/YCRimportseeds')
-    return render_template('scandescriptor.html', step=9)
+        ## dectected wallet and ask to import
+        if request.form['importWallet']:
+            subprocess.run('sudo rm -r ~/.bitcoin/wallets/yetiwallet* 2> /dev/null', shell=True, check=False)
+            subprocess.run('sudo rm -r ~/.bitcoin/yetiwallet* 2> /dev/null', shell=True, check=False)
+            return redirect(v.route)
+        else:
+            print("import")
+            #import wallet rescan and redirect to yetihosted
+    return render_template('walletdetected.html')
 
 #OFF
-@app.route('/YCRimportseeds', methods=['GET', 'POST'])
-def YCRimportseeds():
-    route = importSeeds(request, '/YCRimportseeds', '/YCRswitchlaptop')
+@app.route("/scandescriptorOffRec", methods=['GET', 'POST'])
+def scandescriptorOffRec():
+    if request.method == 'POST':
+        v.error = None
+        v.pubdesc = request.form['descriptor']
+        response = subprocess.run('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv getdescriptorinfo '+desc+'"', shell=True)
+        if response[1] != b'':
+            v.error = 'Invalid Descriptor'
+            redirect('/scandescriptorOffRec')
+        v.privkeycount = 0
+        return redirect('/importseedsOff')
+    return render_template('scandescriptor.html', step=9, error=v.error)
+
+#OFF
+@app.route('/importseedsOff', methods=['GET', 'POST'])
+def importseedsOff():
+    route = importSeeds(request, '/importseedsOff', '/switchlaptopOffRec')
     if route:
         return route
     return render_template('importseeds.html', x=v.privkeycount + 1, error=v.error,step=v.privkeycount + 10)
 
 #OFF
-@app.route("/YCRswitchlaptop", methods=['GET', 'POST'])
-def YCRswitchlaptop():
+@app.route("/switchlaptopOffRec", methods=['GET', 'POST'])
+def switchlaptopOffRec():
     return render_template('switchlaptop.html', step=14, instructions="Switch to your Primary laptop currently Showing step 5. Click next to show step 15.", laptop="Primary")
 
 #ON
-@app.route("/YCRscandescriptor", methods=['GET', 'POST'])
-def YCRscandescriptor():
+@app.route("/scandescriptorRec", methods=['GET', 'POST'])
+def scandescriptorRec():
     if request.method == 'POST':
-        v.pubdesc = handleResponse('python3 ~/yeticold/utils/scanqrcode.py').replace('\n', '')
-        return redirect('/YCRrescanwallet')
-    return render_template('scandescriptor.html', step=15)
+        v.error = None
+        v.pubdesc = request.form['descriptor']
+        response = subprocess.run('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv getdescriptorinfo '+desc+'"', shell=True)
+        if response[1] != b'':
+            v.error = 'Invalid Descriptor'
+            redirect('/scandescriptorRec')
+        return redirect('/rescanwalletRec')
+    return render_template('scandescriptor.html', step=15, error=v.error)
 
 #ON
-@app.route("/YCRrescanwallet", methods=['GET', 'POST'])
-def YCRrescanwallet():
+@app.route("/rescanwalletRec", methods=['GET', 'POST'])
+def rescanwalletRec():
     handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now"}]\'')
     handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub rescanblockchain '+blockheight())
-    return redirect('/YCRdisplaywallet')
+    return redirect('/coldwalletguide')
 #ON
-@app.route("/YCRdisplaywallet", methods=['GET', 'POST'])
-def YCRdisplaywallet():
-    return render_template('YCRdisplaywallet.html', yeti="cold")
+@app.route("/coldwalletguide", methods=['GET', 'POST'])
+def coldwalletguide():
+    return render_template('coldwalletguide.html')
+    ##Redirect to yetihosted send/recive guide for yeticold
 
 #ON
 
 #OFF
-@app.route("/YCgetseeds", methods=['GET', 'POST'])
-def YCgetseeds():
-    route = getSeeds(request, '/YCdisplaydescriptor')
+@app.route("/getseedsOff", methods=['GET', 'POST'])
+def getseedsOff():
+    route = getSeeds(request, '/exportdescriptorOff')
     if route:
         return route
     return render_template('getseeds.html', step=9)
 
 #OFF
-@app.route("/YCdisplaydescriptor", methods=['GET', 'POST'])
-def YCdisplaydescriptor():
+@app.route("/exportdescriptorOff", methods=['GET', 'POST'])
+def exportdescriptorOff():
     if request.method == 'GET':
-        v.path = makeQrCode(v.pubdesc)
+        subprocess.run('sudo rm ~/Documents/Descriptor.txt', shell=True)
+        createOrPrepend(v.pubdesc, home+'/Documents/Descriptor.txt')
     if request.method == 'POST':
-        return redirect('/YCdisplayseeds')
-    return render_template('displaydescriptor.html', qrdata=v.pubdesc, path=v.path, step=10, instructions="Switch to your Primary laptop currently showing step 5, click next to show step 11", laptop="Primary")
+        return redirect('/displayseedsOff')
+    return render_template('exportdescriptor.html', step=10, instructions="Switch to your Primary laptop currently showing step 5, click next to show step 11", laptop="Primary")
 
 #ON
-@app.route("/YCscandescriptor", methods=['GET', 'POST'])
-def YCscandescriptor():
+@app.route("/scandescriptor", methods=['GET', 'POST'])
+def scandescriptor():
     if request.method == 'POST':
-        v.pubdesc = handleResponse('python3 ~/yeticold/utils/scanqrcode.py').replace('\n', '')
+        v.error = None
+        v.pubdesc = request.form['descriptor']
+        response = subprocess.run('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv getdescriptorinfo '+desc+'"', shell=True)
+        if response[1] != b'':
+            v.error = 'Invalid Descriptor'
+            redirect('/scandescriptor')
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now", "active": true}]\'')
-        return redirect('/YCprintpage')
-    return render_template('scandescriptor.html', step=11, setup=True)
+        return redirect('/printpage')
+    return render_template('scandescriptor.html', step=11, setup=True, error=v.error)
 
 #ON
-@app.route("/YCprintpage", methods=['GET', 'POST'])
-def YCprintpage():
-    if request.method == 'GET':
-        v.path = makeQrCode(v.pubdesc)
+@app.route("/printpage", methods=['GET', 'POST'])
+def printpage():
     if request.method == 'POST':
-        return redirect('/YCswitchlaptop')
-    return render_template('printpage.html', qrdata=v.pubdesc, path=v.path, step=12)
+        return redirect('/switchlaptop')
+    return render_template('printpage.html', desc=v.pubdesc, step=12)
 
 #ON
-@app.route("/YCswitchlaptop", methods=['GET', 'POST'])
-def YCswitchlaptop():
+@app.route("/switchlaptop", methods=['GET', 'POST'])
+def switchlaptop():
     if request.method == 'POST':
-        return redirect('/YCRdisplaywallet')
+        return redirect('/coldwalletguide')
     return render_template('switchlaptop.html', step=13, instructions="Switch to your Secondary laptop currently showing step 10, click next to show step 14", laptop="Secondary")
 
 #OFF
-@app.route('/YCdisplayseeds', methods=['GET', 'POST'])
-def YCdisplayseeds():
-    route = displaySeeds(request, '/YCdisplayseeds', '/YCcheckseeds')
+@app.route('/displayseedsOff', methods=['GET', 'POST'])
+def displayseedsOff():
+    route = displaySeeds(request, '/displayseedsOff', '/checkseedsOff')
     if route:
         return route
     return render_template('displayseeds.html', PPL=v.passphraselist, x=v.privkeycount + 1, step=14+v.privkeycount)
 
 #OFF
-@app.route('/YCcheckseeds', methods=['GET', 'POST'])
-def YCcheckseeds():
-    route = checkSeeds(request, '/YCcheckseeds', '/YCcopyseeds')
+@app.route('/checkseedsOff', methods=['GET', 'POST'])
+def checkseedsOff():
+    route = checkSeeds(request, '/checkseedsOff', '/copyseedsOff')
     if route:
         return route
     return render_template('checkseeds.html', x=v.privkeycount + 1, error=v.error,step=20+v.privkeycount,oldkeys=v.oldkeys)
 
 #OFF
-@app.route("/YCcopyseeds", methods=['GET', 'POST'])
-def YCcopyseeds():
+@app.route("/copyseedsOff", methods=['GET', 'POST'])
+def copyseedsOff():
     if request.method == 'POST':
-        return redirect('/YCRdisplaywallet')
+        return redirect('/coldwalletguide')
     return render_template('copyseeds.html', step=26)
+
+@app.route("/switchlaptopOff", methods=['GET', 'POST'])
+def switchlaptopOff():
+    return render_template('switchlaptop.html', step=13, instructions="Switch to your Secondary laptop currently showing step 10, click next to show step 14", laptop="Secondary")
 
 
 if __name__ == "__main__":
