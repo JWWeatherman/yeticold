@@ -25,6 +25,9 @@ def handle_bad_request(e):
 def redirectroute():
     return redirect('/YCmenu')
 @app.route("/off", methods=['GET', 'POST'])
+def redirectrouteoffimp():
+    v.info = "yetiColdOffImp"
+    return redirect('/YCblockchainB')
 def redirectrouteoff():
     v.info = "yetiColdOff"
     return redirect('/YCblockchainB')
@@ -36,13 +39,17 @@ def redirectrouteoffrec():
 #ON
 @app.route("/YCmenu", methods=['GET', 'POST'])
 def YCmenu():
+    if request.method == 'GET':
+        v.wallet = os.path.exists(home + "/.bitcoin/yetiwalletpub") or os.path.exists(home + "/.bitcoin/wallet/yetiwalletpub")
     if request.method == 'POST':
         if request.form['option'] == 'recovery':
             v.info = "yetiColdRec"
+        elif request.form['option'] == 'wallet':
+            v.info = 'yetiColdImp'
         else:
             v.info = "yetiCold"
         return redirect('/YCblockchain')
-    return render_template('menu.html')
+    return render_template('menu.html', wallet=v.wallet)
 
 @app.route("/blockchain", methods=['GET', 'POST'])
 def blockchain():
@@ -54,13 +61,19 @@ def blockchain():
 @app.route("/openbitcoin", methods=['GET', 'POST'])
 def YCopenbitcoin():
     if v.info == "YetiColdRec":
-        v.route = 'scandescriptorRec'
+        v.route = '/scandescriptorRec'
+    elif v.info == "yetiColdImp":
+        v.route = '/walletDetected'
     else:
-        v.route = 'YCscandescriptor'
+        v.route = '/scandescriptor'
     route = openBitcoin(request, '/openbitcoin', v.route, offline=False, yeti='cold')
     if route:
         return route
     return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=5, switch=True, url=v.url)
+
+@app.route("/walletDetected", methods=['GET', 'POST'])
+def walletDetected():
+    return render_template('walletdetected.html')
 
 
 @app.route("/blockchainOff", methods=['GET', 'POST'])
@@ -85,27 +98,17 @@ def connection():
         subprocess.call(['python3 ~/yeticold/utils/forgetnetworks.py'],shell=True)
         subprocess.call(['nmcli n off'],shell=True)
         if v.info == "YetiColdRec":
-            v.route = 'scandescriptorRec'
+            v.route = '/scandescriptorRec'
+        elif v.info == 'YetiColdOffImp':
+            v.route = '/walletDetectedOff' 
         else:
-            v.route = 'YCscandescriptor'
-        ##replace wallet with the case
-        if wallet:
-            return redirect('/walletDetectedOff')
-        else:
-            return redirect(v.route)
+            v.route = '/getseedsOff'
+            
+        return redirect(v.route)
     return render_template('connection.html', step=8)
 
 @app.route("/walletDetectedOff", methods=['GET', 'POST'])
 def walletDetectedOff():
-    if request.method == 'POST':
-        ## dectected wallet and ask to import
-        if request.form['importWallet']:
-            subprocess.run('sudo rm -r ~/.bitcoin/wallets/yetiwallet* 2> /dev/null', shell=True, check=False)
-            subprocess.run('sudo rm -r ~/.bitcoin/yetiwallet* 2> /dev/null', shell=True, check=False)
-            return redirect(v.route)
-        else:
-            print("import")
-            #import wallet rescan and redirect to yetihosted
     return render_template('walletdetected.html')
 
 #OFF
