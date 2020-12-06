@@ -65,7 +65,7 @@ def YCopenbitcoin():
         v.url = "rec.yeticold.com"
     elif v.info == "yetiColdImp":
         v.route = '/walletDetected'
-        v.url "imp.yeticlod.com"
+        v.url = "imp.yeticlod.com"
     else:
         v.url = "desc.yeticold.com"
         v.route = '/scandescriptor'
