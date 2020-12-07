@@ -180,12 +180,10 @@ def getseedsOff():
 #OFF
 @app.route("/exportdescriptorOff", methods=['GET', 'POST'])
 def exportdescriptorOff():
-    if request.method == 'GET':
-        subprocess.run('sudo rm ~/Documents/Descriptor.txt', shell=True)
-        createOrPrepend(v.pubdesc, home+'/Documents/Descriptor.txt')
-    if request.method == 'POST':
-        return redirect('/displayseedsOff')
-    return render_template('exportdescriptor.html', step=10, instructions="Switch to your Primary laptop currently showing step 5, click next to show step 11", laptop="Primary")
+    route = copyToDrive(request, '/exportdescriptorOff', '/displayseedsOff', v.pubdesc, 'Descriptor.txt')
+    if route:
+        return route
+    return render_template('exportdescriptor.html', nousb=v.nousb, usb=v.usb, copied=v.copied, step=10, instructions="Switch to your Primary laptop currently showing step 5, click next to show step 11", laptop="Primary")
 
 #ON
 @app.route("/scandescriptor", methods=['GET', 'POST'])

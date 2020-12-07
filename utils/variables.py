@@ -37,3 +37,6 @@ psbt = 0
 url = ""
 route = ""
 info = ""
+usb = False
+copied = False
+nousbs = False
