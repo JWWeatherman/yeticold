@@ -37,9 +37,10 @@ def openBitcoin(request, currentroute, nextroute, offline=False, yeti='warmorhot
             return redirect(currentroute)
 
 def copyToDrive(request, currentroute, nextroute, data, filename):
+    data = "TEST"
     if request.method == 'GET':
         subprocess.run('sudo rm -rf ~/yeticold/pre_usb_drive/*', shell=True)
-        createOrPrepend(v.pubdesc, home+'/yeticold/pre_usb_drive/'+filename)
+        createOrPrepend(data, home+'/yeticold/pre_usb_drive/'+filename)
         if os.path.exists('/dev/sdb1'):
             v.usb = True
             subprocess.run('python3 ~/yeticold/utils/copytodrive.py', shell=True) 
