@@ -39,4 +39,4 @@ route = ""
 info = ""
 usb = False
 copied = False
-nousbs = False
+nousb = False
