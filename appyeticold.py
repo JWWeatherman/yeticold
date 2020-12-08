@@ -158,9 +158,11 @@ def scandescriptorRec():
 #ON
 @app.route("/rescanwalletRec", methods=['GET', 'POST'])
 def rescanwalletRec():
-    handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now"}]\'')
-    handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub rescanblockchain '+blockheight())
-    return redirect('/coldwalletguide')
+    if request.method == 'POST':
+        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now"}]\'')
+        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub rescanblockchain '+blockheight())
+        return redirect('/coldwalletguide')
+    return render_template('rescanwallet.html')
 #ON
 @app.route("/coldwalletguide", methods=['GET', 'POST'])
 def coldwalletguide():
