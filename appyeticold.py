@@ -124,7 +124,7 @@ def scandescriptorOffRec():
         response = subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv getdescriptorinfo '+v.pubdesc+'"', shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         if response[1] != b'':
             v.error = 'Invalid Descriptor'
-            redirect('/scandescriptorOffRec')
+            return redirect('/scandescriptorOffRec')
         v.privkeycount = 0
         return redirect('/importseedsOff')
     return render_template('scandescriptor.html', step=9, error=v.error)
