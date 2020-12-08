@@ -123,6 +123,7 @@ def scandescriptorOffRec():
         v.pubdesc = request.form['descriptor'].replace('\n','')
         response = subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv getdescriptorinfo '+v.pubdesc+'"', shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response, "response for function: check descriptor")
+        print(repr(v.pubdesc))
         if response[1] != b'':
             v.error = 'Invalid Descriptor'
             return redirect('/scandescriptorOffRec')
