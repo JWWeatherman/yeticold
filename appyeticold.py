@@ -101,7 +101,7 @@ def connection():
     if request.method == 'POST':
         subprocess.call(['python3 ~/yeticold/utils/forgetnetworks.py'],shell=True)
         subprocess.call(['nmcli n off'],shell=True)
-        if v.info == "YetiColdRec":
+        if v.info == "yetiColdOffRec":
             v.route = '/scandescriptorRec'
         elif v.info == 'YetiColdOffImp':
             v.route = '/walletDetectedOff' 
