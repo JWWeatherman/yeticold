@@ -26,7 +26,7 @@
     </div>
     <script>
       navbar("{{yeti}}", "{{url_for('static', filename='yeti.png')}}");
-      importdescriptor();
+      importdescriptor(parseInt('{{line}}'));
       var enable = () => {
         if (document.getElementById('descriptor').value != "") {
           document.getElementById('next').disabled = false

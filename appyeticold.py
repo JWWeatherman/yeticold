@@ -129,7 +129,7 @@ def scandescriptorOffRec():
             return redirect('/scandescriptorOffRec')
         v.privkeycount = 0
         return redirect('/importseedsOff')
-    return render_template('scandescriptor.html', step=9, error=v.error)
+    return render_template('scandescriptor.html', step=9, error=v.error, line=16)
 
 #OFF
 @app.route('/importseedsOff', methods=['GET', 'POST'])
@@ -156,7 +156,7 @@ def scandescriptorRec():
             v.error = 'Invalid Descriptor'
             redirect('/scandescriptorRec')
         return redirect('/rescanwalletRec')
-    return render_template('scandescriptor.html', step=15, error=v.error)
+    return render_template('scandescriptor.html', step=15, error=v.error, line=16)
 
 #ON
 @app.route("/rescanwalletRec", methods=['GET', 'POST'])
@@ -203,7 +203,7 @@ def scandescriptor():
             redirect('/scandescriptor')
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now", "active": true}]\'')
         return redirect('/printpage')
-    return render_template('scandescriptor.html', step=11, setup=True, error=v.error)
+    return render_template('scandescriptor.html', step=11, setup=True, error=v.error, line=0)
 
 #ON
 @app.route("/printpage", methods=['GET', 'POST'])
