@@ -119,6 +119,3 @@ else:
         subprocess.Popen('python3 ~/yeticold/BCOffline.py', shell=True, start_new_session=True)
         subprocess.run('sleep 3', shell=True, check=False)
         subprocess.run('xdg-open http://localhost:5000/BCblockchainB', shell=True, check=False) 
-    while True:
-        if os.path.exists('/dev/sdc1'):
-            subprocess.run('python3 ~/yeticold/utils/copytodrive.py', shell=True) 
