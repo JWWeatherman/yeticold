@@ -121,7 +121,7 @@ def scandescriptorOffRec():
     if request.method == 'POST':
         v.error = None
         v.pubdesc = request.form['descriptor'].replace('\n','')
-        response = subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv getdescriptorinfo '+v.pubdesc+'"', shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        response = subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv getdescriptorinfo "'+v.pubdesc+'"', shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response, "response for function: check descriptor")
         print(repr(v.pubdesc))
         if response[1] != b'':
@@ -150,7 +150,7 @@ def scandescriptorRec():
     if request.method == 'POST':
         v.error = None
         v.pubdesc = request.form['descriptor'].replace('\n','')
-        response = subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub getdescriptorinfo '+v.pubdesc+'"', shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        response = subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub getdescriptorinfo "'+v.pubdesc+'"', shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response, "response for function: check descriptor")
         if response[1] != b'':
             v.error = 'Invalid Descriptor'
@@ -196,7 +196,7 @@ def scandescriptor():
     if request.method == 'POST':
         v.error = None
         v.pubdesc = request.form['descriptor'].replace('\n','')
-        response = subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub getdescriptorinfo '+v.pubdesc+'"', shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        response = subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub getdescriptorinfo "'+v.pubdesc+'"', shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
         print(response, "response for function: check descriptor")
         if response[1] != b'':
             v.error = 'Invalid Descriptor'
