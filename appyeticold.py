@@ -122,6 +122,7 @@ def scandescriptorOffRec():
         v.error = None
         v.pubdesc = request.form['descriptor']
         response = subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv getdescriptorinfo '+v.pubdesc+'"', shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        print(response, "response for function: check descriptor")
         if response[1] != b'':
             v.error = 'Invalid Descriptor'
             return redirect('/scandescriptorOffRec')
@@ -149,6 +150,7 @@ def scandescriptorRec():
         v.error = None
         v.pubdesc = request.form['descriptor']
         response = subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub getdescriptorinfo '+v.pubdesc+'"', shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        print(response, "response for function: check descriptor")
         if response[1] != b'':
             v.error = 'Invalid Descriptor'
             redirect('/scandescriptorRec')
@@ -194,6 +196,7 @@ def scandescriptor():
         v.error = None
         v.pubdesc = request.form['descriptor']
         response = subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub getdescriptorinfo '+v.pubdesc+'"', shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        print(response, "response for function: check descriptor")
         if response[1] != b'':
             v.error = 'Invalid Descriptor'
             redirect('/scandescriptor')
