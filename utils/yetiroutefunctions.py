@@ -36,20 +36,14 @@ def openBitcoin(request, currentroute, nextroute, offline=False, yeti='warmorhot
         else:
             return redirect(currentroute)
 
-def copyToDrive(request, currentroute, nextroute, data, filename):
-    data = "TEST"
+def exportDescriptor(request, nextroute):
     if request.method == 'GET':
-        subprocess.run('sudo rm -rf ~/yeticold/pre_usb_drive/*', shell=True)
-        createOrPrepend(data, home+'/yeticold/pre_usb_drive/'+filename)
-        if os.path.exists(home+'/yeticold/usb_drive/'+filename):
-            v.copied = True
+        path = home + '/Documents'
+        subprocess.call('rm -r '+path+'/Descriptor.txt', shell=True)
+        createOrPrepend(v.pubdesc, path+'/Descriptor.txt')
     if request.method == 'POST':
-        if v.copied:
-            v.copied = False
-            return redirect(nextroute)
-        else:
-            return redirect(currentroute)
-            
+        return redirect(nextroute)
+
 def getSeeds(request, nextroute):
     if request.method == 'POST':
         if request.form['skip'] == 'skip':

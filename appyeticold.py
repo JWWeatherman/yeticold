@@ -180,10 +180,10 @@ def getseedsOff():
 #OFF
 @app.route("/exportdescriptorOff", methods=['GET', 'POST'])
 def exportdescriptorOff():
-    route = copyToDrive(request, '/exportdescriptorOff', '/displayseedsOff', v.pubdesc, 'Descriptor.txt')
+    route = exportDescripto(request, '/displayseedsOff')
     if route:
         return route
-    return render_template('exportdescriptor.html', nousb=v.nousb, usb=v.usb, copied=v.copied, step=10, instructions="Switch to your Primary laptop currently showing step 5, click next to show step 11", laptop="Primary")
+    return render_template('exportdescriptor.html', step=10, instructions="Switch to your Primary laptop currently showing step 5, click next to show step 11", laptop="Primary")
 
 #ON
 @app.route("/scandescriptor", methods=['GET', 'POST'])
