@@ -91,7 +91,6 @@ def displaySeeds(request, currentroute, nextroute):
         file = file + 'Two other seed packets must be obtained to recover the bitcoin stored.\n'
         file = file + 'YetiCold.com recommends storing seed words in locations like safety deposit boxes, home safes, and with professionals such as accountants and lawyers.\n'
         createOrPrepend(file, path+'/yetiseed'+str(v.privkeycount + 1)+'/yetiseed'+str(v.privkeycount + 1)+'.txt')
-        makeQrCode(v.pubdesc, home+'/Documents/yetiseed'+str(v.privkeycount+1)+'/descriptor.png')
         v.privkeycount = v.privkeycount + 1
         if (v.privkeycount == 7):
             v.privkeycount = 0
