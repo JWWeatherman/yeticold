@@ -102,7 +102,7 @@ def connection():
         subprocess.call(['python3 ~/yeticold/utils/forgetnetworks.py'],shell=True)
         subprocess.call(['nmcli n off'],shell=True)
         if v.info == "yetiColdOffRec":
-            v.route = '/scandescriptorRec'
+            v.route = '/scandescriptorOffRec'
         elif v.info == 'YetiColdOffImp':
             v.route = '/walletDetectedOff' 
         else:
@@ -148,7 +148,7 @@ def scandescriptorRec():
     if request.method == 'POST':
         v.error = None
         v.pubdesc = request.form['descriptor']
-        response = subprocess.run('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv getdescriptorinfo '+desc+'"', shell=True)
+        response = subprocess.run('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv getdescriptorinfo '+v.pubdesc+'"', shell=True)
         if response[1] != b'':
             v.error = 'Invalid Descriptor'
             redirect('/scandescriptorRec')
@@ -191,7 +191,7 @@ def scandescriptor():
     if request.method == 'POST':
         v.error = None
         v.pubdesc = request.form['descriptor']
-        response = subprocess.run('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv getdescriptorinfo '+desc+'"', shell=True)
+        response = subprocess.run('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv getdescriptorinfo '+v.pubdesc+'"', shell=True)
         if response[1] != b'':
             v.error = 'Invalid Descriptor'
             redirect('/scandescriptor')
