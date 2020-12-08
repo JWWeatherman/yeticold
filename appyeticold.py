@@ -180,7 +180,7 @@ def getseedsOff():
 #OFF
 @app.route("/exportdescriptorOff", methods=['GET', 'POST'])
 def exportdescriptorOff():
-    route = exportDescripto(request, '/displayseedsOff')
+    route = exportDescriptor(request, '/displayseedsOff')
     if route:
         return route
     return render_template('exportdescriptor.html', step=10, instructions="Switch to your Primary laptop currently showing step 5, click next to show step 11", laptop="Primary")
