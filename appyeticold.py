@@ -51,7 +51,7 @@ def menu():
             subprocess.run('rm -r ~/.bitcoin/wallets/yetiwallet* 2> /dev/null', shell=True, check=False)
         elif request.form['option'] == 'wallet':
             v.info = 'yetiColdImp'
-            v.route = '/walletDetected'
+            v.route = '/rescanwalletImp'
             v.url = "imp.yeticlod.com"
         else:
             v.info = "yetiCold"
@@ -76,11 +76,13 @@ def YCopenbitcoin():
         return route
     return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=5, switch=True, url=v.url)
 
-@app.route("/walletDetected", methods=['GET', 'POST'])
-def walletDetected():
-    subprocess.run('~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetiwalletpub"')
-    return render_template('walletdetected.html')
-
+@app.route("/rescanwalletImp", methods=['GET', 'POST'])
+def rescanwalletImp():
+    if request.method == 'POST':
+        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now"}]\'')
+        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub rescanblockchain '+blockheight())
+        return redirect('/coldwalletguide')
+    return render_template('rescanwallet.html')
 
 @app.route("/blockchainOff", methods=['GET', 'POST'])
 def blockchainOff():
@@ -95,7 +97,7 @@ def openbitcoinOff():
     if v.info == "yetiColdOffRec":
         v.route = '/scandescriptorOffRec'
     elif v.info == 'YetiColdOffImp':
-        v.route = '/walletDetectedOff' 
+        v.route = '/switchlaptopOffImp' 
     else:
         v.route = '/getseedsOff'
     route = openBitcoin(request, '/openbitcoinOff', '/connectionOff', v.info, offline=True)
@@ -112,10 +114,9 @@ def connection():
         return redirect(v.route)
     return render_template('connection.html', step=8)
 
-@app.route("/walletDetectedOff", methods=['GET', 'POST'])
-def walletDetectedOff():
-    subprocess.run('~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetiwalletpriv"')
-    return render_template('walletdetected.html')
+@app.route("/switchlaptopOffImp", methods=['GET', 'POST'])
+def switchlaptopOffImp():
+    return render_template('switchlaptop.html', step=14, instructions="Switch to your Primary laptop currently Showing step 5. Click next to show step 15.", laptop="Primary")
 
 #OFF
 @app.route("/scandescriptorOffRec", methods=['GET', 'POST'])
