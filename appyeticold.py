@@ -71,7 +71,7 @@ def blockchain():
 
 @app.route("/openbitcoin", methods=['GET', 'POST'])
 def YCopenbitcoin():
-    route = openBitcoin(request, '/openbitcoin', v.route, offline=False, yeti='cold')
+    route = openBitcoin(request, '/openbitcoin', v.route, v.info, offline=False, yeti='cold')
     if route:
         return route
     return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=5, switch=True, url=v.url)
@@ -98,7 +98,7 @@ def openbitcoinOff():
         v.route = '/walletDetectedOff' 
     else:
         v.route = '/getseedsOff'
-    route = openBitcoin(request, '/openbitcoinOff', '/connectionOff', offline=True)
+    route = openBitcoin(request, '/openbitcoinOff', '/connectionOff', v.info, offline=True)
     if route:
         return route
     return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=7)
