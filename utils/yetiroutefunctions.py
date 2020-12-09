@@ -28,6 +28,7 @@ def openBitcoin(request, currentroute, nextroute, info, offline=False, yeti='war
             v.IBD = True
     if request.method == 'POST':
         if v.IBD:
+            print(info)
             if info != 'yetiColdImp' or info != 'yetiColdOffImp':
                 if yeti == 'cold' and not offline:
                     handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpub" true true "" false true')     
