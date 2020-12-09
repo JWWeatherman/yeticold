@@ -78,6 +78,7 @@ def YCopenbitcoin():
 
 @app.route("/walletDetected", methods=['GET', 'POST'])
 def walletDetected():
+    subprocess.run('~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetiwalletpub"')
     return render_template('walletdetected.html')
 
 
@@ -113,6 +114,7 @@ def connection():
 
 @app.route("/walletDetectedOff", methods=['GET', 'POST'])
 def walletDetectedOff():
+    subprocess.run('~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetiwalletpriv"')
     return render_template('walletdetected.html')
 
 #OFF
