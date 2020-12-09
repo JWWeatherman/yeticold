@@ -588,6 +588,7 @@ var CheckSumMatch = (passphraselist, checksum) => {
  }
 
 var importdescriptor = (line) => {
+  console.log(line)
    let file = document.getElementById("filepath").files[0]
    if (file != undefined) {
      let reader = new FileReader();
@@ -595,7 +596,6 @@ var importdescriptor = (line) => {
      reader.onload = function(evt) {
         let list = evt.target.result.toString().split('\n')
         console.log(list)
-        console.log(line)
         document.getElementById('descriptor').value = list[line]
      }
      reader.readAsText(file);
