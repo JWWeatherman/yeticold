@@ -595,6 +595,7 @@ var importdescriptor = (line) => {
      reader.onload = function(evt) {
         let list = evt.target.result.toString().split('\n')
         console.log(list)
+        console.log(line)
         document.getElementById('descriptor').value = list[line]
      }
      reader.readAsText(file);
