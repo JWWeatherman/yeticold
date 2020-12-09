@@ -588,19 +588,17 @@ var CheckSumMatch = (passphraselist, checksum) => {
  }
 
 var importdescriptor = (line) => {
-  console.log(line)
    let file = document.getElementById("filepath").files[0]
    if (file != undefined) {
      let reader = new FileReader();
      document.getElementById('filepath').value = ""
      reader.onload = function(evt) {
         let list = evt.target.result.toString().split('\n')
-        console.log(list)
         document.getElementById('descriptor').value = list[line]
      }
      reader.readAsText(file);
    }
-   setTimeout(() => { importdescriptor() }, 80)
+   setTimeout(() => { importdescriptor(line) }, 80)
  }
 
  var highlightBin = () => {
