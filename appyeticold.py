@@ -45,12 +45,18 @@ def menu():
     if request.method == 'POST':
         if request.form['option'] == 'recovery':
             v.info = "yetiColdRec"
+            v.route = '/scandescriptorRec'
+            v.url = "rec.yeticold.com"
             subprocess.run('rm -r ~/.bitcoin/yetiwallet* 2> /dev/null', shell=True, check=False)
             subprocess.run('rm -r ~/.bitcoin/wallets/yetiwallet* 2> /dev/null', shell=True, check=False)
         elif request.form['option'] == 'wallet':
             v.info = 'yetiColdImp'
+            v.route = '/walletDetected'
+            v.url = "imp.yeticlod.com"
         else:
             v.info = "yetiCold"
+            v.url = "desc.yeticold.com"
+            v.route = '/scandescriptor'
             subprocess.run('rm -r ~/.bitcoin/yetiwallet* 2> /dev/null', shell=True, check=False)
             subprocess.run('rm -r ~/.bitcoin/wallets/yetiwallet* 2> /dev/null', shell=True, check=False)
         return redirect('/blockchain')
@@ -65,16 +71,6 @@ def blockchain():
 
 @app.route("/openbitcoin", methods=['GET', 'POST'])
 def YCopenbitcoin():
-    if v.info == "YetiColdRec":
-        v.route = '/scandescriptorRec'
-        v.url = "rec.yeticold.com"
-        
-    elif v.info == "yetiColdImp":
-        v.route = '/walletDetected'
-        v.url = "imp.yeticlod.com"
-    else:
-        v.url = "desc.yeticold.com"
-        v.route = '/scandescriptor'
     route = openBitcoin(request, '/openbitcoin', v.route, offline=False, yeti='cold')
     if route:
         return route
