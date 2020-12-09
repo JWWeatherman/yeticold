@@ -39,7 +39,6 @@ def openBitcoin(request, currentroute, nextroute, offline=False, yeti='warmorhot
 def exportDescriptor(request, nextroute):
     if request.method == 'GET':
         path = home + '/Documents'
-        subprocess.call('rm -r '+path+'/Descriptor.txt', shell=True)
         createOrPrepend(v.pubdesc, path+'/Descriptor.txt')
     if request.method == 'POST':
         return redirect(nextroute)
