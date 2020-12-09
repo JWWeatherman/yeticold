@@ -49,8 +49,6 @@ else:
     subprocess.run('sleep 3', shell=True, check=False)
     subprocess.Popen('firefox', shell=True, start_new_session=True)
     subprocess.run('sudo rm -r ~/yetiwallet* 2> /dev/null', shell=True, check=False)
-    subprocess.call('rm -r '+HOME+'/Documents/Descriptor.txt 2> /dev/null', shell=True)
-    subprocess.call('rm -r '+HOME+'/Documents/yetiseed* 2> /dev/null', shell=True)
     # Finalize script based on processing mode
     if sys.argv[1].lower() == 'yeticoldprimary':
         print('********************')
@@ -64,6 +62,8 @@ else:
         print('********************')
         print('Running YetiCold Create Wallet on Secondary PC')
         print('********************' + os.linesep)
+        subprocess.call('rm -r '+HOME+'/Documents/yetiseed* 2> /dev/null', shell=True)
+        subprocess.call('rm -r '+HOME+'/Documents/Descriptor.txt 2> /dev/null', shell=True)
         subprocess.run('sudo rm -r ~/.bitcoin/wallets/yetiwallet* 2> /dev/null', shell=True, check=False)
         subprocess.run('sudo rm -r ~/.bitcoin/yetiwallet* 2> /dev/null', shell=True, check=False)
         subprocess.run('sudo rm -r ~/yetiwallet* 2> /dev/null', shell=True, check=False)

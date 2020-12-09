@@ -243,12 +243,12 @@ def checkseedsOff():
 @app.route("/copyseedsOff", methods=['GET', 'POST'])
 def copyseedsOff():
     if request.method == 'POST':
-        return redirect('/coldwalletguide')
+        return redirect('/switchlaptopOff')
     return render_template('copyseeds.html', step=26)
 
 @app.route("/switchlaptopOff", methods=['GET', 'POST'])
 def switchlaptopOff():
-    return render_template('switchlaptop.html', step=13, instructions="Switch to your Secondary laptop currently showing step 10, click next to show step 14", laptop="Secondary")
+    return render_template('switchlaptop.html', step=13, instructions="Switch to your Primary laptop currently showing step 13, click next to show your cold wallet guide", laptop="Secondary")
 
 
 if __name__ == "__main__":
