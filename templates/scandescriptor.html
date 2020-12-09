@@ -15,6 +15,7 @@
         <p style="color:red;">{{ error }}</p>
       {% endif %}
       <input id="filepath" type="file" name="path">
+      <input style="display:none;" id="line" value="{{line}}">
       <form autocomplete="off" action="" method="post" style="border: solid #f8f9fa;padding: 1.5rem;">
         <div class="form-row">
           <div class="input-group col-md-10 mb-3">
@@ -26,7 +27,7 @@
     </div>
     <script>
       navbar("{{yeti}}", "{{url_for('static', filename='yeti.png')}}");
-      importdescriptor(parseInt('{{line}}'));
+      importdescriptor(parseInt(document.getElementById('line')));
       var enable = () => {
         if (document.getElementById('descriptor').value != "") {
           document.getElementById('next').disabled = false
