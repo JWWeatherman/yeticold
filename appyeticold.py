@@ -31,10 +31,14 @@ def redirectrouteoffimp():
 @app.route("/off", methods=['GET', 'POST'])
 def redirectrouteoff():
     v.info = "yetiColdOff"
+    subprocess.run('sudo rm -r ~/.bitcoin/yetiwallet* 2> /dev/null', shell=True, check=False)
+    subprocess.run('sudo rm -r ~/.bitcoin/wallets/yetiwallet* 2> /dev/null', shell=True, check=False)
     return redirect('/blockchainOff')
 @app.route("/offrec", methods=['GET', 'POST'])
 def redirectrouteoffrec():
     v.info = "yetiColdOffRec"
+    subprocess.run('sudo rm -r ~/.bitcoin/yetiwallet* 2> /dev/null', shell=True, check=False)
+    subprocess.run('sudo rm -r ~/.bitcoin/wallets/yetiwallet* 2> /dev/null', shell=True, check=False)
     return redirect('/blockchainOff')
 
 #ON
@@ -45,10 +49,14 @@ def menu():
     if request.method == 'POST':
         if request.form['option'] == 'recovery':
             v.info = "yetiColdRec"
+            subprocess.run('sudo rm -r ~/.bitcoin/yetiwallet* 2> /dev/null', shell=True, check=False)
+            subprocess.run('sudo rm -r ~/.bitcoin/wallets/yetiwallet* 2> /dev/null', shell=True, check=False)
         elif request.form['option'] == 'wallet':
             v.info = 'yetiColdImp'
         else:
             v.info = "yetiCold"
+            subprocess.run('sudo rm -r ~/.bitcoin/yetiwallet* 2> /dev/null', shell=True, check=False)
+            subprocess.run('sudo rm -r ~/.bitcoin/wallets/yetiwallet* 2> /dev/null', shell=True, check=False)
         return redirect('/blockchain')
     return render_template('menu.html', wallet=v.wallet)
 
@@ -64,16 +72,13 @@ def YCopenbitcoin():
     if v.info == "YetiColdRec":
         v.route = '/scandescriptorRec'
         v.url = "rec.yeticold.com"
-        subprocess.run('sudo rm -r ~/.bitcoin/yetiwallet* 2> /dev/null', shell=True, check=False)
-        subprocess.run('sudo rm -r ~/.bitcoin/wallets/yetiwallet* 2> /dev/null', shell=True, check=False)
+        
     elif v.info == "yetiColdImp":
         v.route = '/walletDetected'
         v.url = "imp.yeticlod.com"
     else:
         v.url = "desc.yeticold.com"
         v.route = '/scandescriptor'
-        subprocess.run('sudo rm -r ~/.bitcoin/yetiwallet* 2> /dev/null', shell=True, check=False)
-        subprocess.run('sudo rm -r ~/.bitcoin/wallets/yetiwallet* 2> /dev/null', shell=True, check=False)
     route = openBitcoin(request, '/openbitcoin', v.route, offline=False, yeti='cold')
     if route:
         return route
@@ -94,6 +99,12 @@ def blockchainOff():
 #OFF
 @app.route("/openbitcoinOff", methods=['GET', 'POST'])
 def openbitcoinOff():
+    if v.info == "yetiColdOffRec":
+        v.route = '/scandescriptorOffRec'
+    elif v.info == 'YetiColdOffImp':
+        v.route = '/walletDetectedOff' 
+    else:
+        v.route = '/getseedsOff'
     route = openBitcoin(request, '/openbitcoinOff', '/connectionOff', offline=True)
     if route:
         return route
@@ -105,17 +116,6 @@ def connection():
     if request.method == 'POST':
         subprocess.call(['python3 ~/yeticold/utils/forgetnetworks.py'],shell=True)
         subprocess.call(['nmcli n off'],shell=True)
-        if v.info == "yetiColdOffRec":
-            v.route = '/scandescriptorOffRec'
-            subprocess.run('sudo rm -r ~/.bitcoin/yetiwallet* 2> /dev/null', shell=True, check=False)
-            subprocess.run('sudo rm -r ~/.bitcoin/wallets/yetiwallet* 2> /dev/null', shell=True, check=False)
-        elif v.info == 'YetiColdOffImp':
-            v.route = '/walletDetectedOff' 
-        else:
-            v.route = '/getseedsOff'
-            subprocess.run('sudo rm -r ~/.bitcoin/yetiwallet* 2> /dev/null', shell=True, check=False)
-            subprocess.run('sudo rm -r ~/.bitcoin/wallets/yetiwallet* 2> /dev/null', shell=True, check=False)
-            
         return redirect(v.route)
     return render_template('connection.html', step=8)
 
