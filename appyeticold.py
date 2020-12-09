@@ -64,12 +64,16 @@ def YCopenbitcoin():
     if v.info == "YetiColdRec":
         v.route = '/scandescriptorRec'
         v.url = "rec.yeticold.com"
+        subprocess.run('sudo rm -r ~/.bitcoin/yetiwallet* 2> /dev/null', shell=True, check=False)
+        subprocess.run('sudo rm -r ~/.bitcoin/wallets/yetiwallet* 2> /dev/null', shell=True, check=False)
     elif v.info == "yetiColdImp":
         v.route = '/walletDetected'
         v.url = "imp.yeticlod.com"
     else:
         v.url = "desc.yeticold.com"
         v.route = '/scandescriptor'
+        subprocess.run('sudo rm -r ~/.bitcoin/yetiwallet* 2> /dev/null', shell=True, check=False)
+        subprocess.run('sudo rm -r ~/.bitcoin/wallets/yetiwallet* 2> /dev/null', shell=True, check=False)
     route = openBitcoin(request, '/openbitcoin', v.route, offline=False, yeti='cold')
     if route:
         return route
@@ -103,10 +107,14 @@ def connection():
         subprocess.call(['nmcli n off'],shell=True)
         if v.info == "yetiColdOffRec":
             v.route = '/scandescriptorOffRec'
+            subprocess.run('sudo rm -r ~/.bitcoin/yetiwallet* 2> /dev/null', shell=True, check=False)
+            subprocess.run('sudo rm -r ~/.bitcoin/wallets/yetiwallet* 2> /dev/null', shell=True, check=False)
         elif v.info == 'YetiColdOffImp':
             v.route = '/walletDetectedOff' 
         else:
             v.route = '/getseedsOff'
+            subprocess.run('sudo rm -r ~/.bitcoin/yetiwallet* 2> /dev/null', shell=True, check=False)
+            subprocess.run('sudo rm -r ~/.bitcoin/wallets/yetiwallet* 2> /dev/null', shell=True, check=False)
             
         return redirect(v.route)
     return render_template('connection.html', step=8)
