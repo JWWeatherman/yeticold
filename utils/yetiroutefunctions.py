@@ -30,9 +30,9 @@ def openBitcoin(request, currentroute, nextroute, info, offline=False, yeti='war
         if v.IBD:
             if info == 'yetiColdImp' or info == 'yetiColdOffImp':
                 if yeti == 'cold' and not offline:
-                    subprocess.run('~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetiwalletpub"')
+                    handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetiwalletpub"')
                 else:
-                    subprocess.run('~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetiwalletpriv"')
+                    handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetiwalletpriv"')
             else:
                 if yeti == 'cold' and not offline:
                     handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpub" true true "" false true')     
