@@ -96,7 +96,7 @@ def blockchainOff():
 def openbitcoinOff():
     if v.info == "yetiColdOffRec":
         v.route = '/scandescriptorOffRec'
-    elif v.info == 'YetiColdOffImp':
+    elif v.info == 'yetiColdOffImp':
         v.route = '/switchlaptopOffImp' 
     else:
         v.route = '/getseedsOff'
