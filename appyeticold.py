@@ -52,7 +52,7 @@ def menu():
         elif request.form['option'] == 'wallet':
             v.info = 'yetiColdImp'
             v.route = '/rescanwalletImp'
-            v.url = "imp.yeticlod.com"
+            v.url = "loa.yeticlod.com"
         else:
             v.info = "yetiCold"
             v.url = "desc.yeticold.com"
@@ -79,7 +79,6 @@ def YCopenbitcoin():
 @app.route("/rescanwalletImp", methods=['GET', 'POST'])
 def rescanwalletImp():
     if request.method == 'POST':
-        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now"}]\'')
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub rescanblockchain '+blockheight())
         return redirect('/coldwalletguide')
     return render_template('rescanwallet.html')
