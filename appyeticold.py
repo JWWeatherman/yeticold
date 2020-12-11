@@ -173,7 +173,7 @@ def rescanwalletRec():
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now"}]\'')
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub rescanblockchain '+blockheight())
         return redirect('/coldwalletguide')
-    return render_template('rescanwallet.html')
+    return render_template('rescanwallet.html',step=16)
 #ON
 @app.route("/coldwalletguide", methods=['GET', 'POST'])
 def coldwalletguide():
