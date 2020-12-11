@@ -49,7 +49,12 @@ else:
     subprocess.run('sleep 3', shell=True, check=False)
     subprocess.Popen('firefox', shell=True, start_new_session=True)
     subprocess.run('sudo rm -r ~/yetiwallet* 2> /dev/null', shell=True, check=False)
+    subprocess.run('sudo rm -r ~/.bitcoin/yetiwalletrec 2> /dev/null', shell=True, check=False)
+    subprocess.run('sudo rm -r ~/.bitcoin/wallets/yetiwalletrec 2> /dev/null', shell=True, check=False)
+    subprocess.run('sudo rm -r ~/.bitcoin/yetiwalletgen 2> /dev/null', shell=True, check=False)
+    subprocess.run('sudo rm -r ~/.bitcoin/wallets/yetiwalletgen 2> /dev/null', shell=True, check=False)
     # Finalize script based on processing mode
+
     if sys.argv[1].lower() == 'yeticoldprimary':
         print('********************')
         print('Running YetiCold on Primary PC')
