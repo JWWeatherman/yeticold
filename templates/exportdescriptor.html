@@ -12,12 +12,15 @@
         <h3 style="color:white;margin:0;">Yeti Bitcoin Cold Storage</h3>
     </nav>
     <div class="container" style="margin-top: 3rem;">
-      <h2>Step {{step}}: Switch to your <b>Primary</b> laptop.</h2>
+      <h2>Step {{step}}: Copy the Descriptor to your <b>Primary</b> laptop.</h2>
       <ol>
-          <li>Insert the file usb drive to laptop.</li>
-          <li>Remove the USB drive and place it with one of your paper seed packets.</li>
+          <li>Insert the usb drive labled "Transfer" to laptop.</li>
+          <li>Delete all visable files in the USB drive.</li>
+          <li>Copy the file labled <b>Descriptor.txt</b> to the inserted USB drive.</li>
+          <li>Eject the USB drive.</li>
           <li>{{instructions}}.</li>
         <p></p>
+      </ol>
       <form action="" method="post" style="margin-top:35px;">
         <input style="display: none;" name="option" value="VALUE">
         <input class="btn btn-primary" type="submit" id="next" value="Next">

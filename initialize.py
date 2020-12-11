@@ -8,7 +8,7 @@ import sys
 import subprocess
 
 # Define constant input argument for valid processing modes
-VALIDMODES = ['YetiColdPrimary', 'YetiColdSecondaryCreate', 'YetiColdSecondaryRecover', 'YetiHot', 'YetiWarm', 'BitcoinCoreOfflinePrimary', 'BitcoinCoreOfflineSecondary', 'YetiColdSecondaryImport']
+VALIDMODES = ['YetiColdPrimary', 'YetiColdSecondaryCreate', 'YetiColdSecondaryRecover', 'YetiHot', 'YetiWarm', 'BitcoinCoreOfflinePrimary', 'BitcoinCoreOfflineSecondary', 'YeticoldSecondaryLoad']
 
 # Check for number of input arguments and whether arguments are valid
 if len(sys.argv) == 1 or sys.argv[1].lower() not in [x.lower() for x in VALIDMODES]:
@@ -87,7 +87,7 @@ else:
         subprocess.run('sleep 3', shell=True, check=False)
         subprocess.run('xdg-open http://localhost:5000/offrec', shell=True, check=False)
 
-    elif sys.argv[1].lower() == 'yeticoldsecondaryimport':
+    elif sys.argv[1].lower() == 'yeticoldsecondaryload':
         print('********************')
         print('Running YetiCold Import Wallet on Secondary PC')
         print('********************' + os.linesep)

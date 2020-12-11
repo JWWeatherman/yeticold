@@ -14,6 +14,13 @@
       {% if error %}
         <p style="color:red;">{{ error }}</p>
       {% endif %}
+      <ol>
+          <li>Insert the usb drive labled "Transfer" to laptop.</li>
+          <li>Click the Browse button and select the <b>Descriptor.txt</b> from the usb drive.</li>
+          <li>After selecting the <b>Descriptor.txt</b> the text box should display a descriptor starting with the characters <b>"wsh"</b>.</li>
+          <li>Click the <b>Next</b> button.</li>
+        <p></p>
+      </ol>
       <input id="filepath" type="file" name="path">
       <input style="display:none;" id="line" value="{{line}}">
       <form autocomplete="off" action="" method="post" style="border: solid #f8f9fa;padding: 1.5rem;">

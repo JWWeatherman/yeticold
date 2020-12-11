@@ -71,17 +71,21 @@ def blockchain():
 
 @app.route("/openbitcoin", methods=['GET', 'POST'])
 def YCopenbitcoin():
+    if v.info == 'yetiColdImp':
+        step = 1
+    else:
+        step = 5
     route = openBitcoin(request, '/openbitcoin', v.route, v.info, offline=False, yeti='cold')
     if route:
         return route
-    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=5, switch=True, url=v.url)
+    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=step, switch=True, url=v.url)
 
 @app.route("/rescanwalletImp", methods=['GET', 'POST'])
 def rescanwalletImp():
     if request.method == 'POST':
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub rescanblockchain '+blockheight())
         return redirect('/coldwalletguide')
-    return render_template('rescanwallet.html')
+    return render_template('rescanwallet.html',step=6)
 
 @app.route("/blockchainOff", methods=['GET', 'POST'])
 def blockchainOff():
@@ -93,16 +97,18 @@ def blockchainOff():
 #OFF
 @app.route("/openbitcoinOff", methods=['GET', 'POST'])
 def openbitcoinOff():
+    v.step = 7
     if v.info == "yetiColdOffRec":
         v.route = '/scandescriptorOffRec'
     elif v.info == 'yetiColdOffImp':
         v.route = '/switchlaptopOffImp' 
+        v.step = 3
     else:
         v.route = '/getseedsOff'
     route = openBitcoin(request, '/openbitcoinOff', '/connectionOff', v.info, offline=True)
     if route:
         return route
-    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=7)
+    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=v.step)
 
 #OFF
 @app.route("/connectionOff", methods=['GET', 'POST'])
@@ -111,11 +117,11 @@ def connection():
         subprocess.call(['python3 ~/yeticold/utils/forgetnetworks.py'],shell=True)
         subprocess.call(['nmcli n off'],shell=True)
         return redirect(v.route)
-    return render_template('connection.html', step=8)
+    return render_template('connection.html', step=v.step+1)
 
 @app.route("/switchlaptopOffImp", methods=['GET', 'POST'])
 def switchlaptopOffImp():
-    return render_template('switchlaptop.html', step=14, instructions="Switch to your Primary laptop currently Showing step 5. Click next to show step 15.", laptop="Primary")
+    return render_template('switchlaptop.html', step=5, instructions="Switch to your Primary laptop currently Showing step 1. Click next to show step 6.", laptop="Primary")
 
 #OFF
 @app.route("/scandescriptorOffRec", methods=['GET', 'POST'])
@@ -235,18 +241,18 @@ def checkseedsOff():
     route = checkSeeds(request, '/checkseedsOff', '/copyseedsOff')
     if route:
         return route
-    return render_template('checkseeds.html', x=v.privkeycount + 1, error=v.error,step=20+v.privkeycount,oldkeys=v.oldkeys)
+    return render_template('checkseeds.html', x=v.privkeycount + 1, error=v.error,step=21+v.privkeycount,oldkeys=v.oldkeys)
 
 #OFF
 @app.route("/copyseedsOff", methods=['GET', 'POST'])
 def copyseedsOff():
     if request.method == 'POST':
         return redirect('/switchlaptopOff')
-    return render_template('copyseeds.html', step=26)
+    return render_template('copyseeds.html', step=27)
 
 @app.route("/switchlaptopOff", methods=['GET', 'POST'])
 def switchlaptopOff():
-    return render_template('switchlaptop.html', step=13, instructions="Switch to your Primary laptop currently showing step 13, click next to show your cold wallet guide", laptop="Secondary")
+    return render_template('switchlaptop.html', step=28, instructions="Switch to your Primary laptop currently showing step 13, click next to show your cold wallet guide", laptop="Secondary")
 
 
 if __name__ == "__main__":
