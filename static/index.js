@@ -1,14 +1,12 @@
 var navbar = (yeti='cold', url) => {
-  if (yeti == 'cold') {
-    document.getElementById('navbar').innerHTML = '<nav class="form-row navbar navbar-light bg-primary"><img src="'+url+'" width="50" height="50" class="align-top" alt=""><h3 style="color:black;margin:0;">Yeti Bitcoin Cold Storage</h3></nav>';
-  } else if (yeti == 'warm') {
+  if (yeti == 'warm') {
     document.getElementById('navbar').innerHTML = '<nav class="form-row navbar navbar-light bg-warning"><img src="'+url+'" width="50" height="50" class="align-top" alt=""><h3 style="color:black;margin:0;">Yeti Bitcoin Warm Storage</h3></nav>';
   } else if (yeti == 'hot') {
     document.getElementById('navbar').innerHTML = '<nav class="form-row navbar navbar-light bg-danger"><img src="'+url+'" width="50" height="50" class="align-top" alt=""><h3 style="color:black;margin:0;">Yeti Bitcoin Hot Storage</h3></nav>';
   } else if (yeti == 'BCO') {
     document.getElementById('navbar').innerHTML = '<nav class="form-row navbar navbar-light bg-info"><img src="'+url+'" width="50" height="50" class="align-top" alt=""><h3 style="color:black;margin:0;">Bitcoin Core Offline</h3></nav>';
   } else {
-    document.getElementById('navbar').innerHTML = '<nav class="form-row navbar navbar-light bg-primary"><img src="'+url+'" width="50" height="50" class="align-top" alt=""><h3 style="color:black;margin:0;">Yeti Bitcoin Cold Storage</h3></nav>';
+    document.getElementById('navbar').innerHTML = '<nav class="form-row navbar navbar-light bg-primary"><img src="'+url+'" width="50" height="50" class="align-top" alt=""><h3 style="color:white;margin:0;">Yeti Bitcoin Cold Storage</h3></nav>';
   }
 }
 
