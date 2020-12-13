@@ -44,7 +44,7 @@ def YWmenu():
             subprocess.run('rm -r ~/.bitcoin/wallets/yetiwallet* 2> /dev/null', shell=True, check=False)
             v.route = '/YWgetseeds'
         return redirect('/YWblockchain')
-    return render_template('menu.html', yeti='warm')
+    return render_template('menu.html', yeti='warm', wallet=v.wallet)
 
 @app.route("/YWblockchain", methods=['GET', 'POST'])
 def YWblockchain():
