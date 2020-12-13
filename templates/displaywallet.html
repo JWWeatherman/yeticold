@@ -13,16 +13,6 @@
       <h2>Use Bitcoin Core to Send and Recieve Bitcoin.</h2>
       <div>Bitcoin core has been setup and you can it to send and recive.</div>
       <p>Warning: If the blockchain was generated before bitcoin 0.21 you might have a default wallet it bitcoin core in theh top corner select <b>YetiWalletPriv</b> from the drop down.</p>
-      <form action="" method="post" style="margin-top:35px;">
-        <input style="display: none;" name="option" value="scanqrcode">
-        <input class="btn btn-primary" type="submit" id="next" value="Scan a bitcoin address for copy and paste">
-      </form>
-      {%if error%}
-      <div style="color:red;">{{error}}</div>
-      {%endif%}
-      {%if qrdata%}
-      <div>{{qrdata}}</div>
-      {%endif%}
     </div>
   </body>
 </html>
