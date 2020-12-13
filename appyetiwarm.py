@@ -117,7 +117,7 @@ def YWRimportseeds():
 @app.route("/YWRrescanwallet", methods=['GET', 'POST'])
 def YWRrescanwallet():
     if request.method == 'POST':
-        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub rescanblockchain '+blockheight())
+        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv rescanblockchain '+blockheight())
         return redirect('/YWRdisplaywallet')
     return render_template('rescanwallet.html', yeti='warm', step=16)
 
