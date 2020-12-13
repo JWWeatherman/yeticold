@@ -28,7 +28,7 @@ def redirectroute():
 @app.route("/YHmenu", methods=['GET', 'POST'])
 def YHmenu():
     if request.method == 'GET':
-        v.wallet = os.path.exists(home + "/.bitcoin/yetiwalletpriv") or os.path.exists(home + "/.bitcoin/wallet/yetiwalletpriv")
+        v.wallet = os.path.exists(home + "/.bitcoin/yetiwallethot") or os.path.exists(home + "/.bitcoin/wallet/yetiwallethotyetiwallethot")
     if request.method == 'POST':
         if request.form['option'] == 'recovery':
             subprocess.run('rm -r ~/.bitcoin/yetiwallet* 2> /dev/null', shell=True, check=False)
@@ -54,7 +54,7 @@ def YHblockchain():
 
 @app.route("/YHopenbitcoin", methods=['GET', 'POST'])
 def YHopenbitcoin():
-    route = openBitcoin(request, '/YHopenbitcoin', v.route, loadwallet=v.loadwallet)
+    route = openBitcoin(request, '/YHopenbitcoin', v.route, loadwallet=v.loadwallet, yeti='hot')
     if route:
         return route
     return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=5, yeti="hot")
@@ -72,7 +72,7 @@ def YHgetseed():
         newprivkey =  handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletgen dumpprivkey '+adr)
         binary = bin(decode58(newprivkey))[ 2:][8:-40]
         v.privkey = ConvertToWIF(xor(binary,newbinary))
-        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv sethdseed true "'+v.privkey+'"')
+        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallethot sethdseed true "'+v.privkey+'"')
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli unloadwallet "yetiwalletgen"')
         return redirect('/YHdisplayseed')
     return render_template('getseed.html', yeti="hot", step=6)
@@ -138,14 +138,14 @@ def YHRinputseed():
             privkey.append(inputlist[2])
             privkey.append(inputlist[3])
         v.privkey = PassphraseListToWIF(privkey)
-        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv sethdseed true "'+v.privkey+'"')
+        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallethot sethdseed true "'+v.privkey+'"')
         return redirect('/YHRrescanwallet')
     return render_template('importseeds.html', x=1, error=v.error, yeti="hot", step=6)
 
 @app.route("/YHRrescanwallet", methods=['GET', 'POST'])
 def YHRrescanwallet():
     if request.method == 'POST':
-        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv rescanblockchain '+blockheight())
+        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallethot rescanblockchain '+blockheight())
         return redirect('/YHRdisplaywallet')
     return render_template('rescanwallet.html', yeti='warm', step=v.step)
 

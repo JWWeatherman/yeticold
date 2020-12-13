@@ -18,7 +18,7 @@ def blockChain(request, nextroute):
         createOrPrepend('server=1\nrpcport=8332\nrpcuser=rpcuser\nprune='+str(getPrunBlockheightByDate(request))+'\nrpcpassword='+v.rpcpsw+'',home+'/.bitcoin/bitcoin.conf')
         return redirect(nextroute)
 
-def openBitcoin(request, currentroute, nextroute, loadwallet=False, offline=False, yeti='warmorhot'):
+def openBitcoin(request, currentroute, nextroute, loadwallet=False, offline=False, yeti='warm'):
     if request.method == 'GET':
         v.IBD = BTCFinished()
         v.progress = BTCprogress()
@@ -31,11 +31,15 @@ def openBitcoin(request, currentroute, nextroute, loadwallet=False, offline=Fals
             if loadwallet:
                 if yeti == 'cold' and not offline:
                     handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetiwalletpub"')
+                elif yeti == 'hot':
+                    handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetiwallethot"')
                 else:
                     handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetiwalletpriv"')
             else:
                 if yeti == 'cold' and not offline:
                     handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpub" true true "" false true')     
+                elif yeti == 'hot':
+                    handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwallethot" false true')
                 else: 
                     handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpriv" false true "" false true')
             return redirect(nextroute)
