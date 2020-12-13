@@ -104,7 +104,7 @@ def YWRscandescriptor():
             v.error = 'Invalid Descriptor'
             return redirect('/YWRscandescriptor')
         return redirect('/YWRimportseeds')
-    return render_template('scandescriptor.html', pubdesc=v.pubdesc, yeti='warm', step=6)
+    return render_template('scandescriptor.html', pubdesc=v.pubdesc, yeti='warm', step=6, line=16)
 
 @app.route('/YWRimportseeds', methods=['GET', 'POST'])
 def YWRimportseeds():    
