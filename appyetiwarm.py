@@ -46,6 +46,10 @@ def YWmenu():
     if request.method == 'POST':
         if request.form['option'] == 'recovery':
             return redirect('/YWRscandescriptor')
+        elif request.form['option'] == 'wallet':
+            handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetiwalletpriv"')
+            v.step = 6
+            return redirect('/YWRrescanwallet')
         else:
             return redirect('/YWgetseeds')
     return render_template('menu.html', yeti='warm')
@@ -59,11 +63,9 @@ def YWgetseeds():
 
 @app.route("/YWprintdescriptor", methods=['GET', 'POST'])
 def YWprintdescriptor():
-    if request.method == 'GET':
-        path = makeQrCode(v.pubdesc)
     if request.method == 'POST':
         return redirect('/YWdisplayseeds')
-    return render_template('printdescriptor.html', qrdata=v.pubdesc, path=path, yeti='warm', step=7)
+    return render_template('printpage.html', desc=v.pubdesc, yeti='warm', step=7)
 
 @app.route('/YWdisplayseeds', methods=['GET', 'POST'])
 def YWdisplayseeds():
@@ -88,16 +90,30 @@ def YWcopyseeds():
 @app.route("/YWRscandescriptor", methods=['GET', 'POST'])
 def YWRscandescriptor():
     if request.method == 'POST':
-        v.pubdesc = handleResponse('python3 ~/yeticold/utils/scanqrcode.py').replace('\n', '')
+        v.error = None
+        v.pubdesc = request.form['descriptor'].replace('\n','')
+        response = subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub getdescriptorinfo "'+v.pubdesc+'"', shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        print(response, "response for function: check descriptor")
+        if response[1] != b'':
+            v.error = 'Invalid Descriptor'
+            return redirect('/YWRscandescriptor')
         return redirect('/YWRimportseeds')
     return render_template('scandescriptor.html', pubdesc=v.pubdesc, yeti='warm', step=6)
 
 @app.route('/YWRimportseeds', methods=['GET', 'POST'])
 def YWRimportseeds():    
-    route = importSeeds(request, '/YWRimportseeds', '/YWRdisplaywallet')
+    v.step = 10
+    route = importSeeds(request, '/YWRimportseeds', '/YWRrescanwallet')
     if route:
         return route
     return render_template('importseeds.html', x=v.privkeycount + 1, error=v.error, step=v.privkeycount + 7, yeti='warm')
+
+@app.route("/YWRrescanwallet", methods=['GET', 'POST'])
+def YWRrescanwallet():
+    if request.method == 'POST':
+        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub rescanblockchain '+blockheight())
+        return redirect('/YWRdisplaywallet')
+    return render_template('rescanwallet.html', yeti='warm', step=16)
 
 @app.route("/YWRdisplaywallet", methods=['GET', 'POST'])
 def YWRdisplaywallet():

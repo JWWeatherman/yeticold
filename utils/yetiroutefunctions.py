@@ -18,7 +18,7 @@ def blockChain(request, nextroute):
         createOrPrepend('server=1\nrpcport=8332\nrpcuser=rpcuser\nprune='+str(getPrunBlockheightByDate(request))+'\nrpcpassword='+v.rpcpsw+'',home+'/.bitcoin/bitcoin.conf')
         return redirect(nextroute)
 
-def openBitcoin(request, currentroute, nextroute, info, offline=False, yeti='warmorhot'):
+def openBitcoin(request, currentroute, nextroute, loadwallet=False, offline=False, yeti='warmorhot'):
     if request.method == 'GET':
         v.IBD = BTCFinished()
         v.progress = BTCprogress()
@@ -27,17 +27,16 @@ def openBitcoin(request, currentroute, nextroute, info, offline=False, yeti='war
         if offline and v.progress != 0:
             v.IBD = True
     if request.method == 'POST':
-        if v.IBD:
-            if info == 'yetiColdImp' or info == 'yetiColdOffImp':
-                if yeti == 'cold' and not offline:
-                    handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetiwalletpub"')
-                else:
-                    handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetiwalletpriv"')
+        if v.IBD and loadwallet:
+            if yeti == 'cold' and not offline:
+                handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetiwalletpub"')
             else:
-                if yeti == 'cold' and not offline:
-                    handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpub" true true "" false true')     
-                else: 
-                    handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpriv" false true "" false true')
+                handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetiwalletpriv"')
+        else:
+            if yeti == 'cold' and not offline:
+                handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpub" true true "" false true')     
+            else: 
+                handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpriv" false true "" false true')
             return redirect(nextroute)
         else:
             return redirect(currentroute)

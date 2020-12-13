@@ -75,7 +75,11 @@ def YCopenbitcoin():
         step = 1
     else:
         step = 5
-    route = openBitcoin(request, '/openbitcoin', v.route, v.info, offline=False, yeti='cold')
+    if info == 'yetiColdImp' or info == 'yetiColdOffImp':
+        loadwallet = True
+    else:
+        loadwallet = False
+    route = openBitcoin(request, '/openbitcoin', v.route, loadwallet=loadwallet, offline=False, yeti='cold')
     if route:
         return route
     return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=step, switch=True, url=v.url)
@@ -98,14 +102,16 @@ def blockchainOff():
 @app.route("/openbitcoinOff", methods=['GET', 'POST'])
 def openbitcoinOff():
     v.step = 7
+    loadwallet = False
     if v.info == "yetiColdOffRec":
         v.route = '/scandescriptorOffRec'
     elif v.info == 'yetiColdOffImp':
         v.route = '/switchlaptopOffImp' 
+        loadwallet = True
         v.step = 3
     else:
         v.route = '/getseedsOff'
-    route = openBitcoin(request, '/openbitcoinOff', '/connectionOff', v.info, offline=True)
+    route = openBitcoin(request, '/openbitcoinOff', '/connectionOff', loadwallet=loadwallet, offline=True)
     if route:
         return route
     return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=v.step)
@@ -208,7 +214,7 @@ def scandescriptor():
         print(response, "response for function: check descriptor")
         if response[1] != b'':
             v.error = 'Invalid Descriptor'
-            redirect('/scandescriptor')
+            return redirect('/scandescriptor')
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now", "active": true}]\'')
         return redirect('/printpage')
     return render_template('scandescriptor.html', step=11, setup=True, error=v.error, line=0)
