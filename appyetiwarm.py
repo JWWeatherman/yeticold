@@ -119,7 +119,7 @@ def YWRrescanwallet():
     if request.method == 'POST':
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv rescanblockchain '+blockheight())
         return redirect('/YWRdisplaywallet')
-    return render_template('rescanwallet.html', yeti='warm', step=16)
+    return render_template('rescanwallet.html', yeti='warm', step=v.step)
 
 @app.route("/YWRdisplaywallet", methods=['GET', 'POST'])
 def YWRdisplaywallet():
