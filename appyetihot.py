@@ -22,7 +22,7 @@ def handle_bad_request(e):
 @app.route("/", methods=['GET', 'POST'])
 def redirectroute():
     if request.method == 'GET':
-        return redirect('/YHblockchain')
+        return redirect('/YHmenu')
     return render_template('redirect.html')
 
 @app.route("/YHmenu", methods=['GET', 'POST'])
