@@ -36,12 +36,12 @@ def YHmenu():
             v.rotue = '/YHRinputseed'
         elif request.form['option'] == 'wallet':
             v.step = 6
-            v.route '/YHRrescanwallet'
+            v.route = '/YHRrescanwallet'
             v.loadwallet = True
         else:
             subprocess.run('rm -r ~/.bitcoin/yetiwallet* 2> /dev/null', shell=True, check=False)
             subprocess.run('rm -r ~/.bitcoin/wallets/yetiwallet* 2> /dev/null', shell=True, check=False)
-            v.route '/YHgetseed'
+            v.route = '/YHgetseed'
         return redirect('/YHblockchain')
     return render_template('menu.html', yeti="hot", wallet=v.wallet)
 
