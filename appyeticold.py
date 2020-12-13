@@ -75,7 +75,7 @@ def YCopenbitcoin():
         step = 1
     else:
         step = 5
-    if info == 'yetiColdImp' or info == 'yetiColdOffImp':
+    if v.info == 'yetiColdImp' or v.info == 'yetiColdOffImp':
         loadwallet = True
     else:
         loadwallet = False
