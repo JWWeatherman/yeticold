@@ -23,8 +23,26 @@ def handle_bad_request(e):
 @app.route("/", methods=['GET', 'POST'])
 def redirectroute():
     if request.method == 'GET':
-        return redirect('/YWblockchain')
+        return redirect('/YWmenu')
     return render_template('redirect.html', yeti='warm')
+
+@app.route("/YWmenu", methods=['GET', 'POST'])
+def YWmenu():
+    if request.method == 'POST':
+        if request.form['option'] == 'recovery':
+            subprocess.run('rm -r ~/.bitcoin/yetiwallet* 2> /dev/null', shell=True, check=False)
+            subprocess.run('rm -r ~/.bitcoin/wallets/yetiwallet* 2> /dev/null', shell=True, check=False)
+            v.route = '/YWRscandescriptor'
+        elif request.form['option'] == 'wallet':
+            v.step = 6
+            v.route = '/YWRrescanwallet'
+            v.loadwallet = True
+        else:
+            subprocess.run('rm -r ~/.bitcoin/yetiwallet* 2> /dev/null', shell=True, check=False)
+            subprocess.run('rm -r ~/.bitcoin/wallets/yetiwallet* 2> /dev/null', shell=True, check=False)
+            v.route = '/YWgetseeds'
+        return redirect('/YWblockchain')
+    return render_template('menu.html', yeti='warm')
 
 @app.route("/YWblockchain", methods=['GET', 'POST'])
 def YWblockchain():
@@ -35,24 +53,10 @@ def YWblockchain():
 
 @app.route("/YWopenbitcoin", methods=['GET', 'POST'])
 def YWopenbitcoin():
-    route = openBitcoin(request, '/YWopenbitcoin', '/YWmenu')
+    route = openBitcoin(request, '/YWopenbitcoin', v.route, v.loadwallet)
     if route:
         return route
     return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, yeti='warm', step=5)
-
-
-@app.route("/YWmenu", methods=['GET', 'POST'])
-def YWmenu():
-    if request.method == 'POST':
-        if request.form['option'] == 'recovery':
-            return redirect('/YWRscandescriptor')
-        elif request.form['option'] == 'wallet':
-            handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetiwalletpriv"')
-            v.step = 6
-            return redirect('/YWRrescanwallet')
-        else:
-            return redirect('/YWgetseeds')
-    return render_template('menu.html', yeti='warm')
 
 @app.route("/YWgetseeds", methods=['GET', 'POST'])
 def YWgetseeds():
