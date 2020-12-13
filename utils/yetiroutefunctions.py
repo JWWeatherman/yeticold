@@ -27,16 +27,17 @@ def openBitcoin(request, currentroute, nextroute, loadwallet=False, offline=Fals
         if offline and v.progress != 0:
             v.IBD = True
     if request.method == 'POST':
-        if v.IBD and loadwallet:
-            if yeti == 'cold' and not offline:
-                handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetiwalletpub"')
+        if v.IBD:
+            if loadwallet:
+                if yeti == 'cold' and not offline:
+                    handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetiwalletpub"')
+                else:
+                    handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetiwalletpriv"')
             else:
-                handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetiwalletpriv"')
-        else:
-            if yeti == 'cold' and not offline:
-                handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpub" true true "" false true')     
-            else: 
-                handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpriv" false true "" false true')
+                if yeti == 'cold' and not offline:
+                    handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpub" true true "" false true')     
+                else: 
+                    handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpriv" false true "" false true')
             return redirect(nextroute)
         else:
             return redirect(currentroute)
