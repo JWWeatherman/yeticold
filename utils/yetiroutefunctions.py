@@ -26,8 +26,6 @@ def openBitcoin(request, currentroute, nextroute, loadwallet=False, offline=Fals
             subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
         if offline:
             response = subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli getblockchaininfo', shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-            print(response)
-            print(v.IBD)
             if response[1] == b'':
                 v.IBD = True
     if request.method == 'POST':
