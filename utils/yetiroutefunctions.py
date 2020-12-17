@@ -86,19 +86,7 @@ def displaySeeds(request, currentroute, nextroute, display=True):
             for i in range(0,13):
                 file = file + v.passphraselist[i+1] + '\n'
             file = file + '\n\nThis is your descriptor in text format you have a duplicate of this text in QR format in this folder.\n' + v.pubdesc + '\n'
-            file = file + '\n\nThis is a seed packet that contains 1/3 of the information needed to recover bitcoins in a 3 of 7 HD multisig wallet.\n'
-            file = file + 'There are 6 other packets that are identical except that they contain one of the other sets of seed words.\n'
-            file = file + 'The HD Multisig wallet was was created using YetiCold.com (a Python script to make the experience more user friendly) and Bitcoin Core 0.19 RC1.\n'
-            file = file + 'To recover the bitcoin go to YetiCold.com click your version of yeti and follow the instructions.\n'
-            file = file + 'YetiCold.com should direct you to download a script to make the process of using Bitcoin Core easier, but never trust any website with your seed words.\n'
-            file = file + 'Consider putting a small amount of money into YetiCold.com cold storage and recovering them before attempting to recover significant funds.\n'
-            file = file + 'A test run will give you the opportunity to make sure that your seed words are never connected to an online device before.\n'
-            file = file + 'If many years have passed you should check that YetiCold.com has retained a good reputation.\n'
-            file = file + 'If YetiCold.com is no longer reputable use Bitcoin Core alone to recover your bitcoin (with the help of a trusted expert only if absolutely needed as these people may attempt to steal the bitcoin).\n'
-            file = file + 'No software beyond Bitcoin Core is required to recover the stored bitcoin.\n'
-            file = file + 'This seed packet also contains a usb device that has a digital copy of the information on this document. It does not contain another set of seed words, but simply a copy of the seed words in this document.\n'
-            file = file + 'Two other seed packets must be obtained to recover the bitcoin stored.\n'
-            file = file + 'YetiCold.com recommends storing seed words in locations like safety deposit boxes, home safes, and with professionals such as accountants and lawyers.\n'
+            file = file + v.coldfile
             createOrPrepend(file, path+'/yetiseed'+str(v.privkeycount + 1)+'/yetiseed'+str(v.privkeycount + 1)+'.txt')
             v.privkeycount = v.privkeycount + 1
             if (v.privkeycount == 7):
@@ -114,19 +102,7 @@ def displaySeeds(request, currentroute, nextroute, display=True):
         for i in range(0,13):
             file = file + request.form['displayrow' + str(i+1)] + '\n'
         file = file + '\n\nThis is your descriptor in text format you have a duplicate of this text in QR format in this folder.\n' + v.pubdesc + '\n'
-        file = file + '\n\nThis is a seed packet that contains 1/3 of the information needed to recover bitcoins in a 3 of 7 HD multisig wallet.\n'
-        file = file + 'There are 6 other packets that are identical except that they contain one of the other sets of seed words.\n'
-        file = file + 'The HD Multisig wallet was was created using YetiCold.com (a Python script to make the experience more user friendly) and Bitcoin Core 0.19 RC1.\n'
-        file = file + 'To recover the bitcoin go to YetiCold.com click your version of yeti and follow the instructions.\n'
-        file = file + 'YetiCold.com should direct you to download a script to make the process of using Bitcoin Core easier, but never trust any website with your seed words.\n'
-        file = file + 'Consider putting a small amount of money into YetiCold.com cold storage and recovering them before attempting to recover significant funds.\n'
-        file = file + 'A test run will give you the opportunity to make sure that your seed words are never connected to an online device before.\n'
-        file = file + 'If many years have passed you should check that YetiCold.com has retained a good reputation.\n'
-        file = file + 'If YetiCold.com is no longer reputable use Bitcoin Core alone to recover your bitcoin (with the help of a trusted expert only if absolutely needed as these people may attempt to steal the bitcoin).\n'
-        file = file + 'No software beyond Bitcoin Core is required to recover the stored bitcoin.\n'
-        file = file + 'This seed packet also contains a usb device that has a digital copy of the information on this document. It does not contain another set of seed words, but simply a copy of the seed words in this document.\n'
-        file = file + 'Two other seed packets must be obtained to recover the bitcoin stored.\n'
-        file = file + 'YetiCold.com recommends storing seed words in locations like safety deposit boxes, home safes, and with professionals such as accountants and lawyers.\n'
+        file = file + v.coldfile
         createOrPrepend(file, path+'/yetiseed'+str(v.privkeycount + 1)+'/yetiseed'+str(v.privkeycount + 1)+'.txt')
         v.privkeycount = v.privkeycount + 1
         if (v.privkeycount == 7):
