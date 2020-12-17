@@ -80,7 +80,7 @@ def getSeeds(request, nextroute):
                 file = file + v.passphraselist[x] + '\n'
             file = file + '\n\nThis is your descriptor in text format you have a copy of this descriptor on both your yetiseed files and descriptor.txt files.\n' + v.pubdesc + '\n'
             file = file + v.coldfile
-            createOrPrepend(file, path+'/yetiseed'+str(v.privkeycount + 1)+'/yetiseed'+str(v.privkeycount + 1)+'.txt')
+            createOrPrepend(file, path+'/yetiseed'+str(i)+'/yetiseed'+str(i)+'.txt')
         createOrPrepend(v.pubdesc, path+'/Descriptor.txt')
         return redirect(nextroute)
 
