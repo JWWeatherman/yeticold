@@ -72,7 +72,7 @@ def exportdescriptor():
     route = exportDescriptor(request, '/YWprintdescriptor')
     if route:
         return route
-    return render_template('copydescriptor.html', step=10)
+    return render_template('copydescriptors.html', step=10)
 
 @app.route('/YWdisplayseeds', methods=['GET', 'POST'])
 def YWdisplayseeds():
@@ -94,7 +94,7 @@ def YWcheckseeds():
         return route
     return render_template('checkseeds.html', x=v.privkeycount + 1, error=v.error,step=v.privkeycount + 14, oldkeys=v.oldkeys, yeti='warm')
 
-    
+
 
 @app.route("/YWRscandescriptor", methods=['GET', 'POST'])
 def YWRscandescriptor():

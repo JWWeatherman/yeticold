@@ -61,9 +61,7 @@ def getSeeds(request, nextroute):
             v.privkeylist = generatePrivKeys(True)
         else:
             v.privkeylist = generatePrivKeys()
-        print(v.privkeylist)
         (v.newxpublist, v.xprivlist) = getxprivs(v.privkeylist)
-        print(v.xprivlist)
         v.addresses = []
         checksum = None
         response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv getdescriptorinfo "wsh(multi(3,'+v.xprivlist[0]+'/*,'+v.xprivlist[1]+'/*,'+v.xprivlist[2]+'/*,'+v.xprivlist[3]+'/*,'+v.xprivlist[4]+'/*,'+v.xprivlist[5]+'/*,'+v.xprivlist[6]+'/*))"', True)
@@ -240,9 +238,7 @@ def importSeeds(request, currentroute, nextroute):
         error = None
         v.privkeycount = v.privkeycount + 1
         if (v.privkeycount >= 3):
-            print(v.privkeylist)
             (v.newxpublist, v.xprivlist) = getxprivs(v.privkeylist)
-            print(v.xprivlist)
             v.privkeycount = 0
             xpublist = v.pubdesc.split(',')[1:]
             xpublist[6] = xpublist[6].split('))')[0]
