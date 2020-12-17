@@ -62,7 +62,7 @@ def YWopenbitcoin():
 
 @app.route("/YWgetseeds", methods=['GET', 'POST'])
 def YWgetseeds():
-    route = getSeeds(request, '/exportdescriptor')
+    route = getSeeds(request, '/YWcopyseeds')
     if route:
         return route
     return render_template('getseeds.html', yeti='warm', step=6)
@@ -70,15 +70,8 @@ def YWgetseeds():
 @app.route("/YWcopyseeds", methods=['GET', 'POST'])
 def YWcopyseeds():
     if request.method == 'POST':
-        return redirect('/YWdisplayseeds')
+        return redirect('/YWcheckseeds')
     return render_template('copyseeds.html', yeti='warm', step=20)
-
-@app.route('/YWdisplayseeds', methods=['GET', 'POST'])
-def YWdisplayseeds():
-    route = displaySeeds(request, '/YWdisplayseeds', '/YWcheckseeds')
-    if route:
-        return route
-    return render_template('displayseeds.html', PPL=v.passphraselist, x=v.privkeycount + 1, step=v.privkeycount + 8, yeti='warm')
 
 @app.route('/YWcheckseeds', methods=['GET', 'POST'])
 def YWcheckseeds():
