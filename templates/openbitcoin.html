@@ -13,21 +13,18 @@
       <h2>Step {{step}}: Finish Downloading the Blockchain.</h2>
       <div>
           <ul>
-            <li>Yeti has opened Bitcoin Core for you and it will provide more detailed status.</li>
-            <li>If you have already downloaded the blockchain on this device give bitcoin core a moment to open up before the <b>Next</b> button will appear.</li>
-            <li>Once it has completed updating you will have a Bitcoin Core full node.</li>
-            <li>This step can take as little as 4 hours if you have an SSD and a fast internet connection or as long as a couple of weeks if you do not.</li>
-            <li>When bitcoin finishes the "initial block download" it will show your balance and the Next button will be enabled on this page.</li>
+            <li>Yeti has opened Bitcoin Core.</li>
+            <li>When Bitcoin Core is ready the <b>Next</b> button will be enabled.</li>
             {%if switch%}
             <div>
               <ol>
-                <li>On your <b>Secondary</b> laptop in the browser go to</li>
+                <li>This step can take as little as 4 hours if you have an SSD and a fast internet connection or as long as a couple of weeks if you do not as it is validating every bitcoin transaction from the start of the network in 2009 (full node).</li>
+                <li>On your <b>Secondary</b> laptop open Firefox and go the following url to begin setup of your Secondary Laptop while this laptop downloads the blockchan.</li>
                 <code>{{url}}</code>
-                <li>When you see "Step {{step + 1}}: Setup your <b>Secondary</b> laptop" leave this laptop and contiue on step {{step + 1}}.</li>
               </ol>
             </div>
             {%else%}
-            <li>Click Next when this is complete.</li>
+            <li>Because this device is only used to sign transactions it does not need to download the blockchain so you will be able to click <b>Next</b> within about 10 minutes.</li>
             {%endif%}
           </ul>
       </div>
