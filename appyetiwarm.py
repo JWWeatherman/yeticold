@@ -76,7 +76,7 @@ def exportdescriptor():
 
 @app.route('/YWdisplayseeds', methods=['GET', 'POST'])
 def YWdisplayseeds():
-    route = displaySeeds(request, '/YWdisplayseeds', '/YWcopyseeds')
+    route = displaySeeds(request, '/YWdisplayseeds', '/YWcopyseeds', display=False)
     if route:
         return route
     return render_template('displayseeds.html', PPL=v.passphraselist, x=v.privkeycount + 1, step=v.privkeycount + 8, yeti='warm')

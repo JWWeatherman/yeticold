@@ -36,7 +36,6 @@ def generatePrivKeys(genbinary=False):
         else:
             newbinary = request.form['binary' + str(i)]
         adr = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletgen getnewaddress')
-        print(adr)
         newprivkey =  handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletgen dumpprivkey '+adr)
         binary = bin(decode58(newprivkey))[	2:][8:-40]
         WIF = ConvertToWIF(xor(binary,newbinary))
