@@ -28,7 +28,7 @@ def redirectroute():
 @app.route("/YHmenu", methods=['GET', 'POST'])
 def YHmenu():
     if request.method == 'GET':
-        v.wallet = os.path.exists(home + "/.bitcoin/yetiwallethot") or os.path.exists(home + "/.bitcoin/wallet/yetiwallethotyetiwallethot")
+        v.wallet = os.path.exists(home + "/.bitcoin/yetiwallethot") or os.path.exists(home + "/.bitcoin/wallets/yetiwallethotyetiwallethot")
     if request.method == 'POST':
         if request.form['option'] == 'recovery':
             subprocess.run('rm -r ~/.bitcoin/yetiwallet* 2> /dev/null', shell=True, check=False)

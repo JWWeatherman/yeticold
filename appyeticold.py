@@ -41,7 +41,7 @@ def redirectrouteoffrec():
 @app.route("/menu", methods=['GET', 'POST'])
 def menu():
     if request.method == 'GET':
-        v.wallet = os.path.exists(home + "/.bitcoin/yetiwalletpub") or os.path.exists(home + "/.bitcoin/wallet/yetiwalletpub")
+        v.wallet = os.path.exists(home + "/.bitcoin/yetiwalletpub") or os.path.exists(home + "/.bitcoin/wallets/yetiwalletpub")
     if request.method == 'POST':
         if request.form['option'] == 'recovery':
             v.info = "yetiColdRec"
@@ -52,7 +52,7 @@ def menu():
         elif request.form['option'] == 'wallet':
             v.info = 'yetiColdImp'
             v.route = '/rescanwalletImp'
-            v.url = "loa.yeticlod.com"
+            v.url = "load.yeticlod.com"
         else:
             v.info = "yetiCold"
             v.url = "desc.yeticold.com"
