@@ -67,25 +67,18 @@ def YWgetseeds():
         return route
     return render_template('getseeds.html', yeti='warm', step=6)
 
-@app.route("/exportdescriptor", methods=['GET', 'POST'])
-def exportdescriptor():
-    route = exportDescriptor(request, '/YWdisplayseeds')
-    if route:
-        return route
-    return render_template('copydescriptors.html', step=10)
-
-@app.route('/YWdisplayseeds', methods=['GET', 'POST'])
-def YWdisplayseeds():
-    route = displaySeeds(request, '/YWdisplayseeds', '/YWcopyseeds', display=False)
-    if route:
-        return route
-    return render_template('displayseeds.html', PPL=v.passphraselist, x=v.privkeycount + 1, step=v.privkeycount + 8, yeti='warm')
-
 @app.route("/YWcopyseeds", methods=['GET', 'POST'])
 def YWcopyseeds():
     if request.method == 'POST':
-        return redirect('/YWcheckseeds')
+        return redirect('/YWdisplayseeds')
     return render_template('copyseeds.html', yeti='warm', step=20)
+
+@app.route('/YWdisplayseeds', methods=['GET', 'POST'])
+def YWdisplayseeds():
+    route = displaySeeds(request, '/YWdisplayseeds', '/YWcheckseeds')
+    if route:
+        return route
+    return render_template('displayseeds.html', PPL=v.passphraselist, x=v.privkeycount + 1, step=v.privkeycount + 8, yeti='warm')
 
 @app.route('/YWcheckseeds', methods=['GET', 'POST'])
 def YWcheckseeds():
@@ -107,7 +100,7 @@ def YWRscandescriptor():
             v.error = 'Invalid Descriptor'
             return redirect('/YWRscandescriptor')
         return redirect('/YWRimportseeds')
-    return render_template('scandescriptor.html', pubdesc=v.pubdesc, yeti='warm', step=6, line=16)
+    return render_template('scandescriptorOff.html', pubdesc=v.pubdesc, yeti='warm', step=6, line=16)
 
 @app.route('/YWRimportseeds', methods=['GET', 'POST'])
 def YWRimportseeds():    

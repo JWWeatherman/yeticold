@@ -24,6 +24,9 @@
         <input class="btn btn-primary" type="submit" id="next" value="Skip">
       </form>
         <form autocomplete="off" action="" method="post" style="border: solid #f8f9fa;padding: 1.5rem;">
+          {% if error %}
+            <input id="filepath" type="file" name="path">
+          {% endif %}
         <input style="display: none;" name="option" value="No">
         <div class="form-row">
           <div class="input-group col-md-10 mb-3">
@@ -172,7 +175,7 @@
       }
     }); 
     highlightrows()
-      
+    importfile()
     </script>
   </body>
 </html>

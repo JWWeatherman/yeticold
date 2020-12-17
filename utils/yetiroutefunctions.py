@@ -49,9 +49,6 @@ def openBitcoin(request, currentroute, nextroute, loadwallet=False, offline=Fals
             return redirect(currentroute)
 
 def exportDescriptor(request, nextroute):
-    if request.method == 'GET':
-        path = home + '/Documents'
-        createOrPrepend(v.pubdesc, path+'/Descriptor.txt')
     if request.method == 'POST':
         return redirect(nextroute)
 
@@ -72,38 +69,23 @@ def getSeeds(request, nextroute):
         v.walletimported = True
         path = home + '/Documents'
         subprocess.call('rm -r '+path+'/yetiseed*', shell=True)
-        return redirect(nextroute)
-
-def displaySeeds(request, currentroute, nextroute, display=True):
-    if request.method == 'GET':
-        privkey = v.privkeylist[v.privkeycount]
-        v.passphraselist = ConvertToPassphrase(privkey)
-        if display == False:
-            path = home + '/Documents'
+        for i in range(1,7):
+            print(i)
+            privkey = v.privkeylist[i]
+            v.passphraselist = ConvertToPassphrase(privkey)
             subprocess.call('mkdir '+path+'/yetiseed'+str(v.privkeycount + 1), shell=True)
             subprocess.call('touch '+path+'/yetiseed'+str(v.privkeycount + 1)+'/yetiseed'+str(v.privkeycount + 1)+'.txt', shell=True)
             file = ''
-            for i in range(0,13):
-                file = file + v.passphraselist[i+1] + '\n'
-            file = file + '\n\nThis is your descriptor in text format you have a duplicate of this text in QR format in this folder.\n' + v.pubdesc + '\n'
+            for x in range(1,14):
+                file = file + v.passphraselist[x] + '\n'
+            file = file + '\n\nThis is your descriptor in text format you have a copy of this descriptor on both your yetiseed files and descriptor.txt files.\n' + v.pubdesc + '\n'
             file = file + v.coldfile
             createOrPrepend(file, path+'/yetiseed'+str(v.privkeycount + 1)+'/yetiseed'+str(v.privkeycount + 1)+'.txt')
-            v.privkeycount = v.privkeycount + 1
-            if (v.privkeycount == 7):
-                v.privkeycount = 0
-                return redirect(nextroute)
-            else:
-                return redirect(currentroute)
+        createOrPrepend(v.pubdesc, path+'/Descriptor.txt')
+        return redirect(nextroute)
+
+def displaySeeds(request, currentroute, nextroute):
     if request.method == 'POST':
-        path = home + '/Documents'
-        subprocess.call('mkdir '+path+'/yetiseed'+str(v.privkeycount + 1), shell=True)
-        subprocess.call('touch '+path+'/yetiseed'+str(v.privkeycount + 1)+'/yetiseed'+str(v.privkeycount + 1)+'.txt', shell=True)
-        file = ''
-        for i in range(0,13):
-            file = file + request.form['displayrow' + str(i+1)] + '\n'
-        file = file + '\n\nThis is your descriptor in text format you have a duplicate of this text in QR format in this folder.\n' + v.pubdesc + '\n'
-        file = file + v.coldfile
-        createOrPrepend(file, path+'/yetiseed'+str(v.privkeycount + 1)+'/yetiseed'+str(v.privkeycount + 1)+'.txt')
         v.privkeycount = v.privkeycount + 1
         if (v.privkeycount == 7):
             v.privkeycount = 0
