@@ -42,3 +42,4 @@ copied = False
 nousb = False
 step = 0
 loadwallet = False
+file = ""

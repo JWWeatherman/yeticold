@@ -52,7 +52,7 @@ def menu():
         elif request.form['option'] == 'wallet':
             v.info = 'yetiColdImp'
             v.route = '/rescanwalletImp'
-            v.url = "load.yeticlod.com"
+            v.url = "load.yeticold.com"
         else:
             v.info = "yetiCold"
             v.url = "desc.yeticold.com"
@@ -216,8 +216,15 @@ def scandescriptor():
             v.error = 'Invalid Descriptor'
             return redirect('/scandescriptor')
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now", "active": true}]\'')
-        return redirect('/printpage')
+        return redirect('/exportdescriptor')
     return render_template('scandescriptor.html', step=11, setup=True, error=v.error, line=0)
+
+@app.route("/exportdescriptor", methods=['GET', 'POST'])
+def exportdescriptor():
+    route = exportDescriptor(request, '/printpage')
+    if route:
+        return route
+    return render_template('copydescriptor.html', step=10)
 
 #ON
 @app.route("/printpage", methods=['GET', 'POST'])

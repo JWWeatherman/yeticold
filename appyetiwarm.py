@@ -62,36 +62,39 @@ def YWopenbitcoin():
 
 @app.route("/YWgetseeds", methods=['GET', 'POST'])
 def YWgetseeds():
-    route = getSeeds(request, '/YWprintdescriptor')
+    route = getSeeds(request, '/exportdescriptor')
     if route:
         return route
     return render_template('getseeds.html', yeti='warm', step=6)
 
-@app.route("/YWprintdescriptor", methods=['GET', 'POST'])
-def YWprintdescriptor():
-    if request.method == 'POST':
-        return redirect('/YWdisplayseeds')
-    return render_template('printpage.html', desc=v.pubdesc, yeti='warm', step=7)
+@app.route("/exportdescriptor", methods=['GET', 'POST'])
+def exportdescriptor():
+    route = exportDescriptor(request, '/YWprintdescriptor')
+    if route:
+        return route
+    return render_template('copydescriptor.html', step=10)
 
 @app.route('/YWdisplayseeds', methods=['GET', 'POST'])
 def YWdisplayseeds():
-    route = displaySeeds(request, '/YWdisplayseeds', '/YWcheckseeds')
+    route = displaySeeds(request, '/YWdisplayseeds', '/YWcopyseeds', dislpay=False)
     if route:
         return route
     return render_template('displayseeds.html', PPL=v.passphraselist, x=v.privkeycount + 1, step=v.privkeycount + 8, yeti='warm')
 
+@app.route("/YWcopyseeds", methods=['GET', 'POST'])
+def YWcopyseeds():
+    if request.method == 'POST':
+        return redirect('/YWcheckseeds')
+    return render_template('copyseeds.html', yeti='warm', step=20)
+
 @app.route('/YWcheckseeds', methods=['GET', 'POST'])
 def YWcheckseeds():
-    route = checkSeeds(request, '/YWcheckseeds', '/YWcopyseeds')
+    route = checkSeeds(request, '/YWcheckseeds', '/YWRdisplaywallet')
     if route:
         return route
     return render_template('checkseeds.html', x=v.privkeycount + 1, error=v.error,step=v.privkeycount + 14, oldkeys=v.oldkeys, yeti='warm')
 
-@app.route("/YWcopyseeds", methods=['GET', 'POST'])
-def YWcopyseeds():
-    if request.method == 'POST':
-        return redirect('/YWRdisplaywallet')
-    return render_template('copyseeds.html', yeti='warm', step=20)
+    
 
 @app.route("/YWRscandescriptor", methods=['GET', 'POST'])
 def YWRscandescriptor():
