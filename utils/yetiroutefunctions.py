@@ -111,6 +111,8 @@ def displaySeeds(request, currentroute, nextroute):
 
 def checkSeeds(request, currentroute, nextroute):
     if request.method == 'POST':
+        if request.form['option'] == 'Skip':
+            return redirect(nextroute)
         privkey = v.privkeylist[v.privkeycount]
         passphraselist = ConvertToPassphrase(privkey)
         passphraselisttoconfirm = []
