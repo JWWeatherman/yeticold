@@ -69,7 +69,7 @@ def YWgetseeds():
 
 @app.route("/exportdescriptor", methods=['GET', 'POST'])
 def exportdescriptor():
-    route = exportDescriptor(request, '/YWprintdescriptor')
+    route = exportDescriptor(request, '/YWdisplayseeds')
     if route:
         return route
     return render_template('copydescriptors.html', step=10)
