@@ -182,12 +182,10 @@ def xor(x, y):
     return '{1:0{0}b}'.format(len(x), int(x, 2) ^ int(y, 2))
 
 def decode58(s):
-    print(s)
     decoded = 0
     multi = 1
     s = s[::-1]
     for char in s:
-        print(char)
         decoded += multi * BASE58_ALPHABET.index(char)
         multi = multi * base_count
     return decoded
