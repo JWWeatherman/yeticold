@@ -90,7 +90,7 @@ def checksum(fourwords):
         decodenum = decode58(char)
         sume = sume + decodenum
     mod = sume % 58
-    char = BASE58_ALPHABET.charAt(mod)
+    char = BASE58_ALPHABET[mod]
     char = ConvertToPassphrase(char)[0]
     return char
 
