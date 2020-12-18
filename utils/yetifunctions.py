@@ -78,6 +78,18 @@ def makeQrCode(data, path=None, name=None):
     if name != None:
         return url_for('static', filename=name)
 
+def checksum(fourwords):
+    WIFlist = PassphraseListToWIF(fourwords.split(' '))
+    sume = 0
+    for char in WIFlist:
+        var decodenum = decode58(list.charAt(char))
+        sume = sume + decodenum
+    mod = sume % 58
+    var char = BASE58_ALPHABET.charAt(mod)
+    char = ConvertToPassphrase(char)[0]
+    return char
+
+
 def handleResponse(func, returnJsonResponse=False, decode=True):
     response = subprocess.Popen(func, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
     print(response, "response for function: " + func)

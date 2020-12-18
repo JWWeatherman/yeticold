@@ -184,9 +184,6 @@ def rescanwalletRec():
 @app.route("/coldwalletguide", methods=['GET', 'POST'])
 def coldwalletguide():
     return render_template('coldwalletguide.html')
-    ##Redirect to yetihosted send/recive guide for yeticold
-
-#ON
 
 #OFF
 @app.route("/getseedsOff", methods=['GET', 'POST'])
@@ -196,6 +193,12 @@ def getseedsOff():
         return route
     return render_template('getseeds.html', step=9)
 
+@app.route("/copyseedsOff", methods=['GET', 'POST'])
+def copyseedsOff():
+    if request.method == 'POST':
+        return redirect('/displayseedsOff')
+    return render_template('copyseeds.html', step=27)
+
 #OFF
 @app.route("/exportdescriptorOff", methods=['GET', 'POST'])
 def exportdescriptorOff():
@@ -203,11 +206,27 @@ def exportdescriptorOff():
         return redirect('/copyseedsOff')
     return render_template('exportdescriptor.html', step=10, instructions="Switch to your Primary laptop currently showing step 5, click next to show step 11", laptop="Primary")
 
-@app.route("/copyseedsOff", methods=['GET', 'POST'])
-def copyseedsOff():
+#ON
+@app.route("/scandescriptor", methods=['GET', 'POST'])
+def scandescriptor():
     if request.method == 'POST':
-        return redirect('/displayseedsOff')
-    return render_template('copyseeds.html', step=27)
+        v.error = None
+        v.pubdesc = request.form['descriptor'].replace('\n','')
+        response = subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub getdescriptorinfo "'+v.pubdesc+'"', shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        print(response, "response for function: check descriptor")
+        if response[1] != b'':
+            v.error = 'Invalid Descriptor'
+            return redirect('/scandescriptor')
+        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now", "active": true}]\'')
+        return redirect('/exportdescriptor')
+    return render_template('scandescriptor.html', step=11, setup=True, error=v.error, line=0)
+
+#ON
+@app.route("/exportdescriptor", methods=['GET', 'POST'])
+def exportdescriptor():
+    if request.method == 'POST';
+        return redirect('/copyseedsOff')
+    return render_template('exportdescriptor.html', step=10)
 
 #OFF
 @app.route('/displayseedsOff', methods=['GET', 'POST'])
@@ -225,24 +244,13 @@ def checkseedsOff():
         return route
     return render_template('checkseeds.html', x=v.privkeycount + 1, error=v.error,step=21+v.privkeycount,oldkeys=v.oldkeys)
 
+#OFF
 @app.route("/switchlaptopOff", methods=['GET', 'POST'])
-def switchlaptopOff():
-    return render_template('switchlaptop.html', step=28, instructions="Switch to your Primary laptop currently showing step 13, click next to show your cold wallet guide", laptop="Secondary")
+def exportdescriptor():
+    if request.method == 'POST';
+        return redirect('/copyseedsOff')
+    return render_template('switchlaptop.html', step=10)
 
-#ON
-@app.route("/scandescriptor", methods=['GET', 'POST'])
-def scandescriptor():
-    if request.method == 'POST':
-        v.error = None
-        v.pubdesc = request.form['descriptor'].replace('\n','')
-        response = subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub getdescriptorinfo "'+v.pubdesc+'"', shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        print(response, "response for function: check descriptor")
-        if response[1] != b'':
-            v.error = 'Invalid Descriptor'
-            return redirect('/scandescriptor')
-        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now", "active": true}]\'')
-        return redirect('/exportdescriptor')
-    return render_template('scandescriptor.html', step=11, setup=True, error=v.error, line=0)
 
 #ON
 @app.route("/printpage", methods=['GET', 'POST'])

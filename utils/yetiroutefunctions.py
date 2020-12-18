@@ -82,7 +82,8 @@ def getSeeds(request, nextroute):
                 for y in range(0,5):
                     line = line + v.passphraselist[phrasenum] + ' '
                     phrasenum = phrasenum + 1
-                line = checksum(line)
+                line = line + checksum(line)
+                print(line)
                 file = file + line + '\n'
                 print(file)
             file = file + '\n\nThis is your descriptor in text format you have a copy of this descriptor on both your yetiseed files and descriptor.txt files.\n' + v.pubdesc + '\n'

@@ -464,7 +464,7 @@ var decode = (s) => {
 }
 
 var makechecksum = (passphraselist) => {
-   var list = PassphraseToWIF(passphraselist)
+  var list = PassphraseToWIF(passphraselist)
   var sum = 0
   for (char in list) {
     var decodenum = decode(list.charAt(char))
