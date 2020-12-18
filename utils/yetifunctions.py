@@ -79,7 +79,10 @@ def makeQrCode(data, path=None, name=None):
         return url_for('static', filename=name)
 
 def checksum(fourwords):
+    print(fourwords)
+    print(fourwords.split(' '))
     WIFlist = PassphraseListToWIF(fourwords.split(' '))
+    print(WIFlist)
     sume = 0
     for char in WIFlist:
         decodenum = decode58(list.charAt(char))
