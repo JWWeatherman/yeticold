@@ -80,8 +80,10 @@ def makeQrCode(data, path=None, name=None):
 
 def checksum(fourwords):
     print(fourwords)
-    print(fourwords.split(' '))
-    WIFlist = PassphraseListToWIF(fourwords.split(' '))
+    fourwords = fourwords.split(' ')
+    fourwords.pop()
+    print(fourwords)
+    WIFlist = PassphraseListToWIF(fourwords)
     print(WIFlist)
     sume = 0
     for char in WIFlist:
