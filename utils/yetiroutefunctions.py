@@ -83,7 +83,8 @@ def getSeeds(request, nextroute):
                     print(y)
                     line = line + v.passphraselist[phrasenum] + ' '
                     phrasenum = phrasenum + 1
-                line = line + checksum(line)
+                line = line.pop()
+                line = line + ' ' + checksum(line)
                 print(line)
                 file = file + line + '\n'
                 print(file)
