@@ -85,7 +85,7 @@ def checksum(fourwords):
         decodenum = decode58(list.charAt(char))
         sume = sume + decodenum
     mod = sume % 58
-    var char = BASE58_ALPHABET.charAt(mod)
+    char = BASE58_ALPHABET.charAt(mod)
     char = ConvertToPassphrase(char)[0]
     return char
 
