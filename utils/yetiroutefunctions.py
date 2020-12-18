@@ -76,12 +76,14 @@ def getSeeds(request, nextroute):
             subprocess.call('mkdir '+path+'/yetiseed'+str(i), shell=True)
             subprocess.call('touch '+path+'/yetiseed'+str(i)+'/yetiseed'+str(i)+'.txt', shell=True)
             file = ''
-            for x in range(1,14):
-                print(x)
-                print(v.passphraselist)
-                print(v.passphraselist[x])
-                print(file)
-                file = file + v.passphraselist[x] + '\n'
+            phrasenum = 0
+            for x in range(0,13):
+                line = ""
+                for y in range(0,5):
+                    line = line + v.passphraselist[phrasenum] + ' '
+                    phrasenum = phrasenum + 1
+                line = checksum(line)
+                file = file + line + '\n'
                 print(file)
             file = file + '\n\nThis is your descriptor in text format you have a copy of this descriptor on both your yetiseed files and descriptor.txt files.\n' + v.pubdesc + '\n'
             file = file + v.coldfile
