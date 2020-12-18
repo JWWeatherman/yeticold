@@ -87,7 +87,7 @@ def checksum(fourwords):
     print(WIFlist)
     sume = 0
     for char in WIFlist:
-        decodenum = decode58(list.charAt(char))
+        decodenum = decode58(char)
         sume = sume + decodenum
     mod = sume % 58
     char = BASE58_ALPHABET.charAt(mod)
