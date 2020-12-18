@@ -77,7 +77,12 @@ def getSeeds(request, nextroute):
             subprocess.call('touch '+path+'/yetiseed'+str(i)+'/yetiseed'+str(i)+'.txt', shell=True)
             file = ''
             for x in range(1,14):
+                print(x)
+                print(v.passphraselist)
+                print(v.passphraselist[x])
+                print(file)
                 file = file + v.passphraselist[x] + '\n'
+                print(file)
             file = file + '\n\nThis is your descriptor in text format you have a copy of this descriptor on both your yetiseed files and descriptor.txt files.\n' + v.pubdesc + '\n'
             file = file + v.coldfile
             createOrPrepend(file, path+'/yetiseed'+str(i)+'/yetiseed'+str(i)+'.txt')
@@ -85,6 +90,9 @@ def getSeeds(request, nextroute):
         return redirect(nextroute)
 
 def displaySeeds(request, currentroute, nextroute):
+    if request.method == 'GET':
+        privkey = v.privkeylist[v.privkeycount]
+        v.passphraselist = ConvertToPassphrase(privkey)
     if request.method == 'POST':
         v.privkeycount = v.privkeycount + 1
         if (v.privkeycount == 7):
