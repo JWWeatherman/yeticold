@@ -69,12 +69,12 @@ def getSeeds(request, nextroute):
         v.walletimported = True
         path = home + '/Documents'
         subprocess.call('rm -r '+path+'/yetiseed*', shell=True)
-        for i in range(1,7):
+        for i in range(1,8):
             print(i)
             privkey = v.privkeylist[i]
             v.passphraselist = ConvertToPassphrase(privkey)
-            subprocess.call('mkdir '+path+'/yetiseed'+str(v.privkeycount + 1), shell=True)
-            subprocess.call('touch '+path+'/yetiseed'+str(v.privkeycount + 1)+'/yetiseed'+str(v.privkeycount + 1)+'.txt', shell=True)
+            subprocess.call('mkdir '+path+'/yetiseed'+str(i), shell=True)
+            subprocess.call('touch '+path+'/yetiseed'+str(i)+'/yetiseed'+str(i)+'.txt', shell=True)
             file = ''
             for x in range(1,14):
                 file = file + v.passphraselist[x] + '\n'
