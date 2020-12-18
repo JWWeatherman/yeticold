@@ -82,7 +82,7 @@ def checksum(fourwords):
     WIFlist = PassphraseListToWIF(fourwords.split(' '))
     sume = 0
     for char in WIFlist:
-        var decodenum = decode58(list.charAt(char))
+        decodenum = decode58(list.charAt(char))
         sume = sume + decodenum
     mod = sume % 58
     var char = BASE58_ALPHABET.charAt(mod)
