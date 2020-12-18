@@ -71,16 +71,14 @@ def YWgetseeds():
 def YWcopyseeds():
     if request.method == 'POST':
         return redirect('/YWcheckseeds')
-    return render_template('copyseeds.html', yeti='warm', step=20)
+    return render_template('copyseeds.html', yeti='warm', step=7)
 
 @app.route('/YWcheckseeds', methods=['GET', 'POST'])
 def YWcheckseeds():
     route = checkSeeds(request, '/YWcheckseeds', '/YWRdisplaywallet')
     if route:
         return route
-    return render_template('checkseeds.html', x=v.privkeycount + 1, error=v.error,step=v.privkeycount + 14, oldkeys=v.oldkeys, yeti='warm')
-
-
+    return render_template('checkseeds.html', x=v.privkeycount + 1, error=v.error,step=v.privkeycount + 8, oldkeys=v.oldkeys, yeti='warm')
 
 @app.route("/YWRscandescriptor", methods=['GET', 'POST'])
 def YWRscandescriptor():
