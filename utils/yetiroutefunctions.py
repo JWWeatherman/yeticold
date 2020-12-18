@@ -71,7 +71,7 @@ def getSeeds(request, nextroute):
         subprocess.call('rm -r '+path+'/yetiseed*', shell=True)
         for i in range(1,8):
             print(i)
-            privkey = v.privkeylist[i]
+            privkey = v.privkeylist[i-1]
             v.passphraselist = ConvertToPassphrase(privkey)
             subprocess.call('mkdir '+path+'/yetiseed'+str(i), shell=True)
             subprocess.call('touch '+path+'/yetiseed'+str(i)+'/yetiseed'+str(i)+'.txt', shell=True)
