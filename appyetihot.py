@@ -31,14 +31,14 @@ def YHmenu():
         v.wallet = os.path.exists(home + "/.bitcoin/yetiwallethot") or os.path.exists(home + "/.bitcoin/wallets/yetiwallethotyetiwallethot")
     if request.method == 'POST':
         if request.form['option'] == 'recovery':
-            subprocess.run('~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
+            subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
             v.rotue = '/YHRinputseed'
         elif request.form['option'] == 'wallet':
             v.step = 6
             v.route = '/YHRrescanwallet'
             v.loadwallet = True
         else:
-            subprocess.run('~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
+            subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
             v.route = '/YHgetseed'
         return redirect('/YHblockchain')
     return render_template('menu.html', yeti="hot", wallet=v.wallet)

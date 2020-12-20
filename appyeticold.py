@@ -47,7 +47,7 @@ def menu():
             v.info = "yetiColdRec"
             v.route = '/scandescriptorRec'
             v.url = "rec.yeticold.com"
-            subprocess.run('~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
+            subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
         elif request.form['option'] == 'wallet':
             v.info = 'yetiColdImp'
             v.route = '/rescanwalletImp'
@@ -56,7 +56,7 @@ def menu():
             v.info = "yetiCold"
             v.url = "desc.yeticold.com"
             v.route = '/scandescriptor'
-            subprocess.run('~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
+            subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
         return redirect('/blockchain')
     return render_template('menu.html', wallet=v.wallet)
 
