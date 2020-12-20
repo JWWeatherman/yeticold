@@ -82,7 +82,7 @@ def YHgetseed():
                 phrasenum = phrasenum + 1
             line = line + checksum(line)
             file = file + line + '\n'
-        createOrPrepend(file, path+'/yhseed.txt')
+        createOrPrepend(file, home+'/Documents/yhseed.txt')
         return redirect('/YHcopyseed')
     return render_template('getseed.html', yeti="hot", step=6)
 
