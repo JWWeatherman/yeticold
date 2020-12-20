@@ -4,7 +4,7 @@ import time
 import os
 home = os.getenv("HOME")
 now = datetime.now()
-timestamp = datetime.timestamp(now)
+timestamp = str(datetime.timestamp(now))
 
 subprocess.run('mkdir '+home+'/.bitcoin/oldwallets',shell=True)
 subprocess.run('mkdir '+home+'/.bitcoin/oldwallets/'+timestamp,shell=True)
