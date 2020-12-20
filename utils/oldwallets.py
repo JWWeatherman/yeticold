@@ -6,7 +6,7 @@ home = os.getenv("HOME")
 now = datetime.now()
 timestamp = datetime.timestamp(now)
 
-subprocess.run('mkdir '+home+'/.bitcoin/oldwallets')
+subprocess.run('sudo mkdir '+home+'/.bitcoin/oldwallets')
 subprocess.run('mkdir '+home+'/.bitcoin/oldwallets/'+timestamp)
 subprocess.run('mkdir '+home+'/Documents/oldseeds')
 subprocess.run('mkdir '+home+'/Documents/oldseeds/'+timestamp)
