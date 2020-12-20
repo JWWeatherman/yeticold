@@ -31,16 +31,14 @@ def YHmenu():
         v.wallet = os.path.exists(home + "/.bitcoin/yetiwallethot") or os.path.exists(home + "/.bitcoin/wallets/yetiwallethotyetiwallethot")
     if request.method == 'POST':
         if request.form['option'] == 'recovery':
-            subprocess.run('rm -r ~/.bitcoin/yetiwallet* 2> /dev/null', shell=True, check=False)
-            subprocess.run('rm -r ~/.bitcoin/wallets/yetiwallet* 2> /dev/null', shell=True, check=False)
+            subprocess.run('~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
             v.rotue = '/YHRinputseed'
         elif request.form['option'] == 'wallet':
             v.step = 6
             v.route = '/YHRrescanwallet'
             v.loadwallet = True
         else:
-            subprocess.run('rm -r ~/.bitcoin/yetiwallet* 2> /dev/null', shell=True, check=False)
-            subprocess.run('rm -r ~/.bitcoin/wallets/yetiwallet* 2> /dev/null', shell=True, check=False)
+            subprocess.run('~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
             v.route = '/YHgetseed'
         return redirect('/YHblockchain')
     return render_template('menu.html', yeti="hot", wallet=v.wallet)
@@ -74,24 +72,26 @@ def YHgetseed():
         v.privkey = ConvertToWIF(xor(binary,newbinary))
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallethot sethdseed true "'+v.privkey+'"')
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli unloadwallet "yetiwalletgen"')
-        return redirect('/YHdisplayseed')
+        v.passphraselist = ConvertToPassphrase(v.privkey)
+        file = ''
+        phrasenum = 0
+        for x in range(0,13):
+            line = ""
+            for y in range(0,4):
+                line = line + v.passphraselist[phrasenum] + ' '
+                phrasenum = phrasenum + 1
+            line = line + checksum(line)
+            file = file + line + '\n'
+        createOrPrepend(file, path+'/yhseed.txt')
+        return redirect('/YHcopyseed')
     return render_template('getseed.html', yeti="hot", step=6)
 
-@app.route('/YHdisplayseed', methods=['GET', 'POST'])
-def YHdisplayseed():
-    if request.method == 'GET':
-        v.passphraselist = ConvertToPassphrase(v.privkey)
+@app.route("/YHcopyseed", methods=['GET', 'POST'])
+def YHcopyseed():
     if request.method == 'POST':
-        home = os.getenv('HOME')
-        path = home + '/Documents'
-        subprocess.call('rm '+path+'/yhseed.txt', shell=True)
-        subprocess.call('touch '+path+'/yhseed.txt', shell=True)
-        file = ''
-        for i in range(0,13):
-            file = file + request.form['displayrow' + str(i+1)] + '\n'
-        subprocess.call('echo "'+file+'" >> '+path+'/yhseed.txt', shell=True)
         return redirect('/YHcheckseed')
-    return render_template('displayseeds.html', x=1, PPL=v.passphraselist, yeti="hot", step=7)
+    return render_template('copyseed.html', yeti="hot", step=9)
+
 #confirm privkey
 @app.route('/YHcheckseed', methods=['GET', 'POST'])
 def YHcheckseed():
@@ -109,16 +109,10 @@ def YHcheckseed():
             privkeylisttoconfirm.append(inputlist[3])
         if privkeylisttoconfirm == v.passphraselist:
             v.oldkeys = None
-            return redirect('/YHcopyseed')
+            return redirect('/YHRdisplaywallet')
         else:
             v.error = 'The seed words you entered are incorrect. This is probably because you entered a line twice or put them in the wrong order.'
     return render_template('checkseeds.html', x=1, error=v.error, step=8,oldkeys=v.oldkeys, yeti="hot")
-
-@app.route("/YHcopyseed", methods=['GET', 'POST'])
-def YHcopyseed():
-    if request.method == 'POST':
-        return redirect('/YHRdisplaywallet')
-    return render_template('copyseed.html', yeti="hot", step=9)
 
 @app.route("/YHRdisplaywallet", methods=['GET', 'POST'])
 def YHRdisplaywallet():

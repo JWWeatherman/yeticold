@@ -32,16 +32,14 @@ def YWmenu():
         v.wallet = os.path.exists(home + "/.bitcoin/yetiwalletpriv") or os.path.exists(home + "/.bitcoin/wallets/yetiwalletpriv")
     if request.method == 'POST':
         if request.form['option'] == 'recovery':
-            subprocess.run('rm -r ~/.bitcoin/yetiwallet* 2> /dev/null', shell=True, check=False)
-            subprocess.run('rm -r ~/.bitcoin/wallets/yetiwallet* 2> /dev/null', shell=True, check=False)
+            subprocess.run('~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
             v.route = '/YWRscandescriptor'
         elif request.form['option'] == 'wallet':
             v.step = 6
             v.route = '/YWRrescanwallet'
             v.loadwallet = True
         else:
-            subprocess.run('rm -r ~/.bitcoin/yetiwallet* 2> /dev/null', shell=True, check=False)
-            subprocess.run('rm -r ~/.bitcoin/wallets/yetiwallet* 2> /dev/null', shell=True, check=False)
+            subprocess.run('~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
             v.route = '/YWgetseeds'
         return redirect('/YWblockchain')
     return render_template('menu.html', yeti='warm', wallet=v.wallet)
