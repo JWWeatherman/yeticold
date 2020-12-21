@@ -17,7 +17,7 @@ app = Flask(__name__)
 def handle_bad_request(e):
     if e.original_exception != None:
         e = e.original_exception
-    return render_template('error.html', error=e), 500
+    return render_template('error.html', error=e, yeti='Cold'), 500
 
 
 #A
@@ -46,15 +46,18 @@ def menu():
         if request.form['option'] == 'recovery':
             v.info = "yetiColdRec"
             v.route = '/scandescriptorRec'
+            v.mode = "Recover"
             v.url = "rec.yeticold.com"
             subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
         elif request.form['option'] == 'wallet':
             v.info = 'yetiColdImp'
             v.route = '/rescanwalletImp'
+            v.mode = "Load"
             v.url = "load.yeticold.com"
         else:
             v.info = "yetiCold"
             v.url = "desc.yeticold.com"
+            v.mode = "Create"
             v.route = '/scandescriptor'
             subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
         return redirect('/blockchain')
@@ -62,7 +65,7 @@ def menu():
 
 @app.route("/blockchain", methods=['GET', 'POST'])
 def blockchain():
-    route = blockChain(request, '/openbitcoin')
+    route = blockChain(request, '/openbitcoin', mode=v.mode)
     if route:
         return route
     return render_template('blockchain.html')
@@ -77,10 +80,10 @@ def YCopenbitcoin():
         loadwallet = True
     else:
         loadwallet = False
-    route = openBitcoin(request, '/openbitcoin', v.route, loadwallet=loadwallet, offline=False, yeti='cold')
+    route = openBitcoin(request, '/openbitcoin', v.route, loadwallet=loadwallet, offline=False, yeti='Cold')
     if route:
         return route
-    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=step, switch=True, url=v.url)
+    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=step, switch=True, url=v.url, offline=False)
 
 @app.route("/rescanwalletImp", methods=['GET', 'POST'])
 def rescanwalletImp():
@@ -91,10 +94,11 @@ def rescanwalletImp():
 
 @app.route("/blockchainOff", methods=['GET', 'POST'])
 def blockchainOff():
-    route = blockChain(request, '/openbitcoinOff')
-    if route:
-        return route
-    return render_template('blockchain.html')
+    if (os.path.exists(home + "/.bitcoin")):
+        createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
+    else:
+        createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nprune=550\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf') 
+    return redirect('/openbitcoinOff')
 
 #OFF
 @app.route("/openbitcoinOff", methods=['GET', 'POST'])
@@ -112,7 +116,7 @@ def openbitcoinOff():
     route = openBitcoin(request, '/openbitcoinOff', '/connectionOff', loadwallet=loadwallet, offline=True)
     if route:
         return route
-    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=v.step)
+    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=v.step, offline=True)
 
 #OFF
 @app.route("/connectionOff", methods=['GET', 'POST'])

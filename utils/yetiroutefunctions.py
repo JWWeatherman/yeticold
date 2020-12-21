@@ -5,20 +5,26 @@ from btcrpcfunctions import *
 from formating import *
 home = os.getenv("HOME")
 
-def blockChain(request, nextroute):
+def blockChain(request, nextroute, mode="Create"):
     if request.method == 'GET':
         if (os.path.exists(home + "/.bitcoin")):
             createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
             return redirect(nextroute)
-    if request.method == 'POST':
-        subprocess.call('mkdir ~/.bitcoin',shell=True)
-        if request.form['date'] == '':
+        elif mode == "Create":
+            createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nprune=550\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
+            return redirect(nextroute)
+        elif mode == "Load":
             createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
             return redirect(nextroute)
-        createOrPrepend('server=1\nrpcport=8332\nrpcuser=rpcuser\nprune='+str(getPrunBlockheightByDate(request))+'\nrpcpassword='+v.rpcpsw+'',home+'/.bitcoin/bitcoin.conf')
+    if request.method == 'POST':
+        subprocess.call('mkdir ~/.bitcoin',shell=True)
+        if request.form['option'] == 'Skip':
+            createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
+            return redirect(nextroute)
+        createOrPrepend('server=1\nrpcport=8332\nrpcuser=rpcuser\nprune='+str(getPrunBlockheightByDate(request.form['date']))+'\nrpcpassword='+v.rpcpsw+'',home+'/.bitcoin/bitcoin.conf')
         return redirect(nextroute)
 
-def openBitcoin(request, currentroute, nextroute, loadwallet=False, offline=False, yeti='warm'):
+def openBitcoin(request, currentroute, nextroute, loadwallet=False, offline=False, yeti='Warm'):
     if request.method == 'GET':
         v.IBD = BTCFinished()
         v.progress = BTCprogress()

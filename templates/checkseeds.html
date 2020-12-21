@@ -11,26 +11,43 @@
   <body>
     <div id='navbar'></div>
     <div class="container" style="margin-top: 3rem;">
-        <h2>Step {{step}}: Check Private Key {{ x }} of 7</h2>
+        {% if yeti == 'Hot' %}
+        <h2>Step {{step}}: Check Seed</h2>
+        {%else%}
+        <h2>Step {{step}}: Check Seed {{ x }} of 7</h2>
+        {%endif%}
         <ul>
-            <li>If you lose access to more than 4 of your private keys your bitcoin will be permanently lost.</li>
-            <li>Enter your seed phrases below to ensure you wrote them down correctly.</li>
+            {% if yeti == 'Warm' %}
+            <li>Insert your CD labeled "Seed {{x}}" and select the file "YetiSeed{{x}}.txt" in the "YetiSeed{{x}}" folder and then click <b>Next</b> to continue.</li>
+            <form action="" method="post">
+              <input style="display: none;" name="option" value="Skip">
+              <li>If you are just testing Yeti and you don't plan to use larger amounts click to <a href="{{nextroute}}" style="color:gray;text-decoration: underline;" type="submit" id="next" value="Skip">skip</a> this check.</li>
+            </form>
+            {% elif yeti == 'Hot' %}
+            <li>Insert your CD labeled "Seed" and select the file "yhseed.txt" and then click <b>Next</b> to continue.</li>
+            <form action="" method="post">
+              <input style="display: none;" name="option" value="Skip">
+              <li>If you are just testing Yeti and you don't plan to use larger amounts click to <a href="{{nextroute}}" style="color:gray;text-decoration: underline;" type="submit" id="next" value="Skip">skip</a> this check.</li>
+            </form>
+            {% else %}
+              <li>Cold.</li>
+            {% endif %}
         </ul>
       {% if error %}
         <p style="color:red;">{{ error }}</p>
       {% endif %}
-      <form action="" method="post">
-        <input style="display: none;" name="option" value="Skip">
-        <input class="btn btn-primary" type="submit" id="next" value="Skip">
-      </form>
         <form autocomplete="off" action="" method="post" style="border: solid #f8f9fa;padding: 1.5rem;">
-          {% if yeti == 'warm' %}
-            <input id="filepath" type="file" name="path">
+          <input style="display: none;" name="option" value="No">
+          {% if yeti == 'Warm' or yeti == 'Hot' %}
+          <div class="form-row">
+            <div class="input-group col-md-10 mb-3">
+              <div class="custom-file" style="cursor: pointer;">
+                <label style="cursor: pointer;" class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                <input style="cursor: pointer;" id="filepath" type="file" name="path" class="custom-file-input">
+              </div>
+            </div>
+          </div>
           {% endif %}
-          {% if yeti == 'hot' %}
-            <input id="filepath" type="file" name="path">
-          {% endif %}
-        <input style="display: none;" name="option" value="No">
         <div class="form-row">
           <div class="input-group col-md-10 mb-3">
             <div class="input-group-prepend">

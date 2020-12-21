@@ -18,13 +18,13 @@ app = Flask(__name__)
 def handle_bad_request(e):
     if e.original_exception != None:
         e = e.original_exception
-    return render_template('error.html', error=e), 500
+    return render_template('error.html', error=e, yeti='Warm'), 500
 
 @app.route("/", methods=['GET', 'POST'])
 def redirectroute():
     if request.method == 'GET':
         return redirect('/YWmenu')
-    return render_template('redirect.html', yeti='warm')
+    return render_template('redirect.html', yeti='Warm')
 
 @app.route("/YWmenu", methods=['GET', 'POST'])
 def YWmenu():
@@ -33,50 +33,53 @@ def YWmenu():
     if request.method == 'POST':
         if request.form['option'] == 'recovery':
             subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
+            v.mode = "Recover"
             v.route = '/YWRscandescriptor'
         elif request.form['option'] == 'wallet':
             v.step = 6
             v.route = '/YWRrescanwallet'
+            v.mode = "Load"
             v.loadwallet = True
         else:
+            v.mode = "Create"
             subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
             v.route = '/YWgetseeds'
         return redirect('/YWblockchain')
-    return render_template('menu.html', yeti='warm', wallet=v.wallet)
+    return render_template('menu.html', yeti='Warm', wallet=v.wallet)
 
 @app.route("/YWblockchain", methods=['GET', 'POST'])
 def YWblockchain():
-    route = blockChain(request, '/YWopenbitcoin')
+    route = blockChain(request, '/YWopenbitcoin', mode=v.mode)
     if route:
         return route
-    return render_template('blockchain.html', yeti='warm')
+    return render_template('blockchain.html', yeti='Warm')
 
 @app.route("/YWopenbitcoin", methods=['GET', 'POST'])
 def YWopenbitcoin():
     route = openBitcoin(request, '/YWopenbitcoin', v.route, v.loadwallet)
     if route:
         return route
-    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, yeti='warm', step=5)
+    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, yeti='Warm', step=5, offline=False)
 
 @app.route("/YWgetseeds", methods=['GET', 'POST'])
 def YWgetseeds():
     route = getSeeds(request, '/YWcopyseeds')
     if route:
         return route
-    return render_template('getseeds.html', yeti='warm', step=6)
+    return render_template('getseeds.html', yeti='Warm', step=6)
 
 @app.route("/YWcopyseeds", methods=['GET', 'POST'])
 def YWcopyseeds():
     if request.method == 'POST':
         return redirect('/YWcheckseeds')
-    return render_template('copyseeds.html', yeti='warm', step=7)
+    return render_template('copyseeds.html', yeti='Warm', step=7)
 
 @app.route('/YWcheckseeds', methods=['GET', 'POST'])
 def YWcheckseeds():
     route = checkSeeds(request, '/YWcheckseeds', '/YWRdisplaywallet')
     if route:
         return route
-    return render_template('checkseeds.html', x=v.privkeycount + 1, error=v.error,step=v.privkeycount + 8, oldkeys=v.oldkeys, yeti='warm')
+    return render_template('checkseeds.html', x=v.privkeycount + 1, error=v.error,step=v.privkeycount + 8, oldkeys=v.oldkeys, yeti='Warm',nextroute='/YWRdisplaywallet')
 
 @app.route("/YWRscandescriptor", methods=['GET', 'POST'])
 def YWRscandescriptor():
@@ -89,7 +92,7 @@ def YWRscandescriptor():
             v.error = 'Invalid Descriptor'
             return redirect('/YWRscandescriptor')
         return redirect('/YWRimportseeds')
-    return render_template('scandescriptorOff.html', pubdesc=v.pubdesc, yeti='warm', step=6, line=16)
+    return render_template('scandescriptorOff.html', pubdesc=v.pubdesc, yeti='Warm', step=6, line=16)
 
 @app.route('/YWRimportseeds', methods=['GET', 'POST'])
 def YWRimportseeds():    
@@ -97,18 +100,18 @@ def YWRimportseeds():
     route = importSeeds(request, '/YWRimportseeds', '/YWRrescanwallet')
     if route:
         return route
-    return render_template('importseeds.html', x=v.privkeycount + 1, error=v.error, step=v.privkeycount + 7, yeti='warm')
+    return render_template('importseeds.html', x=v.privkeycount + 1, error=v.error, step=v.privkeycount + 7, yeti='Warm')
 
 @app.route("/YWRrescanwallet", methods=['GET', 'POST'])
 def YWRrescanwallet():
     if request.method == 'POST':
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv rescanblockchain '+blockheight())
         return redirect('/YWRdisplaywallet')
-    return render_template('rescanwallet.html', yeti='warm', step=v.step)
+    return render_template('rescanwallet.html', yeti='Warm', step=v.step)
 
 @app.route("/YWRdisplaywallet", methods=['GET', 'POST'])
 def YWRdisplaywallet():
-    return render_template('displaywallet.html', yeti='warm')
+    return render_template('displaywallet.html', yeti='Warm')
 
 if __name__ == "__main__":
     app.run()

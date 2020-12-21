@@ -15,10 +15,10 @@ def createOrPrepend(text, path):
     else:
 	    subprocess.call('echo "'+text+'" >> '+path, shell=True)
 
-def getPrunBlockheightByDate(request):
+def getPrunBlockheightByDate(date):
     fmt = '%Y-%m-%d %H:%M:%S'
     today = str(datetime.today()).split('.')[0]
-    d1 = datetime.strptime(request.form['date'] + ' 12:0:0', fmt)
+    d1 = datetime.strptime(date + ' 12:0:0', fmt)
     d2 = datetime.strptime(today, fmt)
     d1_ts = time.mktime(d1.timetuple())
     d2_ts = time.mktime(d2.timetuple())

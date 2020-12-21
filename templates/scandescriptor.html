@@ -21,9 +21,16 @@
           <li>Click the <b>Next</b> button.</li>
         <p></p>
       </ol>
-      <input id="filepath" type="file" name="path">
       <input style="display:none;" id="line" value="{{line}}">
       <form autocomplete="off" action="" method="post" style="border: solid #f8f9fa;padding: 1.5rem;">
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="custom-file" style="cursor: pointer;">
+              <label style="cursor: pointer;" class="custom-file-label" for="inputGroupFile01">Choose file</label>
+              <input style="cursor: pointer;" id="filepath" type="file" name="path" class="custom-file-input">
+            </div>
+          </div>
+        </div>
         <div class="form-row">
           <div class="input-group col-md-10 mb-3">
             <input type="text" class="form-control" value="" data-toggle="tooltip" data-trigger="focus" data-placement="bottom" title="" id="descriptor" name="descriptor" placeholder="Descriptor">

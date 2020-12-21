@@ -14,16 +14,17 @@
       {% if error %}
         <p style="color:red;">{{ error }}</p>
       {% endif %}
-      <ol>
-          <li>Insert any of your usb drives labled "yetiseed" to laptop.</li>
-          <li>Click the Browse button and select the <b>yetiseed.txt</b> from the usb drive located in the folder yetiseed*.</li>
-          <li>After selecting the <b>yetiseed.txt</b> the text box should display a descriptor starting with the characters <b>"wsh"</b>.</li>
-          <li>Click the <b>Next</b> button.</li>
-        <p></p>
-      </ol>
-      <input id="filepath" type="file" name="path">
+          <p>Insert any of your seed CDs and select the "yetiseed.txt" file in the "yetiseed" folder and then click <b>Next</b> to continue.</p>
       <input style="display:none;" id="line" value="{{line}}">
       <form autocomplete="off" action="" method="post" style="border: solid #f8f9fa;padding: 1.5rem;">
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="custom-file" style="cursor: pointer;">
+              <label style="cursor: pointer;" class="custom-file-label" for="inputGroupFile01">Choose file</label>
+              <input style="cursor: pointer;" id="filepath" type="file" name="path" class="custom-file-input">
+            </div>
+          </div>
+        </div>
         <div class="form-row">
           <div class="input-group col-md-10 mb-3">
             <input type="text" class="form-control" value="" data-toggle="tooltip" data-trigger="focus" data-placement="bottom" title="" id="descriptor" name="descriptor" placeholder="Descriptor">

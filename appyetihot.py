@@ -17,7 +17,7 @@ app = Flask(__name__)
 def handle_bad_request(e):
     if e.original_exception != None:
         e = e.original_exception
-    return render_template('error.html', error=e), 500
+    return render_template('error.html', error=e, yeti='Hot'), 500
 
 @app.route("/", methods=['GET', 'POST'])
 def redirectroute():
@@ -33,15 +33,18 @@ def YHmenu():
         if request.form['option'] == 'recovery':
             subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
             v.rotue = '/YHRinputseed'
+            v.mode = "Recover"
         elif request.form['option'] == 'wallet':
             v.step = 6
             v.route = '/YHRrescanwallet'
+            v.mode = "Load"
             v.loadwallet = True
         else:
+            v.mode = "Create"
             subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
             v.route = '/YHgetseed'
         return redirect('/YHblockchain')
-    return render_template('menu.html', yeti="hot", wallet=v.wallet)
+    return render_template('menu.html', yeti='Hot', wallet=v.wallet)
 
 @app.route("/YHblockchain", methods=['GET', 'POST'])
 def YHblockchain():
@@ -52,10 +55,10 @@ def YHblockchain():
 
 @app.route("/YHopenbitcoin", methods=['GET', 'POST'])
 def YHopenbitcoin():
-    route = openBitcoin(request, '/YHopenbitcoin', v.route, loadwallet=v.loadwallet, yeti='hot')
+    route = openBitcoin(request, '/YHopenbitcoin', v.route, loadwallet=v.loadwallet, yeti='Hot')
     if route:
         return route
-    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=5, yeti="hot")
+    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=5, yeti='Hot', offline=False)
 
 @app.route("/YHgetseed", methods=['GET', 'POST'])
 def YHgetseed():
@@ -84,13 +87,13 @@ def YHgetseed():
             file = file + line + '\n'
         createOrPrepend(file, home+'/Documents/yhseed.txt')
         return redirect('/YHcopyseed')
-    return render_template('getseed.html', yeti="hot", step=6)
+    return render_template('getseed.html', yeti='Hot', step=6)
 
 @app.route("/YHcopyseed", methods=['GET', 'POST'])
 def YHcopyseed():
     if request.method == 'POST':
         return redirect('/YHcheckseed')
-    return render_template('copyseed.html', yeti="hot", step=9)
+    return render_template('copyseed.html', yeti='Hot', step=9)
 
 #confirm privkey
 @app.route('/YHcheckseed', methods=['GET', 'POST'])
@@ -112,11 +115,11 @@ def YHcheckseed():
             return redirect('/YHRdisplaywallet')
         else:
             v.error = 'The seed words you entered are incorrect. This is probably because you entered a line twice or put them in the wrong order.'
-    return render_template('checkseeds.html', x=1, error=v.error, step=8,oldkeys=v.oldkeys, yeti="hot")
+    return render_template('checkseeds.html', x=1, error=v.error, step=8,oldkeys=v.oldkeys, yeti='Hot')
 
 @app.route("/YHRdisplaywallet", methods=['GET', 'POST'])
 def YHRdisplaywallet():
-    return render_template('displaywallet.html', yeti='hot')
+    return render_template('displaywallet.html', yeti='Hot')
     
 @app.route('/YHRinputseed', methods=['GET', 'POST'])
 def YHRinputseed():
@@ -134,14 +137,14 @@ def YHRinputseed():
         v.privkey = PassphraseListToWIF(privkey)
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallethot sethdseed true "'+v.privkey+'"')
         return redirect('/YHRrescanwallet')
-    return render_template('importseeds.html', x=1, error=v.error, yeti="hot", step=6)
+    return render_template('importseeds.html', x=1, error=v.error, yeti='Hot', step=6)
 
 @app.route("/YHRrescanwallet", methods=['GET', 'POST'])
 def YHRrescanwallet():
     if request.method == 'POST':
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallethot rescanblockchain '+blockheight())
         return redirect('/YHRdisplaywallet')
-    return render_template('rescanwallet.html', yeti='warm', step=v.step)
+    return render_template('rescanwallet.html', yeti='Warm', step=v.step)
 
 if __name__ == "__main__":
     app.run()

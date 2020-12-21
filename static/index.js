@@ -1,12 +1,12 @@
-var navbar = (yeti='cold', url) => {
-  if (yeti == 'warm') {
-    document.getElementById('navbar').innerHTML = '<nav class="form-row navbar navbar-light bg-warning"><img src="'+url+'" width="50" height="50" class="align-top" alt=""><h3 style="color:black;margin:0;">Yeti Bitcoin Warm Storage</h3></nav>';
-  } else if (yeti == 'hot') {
-    document.getElementById('navbar').innerHTML = '<nav class="form-row navbar navbar-light bg-danger"><img src="'+url+'" width="50" height="50" class="align-top" alt=""><h3 style="color:black;margin:0;">Yeti Bitcoin Hot Storage</h3></nav>';
+var navbar = (yeti='Cold', url) => {
+  if (yeti == 'Warm') {
+    document.getElementById('navbar').innerHTML = '<nav class="form-row navbar navbar-light bg-warning"><img src="'+url+'" width="50" height="50" class="align-top" alt=""><h3 style="color:black;margin:0;">Yeti Level 2 Wallet</h3></nav>';
+  } else if (yeti == 'Hot') {
+    document.getElementById('navbar').innerHTML = '<nav class="form-row navbar navbar-light bg-danger"><img src="'+url+'" width="50" height="50" class="align-top" alt=""><h3 style="color:black;margin:0;">Yeti Level 1 Wallet</h3></nav>';
   } else if (yeti == 'BCO') {
     document.getElementById('navbar').innerHTML = '<nav class="form-row navbar navbar-light bg-info"><img src="'+url+'" width="50" height="50" class="align-top" alt=""><h3 style="color:black;margin:0;">Bitcoin Core Offline</h3></nav>';
   } else {
-    document.getElementById('navbar').innerHTML = '<nav class="form-row navbar navbar-light bg-primary"><img src="'+url+'" width="50" height="50" class="align-top" alt=" "><h3 style="color:white;margin:0;">Yeti Bitcoin Cold Storage</h3></nav>';
+    document.getElementById('navbar').innerHTML = '<nav class="form-row navbar navbar-light bg-primary"><img src="'+url+'" width="50" height="50" class="align-top" alt=" "><h3 style="color:white;margin:0;">Yeti Level 3 Wallet</h3></nav>';
   }
 }
 
@@ -517,15 +517,12 @@ var CheckSumMatch = (passphraselist, checksum) => {
 
  var highlightrows = () => {
    var templist = []
-   var Privatekey = []
    var numofrowsgreen = 0
    var red = "rgba(255, 0, 0, 0.4)"
    var green = "rgba(0, 151, 19, 0.4)"
    for(var i = 1;i < 14; i++) {
      document.getElementById('row' + i).style.backgroundColor = ""
      templist = document.getElementById('row' + i).value.toString().split(' ')
-     Privatekey.concat(document.getElementById('row' + i).value.toString().split(' '))
-     templist = templist.splice(0, 5)
      var checksum = templist.pop()
      if (document.getElementById('row' + i).value) document.getElementById('row' + i).style.backgroundColor = red
      if (templist.filter((el) => {return passphraseWIFlist.includes(el)}).length === 4) {

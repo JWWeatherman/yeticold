@@ -10,16 +10,16 @@
   <body>
     <div id='navbar'></div>
     <div class="container" style="margin-top: 3rem;">
-      <h2>Choose Blockchain</h2>
-      <p style="margin-bottom:30px;">We have enabled wifi on your laptop please connect to your local net work to download the blockchain. Yeti will shut off your wifi after you finished downloading the blockchain.</p>
-      <p>If you are going to recover a wallet but are either, unsure of the size of your hard drive, or know that it is too small to keep the whole blockchain. Then select the date of your first transactions, and yeti will prune it to a couple of weeks before that date.</p>
-      <p>Leave blank if you have enough storage for the whole blockchain, Or enter todays date if you are going to create a new wallet.</p>
+      <h2>Prune Blockchain</h2>
+      
       <form action="" method="post">
-        <div class="form-group col-md-10">
-          <input type="date" name="date">
-        </div>
+        <input style="display: none;" name="option" value="Skip">
+        <p>Select the date of your earliest deposit into your Yeti wallet and click <b>Next</b>. If you are sure your hard drive is large enough you can <button style="color:gray;text-decoration: underline;" type="submit" id="next" value="Skip">skip</button> this step.</p>
+      </form>
+      <form action="" method="post">
+        <input type="date" name="date">
         <input style="display: none;" name="option" value="VALUE">
-        <input class="btn btn-primary" type="submit" id="next" value="Create blockchain">
+        <input class="btn btn-primary" type="submit" id="next" value="Next">
       </form>
     </div>
     <script>
