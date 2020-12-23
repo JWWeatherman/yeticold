@@ -85,8 +85,13 @@ def YCopenbitcoin():
 def rescanwalletImp():
     if request.method == 'POST':
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub rescanblockchain '+blockheight())
-        return redirect('/coldwalletguide')
+        return redirect('/coldwalletguideImp')
     return render_template('rescanwallet.html',step=10)
+
+#ON
+@app.route("/coldwalletguideImp", methods=['GET', 'POST'])
+def coldwalletguideImp():
+    return render_template('coldwalletguide.html', step=11)
 
 @app.route("/blockchainOff", methods=['GET', 'POST'])
 def blockchainOff():
@@ -176,12 +181,12 @@ def rescanwalletRec():
     if request.method == 'POST':
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now"}]\'')
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub rescanblockchain '+blockheight())
-        return redirect('/coldwalletguide')
+        return redirect('/coldwalletguideRec')
     return render_template('rescanwallet.html',step=15)
 #ON
-@app.route("/coldwalletguide", methods=['GET', 'POST'])
-def coldwalletguide():
-    return render_template('coldwalletguide.html')
+@app.route("/coldwalletguideRec", methods=['GET', 'POST'])
+def coldwalletguideRec():
+    return render_template('coldwalletguide.html', step=16)
 
 #OFF
 @app.route("/getseedsOff", methods=['GET', 'POST'])
@@ -247,13 +252,17 @@ def checkseedsOff():
     route = checkSeeds(request, '/checkseedsOff', '/switchlaptopOff')
     if route:
         return route
-    return render_template('checkseeds.html', x=v.privkeycount + 1, error=v.error,step=21+v.privkeycount,oldkeys=v.oldkeys)
+    return render_template('checkseeds.html', x=v.privkeycount + 1, error=v.error,step=21+v.privkeycount,oldkeys=v.oldkeys,nextroute='/switchlaptopOff')
 
 #OFF
 @app.route("/switchlaptopOff", methods=['GET', 'POST'])
 def switchlaptopOff():
-    return render_template('switchlaptop.html', step=12, instructions="Switch to your Primary laptop currently showing step 14, click next to show your coldwalletguide", laptop="Primary")
+    return render_template('switchlaptop.html', step=27, instructions="Switch to your Primary Laptop currently showing step 14 and on your Primary click next to show step 13", laptop="Primary")
 
+#ON
+@app.route("/coldwalletguide", methods=['GET', 'POST'])
+def coldwalletguide():
+    return render_template('coldwalletguide.html', step=28)
 
 
 
