@@ -5,8 +5,6 @@ import os
 home = os.getenv("HOME")
 now = datetime.now()
 timestamp = str(datetime.timestamp(now))
-print("HI")
-
 if not os.path.exists(home+'/.bitcoin/oldwallets'):
 	subprocess.run('mkdir '+home+'/.bitcoin/oldwallets',shell=True)
 if not os.path.exists(home+'/Documents/oldseeds'):
