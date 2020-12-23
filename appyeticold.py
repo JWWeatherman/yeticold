@@ -159,7 +159,7 @@ def importseedsOff():
 #OFF
 @app.route("/switchlaptopOffRec", methods=['GET', 'POST'])
 def switchlaptopOffRec():
-    return render_template('switchlaptop.html', step=13, instructions="Switch to your Primary laptop currently Showing step 5. Click next to show step 14.", laptop="Primary")
+    return render_template('switchlaptop.html', step=13, instructions="Switch to your Primary Laptop currently Showing step 5 and on your Primary Laptop click Next to show step 14.", laptop="Primary")
 
 #ON
 @app.route("/scandescriptorRec", methods=['GET', 'POST'])
