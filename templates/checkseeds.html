@@ -30,7 +30,8 @@
               <li>If you are just testing Yeti and you don't plan to use larger amounts click to <a href="{{nextroute}}" style="color:gray;text-decoration: underline;" type="submit" id="next" value="Skip">skip</a> this check.</li>
             </form>
             {% else %}
-              <li>Cold.</li>
+            <li>If you lose access to more than 4 of your private keys your bitcoin will be permanently lost.</li>
+            <li>Enter your seed words below to ensure you wrote them down correctly.</li>
             {% endif %}
         </ul>
       {% if error %}
@@ -53,7 +54,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text" id="basic-addon1">1</span>
             </div>
-            <input type="text" class="form-control"  data-toggle="tooltip" data-trigger="focus" data-placement="bottom" title="" id="row1" name="row1" placeholder="Phrase One">
+            <input type="text" class="form-control"  data-toggle="tooltip" data-trigger="focus" data-placement="bottom" title="" id="row1" name="row1" placeholder="Seed Words">
           </div>
         </div>
         <div class="form-row">
@@ -61,7 +62,7 @@
             <div class="input-group-prepend">
               <span class="input-group-text" id="basic-addon1">2</span>
             </div>
-            <input type="text" class="form-control"  data-toggle="tooltip" data-trigger="focus" data-placement="bottom" title="" id="row2" name="row2" placeholder="Phrase Two">
+            <input type="text" class="form-control"  data-toggle="tooltip" data-trigger="focus" data-placement="bottom" title="" id="row2" name="row2" placeholder="Seed Words">
           </div>
         </div>
         <div class="form-row">
