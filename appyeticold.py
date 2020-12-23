@@ -202,7 +202,7 @@ def copyseedsOff():
 def exportdescriptorOff():
     if request.method == 'POST':
         return redirect('/displayseedsOff')
-    return render_template('exportdescriptor.html', step=11, instructions="Switch to your <b>Primary Laptop</b> currently showing step 5, click next to show step 12.", laptop="Primary")
+    return render_template('exportdescriptor.html', step=11, instructions="Switch to your Primary Laptop currently showing step 5, click next to show step 12.", laptop="Primary")
 
 #ON
 @app.route("/scandescriptor", methods=['GET', 'POST'])
