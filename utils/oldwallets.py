@@ -12,6 +12,7 @@ if not os.path.exists(home+'/Documents/oldseeds'):
 	subprocess.run('mkdir '+home+'/Documents/oldseeds',shell=True)
 if os.path.exists(home+'/.bitcoin/yetiwallet*') or os.path.exists(home+'/.bitcoin/wallets/yetiwallet*') or os.path.exists(home+'/.bitcoin/wallet.dat'):
 	subprocess.run('mkdir '+home+'/.bitcoin/oldwallets/'+timestamp,shell=True)
+	print("Hello "+timestamp)
 	subprocess.run('mv '+home+'/.bitcoin/yetiwallet* '+home+'/.bitcoin/oldwallets/'+timestamp+'/.', shell=True, check=False)
 	subprocess.run('mv '+home+'/.bitcoin/wallets/yetiwallet* '+home+'/.bitcoin/oldwallets/'+timestamp+'/wallets/.', shell=True, check=False)
 	subprocess.run('mv '+home+'/.bitcoin/wallet.dat '+home+'/.bitcoin/oldwallets/'+timestamp+'/.', shell=True, check=False)
