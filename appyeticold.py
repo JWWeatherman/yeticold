@@ -257,7 +257,7 @@ def checkseedsOff():
 #OFF
 @app.route("/switchlaptopOff", methods=['GET', 'POST'])
 def switchlaptopOff():
-    return render_template('switchlaptop.html', step=27, instructions="Switch to your Primary Laptop currently showing step 14 and on your Primary click next to show step 13", laptop="Primary")
+    return render_template('switchlaptop.html', step=27, instructions="Switch to your Primary Laptop currently showing step 14 and on your Primary click next to show step 28", laptop="Primary")
 
 #ON
 @app.route("/coldwalletguide", methods=['GET', 'POST'])
