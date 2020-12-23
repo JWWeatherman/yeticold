@@ -21,12 +21,12 @@
               <input style="display: none;" name="option" value="Skip">
               <li>If you are just testing Yeti and you don't plan to use larger amounts click to <a href="{{nextroute}}" style="color:gray;text-decoration: underline;" type="submit" id="next" value="Skip">skip</a> this check.</li>
             </form>
+            <li>If you lose access to more than 4 of your private keys your bitcoin will be permanently lost.</li>
             {% if yeti == 'Warm' %}
             <li>Insert your CD labeled "Seed {{x}}" and select the file "YetiSeed{{x}}.txt" in the "YetiSeed{{x}}" folder and then click <b>Next</b> to continue.</li>
             {% elif yeti == 'Hot' %}
             <li>Insert your CD labeled "Seed" and select the file "yhseed.txt" and then click <b>Next</b> to continue.</li>
             {% else %}
-            <li>If you lose access to more than 4 of your private keys your bitcoin will be permanently lost.</li>
             <li>Enter your seed words below to ensure you wrote them down correctly.</li>
             {% endif %}
         </ul>
