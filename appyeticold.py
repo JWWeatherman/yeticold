@@ -221,12 +221,12 @@ def scandescriptor():
 @app.route("/printpage", methods=['GET', 'POST'])
 def printpage():
     if request.method == 'POST':
-        return redirect('/switchlaptopOff')
+        return redirect('/switchlaptop')
     return render_template('printpage.html', desc=v.pubdesc, step=13)
 
 #ON
-@app.route("/switchlaptopOff", methods=['GET', 'POST'])
-def exportdescriptor():
+@app.route("/switchlaptop", methods=['GET', 'POST'])
+def switchlaptop():
     if request.method == 'POST':
         return redirect('/coldwalletguide')
     return render_template('switchlaptop.html', step=14, instructions="Switch to your Secondary laptop currently showing step 11, click next to show step 15", laptop="Secondary")
@@ -249,7 +249,7 @@ def checkseedsOff():
 
 #OFF
 @app.route("/switchlaptopOff", methods=['GET', 'POST'])
-def exportdescriptor():
+def switchlaptopOff():
     return render_template('switchlaptop.html', step=12, instructions="Switch to your Primary laptop currently showing step 14, click next to show your coldwalletguide", laptop="Primary")
 
 
