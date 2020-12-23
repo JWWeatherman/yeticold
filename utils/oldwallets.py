@@ -17,7 +17,7 @@ if os.path.exists(home+'/.bitcoin/yetiwalletpub') or os.path.exists(home+'/.bitc
 	subprocess.run('mkdir '+home+'/.bitcoin/oldwallets/'+timestamp,shell=True)
 	print("Hello "+timestamp)
 	subprocess.run('mv '+home+'/.bitcoin/yetiwallet* '+home+'/.bitcoin/oldwallets/'+timestamp+'/.', shell=True, check=False)
-	subprocess.run('mv '+home+'/.bitcoin/wallets/yetiwallet* '+home+'/.bitcoin/oldwallets/'+timestamp+'/wallets/.', shell=True, check=False)
+	subprocess.run('mv '+home+'/.bitcoin/wallets/yetiwallet* '+home+'/.bitcoin/oldwallets/'+timestamp+'/.', shell=True, check=False)
 	subprocess.run('mv '+home+'/.bitcoin/wallet.dat '+home+'/.bitcoin/oldwallets/'+timestamp+'/.', shell=True, check=False)
 if os.path.exists(home+'/Documents/yetiseed1') or os.path.exists(home+'/Documents/yetiseed1') or os.path.exists(home+'/Documents/yetiseed2') or os.path.exists(home+'/Documents/yetiseed3') or os.path.exists(home+'/Documents/yetiseed4') or os.path.exists(home+'/Documents/yetiseed5') or os.path.exists(home+'/Documents/yetiseed6') or os.path.exists(home+'/Documents/yetiseed7') or os.path.exists(home+'/Documents/yhseed.txt') or os.path.exists(home+'/Documents/Descriptor.txt'):
 	subprocess.run('mkdir '+home+'/Documents/oldseeds/'+timestamp,shell=True)
