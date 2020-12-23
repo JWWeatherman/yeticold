@@ -204,7 +204,7 @@ def copyseedsOff():
 #OFF
 @app.route("/exportdescriptorOff", methods=['GET', 'POST'])
 def exportdescriptorOff():
-    if request.method == 'POST';
+    if request.method == 'POST':
         return redirect('/copyseedsOff')
     return render_template('exportdescriptor.html', step=10, instructions="Switch to your Primary laptop currently showing step 5, click next to show step 11", laptop="Primary")
 
