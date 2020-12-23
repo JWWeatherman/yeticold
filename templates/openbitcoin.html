@@ -41,10 +41,12 @@
         True = true
         False = false
         if ({{IBD}}) { 
-          document.getElementById('next').disabled = "False"
+          document.getElementById('next').disabled = false
         } else {
-          document.getElementById("next").disabled = "False"
-          setTimeout(() => { document.getElementById("next").click() }, 5000)
+          setTimeout(() => { 
+            document.getElementById("next").disabled = false
+            document.getElementById("next").click() 
+          }, 5000)
         }
       }
       enable()
