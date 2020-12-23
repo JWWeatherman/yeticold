@@ -13,19 +13,15 @@
       <h2>Step {{step}}: Finish Downloading the Blockchain.</h2>
       <div>
           <ul>
-            <li>Yeti has opened Bitcoin Core.</li>
-            <li>When Bitcoin Core is ready the <b>Next</b> button will be enabled</li>
             {%if switch %}
-            <div>
-              <ol>
-                <li>This step can take as little as 4 hours if you have an SSD and a fast internet connection or as long as a couple of weeks if you do not as it is validating every bitcoin transaction from the start of the network in 2009 (full node).</li>
                 <li>On your <b>Secondary</b> laptop open Firefox and go the following url to begin setup of your Secondary Laptop while this laptop downloads the blockchan.</li>
                 <code>{{url}}</code>
-              </ol>
-            </div>
+                <li>This step can take as little as 4 hours if you have an SSD and a fast internet connection or as long as a couple of weeks if you do not as it is validating every bitcoin transaction from the start of the network in 2009 (full node).</li>
             {%elif offline %}
-            <li>Because this device is only used to sign transactions it does not need to download the blockchain so you will be able to click <b>Next</b> within about 10 minutes.</li>
+                <li>Because this device is only used to sign transactions it does not need to download the blockchain so you will be able to click <b>Next</b> within about 10 minutes.</li>
             {%endif%}
+            <li>Yeti has opened Bitcoin Core.</li>
+            <li>When Bitcoin Core is ready the <b>Next</b> button will be enabled</li>
           </ul>
       </div>
       <div class="progress mb-3">
