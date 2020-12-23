@@ -48,7 +48,7 @@ def menu():
             v.route = '/scandescriptorRec'
             v.mode = "Recover"
             v.url = "rec.yeticold.com"
-            subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
+            subprocess.run('python3 ~/yeticold/utils/oldwallets.py', shell=True, check=False)
         elif request.form['option'] == 'wallet':
             v.info = 'yetiColdImp'
             v.route = '/rescanwalletImp'
