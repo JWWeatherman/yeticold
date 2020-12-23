@@ -202,7 +202,7 @@ def copyseedsOff():
 def exportdescriptorOff():
     if request.method == 'POST':
         return redirect('/displayseedsOff')
-    return render_template('exportdescriptor.html', step=11, instructions="Switch to your Primary Laptop currently showing step 5, click next to show step 12.", laptop="Primary")
+    return render_template('exportdescriptor.html', step=11, instructions="Switch to your Primary Laptop currently showing step 5 and click next to show step 12.", laptop="Primary")
 
 #ON
 @app.route("/scandescriptor", methods=['GET', 'POST'])
@@ -231,7 +231,7 @@ def printpage():
 def switchlaptop():
     if request.method == 'POST':
         return redirect('/coldwalletguide')
-    return render_template('switchlaptop.html', step=14, instructions="Switch to your Secondary laptop currently showing step 11, click next to show step 15", laptop="Secondary")
+    return render_template('switchlaptop.html', step=14, instructions="Switch to your Secondary laptop currently showing step 11 and click next to show step 15", laptop="Secondary")
 
 #OFF
 @app.route('/displayseedsOff', methods=['GET', 'POST'])
