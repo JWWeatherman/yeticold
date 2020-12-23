@@ -32,7 +32,7 @@ def YHmenu():
     if request.method == 'POST':
         if request.form['option'] == 'recovery':
             subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
-            v.rotue = '/YHRinputseed'
+            v.route = '/YHRinputseed'
             v.mode = "Recover"
         elif request.form['option'] == 'wallet':
             v.step = 6
@@ -43,7 +43,6 @@ def YHmenu():
             v.mode = "Create"
             subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
             v.route = '/YHgetseed'
-            print(v.route)
         return redirect('/YHblockchain')
     return render_template('menu.html', yeti='Hot', wallet=v.wallet)
 
@@ -56,7 +55,6 @@ def YHblockchain():
 
 @app.route("/YHopenbitcoin", methods=['GET', 'POST'])
 def YHopenbitcoin():
-    print(v.route)
     route = openBitcoin(request, '/YHopenbitcoin', v.route, loadwallet=v.loadwallet, yeti='Hot')
     if route:
         return route
