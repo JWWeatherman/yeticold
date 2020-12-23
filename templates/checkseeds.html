@@ -1,0 +1,198 @@
+<html>
+<head>
+    <title>Yeti Bitcoin Storage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet", href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet", href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
+  </head>
+  <body>
+    <div id='navbar'></div>
+    <div class="container" style="margin-top: 3rem;">
+        {% if yeti == 'Hot' %}
+        <h2>Step {{step}}: Check Seed</h2>
+        {%else%}
+        <h2>Step {{step}}: Check Seed {{ x }} of 7</h2>
+        {%endif%}
+        <ul>
+            <form action="" method="post">
+              <input style="display: none;" name="option" value="Skip">
+              <li>If you are just testing Yeti and you don't plan to use larger amounts click to <a href="{{nextroute}}" style="color:gray;text-decoration: underline;" type="submit" id="next" value="Skip">skip</a> this check.</li>
+            </form>
+            <li>If you lose access to more than 4 of your private keys your bitcoin will be permanently lost.</li>
+            {% if yeti == 'Warm' %}
+            <li>Insert your CD labeled "Seed {{x}}" and select the file "YetiSeed{{x}}.txt" in the "YetiSeed{{x}}" folder and then click <b>Next</b> to continue.</li>
+            {% elif yeti == 'Hot' %}
+            <li>Insert your CD labeled "Seed" and select the file "yhseed.txt" and then click <b>Next</b> to continue.</li>
+            {% else %}
+            <li>Enter your seed words below to ensure you wrote them down correctly.</li>
+            {% endif %}
+        </ul>
+      {% if error %}
+        <p style="color:red;">{{ error }}</p>
+      {% endif %}
+        <form autocomplete="off" action="" method="post" style="border: solid #f8f9fa;padding: 1.5rem;">
+          <input style="display: none;" name="option" value="No">
+          {% if yeti == 'Warm' or yeti == 'Hot' %}
+          <div class="form-row">
+            <div class="input-group col-md-10 mb-3">
+              <div class="custom-file" style="cursor: pointer;">
+                <label style="cursor: pointer;" class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                <input style="cursor: pointer;" id="filepath" type="file" name="path" class="custom-file-input">
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">1</span>
+            </div>
+            <input type="text" class="form-control"  data-toggle="tooltip" data-trigger="focus" data-placement="bottom" title="" id="row1" name="row1">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">2</span>
+            </div>
+            <input type="text" class="form-control"  data-toggle="tooltip" data-trigger="focus" data-placement="bottom" title="" id="row2" name="row2">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">3</span>
+            </div>
+            <input type="text" class="form-control"  data-toggle="tooltip" data-trigger="focus" data-placement="bottom" title="" id="row3" name="row3">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">4</span>
+            </div>
+            <input type="text" class="form-control"  data-toggle="tooltip" data-trigger="focus" data-placement="bottom" title="" id="row4" name="row4">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">5</span>
+            </div>
+            <input type="text" class="form-control"  data-toggle="tooltip" data-trigger="focus" data-placement="bottom" title="" id="row5" name="row5">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">6</span>
+            </div>
+            <input type="text" class="form-control"  data-toggle="tooltip" data-trigger="focus" data-placement="bottom" title="" id="row6" name="row6">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">7</span>
+            </div>
+            <input type="text" class="form-control"  data-toggle="tooltip" data-trigger="focus" data-placement="bottom" title="" id="row7" name="row7">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">8</span>
+            </div>
+            <input type="text" class="form-control"  data-toggle="tooltip" data-trigger="focus" data-placement="bottom" title="" id="row8" name="row8">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">9</span>
+            </div>
+            <input type="text" class="form-control"  data-toggle="tooltip" data-trigger="focus" data-placement="bottom" title="" id="row9" name="row9">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">10</span>
+            </div>
+            <input type="text" class="form-control"  data-toggle="tooltip" data-trigger="focus" data-placement="bottom" title="" id="row10" name="row10">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">11</span>
+            </div>
+            <input type="text" class="form-control"  data-toggle="tooltip" data-trigger="focus" data-placement="bottom" title="" id="row11" name="row11">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">12</span>
+            </div>
+            <input type="text" class="form-control"  data-toggle="tooltip" data-trigger="focus" data-placement="bottom" title="" id="row12" name="row12">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="basic-addon1">13</span>
+            </div>
+            <input type="text" class="form-control"  data-toggle="tooltip" data-trigger="focus" data-placement="bottom" title="" id="row13" name="row13">
+          </div>
+        </div>
+        <input disabled class="btn btn-primary" type="submit" id="nextkey" value="Next">
+      </form>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+<script>   
+    $('[data-toggle="tooltip"]').tooltip();  
+    navbar("{{yeti}}", "{{url_for('static', filename='yeti.png')}}");
+    document.addEventListener('keydown', (evt) => {
+      if (evt.key === 'Tab'){
+        autocompleted = autocomplete(document.getElementById(evt.srcElement.id).value)
+        if (autocompleted) {
+          document.getElementById(evt.srcElement.id).setAttribute('data-original-title', '')
+          document.getElementById(evt.srcElement.id).value = autocompleted
+          if (autocompleted.split(' ').length != 5) {
+            document.getElementById(evt.srcElement.id).value = document.getElementById(evt.srcElement.id).value + ' '
+            evt.preventDefault()
+          }
+        }else{
+          evt.preventDefault()
+        }
+      }else if (evt.key.length === 1 || evt.key === 'Backspace'){
+        input = document.getElementById(evt.srcElement.id).value
+        if (evt.key === 'Backspace') {
+          input = input.substring(0, input.length - 1)
+        } else {
+          input = input + evt.key
+        }
+        tooltip = autocompletetooltip(input)
+        if (tooltip === undefined){
+          tooltip = ''
+        }
+        document.getElementById(evt.srcElement.id).setAttribute('data-original-title', tooltip)
+      }
+      if (document.getElementById(evt.srcElement.id).getAttribute('data-original-title') === '') {
+        $('#' + evt.srcElement.id).tooltip('hide');
+      }
+      if (document.getElementById(evt.srcElement.id).getAttribute('data-original-title') !== '') {
+        setTimeout(() => {
+        $('#' + evt.srcElement.id).tooltip('show');
+      },250)
+      }
+    }); 
+    highlightrows()
+    importfile()
+    </script>
+  </body>
+</html>

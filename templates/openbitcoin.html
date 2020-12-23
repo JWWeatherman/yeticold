@@ -1,0 +1,55 @@
+<html>
+ <head>
+    <title>Yeti Bitcoin Storage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet", href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet", href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
+  </head>
+  <body>
+    <div id='navbar'></div> 
+    <div class="container" style="margin-top: 3rem;">
+      <h2>Step {{step}}: Finish Downloading the Blockchain.</h2>
+      <div>
+          <ul>
+            {%if switch %}
+                <li>On your <b>Secondary Laptop</b> open Firefox and go to <code>{{url}}</code> to begin setup of your <b>Secondary Laptop</b> while this laptop downloads the blockchan.</li>
+                <li>Downloading the block chain on this laptop (<b>Primary Laptop</b>) can take as little as 4 hours if you have an SSD and a fast internet connection or as long as a couple of weeks if you do not as it is validating every bitcoin transaction from the start of the network in 2009 (full node).</li>
+            {%elif offline %}
+                <li>Because this device is only used to sign transactions it does not need to download the blockchain so you will be able to click <b>Next</b> within about 10 minutes.</li>
+            {%endif%}
+            <li>Yeti has opened Bitcoin Core. When Bitcoin Core is ready the <b>Next</b> button will be enabled.</li>
+          </ul>
+      </div>
+      {% if not offline %}
+      <div class="progress mb-3">
+        <div style="position:absolute; right:50%;">{{ progress }}% Done</div>
+        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:{{ progress }}%"></div>
+      </div>
+      {% endif %}
+      <div>
+        <form action="" method="post" style="margin-top:35px;">
+          <input style="display: none;" name="option" value="VALUE">
+          <input disabled class="btn btn-primary" type="submit" id="next" value="Next">
+        </form>
+      </div>
+    </div>
+    <script>
+      navbar("{{yeti}}", "{{url_for('static', filename='yeti.png')}}");
+      var enable = () => {
+        True = true
+        False = false
+        if ({{IBD}}) { 
+          document.getElementById('next').disabled = false
+        } else {
+          setTimeout(() => { 
+            document.getElementById("next").disabled = false
+            document.getElementById("next").click() 
+          }, 5000)
+        }
+      }
+      enable()
+    </script>
+  </body>
+</html>

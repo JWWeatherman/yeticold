@@ -1,289 +1,130 @@
-from flask import Flask, render_template, redirect, url_for, request
-from bitcoinrpc.authproxy import AuthServiceProxy, JSONRPCException
-import hashlib
 import os
-import subprocess
-import json
-import cv2
-from qrtools.qrtools import QR
-from pyzbar.pyzbar import decode
-from PIL import Image
-import random
-import qrcode
-from datetime import datetime
-import time
 import sys
+home = os.getenv("HOME")
+sys.path.append(home + '/yeticold/utils/')
+from imports import *
+import variables as v
+v.rpcpsw = str(random.randrange(0,1000000))
+v.settings = {"rpc_username": "rpcuser","rpc_password": v.rpcpsw, "rpc_host": "127.0.0.1","rpc_port": 8332,"address_chunk": 100}
+v.wallet_template = "http://{rpc_username}:{rpc_password}@{rpc_host}:{rpc_port}/wallet/{wallet_name}"
+from formating import *
+from btcrpcfunctions import blockheight
+from yetifunctions import *
+from yetiroutefunctions import * 
 app = Flask(__name__)
 
-#VARIABLES 
-home = os.getenv("HOME")
-privkeylist = []
-xprivlist = []
-error = None
-qrdata = None
-privkeycount = 0
-receipentaddress = None
-qrcodescanning = None
-pubdesc = None
-progress = 0
-testblockchain = False
-oldkeys = None
+@app.errorhandler(werkzeug.exceptions.InternalServerError)
+def handle_bad_request(e):
+    if e.original_exception != None:
+        e = e.original_exception
+    return render_template('error.html', error=e, yeti='Hot'), 500
 
-#FILE IMPORTS
-sys.path.append(home + '/yeticold/utils/')
-from formating import *
-
-#RPC
-rpcpsw = str(random.randrange(0,1000000))
-settings = {"rpc_username": "rpcuser","rpc_password": rpcpsw,"rpc_host": "127.0.0.1","rpc_port": 8332,"address_chunk": 100}
-wallet_template = "http://{rpc_username}:{rpc_password}@{rpc_host}:{rpc_port}/wallet/{wallet_name}"
-
-def BTCprogress():
-    if not (os.path.exists(home + "/.bitcoin")):
-        return 0
-    response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-    if not (len(response[0]) == 0):
-        bitcoinprogress = json.loads(response[0].decode("utf-8"))['verificationprogress']
-        bitcoinprogress = bitcoinprogress * 100
-        bitcoinprogress = round(bitcoinprogress, 3)
-    else:
-        bitcoinprogress = 0
-    return bitcoinprogress
-
-def BTCFinished():
-    if not (os.path.exists(home + "/.bitcoin")):
-        return False
-    response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli getblockchaininfo'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-    if not (len(response[0]) == 0):
-        bitcoinprogress = json.loads(response[0].decode("utf-8"))['initialblockdownload']
-    else:
-        bitcoinprogress = True
-    return not bitcoinprogress
-
-def BTCClosed():
-    if (subprocess.call('lsof -n -i :8332', shell=True) != 1):
-        return False
-    elif os.path.exists(home + "/.bitcoin/bitcoind.pid"):
-        subprocess.call('rm -r ~/.bitcoin/bitcoind.pid', shell=True)
-    return True
-
-def BTCRunning():
-    if not (BTCprogress() == 0):
-        return True
-    return False
-
-def RPC():
-    name = 'username'
-    wallet_name = 'yetihot'
-    uri = wallet_template.format(**settings, wallet_name=wallet_name)
-    rpc = AuthServiceProxy(uri, timeout=600)  # 1 minute timeout
-    return rpc
-
-def blockheight():
-    rpc = RPC()
-    Blockinfo = rpc.getblockchaininfo()
-    blockheight = 0
-    if Blockinfo['pruned']:
-        blockheight = Blockinfo['pruneheight']
-    return str(blockheight)
-
-#FLOW
-#FLOW ONE
-#YHblockchain 
-#YHopenbitcoin - step 6
-#YHmenu - step 7
-#CHOOSE CREATE NEW
-#YHgetseed - step 8
-#YHdisplayseed - step 9
-#YHcheckseed - step 10
-#YHcopyseed - step 11
-#YHwalletinstruction - step 12
-#FLOW TWO 
-#YHblockchain
-#YHopenbitcoin - step 6
-#YHmenu - step 7
-#CHOOSE RESTORE WALLET
-#YHRinputseed - step 8
-#YHRwalletinstructions - step 9
-
-#ROUTS
 @app.route("/", methods=['GET', 'POST'])
 def redirectroute():
     if request.method == 'GET':
-        return redirect('/YHblockchain')
+        return redirect('/YHmenu')
     return render_template('redirect.html')
-
-@app.route("/YHblockchain", methods=['GET', 'POST'])
-def YHblockchain():
-    global blockchain
-    global testblockchain
-    global home
-    if request.method == 'GET':
-        if (os.path.exists(home + "/.bitcoin")):
-            if (os.path.exists(home + "/.bitcoin/bitcoin.conf")):
-                with open(".bitcoin/bitcoin.conf","r+") as f:
-                    old = f.read()
-                    f.seek(0)
-                    new = "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword="+rpcpsw+"\n"
-                    f.write(new + old)
-            else:
-                subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
-            return redirect('/YHopenbitcoin')
-    if request.method == 'POST':
-        if request.form['option'] == 'downloadblockchain':
-            testblockchain = True
-            subprocess.Popen('python3 ~/yeticold/utils/testblockchain.py',shell=True,start_new_session=True)
-        else:
-            subprocess.call(['mkdir ~/.bitcoin'],shell=True)
-            if request.form['date'] == '':
-                subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
-                return redirect('/YHopenbitcoin')
-            fmt = '%Y-%m-%d %H:%M:%S'
-            today = str(datetime.today()).split('.')[0]
-            print(request.form['date'] + ' 12:0:0')
-            print(today)
-            d1 = datetime.strptime(request.form['date'] + ' 12:0:0', fmt)
-            d2 = datetime.strptime(today, fmt)
-            d1_ts = time.mktime(d1.timetuple())
-            d2_ts = time.mktime(d2.timetuple())
-            diff = (int(d2_ts - d1_ts) / 60) / 10
-            add = diff / 10
-            blockheight = diff + add + 550
-            blockheight = int(blockheight)
-            subprocess.call('echo "server=1\nrpcport=8332\nrpcuser=rpcuser\nprune='+str(blockheight)+'\nrpcpassword='+rpcpsw+'" >> '+home+'/.bitcoin/bitcoin.conf', shell=True)
-        return redirect('/YHopenbitcoin')
-    ###ISSUE template needed
-    return render_template('YHblockchain.html')
-
-@app.route("/YHopenbitcoin", methods=['GET', 'POST'])
-def YHopenbitcoin():
-    global home
-    global progress
-    global IBD
-    global testblockchain
-    if request.method == 'GET':
-        home = os.getenv("HOME")
-        if (os.path.exists(home + "/.bitcoin")):
-            testblockchain = False
-        if BTCClosed():
-            if testblockchain == False:
-                subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
-        IBD = BTCFinished()
-        progress = BTCprogress()
-    if request.method == 'POST':
-        if IBD:
-            return redirect('/YHmenu')
-        else:
-            return redirect('/YHopenbitcoin')
-    return render_template('YHopenbitcoin.html', progress=progress, IBD=IBD)
 
 @app.route("/YHmenu", methods=['GET', 'POST'])
 def YHmenu():
+    if request.method == 'GET':
+        v.wallet = os.path.exists(home + "/.bitcoin/yetiwallethot") or os.path.exists(home + "/.bitcoin/wallets/yetiwallethotyetiwallethot")
     if request.method == 'POST':
         if request.form['option'] == 'recovery':
-            return redirect('/YHRinputseed')
+            subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
+            v.route = '/YHRinputseed'
+            v.mode = "Recover"
+        elif request.form['option'] == 'wallet':
+            v.step = 6
+            v.route = '/YHRrescanwallet'
+            v.mode = "Load"
+            v.loadwallet = True
         else:
-            return redirect('/YHgetseed')
-    return render_template('YHmenu.html')
+            v.mode = "Create"
+            subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
+            v.route = '/YHgetseed'
+        return redirect('/YHblockchain')
+    return render_template('menu.html', yeti='Hot', wallet=v.wallet)
 
-#randomise priv key and get xprivs
+@app.route("/YHblockchain", methods=['GET', 'POST'])
+def YHblockchain():
+    route = blockChain(request, '/YHopenbitcoin')
+    if route:
+        return route
+    return render_template('blockchain.html')
+
+@app.route("/YHopenbitcoin", methods=['GET', 'POST'])
+def YHopenbitcoin():
+    route = openBitcoin(request, '/YHopenbitcoin', v.route, loadwallet=v.loadwallet, yeti='Hot')
+    if route:
+        return route
+    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=5, yeti='Hot', offline=False)
+
 @app.route("/YHgetseed", methods=['GET', 'POST'])
 def YHgetseed():
-    global privkey
-    global xpriv
-    global pubdesc
     if request.method == 'POST':
+        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletgen"')
         if request.form['skip'] == 'skip':
-            newbinary = '1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111'
+            newbinary = str('1') * 256
         else:
             newbinary = request.form['binary']
-        subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetihot"','~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetihot"'],shell=True)
-        rpc = RPC()
-        adr = rpc.getnewaddress()
-        newprivkey = rpc.dumpprivkey(adr)
-        binary = bin(decode58(newprivkey))[2:][8:-40]
-        privkey = ConvertToWIF(xor(binary,newbinary))
-        home = os.getenv('HOME')
-        path = home + '/yetihotwallet'
-        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetihot sethdseed true "'+privkey+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        return redirect('/YHdisplayseed')
-    return render_template('YHgetseed.html')
-#display seeds
-@app.route('/YHdisplayseed', methods=['GET', 'POST'])
-def YHdisplayseed():
-    global privkey
-    global privkeycount
-    if request.method == 'GET':
-        passphraselist = ConvertToPassphrase(privkey)
-    if request.method == 'POST':
-        home = os.getenv('HOME')
-        path = home + '/Documents'
-        subprocess.call('rm '+path+'/yhseed.txt', shell=True)
-        subprocess.call('touch '+path+'/yhseed.txt', shell=True)
+        adr = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletgen getnewaddress')
+        print(adr)
+        newprivkey =  handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletgen dumpprivkey '+adr)
+        binary = bin(decode58(newprivkey))[ 2:][8:-40]
+        v.privkey = ConvertToWIF(xor(binary,newbinary))
+        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallethot sethdseed true "'+v.privkey+'"')
+        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli unloadwallet "yetiwalletgen"')
+        v.passphraselist = ConvertToPassphrase(v.privkey)
         file = ''
-        for i in range(0,13):
-            file = file + request.form['displayrow' + str(i+1)] + '\n'
-        subprocess.call('echo "'+file+'" >> '+path+'/yhseed.txt', shell=True)
+        phrasenum = 0
+        for x in range(0,13):
+            line = ""
+            for y in range(0,4):
+                line = line + v.passphraselist[phrasenum] + ' '
+                phrasenum = phrasenum + 1
+            line = line + checksum(line)
+            file = file + line + '\n'
+        createOrPrepend(file, home+'/Documents/yhseed.txt')
+        return redirect('/YHcopyseed')
+    return render_template('getseed.html', yeti='Hot', step=6)
+
+@app.route("/YHcopyseed", methods=['GET', 'POST'])
+def YHcopyseed():
+    if request.method == 'POST':
         return redirect('/YHcheckseed')
-    return render_template('YHdisplayseed.html', PPL=passphraselist)
+    return render_template('copyseed.html', yeti='Hot', step=9)
+
 #confirm privkey
 @app.route('/YHcheckseed', methods=['GET', 'POST'])
 def YHcheckseed():
-    global privkey
-    global xpriv
-    global error
-    global oldkeys
     if request.method == 'POST':
-        passphraselist = ConvertToPassphrase(privkey)
         privkeylisttoconfirm = []
-        oldkeys = []
+        v.oldkeys = []
         for i in range(1,14):
             inputlist = request.form['row' + str(i)]
-            oldkeys.append(inputlist)
+            v.oldkeys.append(inputlist)
             inputlist = inputlist.split(' ')
             inputlist = inputlist[0:4]
             privkeylisttoconfirm.append(inputlist[0])
             privkeylisttoconfirm.append(inputlist[1])
             privkeylisttoconfirm.append(inputlist[2])
             privkeylisttoconfirm.append(inputlist[3])
-        if privkeylisttoconfirm == passphraselist:
-            oldkeys = None
-            return redirect('/YHcopyseed')
+        if privkeylisttoconfirm == v.passphraselist:
+            v.oldkeys = None
+            return redirect('/YHRdisplaywallet')
         else:
-            error = 'The seed words you entered are incorrect. This is probably because you entered a line twice or put them in the wrong order.'
-    return render_template('YHcheckseed.html', x=privkeycount + 1, error=error,i=privkeycount + 35,oldkeys=oldkeys)
-#store USB drives
-@app.route("/YHcopyseed", methods=['GET', 'POST'])
-def YHcopyseed():
-    if request.method == 'POST':
-        return redirect('/YHwalletinstructions')
-    return render_template('YHcopyseed.html')
+            v.error = 'The seed words you entered are incorrect. This is probably because you entered a line twice or put them in the wrong order.'
+    return render_template('checkseeds.html', x=1, error=v.error, step=8,oldkeys=v.oldkeys, yeti='Hot')
 
-@app.route('/YHwalletinstructions', methods=['GET', 'POST'])
-def YHwalletinstructions():
-    global qrdata
-    global error
-    if request.method == 'POST':
-        error = None
-        qrdata = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-        qrdata = qrdata.decode("utf-8").replace('\n', '')
-        if (qrdata.split(':')[0] == 'bitcoin'):
-            qrdata = qrdata.split(':')[1].split('?')[0]
-        if (qrdata[:3] == 'bc1') or (qrdata[:1] == '3') or (qrdata[:1] == '1'):
-            if not (len(qrdata) >= 26) and (len(qrdata) <= 35):
-                error = qrdata + ' is not a valid bitcoin address, address should have a length from 26 to 35 instead of ' + str(len(qrdata)) + '.'
-        else: 
-            error = qrdata + ' is not a valid bitcoin address, address should have started with bc1, 3 or 1 instead of ' + qrdata[:1] + ', or ' + qrdata[:3] + '.'
-        if error:
-            qrdata = None
-        return redirect('/YHwalletinstructions')
-    return render_template('YHwalletinstructions.html', error=error, qrdata=qrdata)
-#STOP SET UP-----------------------------------------------------------------------------------------------------------------------------------------------------
+@app.route("/YHRdisplaywallet", methods=['GET', 'POST'])
+def YHRdisplaywallet():
+    return render_template('displaywallet.html', yeti='Hot')
     
 @app.route('/YHRinputseed', methods=['GET', 'POST'])
 def YHRinputseed():
-    global error 
     if request.method == 'POST':
+        v.step = 7
         privkey = []
         for i in range(1,14):
             inputlist = request.form['row' + str(i)]
@@ -293,39 +134,17 @@ def YHRinputseed():
             privkey.append(inputlist[1])
             privkey.append(inputlist[2])
             privkey.append(inputlist[3])
-        privkey = PassphraseListToWIF(privkey)
-        error = None
-        rpc = RPC()
-        subprocess.call(['~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetihot" false true'],shell=True)
-        response = subprocess.Popen(['~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetihot sethdseed true "'+privkey+'"'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        return redirect('/YHRwalletinstructions')
-    return render_template('YHRinputseed.html', error=error)
+        v.privkey = PassphraseListToWIF(privkey)
+        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallethot sethdseed true "'+v.privkey+'"')
+        return redirect('/YHRrescanwallet')
+    return render_template('importseeds.html', x=1, error=v.error, yeti='Hot', step=6)
 
-@app.route('/YHRwalletinstructions', methods=['GET', 'POST'])
-def YHRwalletinstructions():
-    global qrdata
-    global error
-    global qrcodescanning
-    if request.method == 'GET':
-        if not qrcodescanning:
-            qrcodescanning = False
-            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetihot rescanblockchain '+blockheight(),shell=True,start_new_session=True)
+@app.route("/YHRrescanwallet", methods=['GET', 'POST'])
+def YHRrescanwallet():
     if request.method == 'POST':
-        error = None
-        qrdata = subprocess.Popen(['python3 ~/yeticold/utils/scanqrcode.py'],shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
-        qrdata = qrdata.decode("utf-8").replace('\n', '')
-        if (qrdata.split(':')[0] == 'bitcoin'):
-            qrdata = qrdata.split(':')[1].split('?')[0]
-        if (qrdata[:3] == 'bc1') or (qrdata[:1] == '3') or (qrdata[:1] == '1'):
-            if not (len(qrdata) >= 26) and (len(qrdata) <= 35):
-                error = qrdata + ' is not a valid bitcoin address, address should have a length from 26 to 35 instead of ' + str(len(qrdata)) + '.'
-        else: 
-            error = qrdata + ' is not a valid bitcoin address, address should have started with bc1, 3 or 1 instead of ' + qrdata[:1] + ', or ' + qrdata[:3] + '.'
-        if error:
-            qrdata = None
-        qrcodescanning = True
-        return redirect('/YHRwalletinstructions')
-    return render_template('YHRwalletinstructions.html', error=error, qrdata=qrdata)
+        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallethot rescanblockchain '+blockheight())
+        return redirect('/YHRdisplaywallet')
+    return render_template('rescanwallet.html', yeti='Hot', step=v.step)
 
 if __name__ == "__main__":
     app.run()

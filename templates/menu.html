@@ -1,0 +1,54 @@
+<html>
+ <head>
+    <title>Yeti Bitcoin Storage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet", href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet", href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
+  </head>
+  <body>
+    <div id='navbar'></div>
+    <div class="container" style="margin-top: 3rem;">
+        <h2>Create or Recover a Wallet</h2>
+<!--         <div style="margin-bottom: 30px;">Create a new wallet to hold bitcoin or recover a wallet you created previously.</div>
+ -->      
+      
+      <div class="card" style="margin-top: 3rem;">
+        <div class="card-body">
+          <h4 class="card-title">Create wallet</h4>
+          <p class="card-text">Create a new wallet to store your bitcoin.</p>
+          <form action="" method="post">
+            <input style="display: none;" name="option" value="VALUE">
+            <input class="btn btn-primary" type="submit" id="next" value="Create Wallet">
+          </form>
+        </div>
+      </div>
+      <div class="card" style="margin-top: 3rem;">
+        <div class="card-body">
+          <h4 class="card-title">Recover wallet</h4>
+          <p class="card-text">Restore a wallet you previously created. This will restore your existing wallet so that you can send or receive with your old wallet using this laptop.</p>
+          <form action="" method="post">
+            <input style="display: none;" name="option" value="recovery">
+            <input class="btn btn-primary" type="submit" id="next" value="Recover Wallet">
+          </form>
+        </div>
+      </div>
+      {% if wallet %}
+        <div class="card" style="margin-top: 3rem;">
+          <div class="card-body">
+            <h4 class="card-title">Load wallet currently stored on this machine.</h4>
+            <p class="card-text">This option is displayed if Yeti has detected that you already have a Yeti wallet on this laptop. This will open the wallet already on this laptop.</p>
+            <form action="" method="post">
+              <input style="display: none;" name="option" value="wallet">
+              <input class="btn btn-primary" type="submit" id="next" value="Load Wallet">
+            </form>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+    <script>
+      navbar("{{yeti}}", "{{url_for('static', filename='yeti.png')}}");
+    </script>
+  </body>
+</html>

@@ -1,0 +1,29 @@
+<html>
+ <head>
+    <title>Yeti Bitcoin Storage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet", href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet", href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
+  </head>
+  <body>
+    <div id='navbar'></div>
+    <div class="container" style="margin-top: 3rem;">
+      <h2>Prune Blockchain</h2>
+      
+      <form action="" method="post">
+        <input style="display: none;" name="option" value="Skip">
+        <p>Select the date of your earliest deposit into your Yeti wallet and click <b>Next</b>. If you are sure your hard drive is large enough you can <button style="color:gray;text-decoration: underline;" type="submit" id="next" value="Skip">skip</button> this step.</p>
+      </form>
+      <form action="" method="post">
+        <input type="date" name="date">
+        <input style="display: none;" name="option" value="VALUE">
+        <input class="btn btn-primary" type="submit" id="next" value="Next">
+      </form>
+    </div>
+    <script>
+      navbar("{{yeti}}", "{{url_for('static', filename='yeti.png')}}");
+    </script>
+  </body>
+</html>

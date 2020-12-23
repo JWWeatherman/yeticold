@@ -1,0 +1,56 @@
+<html>
+ <head>
+    <title>Yeti Bitcoin Storage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet", href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet", href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
+  </head>
+  <body>
+    <div id='navbar'></div>
+    <div class="container" style="margin-top: 3rem;">
+      <h2>Step {{step}}: Import descriptor</h2>
+      {% if error %}
+        <p style="color:red;">{{ error }}</p>
+      {% endif %}
+      <ol>
+          <li>Insert any of your CDs labled "Descriptor."</li>
+          <li>Click the <b>Browse</b> button and select the <b>Descriptor.txt</b> from the CD drive.</li>
+          <li>Click the <b>Next</b> button.</li>
+        <p></p>
+      </ol>
+      <input style="display:none;" id="line" value="{{line}}">
+      <form autocomplete="off" action="" method="post" style="border: solid #f8f9fa;padding: 1.5rem;">
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <div class="custom-file" style="cursor: pointer;">
+              <label style="cursor: pointer;" class="custom-file-label" for="inputGroupFile01">Choose file</label>
+              <input style="cursor: pointer;" id="filepath" type="file" name="path" class="custom-file-input">
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="input-group col-md-10 mb-3">
+            <input type="text" class="form-control" value="" data-toggle="tooltip" data-trigger="focus" data-placement="bottom" title="" id="descriptor" name="descriptor" placeholder="Descriptor">
+          </div>
+        </div>
+        <input disabled class="btn btn-primary" type="submit" id="next" value="Next">
+      </form>
+    </div>
+    <script>
+      navbar("{{yeti}}", "{{url_for('static', filename='yeti.png')}}");
+      line = parseInt(document.getElementById('line').value)
+      importdescriptor(line);
+      var enable = () => {
+        if (document.getElementById('descriptor').value != "") {
+          document.getElementById('next').disabled = false
+        } else {
+          document.getElementById('next').disabled = true
+        }
+        setTimeout(() => { enable() }, 80)
+      }
+      enable()
+    </script>
+  </body>
+</html>
