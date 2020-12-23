@@ -226,7 +226,7 @@ def scandescriptor():
 #ON
 @app.route("/exportdescriptor", methods=['GET', 'POST'])
 def exportdescriptor():
-    if request.method == 'POST';
+    if request.method == 'POST':
         return redirect('/copyseedsOff')
     return render_template('exportdescriptor.html', step=10)
 
