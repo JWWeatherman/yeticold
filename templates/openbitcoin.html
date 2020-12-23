@@ -22,10 +22,12 @@
             <li>Yeti has opened Bitcoin Core. When Bitcoin Core is ready the <b>Next</b> button will be enabled.</li>
           </ul>
       </div>
+      {% if not offline %}
       <div class="progress mb-3">
         <div style="position:absolute; right:50%;">{{ progress }}% Done</div>
         <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:{{ progress }}%"></div>
       </div>
+      {% endif %}
       <div>
         <form action="" method="post" style="margin-top:35px;">
           <input style="display: none;" name="option" value="VALUE">
