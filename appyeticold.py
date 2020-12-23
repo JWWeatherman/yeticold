@@ -249,7 +249,7 @@ def checkseedsOff():
 #OFF
 @app.route("/switchlaptopOff", methods=['GET', 'POST'])
 def exportdescriptor():
-    if request.method == 'POST';
+    if request.method == 'POST':
         return redirect('/copyseedsOff')
     return render_template('switchlaptop.html', step=10)
 
