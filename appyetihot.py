@@ -144,7 +144,7 @@ def YHRrescanwallet():
     if request.method == 'POST':
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallethot rescanblockchain '+blockheight())
         return redirect('/YHRdisplaywallet')
-    return render_template('rescanwallet.html', yeti='Warm', step=v.step)
+    return render_template('rescanwallet.html', yeti='Hot', step=v.step)
 
 if __name__ == "__main__":
     app.run()
