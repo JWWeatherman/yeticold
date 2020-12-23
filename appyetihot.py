@@ -41,7 +41,7 @@ def YHmenu():
             v.loadwallet = True
         else:
             v.mode = "Create"
-            subprocess.run('python3 ~/yeticold/utils/oldwallets.py', shell=True, check=False)
+            subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
             v.route = '/YHgetseed'
         return redirect('/YHblockchain')
     return render_template('menu.html', yeti='Hot', wallet=v.wallet)
