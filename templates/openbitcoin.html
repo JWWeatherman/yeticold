@@ -31,7 +31,7 @@
       <div>
         <form action="" method="post" style="margin-top:35px;">
           <input style="display: none;" name="option" value="VALUE">
-          <input style="display: none;" class="btn btn-primary" type="submit" id="next" value="Next">
+          <input disabled class="btn btn-primary" type="submit" id="next" value="Next">
         </form>
       </div>
     </div>
@@ -41,8 +41,9 @@
         True = true
         False = false
         if ({{IBD}}) { 
-          document.getElementById("next").style.display = ""
+          document.getElementById("next").disabled = "False"
         } else {
+          document.getElementById("next").disabled = "True"
           setTimeout(() => { document.getElementById("next").click() }, 5000)
         }
       }
