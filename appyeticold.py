@@ -199,7 +199,7 @@ def getseedsOff():
 def copyseedsOff():
     if request.method == 'POST':
         return redirect('/exportdescriptorOff')
-    return render_template('copyseeds.html', step=27)
+    return render_template('copyseeds.html', step=27, cdnum="fourteen")
 
 #OFF
 @app.route("/exportdescriptorOff", methods=['GET', 'POST'])

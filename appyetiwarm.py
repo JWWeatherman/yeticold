@@ -72,7 +72,7 @@ def YWgetseeds():
 def YWcopyseeds():
     if request.method == 'POST':
         return redirect('/YWcheckseeds')
-    return render_template('copyseeds.html', yeti='Warm', step=7)
+    return render_template('copyseeds.html', yeti='Warm', step=7, cdnum="seven")
 
 @app.route('/YWcheckseeds', methods=['GET', 'POST'])
 def YWcheckseeds():
