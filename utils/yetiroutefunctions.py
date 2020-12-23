@@ -50,6 +50,7 @@ def openBitcoin(request, currentroute, nextroute, loadwallet=False, offline=Fals
                     handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwallethot" false true')
                 else: 
                     handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpriv" false true "" false true')
+            print(nextroute)
             return redirect(nextroute)
         else:
             return redirect(currentroute)
