@@ -35,7 +35,7 @@ Any cheap USB sticks will work fine.
 
 ### Should I try to get a laptop without wifi?
 
-No. Yeti disables your network connections before generating your seed words. It couldn't hurt to have a laptop without wifi or only use your ethernet port for added assurance, but its probably not worth the hassle.
+No. Yeti disables your network connections before generating your seed words. It couldn't hurt to have a laptop without wifi or only use your ethernet port for added assurance, but it's probably not worth the hassle.
 
 ## Seed
 
