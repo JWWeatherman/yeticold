@@ -190,7 +190,7 @@ def coldwalletguide():
 #OFF
 @app.route("/getseedsOff", methods=['GET', 'POST'])
 def getseedsOff():
-    route = getSeeds(request, '/exportdescriptorOff')
+    route = getSeeds(request, '/copyseedsOff')
     if route:
         return route
     return render_template('getseeds.html', step=9)
@@ -198,14 +198,14 @@ def getseedsOff():
 @app.route("/copyseedsOff", methods=['GET', 'POST'])
 def copyseedsOff():
     if request.method == 'POST':
-        return redirect('/displayseedsOff')
+        return redirect('/exportdescriptorOff')
     return render_template('copyseeds.html', step=27)
 
 #OFF
 @app.route("/exportdescriptorOff", methods=['GET', 'POST'])
 def exportdescriptorOff():
     if request.method == 'POST':
-        return redirect('/copyseedsOff')
+        return redirect('/displayseedsOff')
     return render_template('exportdescriptor.html', step=10, instructions="Switch to your Primary laptop currently showing step 5, click next to show step 11", laptop="Primary")
 
 #ON
@@ -220,15 +220,22 @@ def scandescriptor():
             v.error = 'Invalid Descriptor'
             return redirect('/scandescriptor')
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now", "active": true}]\'')
-        return redirect('/exportdescriptor')
+        return redirect('/copydescriptor')
     return render_template('scandescriptor.html', step=11, setup=True, error=v.error, line=0)
 
 #ON
-@app.route("/exportdescriptor", methods=['GET', 'POST'])
-def exportdescriptor():
+@app.route("/copydescriptor", methods=['GET', 'POST'])
+def copydescriptor():
     if request.method == 'POST':
-        return redirect('/copyseedsOff')
-    return render_template('exportdescriptor.html', step=10)
+        return redirect('/printpage')
+    return render_template('copydescriptor.html', step=10)
+
+#ON
+@app.route("/printpage", methods=['GET', 'POST'])
+def printpage():
+    if request.method == 'POST':
+        return redirect('/coldwalletguide')
+    return render_template('printpage.html', desc=v.pubdesc, step=12)
 
 #OFF
 @app.route('/displayseedsOff', methods=['GET', 'POST'])
@@ -241,7 +248,7 @@ def displayseedsOff():
 #OFF
 @app.route('/checkseedsOff', methods=['GET', 'POST'])
 def checkseedsOff():
-    route = checkSeeds(request, '/checkseedsOff', '/copyseedsOff')
+    route = checkSeeds(request, '/checkseedsOff', '/switchlaptopOff')
     if route:
         return route
     return render_template('checkseeds.html', x=v.privkeycount + 1, error=v.error,step=21+v.privkeycount,oldkeys=v.oldkeys)
@@ -249,17 +256,10 @@ def checkseedsOff():
 #OFF
 @app.route("/switchlaptopOff", methods=['GET', 'POST'])
 def exportdescriptor():
-    if request.method == 'POST':
-        return redirect('/copyseedsOff')
     return render_template('switchlaptop.html', step=10)
 
 
-#ON
-@app.route("/printpage", methods=['GET', 'POST'])
-def printpage():
-    if request.method == 'POST':
-        return redirect('/coldwalletguide')
-    return render_template('printpage.html', desc=v.pubdesc, step=12)
+
 
 
 
