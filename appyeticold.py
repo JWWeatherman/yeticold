@@ -56,7 +56,7 @@ def menu():
             v.url = "load.yeticold.com"
         else:
             v.info = "yetiCold"
-            v.url = "desc.yeticold.com"
+            v.url = "disc.yeticold.com"
             v.mode = "Create"
             v.route = '/scandescriptor'
             subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
