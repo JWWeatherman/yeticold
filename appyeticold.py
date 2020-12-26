@@ -27,14 +27,17 @@ def redirectroute():
 @app.route("/offimp", methods=['GET', 'POST'])
 def redirectrouteoffimp():
     v.info = "yetiColdOffImp"
+    v.mode = "Load"
     return redirect('/blockchainOff')
 @app.route("/off", methods=['GET', 'POST'])
 def redirectrouteoff():
     v.info = "yetiColdOff"
+    v.mode = "Create"
     return redirect('/blockchainOff')
 @app.route("/offrec", methods=['GET', 'POST'])
 def redirectrouteoffrec():
     v.info = "yetiColdOffRec"
+    v.mode = "Recover"
     return redirect('/blockchainOff')
 
 #ON
@@ -72,7 +75,7 @@ def blockchain():
 
 @app.route("/openbitcoin", methods=['GET', 'POST'])
 def YCopenbitcoin():
-    if v.info == 'yetiColdImp' or v.info == 'yetiColdOffImp':
+    if v.mode == 'yetiColdImp' or v.info == 'yetiColdOffImp':
         loadwallet = True
     else:
         loadwallet = False
