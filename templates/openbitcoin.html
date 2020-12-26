@@ -33,6 +33,10 @@
           <input style="display: none;" name="option" value="VALUE">
           <input disabled class="btn btn-primary" type="submit" id="next" value="Next">
         </form>
+        <form action="" method="post" style="margin-top:35px;">
+          <input style="display: none;" name="option" value="VALUE">
+          <input style="display: none;" class="btn btn-primary" type="submit" id="reload" value="Next">
+        </form>
       </div>
     </div>
     <script>
@@ -44,8 +48,7 @@
           document.getElementById('next').disabled = false
         } else {
           setTimeout(() => { 
-            document.getElementById("next").disabled = false
-            document.getElementById("next").click() 
+            document.getElementById("reload").click() 
           }, 5000)
         }
       }
