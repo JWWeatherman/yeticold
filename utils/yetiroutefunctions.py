@@ -11,7 +11,9 @@ def blockChain(request, nextroute, mode="Create"):
             createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
             return redirect(nextroute)
         elif mode == "Create":
+            print("create dir")
             subprocess.call('mkdir ~/.bitcoin',shell=True)
+            subprocess.call('sleep 3',shell=True) 
             createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nprune=550\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
             return redirect(nextroute)
         elif mode == "Load":
