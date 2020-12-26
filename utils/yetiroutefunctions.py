@@ -8,6 +8,7 @@ home = os.getenv("HOME")
 def blockChain(request, nextroute, mode="Create"):
     if request.method == 'GET':
         if (os.path.exists(home + "/.bitcoin")):
+            print("1")
             createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
             return redirect(nextroute)
         elif mode == "Create":
@@ -17,6 +18,7 @@ def blockChain(request, nextroute, mode="Create"):
             createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nprune=550\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
             return redirect(nextroute)
         elif mode == "Load":
+            print("3")
             createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
             return redirect(nextroute)
     if request.method == 'POST':
