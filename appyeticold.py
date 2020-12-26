@@ -27,17 +27,15 @@ def redirectroute():
 @app.route("/offimp", methods=['GET', 'POST'])
 def redirectrouteoffimp():
     v.info = "yetiColdOffImp"
-    v.mode = "Load"
     return redirect('/blockchainOff')
 @app.route("/off", methods=['GET', 'POST'])
 def redirectrouteoff():
+    print("1111")
     v.info = "yetiColdOff"
-    v.mode = "Create"
     return redirect('/blockchainOff')
 @app.route("/offrec", methods=['GET', 'POST'])
 def redirectrouteoffrec():
     v.info = "yetiColdOffRec"
-    v.mode = "Recover"
     return redirect('/blockchainOff')
 
 #ON
@@ -101,6 +99,7 @@ def blockchainOff():
     if (os.path.exists(home + "/.bitcoin")):
         createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
     else:
+        subprocess.call('mkdir ~/.bitcoin',shell=True)
         createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nprune=550\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf') 
     return redirect('/openbitcoinOff')
 
