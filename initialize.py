@@ -95,7 +95,7 @@ else:
         subprocess.run('sleep 3', shell=True, check=False)
         subprocess.run('xdg-open http://localhost:5000/', shell=True, check=False)
 
-    elif sys.argv[1].lower() == 'yetilevelTwo':
+    elif sys.argv[1].lower() == 'yetileveltwo':
         print('********************')
         print('Running Yeti Level Two')
         print('********************' + os.linesep)
