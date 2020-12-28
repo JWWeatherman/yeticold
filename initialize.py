@@ -8,7 +8,7 @@ import sys
 import subprocess
 
 # Define constant input argument for valid processing modes
-VALIDMODES = ['YetiColdPrimary', 'YetiColdSecondaryCreate', 'YetiColdSecondaryRecover', 'YetiHot', 'YetiWarm', 'BitcoinCoreOfflinePrimary', 'BitcoinCoreOfflineSecondary', 'YeticoldSecondaryLoad']
+VALIDMODES = ['YetiLevelThreePrimary', 'YetiLevelThreeSecondaryCreate', 'YetiLevelThreeSecondaryRecover', 'YetiLevelThreeSecondaryLoad', 'YetiLevelOne', 'YetiLevelTwo', 'BitcoinCoreOfflinePrimary', 'BitcoinCoreOfflineSecondary']
 
 # Check for number of input arguments and whether arguments are valid
 if len(sys.argv) == 1 or sys.argv[1].lower() not in [x.lower() for x in VALIDMODES]:
@@ -53,51 +53,51 @@ else:
     subprocess.run('sudo rm -r ~/.bitcoin/wallets/yetiwalletgen 2> /dev/null', shell=True, check=False)
     # Finalize script based on processing mode
 
-    if sys.argv[1].lower() == 'yeticoldprimary':
+    if sys.argv[1].lower() == 'yetilevelthreeprimary':
         print('********************')
-        print('Running YetiCold on Primary PC')
+        print('Running Yeti Level THree on Primary PC')
         print('********************' + os.linesep)
         subprocess.Popen('python3 ~/yeticold/appyeticold.py', shell=True, start_new_session=True)
         subprocess.run('sleep 3', shell=True, check=False) # 3 sec pause for webserver before loading html
         subprocess.run('xdg-open http://localhost:5000/', shell=True, check=False)
 
-    elif sys.argv[1].lower() == 'yeticoldsecondarycreate':
+    elif sys.argv[1].lower() == 'yetilevelthreesecondarycreate':
         print('********************')
-        print('Running YetiCold Create Wallet on Secondary PC')
+        print('Running Yeti Level Three Create Wallet on Secondary PC')
         print('********************' + os.linesep)
         subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
         subprocess.Popen('python3 ~/yeticold/appyeticold.py', shell=True, start_new_session=True)
         subprocess.run('sleep 3', shell=True, check=False)
         subprocess.run('xdg-open http://localhost:5000/off', shell=True, check=False)
 
-    elif sys.argv[1].lower() == 'yeticoldsecondaryrecover':
+    elif sys.argv[1].lower() == 'yetilevelthreesecondaryrecover':
         print('********************')
-        print('Running YetiCold Recover Wallet on Secondary PC')
+        print('Running Yeti Level Three Recover Wallet on Secondary PC')
         print('********************' + os.linesep)
         subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
         subprocess.Popen('python3 ~/yeticold/appyeticold.py', shell=True, start_new_session=True)
         subprocess.run('sleep 3', shell=True, check=False)
         subprocess.run('xdg-open http://localhost:5000/offrec', shell=True, check=False)
 
-    elif sys.argv[1].lower() == 'yeticoldsecondaryload':
+    elif sys.argv[1].lower() == 'yetilevelthreesecondaryload':
         print('********************')
-        print('Running YetiCold Load Wallet on Secondary PC')
+        print('Running Yeti Level Three Load Wallet on Secondary PC')
         print('********************' + os.linesep)
         subprocess.Popen('python3 ~/yeticold/appyeticold.py', shell=True, start_new_session=True)
         subprocess.run('sleep 3', shell=True, check=False)
         subprocess.run('xdg-open http://localhost:5000/offimp', shell=True, check=False)
 
-    elif sys.argv[1].lower() == 'yetihot':
+    elif sys.argv[1].lower() == 'yetilevelone':
         print('********************')
-        print('Running YetiHot')
+        print('Running Yeti Level One')
         print('********************' + os.linesep)
         subprocess.Popen('python3 ~/yeticold/appyetihot.py', shell=True, start_new_session=True)
         subprocess.run('sleep 3', shell=True, check=False)
         subprocess.run('xdg-open http://localhost:5000/', shell=True, check=False)
 
-    elif sys.argv[1].lower() == 'yetiwarm':
+    elif sys.argv[1].lower() == 'yetilevelTwo':
         print('********************')
-        print('Running YetiWarm')
+        print('Running Yeti Level Two')
         print('********************' + os.linesep)
         subprocess.Popen('python3 ~/yeticold/appyetiwarm.py', shell=True, start_new_session=True)
         subprocess.run('sleep 3', shell=True, check=False)

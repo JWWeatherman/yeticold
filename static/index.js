@@ -597,10 +597,9 @@ var importdescriptor = (line) => {
  }
 
  var highlightBin = () => {
-   for (var i = 0; i >= 8; i++) {
+   for (var i = 1; i <= 7; i++) {
       var binary = document.getElementById('binary' + i).value
       document.getElementById('count' + i).innerHTML = binary.length + ' \\ 256'
-      console.log(document.getElementById('binary' + i).value.replace(/1/g, '').replace(/0/g,'').length)
       if (binary.length === 256 && document.getElementById('binary' + i).value.replace(/1/g, '').replace(/0/g,'').length === 0) {
         document.getElementById('binary' + i).style.backgroundColor = "rgba(0, 151, 19, 0.4)"
       } else if (binary.length >= 257 || document.getElementById('binary' + i).value.replace(/1/g, '').replace(/0/g,'').length != 0) {
