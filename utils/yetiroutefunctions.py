@@ -5,7 +5,7 @@ from btcrpcfunctions import *
 from formating import *
 home = os.getenv("HOME")
 
-def blockChain(request, nextroute, mode="Create"):
+def blockChain(request, nextroute, mode):
     if request.method == 'GET':
         if (os.path.exists(home + "/.bitcoin")):
             print("1")
@@ -29,7 +29,7 @@ def blockChain(request, nextroute, mode="Create"):
         createOrPrepend('server=1\nrpcport=8332\nrpcuser=rpcuser\nprune='+str(getPrunBlockheightByDate(request.form['date']))+'\nrpcpassword='+v.rpcpsw+'',home+'/.bitcoin/bitcoin.conf')
         return redirect(nextroute)
 
-def openBitcoin(request, currentroute, nextroute, loadwallet=False, offline=False, yeti='Warm'):
+def openBitcoin(request, currentroute, nextroute, mode, yeti='Warm'):
     if request.method == 'GET':
         v.IBD = BTCFinished()
         v.progress = BTCprogress()

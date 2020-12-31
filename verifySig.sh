@@ -1,5 +1,5 @@
 Sig=$(sha256sum --ignore-missing --check SHA256SUMS.asc)
-CheckSig=$(echo ${Sig} | grep 'bitcoin-0.21.0rc2-x86_64-linux-gnu.tar.gz: OK' -c)
+CheckSig=$(echo ${Sig} | grep 'bitcoin-0.21.0rc3-x86_64-linux-gnu.tar.gz: OK' -c)
 echo ${CheckSig}
 gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys 01EA5486DE18A882D4C2684590C8019E36C2E964
 
