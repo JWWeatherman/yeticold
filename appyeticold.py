@@ -30,7 +30,6 @@ def redirectrouteoffimp():
     return redirect('/blockchainOff')
 @app.route("/off", methods=['GET', 'POST'])
 def redirectrouteoff():
-    print("1111")
     v.info = "yetiColdOff"
     return redirect('/blockchainOff')
 @app.route("/offrec", methods=['GET', 'POST'])
