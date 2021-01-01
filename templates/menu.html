@@ -13,7 +13,18 @@
         <h2>Create or Recover a Wallet</h2>
 <!--         <div style="margin-bottom: 30px;">Create a new wallet to hold bitcoin or recover a wallet you created previously.</div>
  -->      
-      
+      {% if wallet %}
+        <div class="card" style="margin-top: 3rem;">
+          <div class="card-body">
+            <h4 class="card-title">Load wallet currently stored on this machine.</h4>
+            <p class="card-text">This option is displayed if Yeti has detected that you already have a Yeti wallet on this laptop. This will open the wallet already on this laptop.</p>
+            <form action="" method="post">
+              <input style="display: none;" name="option" value="load">
+              <input class="btn btn-primary" type="submit" id="next" value="Load Wallet">
+            </form>
+          </div>
+        </div>
+      {% endif %}
       <div class="card" style="margin-top: 3rem;">
         <div class="card-body">
           <h4 class="card-title">Create wallet</h4>
@@ -34,18 +45,6 @@
           </form>
         </div>
       </div>
-      {% if wallet %}
-        <div class="card" style="margin-top: 3rem;">
-          <div class="card-body">
-            <h4 class="card-title">Load wallet currently stored on this machine.</h4>
-            <p class="card-text">This option is displayed if Yeti has detected that you already have a Yeti wallet on this laptop. This will open the wallet already on this laptop.</p>
-            <form action="" method="post">
-              <input style="display: none;" name="option" value="load">
-              <input class="btn btn-primary" type="submit" id="next" value="Load Wallet">
-            </form>
-          </div>
-        </div>
-      {% endif %}
     </div>
     <script>
       navbar("{{yeti}}", "{{url_for('static', filename='yeti.png')}}");
