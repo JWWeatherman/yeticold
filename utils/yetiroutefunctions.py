@@ -29,7 +29,7 @@ def openBitcoin(request, currentroute, nextroute, mode, yeti='Warm'):
         v.progress = BTCprogress()
         if not os.path.exists(home + "/.bitcoin/bitcoind.pid"):
             subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050',shell=True,start_new_session=True)
-        if mode == 'YetiLevelThreeSecondaryCreate' mode == 'YetiLevelThreeSecondaryRecover' mode == 'YetiLevelThreeSecondaryLoad':
+        if mode == 'YetiLevelThreeSecondaryCreate' or mode == 'YetiLevelThreeSecondaryRecover' or mode == 'YetiLevelThreeSecondaryLoad':
             response = subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli getblockchaininfo', shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
             if response[1] == b'':
                 v.IBD = True
