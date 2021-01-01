@@ -141,7 +141,7 @@ def switchlaptopOffRec():
 #ON
 @app.route("/scandescriptorRec", methods=['GET', 'POST'])
 def scandescriptorRec():
-    route = scanDescriptor(request, '/scandescriptorRec', '/rescanwalletRec')
+    route = scanDescriptor(request, '/scandescriptorRec', '/rescanwalletRec', offline=False)
     if route:
         return route
     return render_template('scandescriptor.html', step=14, error=v.error, line=0)
@@ -183,7 +183,7 @@ def exportdescriptorOff():
 #ON
 @app.route("/scandescriptor", methods=['GET', 'POST'])
 def scandescriptor():
-    route = scanDescriptor(request, '/scandescriptor', '/printpage')
+    route = scanDescriptor(request, '/scandescriptor', '/printpage', offline=False)
     if route:
         return route
     return render_template('scandescriptor.html', step=12, setup=True, error=v.error, line=0)
