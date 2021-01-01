@@ -60,24 +60,6 @@ def createDumpWallet():
 	v.dumpwalletindex = v.dumpwalletindex + 1
 	return '"yetixprivwallet'+str(v.dumpwalletindex)+'"'
 
-def makeQrCode(data, path=None, name=None):
-    if path == None:
-        randomnum = str(random.randrange(0,1000000))
-        path = home+'/yeticold/static/qrcode'+randomnum+'.png'
-        name = 'qrcode'+randomnum+'.png'
-    qr = qrcode.QRCode(
-        version=1,
-        error_correction=qrcode.constants.ERROR_CORRECT_L,
-        box_size=10,
-        border=4,
-    )
-    qr.add_data(data)
-    qr.make(fit=True)
-    img = qr.make_image(fill_color="black", back_color="white")
-    img.save(path)
-    if name != None:
-        return url_for('static', filename=name)
-
 def checksum(fourwords):
     fourwords = fourwords.split(' ')
     fourwords.pop()

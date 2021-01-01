@@ -30,19 +30,17 @@ def YHmenu():
     if request.method == 'GET':
         v.wallet = os.path.exists(home + "/.bitcoin/yetiwallethot") or os.path.exists(home + "/.bitcoin/wallets/yetiwallethotyetiwallethot")
     if request.method == 'POST':
-        if request.form['option'] == 'recovery':
-            subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
+        if request.form['option'] == 'recover':
+            v.mode = "YetiLevelOneRecover"
             v.route = '/YHRinputseed'
-            v.mode = "Recover"
-        elif request.form['option'] == 'wallet':
-            v.step = 6
-            v.route = '/YHRrescanwallet'
-            v.mode = "Load"
-            v.loadwallet = True
-        else:
-            v.mode = "Create"
             subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
+        elif request.form['option'] == 'load':
+            v.mode = "YetiLevelOneLoad"
+            v.route = '/YHRrescanwallet'
+        elif request.form['option'] == 'create':
+            v.mode = "YetiLevelOneCreate"
             v.route = '/YHgetseed'
+            subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
         return redirect('/YHblockchain')
     return render_template('menu.html', yeti='Hot', wallet=v.wallet)
 
@@ -55,7 +53,7 @@ def YHblockchain():
 
 @app.route("/YHopenbitcoin", methods=['GET', 'POST'])
 def YHopenbitcoin():
-    route = openBitcoin(request, '/YHopenbitcoin', v.route, loadwallet=v.loadwallet, yeti='Hot')
+    route = openBitcoin(request, '/YHopenbitcoin', v.route, mode=v.mode, yeti='Hot')
     if route:
         return route
     return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=5, yeti='Hot', offline=False)
@@ -124,7 +122,6 @@ def YHRdisplaywallet():
 @app.route('/YHRinputseed', methods=['GET', 'POST'])
 def YHRinputseed():
     if request.method == 'POST':
-        v.step = 7
         privkey = []
         for i in range(1,14):
             inputlist = request.form['row' + str(i)]
@@ -144,7 +141,7 @@ def YHRrescanwallet():
     if request.method == 'POST':
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallethot rescanblockchain '+blockheight())
         return redirect('/YHRdisplaywallet')
-    return render_template('rescanwallet.html', yeti='Hot', step=v.step)
+    return render_template('rescanwallet.html', yeti='Hot', step=7)
 
 if __name__ == "__main__":
     app.run()

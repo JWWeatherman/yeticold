@@ -26,15 +26,20 @@ def redirectroute():
     return redirect('/menu')
 @app.route("/offimp", methods=['GET', 'POST'])
 def redirectrouteoffimp():
-    v.info = "yetiColdOffImp"
+    v.mode = "YetiLevelThreeSecondaryLoad"
+    v.route = '/switchlaptopOffImp'
     return redirect('/blockchainOff')
 @app.route("/off", methods=['GET', 'POST'])
 def redirectrouteoff():
-    v.info = "yetiColdOff"
+    v.mode = "YetiLevelThreeSecondaryCreate"
+    v.route = '/getseedsOff'
+    subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
     return redirect('/blockchainOff')
 @app.route("/offrec", methods=['GET', 'POST'])
 def redirectrouteoffrec():
-    v.info = "yetiColdOffRec"
+    v.mode = "YetiLevelThreeSecondaryRecover"
+    v.route = '/scandescriptorOffRec'
+    subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
     return redirect('/blockchainOff')
 
 #ON
@@ -43,21 +48,18 @@ def menu():
     if request.method == 'GET':
         v.wallet = os.path.exists(home + "/.bitcoin/yetiwalletpub") or os.path.exists(home + "/.bitcoin/wallets/yetiwalletpub")
     if request.method == 'POST':
-        if request.form['option'] == 'recovery':
-            v.info = "yetiColdRec"
+        if request.form['option'] == 'recover':
             v.route = '/scandescriptorRec'
-            v.mode = "Recover"
+            v.mode = "YetiLevelThreePrimaryRecover"
             v.url = "rec.yeticold.com"
             subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
-        elif request.form['option'] == 'wallet':
-            v.info = 'yetiColdImp'
+        elif request.form['option'] == 'load':
             v.route = '/rescanwalletImp'
-            v.mode = "Load"
+            v.mode = "YetiLevelThreePrimaryLoad"
             v.url = "load.yeticold.com"
-        else:
-            v.info = "yetiCold"
+        elif request.form['option'] == 'create':
             v.url = "disc.yeticold.com"
-            v.mode = "Create"
+            v.mode = "YetiLevelThreePrimaryCreate"
             v.route = '/scandescriptor'
             subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
         return redirect('/blockchain')
@@ -72,11 +74,7 @@ def blockchain():
 
 @app.route("/openbitcoin", methods=['GET', 'POST'])
 def YCopenbitcoin():
-    if v.mode == 'yetiColdImp' or v.info == 'yetiColdOffImp':
-        loadwallet = True
-    else:
-        loadwallet = False
-    route = openBitcoin(request, '/openbitcoin', v.route, loadwallet=loadwallet, offline=False, yeti='Cold')
+    route = openBitcoin(request, '/openbitcoin', v.route, mode=v.mode, yeti='Cold')
     if route:
         return route
     return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=5, switch=True, url=v.url, offline=False)
@@ -88,7 +86,6 @@ def rescanwalletImp():
         return redirect('/coldwalletguideImp')
     return render_template('rescanwallet.html',step=10)
 
-#ON
 @app.route("/coldwalletguideImp", methods=['GET', 'POST'])
 def coldwalletguideImp():
     return render_template('coldwalletguide.html', step=11)
@@ -102,30 +99,17 @@ def blockchainOff():
         createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nprune=550\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf') 
     return redirect('/openbitcoinOff')
 
-#OFF
 @app.route("/openbitcoinOff", methods=['GET', 'POST'])
 def openbitcoinOff():
-    loadwallet = False
-    if v.info == "yetiColdOffRec":
-        v.route = '/scandescriptorOffRec'
-        subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
-    elif v.info == 'yetiColdOffImp':
-        v.route = '/switchlaptopOffImp' 
-        loadwallet = True
-    else:
-        v.route = '/getseedsOff'
-        subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
-    route = openBitcoin(request, '/openbitcoinOff', '/connectionOff', loadwallet=loadwallet, offline=True)
+    route = openBitcoin(request, '/openbitcoinOff', '/connectionOff', mode=v.mode)
     if route:
         return route
     return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=7, offline=True)
 
-#OFF
 @app.route("/connectionOff", methods=['GET', 'POST'])
 def connection():
     if request.method == 'POST':
         subprocess.call(['python3 ~/yeticold/utils/forgetnetworks.py'],shell=True)
-        subprocess.call(['nmcli n off'],shell=True)
         return redirect(v.route)
     return render_template('connection.html', step=8)
 
@@ -133,20 +117,11 @@ def connection():
 def switchlaptopOffImp():
     return render_template('switchlaptop.html', step=9, instructions="Switch to your Primary laptop currently Showing step 5. Click next to show step 10.", laptop="Primary")
 
-#OFF
 @app.route("/scandescriptorOffRec", methods=['GET', 'POST'])
 def scandescriptorOffRec():
-    if request.method == 'POST':
-        v.error = None
-        v.pubdesc = request.form['descriptor'].replace('\n','')
-        response = subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv getdescriptorinfo "'+v.pubdesc+'"', shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        print(response, "response for function: check descriptor")
-        print(repr(v.pubdesc))
-        if response[1] != b'':
-            v.error = 'Invalid Descriptor'
-            return redirect('/scandescriptorOffRec')
-        v.privkeycount = 0
-        return redirect('/importseedsOff')
+    route = scanDescriptor(request, '/scandescriptorOffRec', '/importseedsOff')
+    if route:
+        return route
     return render_template('scandescriptorOff.html', step=9, error=v.error, line=16)
 
 #OFF
@@ -165,15 +140,9 @@ def switchlaptopOffRec():
 #ON
 @app.route("/scandescriptorRec", methods=['GET', 'POST'])
 def scandescriptorRec():
-    if request.method == 'POST':
-        v.error = None
-        v.pubdesc = request.form['descriptor'].replace('\n','')
-        response = subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub getdescriptorinfo "'+v.pubdesc+'"', shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        print(response, "response for function: check descriptor")
-        if response[1] != b'':
-            v.error = 'Invalid Descriptor'
-            redirect('/scandescriptorRec')
-        return redirect('/rescanwalletRec')
+    route = scanDescriptor(request, '/scandescriptorRec', '/rescanwalletRec')
+    if route:
+        return route
     return render_template('scandescriptor.html', step=14, error=v.error, line=0)
 
 #ON
@@ -213,16 +182,9 @@ def exportdescriptorOff():
 #ON
 @app.route("/scandescriptor", methods=['GET', 'POST'])
 def scandescriptor():
-    if request.method == 'POST':
-        v.error = None
-        v.pubdesc = request.form['descriptor'].replace('\n','')
-        response = subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub getdescriptorinfo "'+v.pubdesc+'"', shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        print(response, "response for function: check descriptor")
-        if response[1] != b'':
-            v.error = 'Invalid Descriptor'
-            return redirect('/scandescriptor')
-        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now", "active": true}]\'')
-        return redirect('/printpage')
+    route = scanDescriptor(request, '/scandescriptor', '/printpage')
+    if route:
+        return route
     return render_template('scandescriptor.html', step=12, setup=True, error=v.error, line=0)
 
 #ON

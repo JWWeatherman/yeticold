@@ -7,19 +7,13 @@ home = os.getenv("HOME")
 
 def blockChain(request, nextroute, mode):
     if request.method == 'GET':
-        if (os.path.exists(home + "/.bitcoin")):
-            print("1")
+        if (os.path.exists(home + "/.bitcoin")) or mode == 'YetiLevelThreePrimaryLoad' or mode == 'YetiLevelTwoLoad' or mode == 'YetiLevelOneLoad':
             createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
             return redirect(nextroute)
-        elif mode == "Create":
-            print("create dir")
+        else:
             subprocess.call('mkdir ~/.bitcoin',shell=True)
-            subprocess.call('sleep 3',shell=True) 
+        if mode == 'YetiLevelThreePrimaryCreate' or mode == 'YetiLevelTwoCreate' or mode == 'YetiLevelOneCreate':
             createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nprune=550\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
-            return redirect(nextroute)
-        elif mode == "Load":
-            print("3")
-            createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
             return redirect(nextroute)
     if request.method == 'POST':
         subprocess.call('mkdir ~/.bitcoin',shell=True)
@@ -41,27 +35,33 @@ def openBitcoin(request, currentroute, nextroute, mode, yeti='Warm'):
                 v.IBD = True
     if request.method == 'POST':
         if v.IBD:
-            if loadwallet:
-                if yeti == 'Cold' and not offline:
-                    handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetiwalletpub"')
-                elif yeti == 'Hot':
-                    handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetiwallethot"')
-                else:
-                    handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetiwalletpriv"')
-            else:
-                if yeti == 'Cold' and not offline:
-                    handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpub" true true "" false true')     
-                elif yeti == 'Hot':
-                    handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwallethot" false true')
-                else: 
-                    handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpriv" false true "" false true')
+            if mode == 'YetiLevelThreePrimaryCreate' or mode == 'YetiLevelThreePrimaryRecover':
+                handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpub" true true "" false true')
+            elif mode == 'YetiLevelThreePrimaryLoad':
+                handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetiwalletpub"')
+            elif mode == 'YetiLevelThreeSecondaryCreate' or mode == 'YetiLevelThreeSecondaryRecover' or mode == 'YetiLevelTwoCreate' or mode == 'YetiLevelTwoRecover':
+                handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpriv" false true "" false true')
+            elif mode == 'YetiLevelThreeSecondaryLoad' or mode == 'YetiLevelTwoLoad':
+                handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetiwalletpriv"')
+            elif mode == 'YetiLevelOneCreate' or mode == 'YetiLevelOneRecover':
+                handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwallethot" false true')
+            elif mode == 'YetiLevelOneLoad':
+               handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetiwallethot"') 
             return redirect(nextroute)
         else:
             return redirect(currentroute)
 
-def exportDescriptor(request, nextroute):
+def scanDescriptor(request, currentroute, nextroute):
     if request.method == 'POST':
-        return redirect(nextroute)
+        v.error = None
+        v.pubdesc = request.form['descriptor'].replace('\n','')
+        response = subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub getdescriptorinfo "'+v.pubdesc+'"', shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+        print(response, 'response for function: ~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub getdescriptorinfo "'+v.pubdesc+'"')
+        if response[1] != b'':
+            v.error = 'Invalid Descriptor: '+v.pubdesc
+            return redirect(currentroute)
+        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now", "active": true}]\'')
+        return redirect('/printpage')
 
 def getSeeds(request, nextroute):
     if request.method == 'POST':

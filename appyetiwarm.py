@@ -31,17 +31,17 @@ def YWmenu():
     if request.method == 'GET':
         v.wallet = os.path.exists(home + "/.bitcoin/yetiwalletpriv") or os.path.exists(home + "/.bitcoin/wallets/yetiwalletpriv")
     if request.method == 'POST':
-        if request.form['option'] == 'recovery':
+        if request.form['option'] == 'recover':
             subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
-            v.mode = "Recover"
+            v.mode = "YetiLevelTwoRecover"
             v.route = '/YWRscandescriptor'
-        elif request.form['option'] == 'wallet':
+        elif request.form['option'] == 'load':
             v.step = 6
             v.route = '/YWRrescanwallet'
-            v.mode = "Load"
+            v.mode = "YetiLevelTwoLoad"
             v.loadwallet = True
-        else:
-            v.mode = "Create"
+        elif request.form['option'] == 'create':
+            v.mode = "YetiLevelTwoCreate"
             subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
             v.route = '/YWgetseeds'
         return redirect('/YWblockchain')
@@ -56,7 +56,7 @@ def YWblockchain():
 
 @app.route("/YWopenbitcoin", methods=['GET', 'POST'])
 def YWopenbitcoin():
-    route = openBitcoin(request, '/YWopenbitcoin', v.route, v.loadwallet)
+    route = openBitcoin(request, '/YWopenbitcoin', v.route, mode=v.mode)
     if route:
         return route
     return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, yeti='Warm', step=5, offline=False)
@@ -83,15 +83,9 @@ def YWcheckseeds():
 
 @app.route("/YWRscandescriptor", methods=['GET', 'POST'])
 def YWRscandescriptor():
-    if request.method == 'POST':
-        v.error = None
-        v.pubdesc = request.form['descriptor'].replace('\n','')
-        response = subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub getdescriptorinfo "'+v.pubdesc+'"', shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-        print(response, "response for function: check descriptor")
-        if response[1] != b'':
-            v.error = 'Invalid Descriptor'
-            return redirect('/YWRscandescriptor')
-        return redirect('/YWRimportseeds')
+    route = scanDescriptor(request, '/YWRscandescriptor', '/YWRimportseeds')
+        if route:
+            return route
     return render_template('scandescriptorOff.html', pubdesc=v.pubdesc, yeti='Warm', step=6, line=16)
 
 @app.route('/YWRimportseeds', methods=['GET', 'POST'])
