@@ -8,4 +8,4 @@ for line in lines:
     parts = line.split(":")
     if (parts[0] == "802-11-wireless"):
         os.system("nmcli connection delete uuid "+ parts[1])
-
+subprocess.run('nmcli n off', shell=True, check=False)
