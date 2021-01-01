@@ -46,7 +46,7 @@ def YHmenu():
 
 @app.route("/YHblockchain", methods=['GET', 'POST'])
 def YHblockchain():
-    route = blockChain(request, '/YHopenbitcoin')
+    route = blockChain(request, '/YHopenbitcoin', mode=v.mode)
     if route:
         return route
     return render_template('blockchain.html')
