@@ -61,7 +61,7 @@ def scanDescriptor(request, currentroute, nextroute):
             v.error = 'Invalid Descriptor: '+v.pubdesc
             return redirect(currentroute)
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now", "active": true}]\'')
-        return redirect('/printpage')
+        return redirect(nextroute)
 
 def getSeeds(request, nextroute):
     if request.method == 'POST':
