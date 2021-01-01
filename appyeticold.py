@@ -2,15 +2,17 @@ import os
 import sys
 home = os.getenv("HOME")
 sys.path.append(home + '/yeticold/utils/')
+from btcrpcfunctions import blockheight
+from yetiroutefunctions import * 
+from yetifunctions import *
+from formating import *
 from imports import *
+import forgetnetworks
 import variables as v
 v.rpcpsw = str(random.randrange(0,1000000))
 v.settings = {"rpc_username": "rpcuser","rpc_password": v.rpcpsw, "rpc_host": "127.0.0.1","rpc_port": 8332,"address_chunk": 100}
 v.wallet_template = "http://{rpc_username}:{rpc_password}@{rpc_host}:{rpc_port}/wallet/{wallet_name}"
-from formating import *
-from btcrpcfunctions import blockheight
-from yetifunctions import *
-from yetiroutefunctions import * 
+
 app = Flask(__name__)
 
 @app.errorhandler(werkzeug.exceptions.InternalServerError)
@@ -109,7 +111,7 @@ def openbitcoinOff():
 @app.route("/connectionOff", methods=['GET', 'POST'])
 def connection():
     if request.method == 'POST':
-        subprocess.call(['python3 ~/yeticold/utils/forgetnetworks.py'],shell=True)
+        forgetnetworks.forget_networks()
         return redirect(v.route)
     return render_template('connection.html', step=8)
 
