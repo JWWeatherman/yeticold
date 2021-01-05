@@ -90,6 +90,7 @@ def YHgetseed():
 @app.route("/YHcopyseed", methods=['GET', 'POST'])
 def YHcopyseed():
     if request.method == 'POST':
+        v.privkeycount = 0
         return redirect('/YHcheckseed')
     return render_template('copyseed.html', yeti='Hot', step=9)
 
@@ -110,10 +111,14 @@ def YHcheckseed():
             privkeylisttoconfirm.append(inputlist[3])
         if privkeylisttoconfirm == v.passphraselist:
             v.oldkeys = None
-            return redirect('/YHRdisplaywallet')
+            v.privkeycount = v.prinkeycount + 1
+            if v.privkeycount == 5:
+                return redirect('/YHRdisplaywallet')
+            else:
+                return redirect('/YHcheckseed')
         else:
             v.error = 'The seed words you entered are incorrect. This is probably because you entered a line twice or put them in the wrong order.'
-    return render_template('checkseeds.html', x=1, error=v.error, step=8,oldkeys=v.oldkeys, yeti='Hot')
+    return render_template('checkseeds.html', x=v.privkeycount+1, error=v.error, step=v.privkeycount+8,oldkeys=v.oldkeys, yeti='Hot')
 
 @app.route("/YHRdisplaywallet", methods=['GET', 'POST'])
 def YHRdisplaywallet():
