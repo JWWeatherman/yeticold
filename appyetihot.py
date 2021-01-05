@@ -111,7 +111,7 @@ def YHcheckseed():
             privkeylisttoconfirm.append(inputlist[3])
         if privkeylisttoconfirm == v.passphraselist:
             v.oldkeys = None
-            v.privkeycount = v.prinkeycount + 1
+            v.privkeycount = v.privkeycount + 1
             if v.privkeycount == 5:
                 return redirect('/YHRdisplaywallet')
             else:
