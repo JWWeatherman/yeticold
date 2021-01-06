@@ -123,7 +123,7 @@ def scandescriptorOffRec():
     route = scanDescriptor(request, '/scandescriptorOffRec', '/importseedsOff')
     if route:
         return route
-    return render_template('scandescriptorOff.html', step=9, error=v.error, line=14)
+    return render_template('scandescriptorOff.html', step=9, error=v.error, line=16)
 
 #OFF
 @app.route('/importseedsOff', methods=['GET', 'POST'])
