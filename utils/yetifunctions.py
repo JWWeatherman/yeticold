@@ -15,6 +15,16 @@ def createOrPrepend(text, path):
     else:
 	    subprocess.call('echo "'+text+'" >> '+path, shell=True)
 
+def readFile(path):
+    f = open(path,'r')
+    temp = f.read()
+    f.close()
+    print(temp)
+    result = []
+    for i in range(0,len(temp)):
+        result.append(temp[i])
+    return result
+
 def getPrunBlockheightByDate(date):
     fmt = '%Y-%m-%d %H:%M:%S'
     today = str(datetime.today()).split('.')[0]

@@ -1,3 +1,4 @@
+This is your descriptor in text format you have a copy of this descriptor on both your yetiseed files and descriptor.txt files.
 
 This is a seed packet that contains 1/3 of the information needed to recover bitcoins in a 3 of 7 HD multisig wallet.
 There are 6 other packets that are identical except that they contain one of the other sets of seed words.
@@ -12,6 +13,3 @@ No software beyond Bitcoin Core is required to recover the stored bitcoin.
 This seed packet contains a CD and paper copy that has a copy of this information. It does not contain another set of seed words, but simply a copy of the seed words in this document.
 Two other seed packets must be obtained to recover the bitcoin stored.
 YetiCold.com recommends storing seed words in locations like safety deposit boxes, home safes, and with professionals such as accountants and lawyers.
-
-
-

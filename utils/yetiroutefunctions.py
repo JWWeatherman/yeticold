@@ -88,8 +88,7 @@ def getSeeds(request, nextroute):
         for i in range(1,8):
             privkey = v.privkeylist[i-1]
             v.passphraselist = ConvertToPassphrase(privkey)
-            subprocess.call('mkdir '+path+'/yetiseed'+str(i), shell=True)
-            subprocess.call('touch '+path+'/yetiseed'+str(i)+'/yetiseed'+str(i)+'.txt', shell=True)
+            subprocess.call('touch '+path+'/yetiseed'+str(i)+'.txt', shell=True)
             file = ''
             phrasenum = 0
             for x in range(0,13):
@@ -99,9 +98,10 @@ def getSeeds(request, nextroute):
                     phrasenum = phrasenum + 1
                 line = line + checksum(line)
                 file = file + line + '\n'
-            file = file + '\n\nThis is your descriptor in text format you have a copy of this descriptor on both your yetiseed files and descriptor.txt files.\n' + v.pubdesc + '\n'
-            file = file + v.coldfile
-            createOrPrepend(file, path+'/yetiseed'+str(i)+'/yetiseed'+str(i)+'.txt')
+            file = file +  + v.pubdesc + '\n'
+            SeedT = readFile(home+'/yeticold/templates/SeedTemplate.txt')
+            file = file + SeedT
+            createOrPrepend(file, path+'/yetiseed'+str(i)+'.txt')
         createOrPrepend(v.pubdesc, path+'/Descriptor.txt')
         return redirect(nextroute)
 
