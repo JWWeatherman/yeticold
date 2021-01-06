@@ -24,27 +24,10 @@
       <div style="page-break-after: always;"></div>
       <div style="margin-top:100vh;page-break-after: always;"></div>
       <ul>
-          <li>This is a seed packet that contains 1/3 of the information needed to recover bitcoins in a 3 of 7 HD multisig wallet.</li>
-          <li>There are 6 other packets that are identical except that they contain one of the other sets of seed words.</li> 
-          <li>The HD Multisig wallet was was created using YetiCold.com (a Python script to make the experience more user friendly) and Bitcoin Core 0.21</li>
-          <li>To recover the bitcoin go to YetiCold.com and click "{{yeti}}" and then follow the recovery instructions.</li>
-          <li>YetiCold.com should direct you to download a script to make the process of using Bitcoin Core easier, but never trust any website with your seed words.</li>
-          <li>Consider putting a small amount of money into YetiCold.com cold storage and recovering them before attempting to recover significant funds.</li>
-          <li>A test run will give you the opportunity to make sure that your seed words are never connected to an online device before.</li>
-          <li>If many years have passed you should check that YetiCold.com has retained a good reputation.</li>
-          <li>If YetiCold.com is no longer reputable use Bitcoin Core alone to recover your bitcoin (with the help of a trusted expert only if absolutely needed as these people may attempt to steal the bitcoin).</li>
-          <li>No software beyond Bitcoin Core is required to recover the stored bitcoin.</li>
-          <li>This seed packet also contains a CD-ROM disk that has a digital copy of the information on this document. It does not contain another set of seed words, but simply a copy of the seed words in this document.</li>
-          <li>Two other seed packets must be obtained to recover the bitcoin stored.</li>
-          <li>YetiCold.com recommends storing seed words in locations like safety deposit boxes, home safes, and with professionals such as accountants and lawyers.</li> 
+      {%for i in range(0, len)%} 
+          <li>{{txt[i]}}</li> 
+      {%endfor%}
       </ul>
-      <ul>
-          <li>This is one set of your seed words. This is the first of seven. You need 3 of these and your descriptor to easily recover your bitcoin.</li>
-          <li>YeitCold.com accepts these seed words in this modified NATO format, but other bitcoin software, such as Bitcoin Core, may require you provide your seed in the Wallet Import Format (WIF).</li>
-          <li>To convert these seed words into WIF format ignore the fifth word (last word) on each line (it is used as checksum as part of modified NATO). Then use the first letter of each word to determine the letter. For example "JULIETT" is J and "quebec" is q. Upper case words represent upper case letters and lower case words represent lower case letters. Numbers are written out so "TWO" is 2. This will give you 52 numbers, uppercase letters, and lowercase letters that is your seed in WIF
-              format.</li>
-      </ul>
-      <p>{{desc}}</p>
       <div style="page-break-after: always;"></div>
       <form action="" method="post" style="border: solid #f8f9fa;padding: 1.5rem;">
         <div class="form-row">
@@ -154,27 +137,10 @@
       </form>
       <div style="page-break-after: always;"></div>
       <ul>
-          <li>This is a seed packet that contains 1/3 of the information needed to recover bitcoins in a 3 of 7 HD multisig wallet.</li>
-          <li>There are 6 other packets that are identical except that they contain one of the other sets of seed words.</li> 
-          <li>The HD Multisig wallet was was created using YetiCold.com (a Python script to make the experience more user friendly) and Bitcoin Core 0.21</li>
-          <li>To recover the bitcoin go to YetiCold.com and click "{{yeti}}" and then follow the recovery instructions.</li>
-          <li>YetiCold.com should direct you to download a script to make the process of using Bitcoin Core easier, but never trust any website with your seed words.</li>
-          <li>Consider putting a small amount of money into YetiCold.com cold storage and recovering them before attempting to recover significant funds.</li>
-          <li>A test run will give you the opportunity to make sure that your seed words are never connected to an online device before.</li>
-          <li>If many years have passed you should check that YetiCold.com has retained a good reputation.</li>
-          <li>If YetiCold.com is no longer reputable use Bitcoin Core alone to recover your bitcoin (with the help of a trusted expert only if absolutely needed as these people may attempt to steal the bitcoin).</li>
-          <li>No software beyond Bitcoin Core is required to recover the stored bitcoin.</li>
-          <li>This seed packet also contains a CD-ROM disk that has a digital copy of the information on this document. It does not contain another set of seed words, but simply a copy of the seed words in this document.</li>
-          <li>Two other seed packets must be obtained to recover the bitcoin stored.</li>
-          <li>YetiCold.com recommends storing seed words in locations like safety deposit boxes, home safes, and with professionals such as accountants and lawyers.</li> 
+      {%for i in range(0, len)%} 
+          <li>{{txt[i]}}</li> 
+      {%endfor%}
       </ul>
-      <ul>
-          <li>This is one set of your seed words. This is the second of seven. You need 3 of these and your descriptor to easily recover your bitcoin.</li>
-          <li>YeitCold.com accepts these seed words in this modified NATO format, but other bitcoin software, such as Bitcoin Core, may require you provide your seed in the Wallet Import Format (WIF).</li>
-          <li>To convert these seed words into WIF format ignore the fifth word (last word) on each line (it is used as checksum as part of modified NATO). Then use the first letter of each word to determine the letter. For example "JULIETT" is J and "quebec" is q. Upper case words represent upper case letters and lower case words represent lower case letters. Numbers are written out so "TWO" is 2. This will give you 52 numbers, uppercase letters, and lowercase letters that is your seed in WIF
-              format.</li>
-      </ul>
-      <p>{{desc}}</p>
       <div style="page-break-after: always;"></div>
       <form action="" method="post" style="border: solid #f8f9fa;padding: 1.5rem;">
         <div class="form-row">
@@ -284,27 +250,10 @@
       </form>
       <div style="page-break-after: always;"></div>
       <ul>
-          <li>This is a seed packet that contains 1/3 of the information needed to recover bitcoins in a 3 of 7 HD multisig wallet.</li>
-          <li>There are 6 other packets that are identical except that they contain one of the other sets of seed words.</li> 
-          <li>The HD Multisig wallet was was created using YetiCold.com (a Python script to make the experience more user friendly) and Bitcoin Core 0.21</li>
-          <li>To recover the bitcoin go to YetiCold.com and click "{{yeti}}" and then follow the recovery instructions.</li>
-          <li>YetiCold.com should direct you to download a script to make the process of using Bitcoin Core easier, but never trust any website with your seed words.</li>
-          <li>Consider putting a small amount of money into YetiCold.com cold storage and recovering them before attempting to recover significant funds.</li>
-          <li>A test run will give you the opportunity to make sure that your seed words are never connected to an online device before.</li>
-          <li>If many years have passed you should check that YetiCold.com has retained a good reputation.</li>
-          <li>If YetiCold.com is no longer reputable use Bitcoin Core alone to recover your bitcoin (with the help of a trusted expert only if absolutely needed as these people may attempt to steal the bitcoin).</li>
-          <li>No software beyond Bitcoin Core is required to recover the stored bitcoin.</li>
-          <li>This seed packet also contains a CD-ROM disk that has a digital copy of the information on this document. It does not contain another set of seed words, but simply a copy of the seed words in this document.</li>
-          <li>Two other seed packets must be obtained to recover the bitcoin stored.</li>
-          <li>YetiCold.com recommends storing seed words in locations like safety deposit boxes, home safes, and with professionals such as accountants and lawyers.</li> 
+      {%for i in range(0, len)%} 
+          <li>{{txt[i]}}</li> 
+      {%endfor%}
       </ul>
-      <ul>
-          <li>This is one set of your seed words. This is the third of seven. You need 3 of these and your descriptor to easily recover your bitcoin.</li>
-          <li>YeitCold.com accepts these seed words in this modified NATO format, but other bitcoin software, such as Bitcoin Core, may require you provide your seed in the Wallet Import Format (WIF).</li>
-          <li>To convert these seed words into WIF format ignore the fifth word (last word) on each line (it is used as checksum as part of modified NATO). Then use the first letter of each word to determine the letter. For example "JULIETT" is J and "quebec" is q. Upper case words represent upper case letters and lower case words represent lower case letters. Numbers are written out so "TWO" is 2. This will give you 52 numbers, uppercase letters, and lowercase letters that is your seed in WIF
-              format.</li>
-      </ul>
-      <p>{{desc}}</p>
       <div style="page-break-after: always;"></div>
       <form action="" method="post" style="border: solid #f8f9fa;padding: 1.5rem;">
         <div class="form-row">
@@ -414,28 +363,10 @@
       </form>
       <div style="page-break-after: always;"></div>
       <ul>
-          <li>This is a seed packet that contains 1/3 of the information needed to recover bitcoins in a 3 of 7 HD multisig wallet.</li>
-          <li>There are 6 other packets that are identical except that they contain one of the other sets of seed words.</li> 
-          <li>The HD Multisig wallet was was created using YetiCold.com (a Python script to make the experience more user friendly) and Bitcoin Core 0.21</li>
-          <li>To recover the bitcoin go to YetiCold.com and click "{{yeti}}" and then follow the recovery instructions.</li>
-          <li>YetiCold.com should direct you to download a script to make the process of using Bitcoin Core easier, but never trust any website with your seed words.</li>
-          <li>Consider putting a small amount of money into YetiCold.com cold storage and recovering them before attempting to recover significant funds.</li>
-          <li>A test run will give you the opportunity to make sure that your seed words are never connected to an online device before.</li>
-          <li>If many years have passed you should check that YetiCold.com has retained a good reputation.</li>
-          <li>If YetiCold.com is no longer reputable use Bitcoin Core alone to recover your bitcoin (with the help of a trusted expert only if absolutely needed as these people may attempt to steal the bitcoin).</li>
-          <li>No software beyond Bitcoin Core is required to recover the stored bitcoin.</li>
-          <li>This seed packet also contains a CD-ROM disk that has a digital copy of the information on this document. It does not contain another set of seed words, but simply a copy of the seed words in this document.</li>
-          <li>Two other seed packets must be obtained to recover the bitcoin stored.</li>
-          <li>YetiCold.com recommends storing seed words in locations like safety deposit boxes, home safes, and with professionals such as accountants and lawyers.</li> 
+      {%for i in range(0, len)%} 
+          <li>{{txt[i]}}</li> 
+      {%endfor%}
       </ul>
-      <ul>
-          <li>This is one set of your seed words. This is the fourth of seven. You need 3 of these and your descriptor to easily recover your bitcoin.</li>
-          <li>YeitCold.com accepts these seed words in this modified NATO format, but other bitcoin software, such as Bitcoin Core, may require you provide your seed in the Wallet Import Format (WIF).</li>
-          <li>To convert these seed words into WIF format ignore the fifth word (last word) on each line (it is used as checksum as part of modified NATO). Then use the first letter of each word to determine the letter. For example "JULIETT" is J and "quebec" is q. Upper case words represent upper case letters and lower case words represent lower case letters. Numbers are written out so "TWO" is 2. This will give you 52 numbers, uppercase letters, and lowercase letters that is your seed in WIF
-              format.</li>
-          <li>This seed packet also contains a CD-ROM disk that has a digital copy of the information on this document. It does not contain another set of seed words, but simply a copy of the seed words in this document.</li>
-      </ul>
-      <p>{{desc}}</p>
       <div style="page-break-after: always;"></div>
       <form action="" method="post" style="border: solid #f8f9fa;padding: 1.5rem;">
         <div class="form-row">
@@ -545,27 +476,10 @@
       </form>
       <div style="page-break-after: always;"></div>
       <ul>
-          <li>This is a seed packet that contains 1/3 of the information needed to recover bitcoins in a 3 of 7 HD multisig wallet.</li>
-          <li>There are 6 other packets that are identical except that they contain one of the other sets of seed words.</li> 
-          <li>The HD Multisig wallet was was created using YetiCold.com (a Python script to make the experience more user friendly) and Bitcoin Core 0.21</li>
-          <li>To recover the bitcoin go to YetiCold.com and click "{{yeti}}" and then follow the recovery instructions.</li>
-          <li>YetiCold.com should direct you to download a script to make the process of using Bitcoin Core easier, but never trust any website with your seed words.</li>
-          <li>Consider putting a small amount of money into YetiCold.com cold storage and recovering them before attempting to recover significant funds.</li>
-          <li>A test run will give you the opportunity to make sure that your seed words are never connected to an online device before.</li>
-          <li>If many years have passed you should check that YetiCold.com has retained a good reputation.</li>
-          <li>If YetiCold.com is no longer reputable use Bitcoin Core alone to recover your bitcoin (with the help of a trusted expert only if absolutely needed as these people may attempt to steal the bitcoin).</li>
-          <li>No software beyond Bitcoin Core is required to recover the stored bitcoin.</li>
-          <li>This seed packet also contains a CD-ROM disk that has a digital copy of the information on this document. It does not contain another set of seed words, but simply a copy of the seed words in this document.</li>
-          <li>Two other seed packets must be obtained to recover the bitcoin stored.</li>
-          <li>YetiCold.com recommends storing seed words in locations like safety deposit boxes, home safes, and with professionals such as accountants and lawyers.</li> 
+      {%for i in range(0, len)%} 
+          <li>{{txt[i]}}</li> 
+      {%endfor%}
       </ul>
-      <ul>
-          <li>This is one set of your seed words. This is the fifth of seven. You need 3 of these and your descriptor to easily recover your bitcoin.</li>
-          <li>YeitCold.com accepts these seed words in this modified NATO format, but other bitcoin software, such as Bitcoin Core, may require you provide your seed in the Wallet Import Format (WIF).</li>
-          <li>To convert these seed words into WIF format ignore the fifth word (last word) on each line (it is used as checksum as part of modified NATO). Then use the first letter of each word to determine the letter. For example "JULIETT" is J and "quebec" is q. Upper case words represent upper case letters and lower case words represent lower case letters. Numbers are written out so "TWO" is 2. This will give you 52 numbers, uppercase letters, and lowercase letters that is your seed in WIF
-              format.</li>
-      </ul>
-      <p>{{desc}}</p>
       <div style="page-break-after: always;"></div>
       <form action="" method="post" style="border: solid #f8f9fa;padding: 1.5rem;">
         <div class="form-row">
@@ -675,28 +589,10 @@
       </form>
       <div style="page-break-after: always;"></div>
       <ul>
-          <li>This is a seed packet that contains 1/3 of the information needed to recover bitcoins in a 3 of 7 HD multisig wallet.</li>
-          <li>There are 6 other packets that are identical except that they contain one of the other sets of seed words.</li> 
-          <li>The HD Multisig wallet was was created using YetiCold.com (a Python script to make the experience more user friendly) and Bitcoin Core 0.21</li>
-          <li>To recover the bitcoin go to YetiCold.com and click "{{yeti}}" and then follow the recovery instructions.</li>
-          <li>YetiCold.com should direct you to download a script to make the process of using Bitcoin Core easier, but never trust any website with your seed words.</li>
-          <li>Consider putting a small amount of money into YetiCold.com cold storage and recovering them before attempting to recover significant funds.</li>
-          <li>A test run will give you the opportunity to make sure that your seed words are never connected to an online device before.</li>
-          <li>If many years have passed you should check that YetiCold.com has retained a good reputation.</li>
-          <li>If YetiCold.com is no longer reputable use Bitcoin Core alone to recover your bitcoin (with the help of a trusted expert only if absolutely needed as these people may attempt to steal the bitcoin).</li>
-          <li>No software beyond Bitcoin Core is required to recover the stored bitcoin.</li>
-          <li>This seed packet also contains a CD-ROM disk that has a digital copy of the information on this document. It does not contain another set of seed words, but simply a copy of the seed words in this document.</li>
-          <li>Two other seed packets must be obtained to recover the bitcoin stored.</li>
-          <li>YetiCold.com recommends storing seed words in locations like safety deposit boxes, home safes, and with professionals such as accountants and lawyers.</li> 
+      {%for i in range(0, len)%} 
+          <li>{{txt[i]}}</li> 
+      {%endfor%}
       </ul>
-      <ul>
-          <li>This is one set of your seed words. This is the sixth of seven. You need 3 of these and your descriptor to easily recover your bitcoin.</li>
-          <li>YeitCold.com accepts these seed words in this modified NATO format, but other bitcoin software, such as Bitcoin Core, may require you provide your seed in the Wallet Import Format (WIF).</li>
-          <li>To convert these seed words into WIF format ignore the fifth word (last word) on each line (it is used as checksum as part of modified NATO). Then use the first letter of each word to determine the letter. For example "JULIETT" is J and "quebec" is q. Upper case words represent upper case letters and lower case words represent lower case letters. Numbers are written out so "TWO" is 2. This will give you 52 numbers, uppercase letters, and lowercase letters that is your seed in WIF
-              format.</li>
-          <li>This seed packet also contains a CD-ROM disk that has a digital copy of the information on this document. It does not contain another set of seed words, but simply a copy of the seed words in this document.</li>
-      </ul>
-      <p>{{desc}}</p>
       <div style="page-break-after: always;"></div>
       <form action="" method="post" style="border: solid #f8f9fa;padding: 1.5rem;">
         <div class="form-row">
@@ -806,27 +702,10 @@
       </form>
       <div style="page-break-after: always;"></div>
       <ul>
-          <li>This is a seed packet that contains 1/3 of the information needed to recover bitcoins in a 3 of 7 HD multisig wallet.</li>
-          <li>There are 6 other packets that are identical except that they contain one of the other sets of seed words.</li> 
-          <li>The HD Multisig wallet was was created using YetiCold.com (a Python script to make the experience more user friendly) and Bitcoin Core 0.21</li>
-          <li>To recover the bitcoin go to YetiCold.com and click "{{yeti}}" and then follow the recovery instructions.</li>
-          <li>YetiCold.com should direct you to download a script to make the process of using Bitcoin Core easier, but never trust any website with your seed words.</li>
-          <li>Consider putting a small amount of money into YetiCold.com cold storage and recovering them before attempting to recover significant funds.</li>
-          <li>A test run will give you the opportunity to make sure that your seed words are never connected to an online device before.</li>
-          <li>If many years have passed you should check that YetiCold.com has retained a good reputation.</li>
-          <li>If YetiCold.com is no longer reputable use Bitcoin Core alone to recover your bitcoin (with the help of a trusted expert only if absolutely needed as these people may attempt to steal the bitcoin).</li>
-          <li>No software beyond Bitcoin Core is required to recover the stored bitcoin.</li>
-          <li>This seed packet also contains a CD-ROM disk that has a digital copy of the information on this document. It does not contain another set of seed words, but simply a copy of the seed words in this document.</li>
-          <li>Two other seed packets must be obtained to recover the bitcoin stored.</li>
-          <li>YetiCold.com recommends storing seed words in locations like safety deposit boxes, home safes, and with professionals such as accountants and lawyers.</li> 
+      {%for i in range(0, len)%} 
+          <li>{{txt[i]}}</li> 
+      {%endfor%}
       </ul>
-      <ul>
-          <li>This is one set of your seed words. This is the seventh of seven. You need 3 of these and your descriptor to easily recover your bitcoin.</li>
-          <li>YeitCold.com accepts these seed words in this modified NATO format, but other bitcoin software, such as Bitcoin Core, may require you provide your seed in the Wallet Import Format (WIF).</li>
-          <li>To convert these seed words into WIF format ignore the fifth word (last word) on each line (it is used as checksum as part of modified NATO). Then use the first letter of each word to determine the letter. For example "JULIETT" is J and "quebec" is q. Upper case words represent upper case letters and lower case words represent lower case letters. Numbers are written out so "TWO" is 2. This will give you 52 numbers, uppercase letters, and lowercase letters that is your seed in WIF
-              format.</li>
-      </ul>
-      <p>{{desc}}</p>
       <div style="page-break-after: always;"></div>
       <form action="" method="post" style="border: solid #f8f9fa;padding: 1.5rem;">
         <div class="form-row">
@@ -934,7 +813,6 @@
           </div>
         </div>
       </form>
-      
     </div>
     <script>
       navbar("{{yeti}}", "{{url_for('static', filename='yeti.png')}}");

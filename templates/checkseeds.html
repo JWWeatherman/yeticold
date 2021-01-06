@@ -23,7 +23,7 @@
             </form>
             <li>If you lose access to more than 4 of your private keys your bitcoin will be permanently lost.</li>
             {% if yeti == 'Warm' %}
-            <li>Insert your CD labeled "Seed {{x}}" and select the file "YetiSeed{{x}}.txt" in the "YetiSeed{{x}}" folder and then click <b>Next</b> to continue.</li>
+            <li>Insert your CD labeled "Seed {{x}}" and select the file "YetiSeed{{x}}.txt" and then click <b>Next</b> to continue.</li>
             {% elif yeti == 'Hot' %}
             <li>Insert one of your 5 CDs labeled "Seed" and select the file "yhseed.txt" and then click <b>Next</b> to continue.</li>
             {% else %}
@@ -42,6 +42,16 @@
                 <label style="cursor: pointer;" class="custom-file-label" for="inputGroupFile01">Choose file</label>
                 <input style="cursor: pointer;" id="filepath" type="file" name="path" class="custom-file-input">
               </div>
+            </div>
+          </div>
+          {% endif %}
+          {% if yeti == 'Warm'%}
+          <div class="form-row" style="display:none;">
+            <div class="input-group col-md-10 mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Desc</span>
+              </div>
+              <input type="text" class="form-control" data-toggle="tooltip" data-trigger="focus" data-placement="bottom" title="" id="descriptor" name="descriptor" placeholder="Descriptor">
             </div>
           </div>
           {% endif %}

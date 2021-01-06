@@ -76,7 +76,7 @@ def YWcopyseeds():
 
 @app.route('/YWcheckseeds', methods=['GET', 'POST'])
 def YWcheckseeds():
-    route = checkSeeds(request, '/YWcheckseeds', '/YWRdisplaywallet')
+    route = checkSeeds(request, '/YWcheckseeds', '/YWRdisplaywallet', yeti='Warm')
     if route:
         return route
     return render_template('checkseeds.html', x=v.privkeycount + 1, error=v.error,step=v.privkeycount + 8, oldkeys=v.oldkeys, yeti='Warm',nextroute='/YWRdisplaywallet')

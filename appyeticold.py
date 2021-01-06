@@ -190,9 +190,12 @@ def scandescriptor():
 #ON
 @app.route("/printpage", methods=['GET', 'POST'])
 def printpage():
+    if request.method == 'GET':
+        SeedT = readFile(home+'/yeticold/templates/SeedTemplate.txt')
+        SeedT.insert(0,v.pubdesc)
     if request.method == 'POST':
         return redirect('/switchlaptop')
-    return render_template('printpage.html', desc=v.pubdesc, step=13)
+    return render_template('printpage.html', txt=SeedT, len=len(SeedT), step=13)
 
 #ON
 @app.route("/switchlaptop", methods=['GET', 'POST'])
@@ -207,7 +210,7 @@ def displayseedsOff():
     route = displaySeeds(request, '/displayseedsOff', '/checkseedsOff')
     if route:
         return route
-    return render_template('displayseeds.html', PPL=v.passphraselist, x=v.privkeycount + 1, step=15+v.privkeycount)
+    return render_template('displayseeds.html', PPL=v.passphraselist, x=v.privkeycount + 1, step=15+v.privkeycount,nextroute='/checkseedsOff')
 
 #OFF
 @app.route('/checkseedsOff', methods=['GET', 'POST'])
@@ -227,10 +230,5 @@ def switchlaptopOff():
 def coldwalletguide():
     return render_template('coldwalletguide.html', step=28)
 
-
-
-
-
 if __name__ == "__main__":
     app.run()
-

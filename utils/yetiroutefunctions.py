@@ -88,8 +88,7 @@ def getSeeds(request, nextroute):
         for i in range(1,8):
             privkey = v.privkeylist[i-1]
             v.passphraselist = ConvertToPassphrase(privkey)
-            subprocess.call('mkdir '+path+'/yetiseed'+str(i), shell=True)
-            subprocess.call('touch '+path+'/yetiseed'+str(i)+'/yetiseed'+str(i)+'.txt', shell=True)
+            subprocess.call('touch '+path+'/yetiseed'+str(i)+'.txt', shell=True)
             file = ''
             phrasenum = 0
             for x in range(0,13):
@@ -99,9 +98,11 @@ def getSeeds(request, nextroute):
                     phrasenum = phrasenum + 1
                 line = line + checksum(line)
                 file = file + line + '\n'
-            file = file + '\n\nThis is your descriptor in text format you have a copy of this descriptor on both your yetiseed files and descriptor.txt files.\n' + v.pubdesc + '\n'
-            file = file + v.coldfile
-            createOrPrepend(file, path+'/yetiseed'+str(i)+'/yetiseed'+str(i)+'.txt')
+            file = file + '\n \n \n' + v.pubdesc + '\n\n'
+            SeedT = readFile(home+'/yeticold/templates/SeedTemplate.txt')
+            for z in range(0, len(SeedT)):
+                file = file + SeedT[x] + '\n'
+            createOrPrepend(file, path+'/yetiseed'+str(i)+'.txt')
         createOrPrepend(v.pubdesc, path+'/Descriptor.txt')
         return redirect(nextroute)
 
@@ -117,7 +118,7 @@ def displaySeeds(request, currentroute, nextroute):
         else:
             return redirect(currentroute)
 
-def checkSeeds(request, currentroute, nextroute):
+def checkSeeds(request, currentroute, nextroute, yeti="Cold"):
     if request.method == 'POST':
         if request.form['option'] == 'Skip':
             return redirect(nextroute)
@@ -125,6 +126,11 @@ def checkSeeds(request, currentroute, nextroute):
         passphraselist = ConvertToPassphrase(privkey)
         passphraselisttoconfirm = []
         v.oldkeys = []
+        if yeti == 'Warm':
+            desctoconfirm = request.form['descriptor'].replace('\n','')
+            if not desctoconfirm == v.pubdesc:
+                v.error = 'The descriptor contained in this seed file was found to be incorrect.'
+                return redirect(currentroute)
         for i in range(1,14):
             inputlist = request.form['row' + str(i)]
             v.oldkeys.append(inputlist)
