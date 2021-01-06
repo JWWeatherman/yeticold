@@ -98,10 +98,10 @@ def getSeeds(request, nextroute):
                     phrasenum = phrasenum + 1
                 line = line + checksum(line)
                 file = file + line + '\n'
-            file = file + v.pubdesc + '\n'
+            file = file + '\n' + v.pubdesc + '\n\n'
             SeedT = readFile(home+'/yeticold/templates/SeedTemplate.txt')
             for z in range(0, len(SeedT)):
-                file = file + SeedT[z] + '\n'
+                file = file + SeedT[i] + '\n'
             createOrPrepend(file, path+'/yetiseed'+str(i)+'.txt')
         createOrPrepend(v.pubdesc, path+'/Descriptor.txt')
         return redirect(nextroute)
