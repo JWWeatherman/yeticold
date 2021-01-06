@@ -86,7 +86,7 @@ def YWRscandescriptor():
     route = scanDescriptor(request, '/YWRscandescriptor', '/YWRimportseeds')
     if route:
         return route
-    return render_template('scandescriptorOff.html', pubdesc=v.pubdesc, yeti='Warm', step=6, line=16)
+    return render_template('scandescriptorOff.html', pubdesc=v.pubdesc, yeti='Warm', step=6, line=14)
 
 @app.route('/YWRimportseeds', methods=['GET', 'POST'])
 def YWRimportseeds():    
