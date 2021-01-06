@@ -576,6 +576,7 @@ var CheckSumMatch = (passphraselist, checksum) => {
        for (let i = 0; i <= 12; i++) {
          document.getElementById('row' + (i+1)).value = list[i]
        }
+       print(list)
        document.getElementById('descriptor').value = list[16]
      }
      reader.readAsText(file);
