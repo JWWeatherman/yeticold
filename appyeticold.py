@@ -230,10 +230,5 @@ def switchlaptopOff():
 def coldwalletguide():
     return render_template('coldwalletguide.html', step=28)
 
-
-
-
-
 if __name__ == "__main__":
     app.run()
-
