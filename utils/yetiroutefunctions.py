@@ -128,7 +128,7 @@ def checkSeeds(request, currentroute, nextroute, yeti="Cold"):
         v.oldkeys = []
         if yeti == 'Warm':
             desctoconfirm = request.form['descriptor'].replace('\n','')
-            if notdesctoconfirm == v.pubdesc:
+            if not desctoconfirm == v.pubdesc:
                 v.error = 'The descriptor contained in this seed file was found to be incorrect.'
                 return redirect(currentroute)
         for i in range(1,14):
