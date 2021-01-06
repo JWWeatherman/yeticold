@@ -98,7 +98,7 @@ def getSeeds(request, nextroute):
                     phrasenum = phrasenum + 1
                 line = line + checksum(line)
                 file = file + line + '\n'
-            file = file + '\n \n' + v.pubdesc + '\n\n'
+            file = file + '\n \n \n' + v.pubdesc + '\n\n'
             SeedT = readFile(home+'/yeticold/templates/SeedTemplate.txt')
             for z in range(0, len(SeedT)):
                 file = file + SeedT[x] + '\n'
