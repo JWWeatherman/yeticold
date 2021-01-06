@@ -19,7 +19,7 @@ def readFile(path):
     f = open(path,'r')
     temp = f.read()
     f.close()
-    print(temp)
+    temp = temp.split('\n')
     result = []
     for i in range(0,len(temp)):
         result.append(temp[i])

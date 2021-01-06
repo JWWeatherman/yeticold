@@ -98,9 +98,10 @@ def getSeeds(request, nextroute):
                     phrasenum = phrasenum + 1
                 line = line + checksum(line)
                 file = file + line + '\n'
-            file = file +  + v.pubdesc + '\n'
+            file = file + v.pubdesc + '\n'
             SeedT = readFile(home+'/yeticold/templates/SeedTemplate.txt')
-            file = file + SeedT
+            for i in range(0, len(SeedT)):
+                file = file + SeedT[i] + '\n'
             createOrPrepend(file, path+'/yetiseed'+str(i)+'.txt')
         createOrPrepend(v.pubdesc, path+'/Descriptor.txt')
         return redirect(nextroute)
@@ -117,7 +118,7 @@ def displaySeeds(request, currentroute, nextroute):
         else:
             return redirect(currentroute)
 
-def checkSeeds(request, currentroute, nextroute):
+def checkSeeds(request, currentroute, nextroute, yeti="Cold"):
     if request.method == 'POST':
         if request.form['option'] == 'Skip':
             return redirect(nextroute)
@@ -125,6 +126,11 @@ def checkSeeds(request, currentroute, nextroute):
         passphraselist = ConvertToPassphrase(privkey)
         passphraselisttoconfirm = []
         v.oldkeys = []
+        if yeti == 'Warm':
+            desctoconfirm = request.form['descriptor'].replace('\n','')
+            if notdesctoconfirm == v.pubdesc:
+                v.error = 'The descriptor contained in this seed file was found to be incorrect.'
+                return redirect(currentroute)
         for i in range(1,14):
             inputlist = request.form['row' + str(i)]
             v.oldkeys.append(inputlist)
