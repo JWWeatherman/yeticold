@@ -210,7 +210,7 @@ def displayseedsOff():
     route = displaySeeds(request, '/displayseedsOff', '/checkseedsOff')
     if route:
         return route
-    return render_template('displayseeds.html', PPL=v.passphraselist, x=v.privkeycount + 1, step=15+v.privkeycount)
+    return render_template('displayseeds.html', PPL=v.passphraselist, x=v.privkeycount + 1, step=15+v.privkeycount,nextroute='/checkseedsOff')
 
 #OFF
 @app.route('/checkseedsOff', methods=['GET', 'POST'])
