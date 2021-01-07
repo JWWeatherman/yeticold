@@ -35,7 +35,7 @@ def openBitcoin(request, currentroute, nextroute, mode, yeti='Warm'):
                 v.IBD = True
     if request.method == 'POST':
         if v.IBD:
-            if mode == 'YetiLevelThreePrimaryCreate' or mode == 'YetiLevelThreePrimaryRecover':
+            if mode == 'YetiLevelThreePrimaryCreate' or mode == 'YetiLevelThreePrimaryRecover' or mode == 'YetiLevelThreePrimaryWatch':
                 handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpub" true true "" false true')
             elif mode == 'YetiLevelThreePrimaryLoad':
                 handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetiwalletpub"')
