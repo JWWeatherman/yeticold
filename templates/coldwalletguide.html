@@ -10,9 +10,184 @@
   <body>
     <div id='navbar'></div>
     <div class="container" style="margin-top: 3rem;">
-      <h2>Step {{step}}: Send and Receive with Bitcoin Core</h2>
-      <p>Your wallet is now setup go to <code>GUIDE3.yeticold.com</code> for a guide to sending and receiving using Bitcoin Core.</p>
+      <h1>Cold Wallet Guide</h1>
+      <p>These steps will walk you through <b>Sending</b> and <b>Reciving</b>.</p>
+      <div class="card mb-3" style="width: 50%;">
+        <div class="card-body">
+          <h3>Receive: Step 1</h3> 
+          <p class="card-text">In the bitcoin core application on your Online Laptop click the Receive button in the menu bar.</p>
+        </div>
+        <img class="card-img-top" src="{{url_for('static', filename='Receive1.png')}}" alt="Card image cap">
+      </div>
+      <div class="card mb-3" style="width: 50%;">
+        <div class="card-body">
+          <h3>Receive: Step 2</h3> 
+          <p class="card-text">Click the "Create new receiving address" button outlined in red.</p>
+        </div>
+        <img class="card-img-top" src="{{url_for('static', filename='Receive2.png')}}" alt="Card image cap">
+      </div>
+      <div class="card mb-3" style="width: 50%;">
+        <div class="card-body">
+          <h3>Receive: Finished</h3> 
+          <p class="card-text">Confirm that your wallet (outlined in red) shows "yetiwalletpriv"(offline laptop) or "yetiwalletpub"(online laptop). You can now send money to the wallet using the QR code or the address displayed bellow it.</p>
+        </div>
+        <img class="card-img-top" src="{{url_for('static', filename='Receive3.png')}}" alt="Card image cap">
+      </div>
+
+      <div class="card mb-3" style="width: 50%;">
+        <div class="card-body">
+          <h3>Send: Step 1</h3> 
+          <p class="card-text">In the bitcoin core application on your Online Laptop click on the Send button (outlined in red).</p>
+        </div>
+        <img class="card-img-top" src="{{url_for('static', filename='Send1.png')}}" alt="Card image cap">
+      </div>
+      <div class="card mb-3" style="width: 50%;">
+        <div class="card-body">
+          <h3>Send: Step 2</h3> 
+          <p class="card-text">Fill out this page including at least a recipent and an amount. Then click on "Create Unsigned" (outlined in red).</p>
+        </div>
+        <img class="card-img-top" src="{{url_for('static', filename='Send2.png')}}" alt="Card image cap">
+      </div>
+      <div class="card mb-3" style="width: 50%;">
+        <div class="card-body">
+          <h3>Send: Step 3</h3> 
+          <p class="card-text">Review your transaction then click "Create Unsigned" (outlined in red).</p>
+        </div>
+        <img class="card-img-top" src="{{url_for('static', filename='Send3.png')}}" alt="Card image cap">
+      </div>
+      <div class="card mb-3" style="width: 50%;">
+        <div class="card-body">
+          <h3>Send: Step 4</h3> 
+          <p class="card-text">Click the "Save" button (outlined in red).</p>
+        </div>
+        <img class="card-img-top" src="{{url_for('static', filename='Send4.png')}}" alt="Card image cap">
+      </div> 
+      <div class="card mb-3" style="width: 50%;">
+        <div class="card-body">
+          <h3>Send: Step 5</h3> 
+          <p class="card-text">Select the "Documents" Folder (outlined in red) and then click "Open" (outlined in orange).</p>
+        </div>
+        <img class="card-img-top" src="{{url_for('static', filename='Send5.png')}}" alt="Card image cap">
+      </div> 
+      <div class="card mb-3" style="width: 50%;">
+        <div class="card-body">
+          <h3>Send: Step 6</h3> 
+          <p class="card-text">Rename the file name(outlined in red) to "unsigned.psbt" then click "Save"(outlined in orange).</p>
+        </div>
+        <img class="card-img-top" src="{{url_for('static', filename='Send6.png')}}" alt="Card image cap">
+      </div> 
+      <div class="card mb-3" style="width: 50%;">
+        <div class="card-body">
+          <h3>Send: Step 7</h3> 
+          <ol>
+            <li>Insert the usb drive labled "Transfer" to laptop.</li>
+            <li>Delete all visable files in the USB drive.</li>
+            <li>Copy the file labled <b>unsigned.psbt</b> to the inserted USB drive. The file is located in your <b>Documents</b> folder.</li>
+            <li>Eject the USB drive.</li>
+          </ol>
+        </div>
+      </div> 
+      <div class="card mb-3" style="width: 50%;">
+        <div class="card-body">
+          <h3>Send: Step 8</h3> 
+          <ol>
+            <li>Switch to your Offline laptop</li>
+            <li>Insert the usb drive labled "Transfer" to laptop.</li>
+            <li>Delete all visable files in the USB drive.</li>
+            <li>Copy the file labled <b>unsigned.psbt</b> to the "Documents" Folder. The file is located in your usb drive.</li>
+            <li>Eject the USB drive.</li>
+          </ol>
+        </div>
+      </div> 
+      <div class="card mb-3" style="width: 50%;">
+        <div class="card-body">
+          <h3>Send: Step 9</h3> 
+          <p class="card-text">In the bitcoin core application in the menu bar click file(outlined in red) > "Load PSBT from file..."</p>
+        </div>
+        <img class="card-img-top" src="{{url_for('static', filename='Send9.png')}}" alt="Card image cap">
+      </div> 
+      <div class="card mb-3" style="width: 50%;">
+        <div class="card-body">
+          <h3>Send: Step 10</h3> 
+          <p class="card-text">Select the "unsigned.psbt" file (outlined in red) and then click "Open"(outlined in orange).</p>
+        </div>
+        <img class="card-img-top" src="{{url_for('static', filename='Send11.png')}}" alt="Card image cap">
+      </div> 
+      <div class="card mb-3" style="width: 50%;">
+        <div class="card-body">
+          <h3>Send: Step 11</h3> 
+          <p class="card-text">Click on "Sign tx"(outlined in red).</p>
+        </div>
+        <img class="card-img-top" src="{{url_for('static', filename='Send12.png')}}" alt="Card image cap">
+      </div> 
+      <div class="card mb-3" style="width: 50%;">
+        <div class="card-body">
+          <h3>Send: Step 12</h3> 
+          <p class="card-text">Click on "Save" (outlined in red).</p>
+        </div>
+        <img class="card-img-top" src="{{url_for('static', filename='Send13.png')}}" alt="Card image cap">
+      </div>
+      <div class="card mb-3" style="width: 50%;">
+        <div class="card-body">
+          <h3>Send: Step 13</h3> 
+          <p class="card-text">Select the "Documents" folder (outlined in red), Then rename the file to "signed.psbt" (outlined in orange), Then click "Save" (outlined in yellow).</p>
+        </div>
+        <img class="card-img-top" src="{{url_for('static', filename='Send14.png')}}" alt="Card image cap">
+      </div>
+      <div class="card mb-3" style="width: 50%;">
+        <div class="card-body">
+          <h3>Send: Step 14</h3> 
+          <ol>
+            <li>Insert the usb drive labled "Transfer" to laptop.</li>
+            <li>Delete all visable files in the USB drive.</li>
+            <li>Copy the file labled <b>signed.psbt</b> to the inserted USB drive. The file is located in your <b>Documents</b> folder.</li>
+            <li>Eject the USB drive.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="card mb-3" style="width: 50%;">
+        <div class="card-body">
+          <h3>Send: Step 15</h3> 
+          <ol>
+            <li>Switch to your Online laptop</li>
+            <li>Insert the usb drive labled "Transfer" to laptop.</li>
+            <li>Delete all visable files in the USB drive.</li>
+            <li>Copy the file labled <b>signed.psbt</b> to the "Documents" Folder. The file is located in your usb drive.</li>
+            <li>Eject the USB drive.</li>
+          </ol>
+        </div>
+      </div>
+      <div class="card mb-3" style="width: 50%;">
+        <div class="card-body">
+          <h3>Send: Step 16</h3> 
+          <p class="card-text">In the bitcoin core application in the menu bar click file(outlined in red) > "Load PSBT from file..."</p>
+        </div>
+        <img class="card-img-top" src="{{url_for('static', filename='Send9.png')}}" alt="Card image cap">
+      </div>
+      <div class="card mb-3" style="width: 50%;">
+        <div class="card-body">
+          <h3>Send: Step 17</h3> 
+          <p class="card-text">Select the "signed.psbt" file (outlined in red) located in your "Documents folder", Then click "Open" (outlined in orange).</p>
+        </div>
+        <img class="card-img-top" src="{{url_for('static', filename='Send18.png')}}" alt="Card image cap">
+      </div>
+      <div class="card mb-3" style="width: 50%;">
+        <div class="card-body">
+          <h3>Send: Step 18</h3> 
+          <p class="card-text">Click on the "Broadcast Tx" button (outlined in red).</p>
+        </div>
+        <img class="card-img-top" src="{{url_for('static', filename='Send19.png')}}" alt="Card image cap">
+      </div>
+      <div class="card mb-3" style="width: 50%;">
+        <div class="card-body">
+          <h3>Send: Finished</h3> 
+          <p class="card-text">You should see this page to confirm the transaction was broadcasted.</p>
+        </div>
+        <img class="card-img-top" src="{{url_for('static', filename='Send20.png')}}" alt="Card image cap">
+      </div>
     </div>
+  </div>
+</template>
     <script>
       navbar("{{yeti}}", "{{url_for('static', filename='yeti.png')}}");
     </script>
