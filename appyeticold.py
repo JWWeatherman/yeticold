@@ -68,7 +68,7 @@ def menu():
             v.route = '/scandescriptorWatch'
             subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
         return redirect('/blockchain')
-    return render_template('menu.html', wallet=v.wallet)
+    return render_template('menu.html', wallet=v.wallet, yeti='Cold')
 
 @app.route("/blockchain", methods=['GET', 'POST'])
 def blockchain():
