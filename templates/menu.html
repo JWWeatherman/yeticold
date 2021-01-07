@@ -45,8 +45,7 @@
           </form>
         </div>
       </div>
-    </div>
-    {% if yeti == 'Cold'%}
+      {% if yeti == 'Cold'%}
       <div class="card" style="margin-top: 3rem;">
         <div class="card-body">
           <h4 class="card-title">Create watch-only wallet.</h4>
@@ -70,6 +69,7 @@
         </div>
       </div>
     {% endif %}
+    </div>
     <script>
       navbar("{{yeti}}", "{{url_for('static', filename='yeti.png')}}");
     </script>
