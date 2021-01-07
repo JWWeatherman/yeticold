@@ -28,7 +28,7 @@ def redirectroute():
 @app.route("/offimp", methods=['GET', 'POST'])
 def redirectrouteoffimp():
     v.mode = "YetiLevelThreeSecondaryLoad"
-    v.route = '/switchlaptopOffImp'
+    v.route = '/switchlaptopOffLoad'
     return redirect('/blockchainOff')
 @app.route("/off", methods=['GET', 'POST'])
 def redirectrouteoff():
@@ -55,13 +55,17 @@ def menu():
             v.url = "rec.yeticold.com"
             subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
         elif request.form['option'] == 'load':
-            v.route = '/rescanwalletImp'
+            v.route = '/rescanwalletLoad'
             v.mode = "YetiLevelThreePrimaryLoad"
             v.url = "load.yeticold.com"
         elif request.form['option'] == 'create':
             v.url = "disc.yeticold.com"
             v.mode = "YetiLevelThreePrimaryCreate"
             v.route = '/scandescriptor'
+            subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
+        elif request.form['option'] == 'watch':
+            v.mode = "YetiLevelThreePrimaryWatch"
+            v.route = '/scandescriptorWatch'
             subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
         return redirect('/blockchain')
     return render_template('menu.html', wallet=v.wallet)
@@ -80,16 +84,23 @@ def YCopenbitcoin():
         return route
     return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=5, switch=True, url=v.url, offline=False)
 
-@app.route("/rescanwalletImp", methods=['GET', 'POST'])
-def rescanwalletImp():
+@app.route("/scandescriptorWatch", methods=['GET', 'POST'])
+def scandescriptorWatch():
+    route = scanDescriptor(request, '/scandescriptorWatch', '/rescanwalletWatch', offline=False)
+    if route:
+        return route
+    return render_template('scandescriptor.html', step=6, error=v.error, line=0)
+
+@app.route("/rescanwalletWatch", methods=['GET', 'POST'])
+def rescanwalletWatch():
     if request.method == 'POST':
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub rescanblockchain '+blockheight())
-        return redirect('/coldwalletguideImp')
-    return render_template('rescanwallet.html',step=10)
+        return redirect('/coldwalletguideWatch')
+    return render_template('rescanwallet.html',step=7)
 
-@app.route("/coldwalletguideImp", methods=['GET', 'POST'])
-def coldwalletguideImp():
-    return render_template('coldwalletguide.html', step=11)
+@app.route("/coldwalletguideWatch", methods=['GET', 'POST'])
+def coldwalletguideWatch():
+    return render_template('coldwalletguideWatch.html', step=8)
 
 @app.route("/blockchainOff", methods=['GET', 'POST'])
 def blockchainOff():
@@ -114,9 +125,20 @@ def connection():
         return redirect(v.route)
     return render_template('connection.html', step=8)
 
-@app.route("/switchlaptopOffImp", methods=['GET', 'POST'])
-def switchlaptopOffImp():
+@app.route("/switchlaptopOffLoad", methods=['GET', 'POST'])
+def switchlaptopOffLoad():
     return render_template('switchlaptop.html', step=9, instructions="Switch to your Primary laptop currently Showing step 5. Click next to show step 10.", laptop="Primary")
+
+@app.route("/rescanwalletLoad", methods=['GET', 'POST'])
+def rescanwalletLoad():
+    if request.method == 'POST':
+        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub rescanblockchain '+blockheight())
+        return redirect('/coldwalletguideLoad')
+    return render_template('rescanwallet.html',step=10)
+
+@app.route("/coldwalletguideLoad", methods=['GET', 'POST'])
+def coldwalletguideLoad():
+    return render_template('coldwalletguide.html', step=11)
 
 @app.route("/scandescriptorOffRec", methods=['GET', 'POST'])
 def scandescriptorOffRec():
