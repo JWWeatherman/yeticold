@@ -14,8 +14,8 @@
       <div>
           <ul>
             {%if switch %}
-                <li>On your <b>Secondary Laptop</b> open Firefox and go to <code>{{url}}</code> to begin setup of your <b>Secondary Laptop</b> while this laptop downloads the blockchan.</li>
-                <li>Downloading the block chain on this laptop (<b>Primary Laptop</b>) can take as little as 4 hours if you have an SSD and a fast internet connection or as long as a couple of weeks if you do not as it is validating every bitcoin transaction from the start of the network in 2009 (full node).</li>
+                <li>On your <b>Secondary Laptop</b> open Firefox and go to <code>{{url}}</code> to begin setup of your <b>Secondary Laptop</b> while this laptop downloads the blockchain.</li>
+                <li>Downloading the blockchain on this laptop (<b>Primary Laptop</b>) can take as little as 4 hours if you have an SSD and a fast internet connection or as long as a couple of weeks if you do not as it is validating every bitcoin transaction from the start of the network in 2009 (full node).</li>
             {%elif offline %}
                 <li>Because this device is only used to sign transactions it does not need to download the blockchain so you will be able to click <b>Next</b> within about 10 minutes.</li>
             {%endif%}
