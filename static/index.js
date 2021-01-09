@@ -566,22 +566,24 @@ var CheckSumMatch = (passphraselist, checksum) => {
    return tooltip
  }
 
- var importfile = () => {
-   let file = document.getElementById("filepath").files[0]
-   if (file != undefined) {
-     let reader = new FileReader();
-     document.getElementById('filepath').value = ""
-     reader.onload = function(evt) {
-       let list = evt.target.result.toString().split('\n')
+var importfile = (yeti="Cold") => {
+ let file = document.getElementById("filepath").files[0]
+ if (file != undefined) {
+   let reader = new FileReader();
+   document.getElementById('filepath').value = ""
+   reader.onload = function(evt) {
+     let list = evt.target.result.toString().split('\n')
+      if (yeti !== 'Hot'){
        document.getElementById('descriptor').value = list[16]
-       for (let i = 0; i <= 12; i++) {
-         document.getElementById('row' + (i+1)).value = list[i]
-       }
+      }
+      for (let i = 0; i <= 12; i++) {
+       document.getElementById('row' + (i+1)).value = list[i]
      }
-     reader.readAsText(file);
    }
-   setTimeout(() => { importfile() }, 80)
+   reader.readAsText(file);
  }
+ setTimeout(() => { importfile() }, 80)
+}
 
 var importdescriptor = (line) => {
    let file = document.getElementById("filepath").files[0]

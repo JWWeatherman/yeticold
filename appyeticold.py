@@ -250,7 +250,7 @@ def switchlaptopOff():
 #ON
 @app.route("/coldwalletguide", methods=['GET', 'POST'])
 def coldwalletguide():
-    return render_template('coldwalletguide.html', step=28)
+    return render_template('coldguideredirect.html')
 
 if __name__ == "__main__":
     app.run()

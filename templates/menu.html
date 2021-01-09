@@ -57,18 +57,6 @@
         </div>
       </div>
     {% endif %}
-    {% if yeti == 'Warm' %}
-      <div class="card" style="margin-top: 3rem;">
-        <div class="card-body">
-          <h4 class="card-title">Create watch-only wallet.</h4>
-          <p class="card-text">Restore a wallet you previously created for receiving and viewing purposese only. This only requires a single "Seed" CD</p>
-          <form action="" method="post">
-            <input style="display: none;" name="option" value="watch">
-            <input class="btn btn-primary" type="submit" id="next" value="Create Watch-Only">
-          </form>
-        </div>
-      </div>
-    {% endif %}
     </div>
     <script>
       navbar("{{yeti}}", "{{url_for('static', filename='yeti.png')}}");
