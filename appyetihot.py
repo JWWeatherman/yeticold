@@ -98,7 +98,7 @@ def YHcopyseed():
 @app.route('/YHcheckseed', methods=['GET', 'POST'])
 def YHcheckseed():
     if request.method == 'POST':
-        v.error = ''
+        v.error = None
         privkeylisttoconfirm = []
         v.oldkeys = []
         for i in range(1,14):

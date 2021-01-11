@@ -1,0 +1,7 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=YetiLevelOnePrimary
+Exec=python3 yeticold/initialize.py YetiLevelThreePrimary %F
+Terminal=false
+Type=Application
+Icon=/home/sam/yeticold/static/yeti.png
