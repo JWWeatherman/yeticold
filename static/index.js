@@ -567,20 +567,24 @@ var CheckSumMatch = (passphraselist, checksum) => {
  }
 
 var importfile = (yeti) => {
-  let yetivar = yeti
   let file = document.getElementById("filepath").files[0]
   if (file != undefined) {
     let reader = new FileReader();
     document.getElementById('filepath').value = ""
-    reader.onload = function(evt) {
-      let list = evt.target.result.toString().split('\n')
-      console.log(yetivar)
-      console.log(yetivar !== 'Hot')
-      if (yetivar !== 'Hot'){
-        document.getElementById('descriptor').value = list[16]
+    if (yeti !== 'Hot'){
+      reader.onload = function(evt) {
+        let list = evt.target.result.toString().split('\n')
+        document.getElementById('descriptor').value = list[16] 
+        for (let i = 0; i <= 12; i++) {
+          document.getElementById('row' + (i+1)).value = list[i]
+        }
       }
-      for (let i = 0; i <= 12; i++) {
-        document.getElementById('row' + (i+1)).value = list[i]
+    } else {
+      reader.onload = function(evt) {
+        let list = evt.target.result.toString().split('\n')
+        for (let i = 0; i <= 12; i++) {
+          document.getElementById('row' + (i+1)).value = list[i]
+        }
       }
     }
     reader.readAsText(file);
