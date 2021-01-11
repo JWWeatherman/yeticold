@@ -116,7 +116,7 @@ def openbitcoinOff():
     route = openBitcoin(request, '/openbitcoinOff', '/connectionOff', mode=v.mode)
     if route:
         return route
-    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=7, offline=True)
+    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=7, offline=True, mode=v.mode)
 
 @app.route("/connectionOff", methods=['GET', 'POST'])
 def connection():
