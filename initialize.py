@@ -52,7 +52,7 @@ else:
     subprocess.run('sudo rm -r ~/.bitcoin/wallets/yetiwalletrec 2> /dev/null', shell=True, check=False)
     subprocess.run('sudo rm -r ~/.bitcoin/yetiwalletgen 2> /dev/null', shell=True, check=False)
     subprocess.run('sudo rm -r ~/.bitcoin/wallets/yetiwalletgen 2> /dev/null', shell=True, check=False)
-    subprocess.run('sudo cp '+home+'/yeticold/utils/erase.txt '+home+'/Documents/erase.txt 2> /dev/null', shell=True, check=False)
+    subprocess.run('sudo cp '+HOME+'/yeticold/utils/erase.txt '+HOME+'/Documents/erase.txt 2> /dev/null', shell=True, check=False)
     # Finalize script based on processing mode
 
     if sys.argv[1].lower() == 'yetilevelthreeprimary':
