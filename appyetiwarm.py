@@ -59,7 +59,7 @@ def YWopenbitcoin():
     route = openBitcoin(request, '/YWopenbitcoin', v.route, mode=v.mode)
     if route:
         return route
-    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, yeti='Warm', step=5, offline=False)
+    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, yeti='Warm', step=5, offline=False, mode=v.mode)
 
 @app.route("/YWgetseeds", methods=['GET', 'POST'])
 def YWgetseeds():
