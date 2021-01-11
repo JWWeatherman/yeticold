@@ -56,7 +56,7 @@ def YHopenbitcoin():
     route = openBitcoin(request, '/YHopenbitcoin', v.route, mode=v.mode, yeti='Hot')
     if route:
         return route
-    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=5, yeti='Hot', offline=False)
+    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=5, yeti='Hot', offline=False, mode=v.mode)
 
 @app.route("/YHgetseed", methods=['GET', 'POST'])
 def YHgetseed():
