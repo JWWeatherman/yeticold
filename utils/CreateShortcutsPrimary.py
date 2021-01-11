@@ -18,3 +18,8 @@ file = '[Desktop Entry]\nVersion=1.0\nName=Level One\nExec=gnome-terminal --  ba
 subprocess.call('sudo rm /usr/share/applications/YetiLevelOne.desktop',shell=True)
 subprocess.call("sudo echo '"+file+"' >> /usr/share/applications/YetiLevelOne.desktop", shell=True)
 subprocess.call('sudo chmod +x /usr/share/applications/YetiLevelOne.desktop', shell=True)
+
+file = '[Desktop Entry]\nVersion=1.0\nName=Bitcoin Core\nExec=gnome-terminal --  bash -c "'+home+'/yeticold/bitcoin/bin/bitcoin-qt -proxy=127.0.0.1:9050; $SHELL" %F\nTerminal=true\nX-MultipleArgs=false\nType=Application\nIcon='+home+'/yeticold/static/yeti.png\nStartupNotify=true'
+subprocess.call('sudo rm /usr/share/applications/bitcoin-qt.desktop',shell=True)
+subprocess.call("sudo echo '"+file+"' >> /usr/share/applications/bitcoin-qt.desktop", shell=True)
+subprocess.call('sudo chmod +x /usr/share/applications/bitcoin-qt.desktop', shell=True)
