@@ -92,7 +92,7 @@ def YHcopyseed():
     if request.method == 'POST':
         v.privkeycount = 0
         return redirect('/YHcheckseed')
-    return render_template('copyseed.html', yeti='Hot', step=9)
+    return render_template('copyseed.html', yeti='Hot', step=7)
 
 #confirm privkey
 @app.route('/YHcheckseed', methods=['GET', 'POST'])
