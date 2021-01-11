@@ -567,22 +567,24 @@ var CheckSumMatch = (passphraselist, checksum) => {
  }
 
 var importfile = (yeti="Cold") => {
- let file = document.getElementById("filepath").files[0]
- if (file != undefined) {
-   let reader = new FileReader();
-   document.getElementById('filepath').value = ""
-   reader.onload = function(evt) {
-     let list = evt.target.result.toString().split('\n')
+  let file = document.getElementById("filepath").files[0]
+  if (file != undefined) {
+    let reader = new FileReader();
+    document.getElementById('filepath').value = ""
+    reader.onload = function(evt) {
+      let list = evt.target.result.toString().split('\n')
+      console.log(yeti)
+      console.log(yeti !== 'Hot')
       if (yeti !== 'Hot'){
-       document.getElementById('descriptor').value = list[16]
+        document.getElementById('descriptor').value = list[16]
       }
       for (let i = 0; i <= 12; i++) {
-       document.getElementById('row' + (i+1)).value = list[i]
-     }
-   }
-   reader.readAsText(file);
- }
- setTimeout(() => { importfile() }, 80)
+        document.getElementById('row' + (i+1)).value = list[i]
+      }
+    }
+    reader.readAsText(file);
+  }
+  setTimeout(() => { importfile() }, 80)
 }
 
 var importdescriptor = (line) => {
