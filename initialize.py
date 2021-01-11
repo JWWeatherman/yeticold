@@ -37,6 +37,8 @@ else:
         subprocess.run('yes | sudo apt install python3-pip tor=0.4.2.7-1 brasero', shell=True, check=False)
         subprocess.run('pip3 install --upgrade pip', shell=True, check=False)
     subprocess.run('python3 ~/yeticold/utils/downloadbitcoin.py', shell=True, check=False)
+
+    subprocess.run('python3 ~/yeticold/utils/CreateShortcuts.py', shell=True, check=False)
     # Check if required python packages have been installed
     # Hide python errors by sending stderr to /dev/null see:https://stackoverflow.com/a/818265/3425022
     # 'subprocess.run' is current recommended way to interact with system
