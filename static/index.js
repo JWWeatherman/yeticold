@@ -567,6 +567,7 @@ var CheckSumMatch = (passphraselist, checksum) => {
  }
 
 var importfile = (yeti) => {
+  console.log(yeti)
   let file = document.getElementById("filepath").files[0]
   if (file != undefined) {
     let reader = new FileReader();
