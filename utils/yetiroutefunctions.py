@@ -83,7 +83,6 @@ def getSeeds(request, nextroute):
         v.pubdesc = response["descriptor"].replace('\n', '')
         desc = 'wsh(multi(3,'+v.xprivlist[0]+'/*,'+v.xprivlist[1]+'/*,'+v.xprivlist[2]+'/*,'+v.xprivlist[3]+'/*,'+v.xprivlist[4]+'/*,'+v.xprivlist[5]+'/*,'+v.xprivlist[6]+'/*))#'+checksumSTR
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv importdescriptors \'[{ "desc": "'+desc+'", "timestamp": "now", "active": true}]\'')
-        v.walletimported = True
         path = home + '/Documents'
         for i in range(1,8):
             privkey = v.privkeylist[i-1]
@@ -152,9 +151,6 @@ def checkSeeds(request, currentroute, nextroute, yeti="Cold"):
             v.error = 'The seed words you entered are incorrect. This is probably because you entered a line twice or put them in the wrong order.'
 
 def importSeeds(request, currentroute, nextroute):
-    if request.method == 'GET':
-        if v.walletimported:
-            return redirect(nextroute)
     if request.method == 'POST':
         privkey = []
         for i in range(1,14):
