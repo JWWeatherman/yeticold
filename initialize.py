@@ -23,7 +23,7 @@ else:
     subprocess.run('cd ~', shell=True, check=False)
     subprocess.run('cd yeticold; git pull origin master 2> /dev/null; cd', shell=True, check=False)
     subprocess.run('sudo fuser -k 5000/tcp 2> /dev/null', shell=True, check=False)
-    subprocess.run('pkill -f firefox 2> /dev/null', shell=True, check=False)
+    subprocess.run('pkill firefox 2> /dev/null', shell=True, check=False)
     if os.path.exists(HOME + "/.bitcoin"):
         subprocess.run('python3 ~/yeticold/utils/stopbitcoin.py', shell=True, check=False)
 
@@ -46,7 +46,6 @@ else:
         subprocess.run('pip3 install bip32', shell=True, check=False)
     
     subprocess.run('sleep 3', shell=True, check=False)
-    subprocess.Popen('firefox', shell=True, start_new_session=True)
     subprocess.run('sudo rm -r ~/yetiwallet* 2> /dev/null', shell=True, check=False)
     subprocess.run('sudo rm -r ~/.bitcoin/yetiwalletrec 2> /dev/null', shell=True, check=False)
     subprocess.run('sudo rm -r ~/.bitcoin/wallets/yetiwalletrec 2> /dev/null', shell=True, check=False)
