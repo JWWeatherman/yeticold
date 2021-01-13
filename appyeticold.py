@@ -85,6 +85,7 @@ def YCopenbitcoin():
     route = openBitcoin(request, '/openbitcoin', v.route, mode=v.mode, yeti='Cold')
     if route:
         return route
+    print(v.shortcut)
     return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=5, switch=True, shortcut=v.shortcut, url=v.url, offline=False, mode=v.mode)
 
 @app.route("/scandescriptorWatch", methods=['GET', 'POST'])
