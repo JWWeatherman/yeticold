@@ -15,6 +15,18 @@ def createOrPrepend(text, path):
     else:
 	    subprocess.call('echo "'+text+'" >> '+path, shell=True)
 
+def erase():
+    pw = str(random.randrange(0,1000000))
+    file = "This is the first command:\n"
+    file = file + "sudo hdparm -I /dev/X\n"
+    file = file + " \n"
+    file = file + "This is the second command:\n"
+    file = file + "sudo hdparm --user-master u --security-set-pass "+pw+" /dev/sda\n"
+    file = file + " \n"
+    file = file + "This is the third command:\n"
+    file = file + "sudo time hdparm --user-master u --security-erase-enhanced "+pw+" /dev/sda\n"
+    createOrPrepend(file, home+'/Documents/erase.txt')
+
 def readFile(path):
     f = open(path,'r')
     temp = f.read()

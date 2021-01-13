@@ -254,7 +254,7 @@ def switchlaptopOff():
 @app.route("/copyerase", methods=['GET', 'POST'])
 def copyerase():
     if request.method == 'GET':
-        subprocess.run('cp ~/yeticold/utils/erase.txt ~/Documents/erase.txt 2> /dev/null', shell=True, check=False)
+        erase()
     if request.method == 'POST':
         return redirect('/coldwalletguide')
     return render_template('copyerase.html', step=28)
