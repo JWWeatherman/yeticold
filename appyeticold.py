@@ -85,7 +85,6 @@ def YCopenbitcoin():
     route = openBitcoin(request, '/openbitcoin', v.route, mode=v.mode, yeti='Cold')
     if route:
         return route
-    print(v.shortcut)
     return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=5, switch=True, shortcut=v.shortcut, url=v.url, offline=False, mode=v.mode)
 
 @app.route("/scandescriptorWatch", methods=['GET', 'POST'])
@@ -227,7 +226,7 @@ def printpage():
 @app.route("/switchlaptop", methods=['GET', 'POST'])
 def switchlaptop():
     if request.method == 'POST':
-        return redirect('/coldwalletguide')
+        return redirect('/copyerase')
     return render_template('switchlaptop.html', step=14, instructions="Switch to your Secondary Laptop currently showing step 11 and on your Secondary Laptop click Next to show step 15", laptop="Secondary")
 
 #OFF
@@ -250,6 +249,15 @@ def checkseedsOff():
 @app.route("/switchlaptopOff", methods=['GET', 'POST'])
 def switchlaptopOff():
     return render_template('switchlaptop.html', step=27, instructions="Switch to your Primary Laptop currently showing step 14 and on your Primary click next to show step 28", laptop="Primary")
+
+#ON
+@app.route("/copyerase", methods=['GET', 'POST'])
+def copyerase():
+    if request.method == 'GET':
+        subprocess.run('cp ~/yeticold/utils/erase.txt ~/Documents/erase.txt 2> /dev/null', shell=True, check=False)
+    if request.method == 'POST':
+        return redirect('/coldwalletguide')
+    return render_template('copyerase.html', step=28)
 
 #ON
 @app.route("/coldwalletguide", methods=['GET', 'POST'])
