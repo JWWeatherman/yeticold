@@ -24,7 +24,7 @@ else:
     subprocess.run('cd yeticold; git pull origin master 2> /dev/null; cd', shell=True, check=False)
     subprocess.run('sudo fuser -k 5000/tcp 2> /dev/null', shell=True, check=False)
     subprocess.run('pkill firefox 2> /dev/null', shell=True, check=False)
-    subprocess.run("echo 'Yeti Cold is waiting for bitcoin core to shut down if this message stays here longer than a minute delete the bitcoin.pid file located in your .bitcoin folder.'")
+    subprocess.run('echo "Yeti Cold is waiting for bitcoin core to shut down if this message stays here longer than a minute delete the bitcoin.pid file located in your .bitcoin folder."')
     if os.path.exists(HOME + "/.bitcoin"):
         subprocess.run('python3 ~/yeticold/utils/stopbitcoin.py', shell=True, check=False)
 
