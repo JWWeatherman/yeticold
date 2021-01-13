@@ -52,16 +52,19 @@ def menu():
         if request.form['option'] == 'recover':
             v.route = '/scandescriptorRec'
             v.mode = "YetiLevelThreePrimaryRecover"
+            v.shortcut = "L3Recover"
             v.url = "rec.yeticold.com"
             subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
         elif request.form['option'] == 'load':
             v.route = '/rescanwalletLoad'
             v.mode = "YetiLevelThreePrimaryLoad"
+            v.shortcut = "L3Load"
             v.url = "load.yeticold.com"
         elif request.form['option'] == 'create':
-            v.url = "disc.yeticold.com"
-            v.mode = "YetiLevelThreePrimaryCreate"
             v.route = '/scandescriptor'
+            v.mode = "YetiLevelThreePrimaryCreate"
+            v.shortcut = "L3Create"
+            v.url = "disc.yeticold.com"
             subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
         elif request.form['option'] == 'watch':
             v.mode = "YetiLevelThreePrimaryWatch"
