@@ -83,7 +83,7 @@ def YHgetseed():
                 phrasenum = phrasenum + 1
             line = line + checksum(line)
             file = file + line + '\n'
-        createOrPrepend(file, home+'/Documents/yhseed.txt')
+        createOrPrepend(file, home+'/Documents/yetiseed.txt')
         return redirect('/YHcopyseed')
     return render_template('getseed.html', yeti='Hot', step=6)
 
