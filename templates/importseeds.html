@@ -30,6 +30,16 @@
             </div>
           </div>
         </div>
+        {% if yeti != 'Hot'%}
+          <div class="form-row" style="display:none;">
+            <div class="input-group col-md-10 mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Desc</span>
+              </div>
+              <input type="text" class="form-control" data-toggle="tooltip" data-trigger="focus" data-placement="bottom" title="" id="descriptor" name="descriptor" placeholder="Descriptor">
+            </div>
+          </div>
+          {% endif %}
         <div class="form-row">
           <div class="input-group col-md-10 mb-3">
             <div class="input-group-prepend">
