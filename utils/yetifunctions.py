@@ -18,7 +18,7 @@ def createOrPrepend(text, path):
 def erase():
     pw = str(random.randrange(0,1000000))
     file = "This is the first command:\n"
-    file = file + "sudo hdparm -I /dev/X\n"
+    file = file + "sudo hdparm -I /dev/sda\n"
     file = file + " \n"
     file = file + "This is the second command:\n"
     file = file + "sudo hdparm --user-master u --security-set-pass "+pw+" /dev/sda\n"
