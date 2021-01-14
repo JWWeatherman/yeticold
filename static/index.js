@@ -606,8 +606,8 @@ var importdescriptor = (line) => {
    setTimeout(() => { importdescriptor(line) }, 80)
  }
 
- var highlightBin = () => {
-   for (var i = 1; i <= 7; i++) {
+ var highlightBin = (binline) => {
+   for (var i = 1; i <= binline; i++) {
       var binary = document.getElementById('binary' + i).value
       document.getElementById('count' + i).innerHTML = binary.length + ' \\ 256'
       if (binary.length === 256 && document.getElementById('binary' + i).value.replace(/1/g, '').replace(/0/g,'').length === 0) {
@@ -618,7 +618,7 @@ var importdescriptor = (line) => {
         document.getElementById('binary' + i).style.backgroundColor = ""
       }
    }
-   setTimeout(() => {highlightBin()}, 80)
+   setTimeout(() => {highlightBin(binline)}, 80)
  }
 
 
