@@ -1,5 +1,5 @@
 ## Basics
-This FAQ is for "cold" on yeticold.com. The "warm" and "hot" options are less secure, but only require one laptop.
+This FAQ is for "Level 3" on yeticold.com. The "Level 2" and "Level 1" options are less secure, but only require one laptop.
 
 ### How much knowledge of Linux is required?
 None. You need to be able to follow the tutorials for installing Ubuntu. After Ubuntu is installed you will follow simple instructions until you are done.
@@ -16,7 +16,7 @@ Probably not as you will only work with yeti a couple times a year so you won't 
 
 ### What are the minimum specs for the laptops?
 
-Two laptops that can run Ubuntu and Bitcoin Core. At the time of this writing almost any laptop will work but if your laptop has an SSD type hard some steps will take a few hours instead of a few days. Laptops without SSD type drives cost about $150 USD and laptops with SSD drives cost about $200 USD.
+Two laptops that can run Ubuntu and Bitcoin Core. At the time of this writing almost any laptop will work but if your laptop has an SSD type hard drive some steps will take a few hours instead of a few days. Laptops without SSD type drives cost about $150 USD and laptops with SSD drives cost about $200 USD.
 
 You can also buy a chromebook for less than $100, though this hasn't been tested as much and requires a bit of extra work when installing Ubuntu.
 
@@ -73,7 +73,7 @@ The biggest is loss if you don’t have seeds in many locations. The next is the
 
 ### How can I be sure my seed is random? Can you elaborate on that?
 
-Yeti uses bitcoin core to generate your randomness.
+Yeti uses Bitcoin Core to generate your randomness.
 
 And it uses mulisig so that even if some of your seeds are stolen the bitcoin remains safe.
 
@@ -87,3 +87,5 @@ You should trust https://github.com/bitcoin/bitcoin  to create your random words
 - [McFloogle Episode 171 – Frigid Bitcoin Cold Storage Using Yeti Cold with JW and Will Weatherman](https://www.mcfloogle.com/2019/11/18/episode-171-frigid-bitcoin-cold-storage-using-yeti-cold-with-jw-and-will-weatherman/)
 
 - [The Unhashed Podcast - Cold Storage Done Right (and Wrong) w. JW Weatherman](https://www.stitcher.com/podcast/emissary-ventures-llc/unhashed-podcast/e/76243950)
+
+[Advanced Tech Podcast Episode 46 - Yeti Cold and Bitcoin Core With JW Weatherman, Will and Robert Spigler](https://advancetechmedia.org/episode-046-weatherman-spigler/)
