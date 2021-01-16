@@ -83,7 +83,7 @@ def blockchain():
 @app.route("/shortcut", methods=['GET', 'POST'])
 def shortcut():
     if request.method == 'POST':
-        if request.['option'] == 'Yes':
+        if request.form['option'] == 'Yes':
             v.disconnected = True
         else:
             v.disconnected = False
