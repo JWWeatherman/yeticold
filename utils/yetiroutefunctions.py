@@ -5,7 +5,7 @@ from btcrpcfunctions import *
 from formating import *
 home = os.getenv("HOME")
 
-def blockChain(request, nextroute, shortcut='', mode):
+def blockChain(request, nextroute, mode, shortcut=''):
     if request.method == 'GET':
         if (os.path.exists(home + "/.bitcoin")) or mode == 'YetiLevelThreePrimaryLoad' or mode == 'YetiLevelTwoLoad' or mode == 'YetiLevelOneLoad':
             createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')

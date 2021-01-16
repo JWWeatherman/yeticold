@@ -75,7 +75,7 @@ def menu():
 
 @app.route("/blockchain", methods=['GET', 'POST'])
 def blockchain():
-    route = blockChain(request, '/openbitcoin', '/shortcut', mode=v.mode)
+    route = blockChain(request, '/openbitcoin', mode=v.mode, '/shortcut')
     if route:
         return route
     return render_template('blockchain.html')
