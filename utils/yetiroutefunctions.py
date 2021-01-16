@@ -9,19 +9,22 @@ def blockChain(request, nextroute, mode, shortcut=''):
     if request.method == 'GET':
         if (os.path.exists(home + "/.bitcoin")) or mode == 'YetiLevelThreePrimaryLoad' or mode == 'YetiLevelTwoLoad' or mode == 'YetiLevelOneLoad':
             createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
-            return redirect(nextroute)
+            if mode == 'YetiLevelThreePrimaryLoad' or mode == 'YetiLevelTwoLoad' or mode == 'YetiLevelOneLoad':
+                return redirect(nextroute)
+            else:
+                return redirect(shortcut)
         else:
             subprocess.call('mkdir ~/.bitcoin',shell=True)
         if mode == 'YetiLevelThreePrimaryCreate' or mode == 'YetiLevelTwoCreate' or mode == 'YetiLevelOneCreate':
             createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nprune=550\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
-            return redirect(shortcut)
+            return redirect(nextroute)
     if request.method == 'POST':
         subprocess.call('mkdir ~/.bitcoin',shell=True)
         if request.form['option'] == 'Skip':
             createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
-            return redirect(shortcut)
+            return redirect(nextroute)
         createOrPrepend('server=1\nrpcport=8332\nrpcuser=rpcuser\nprune='+str(getPrunBlockheightByDate(request.form['date']))+'\nrpcpassword='+v.rpcpsw+'',home+'/.bitcoin/bitcoin.conf')
-        return redirect(shortcut)
+        return redirect(nextroute)
 
 def openBitcoin(request, currentroute, nextroute, mode, yeti='Warm'):
     if request.method == 'GET':
