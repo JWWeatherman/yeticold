@@ -13,14 +13,26 @@
     </nav>
     <div class="container" style="margin-top: 3rem;">
       <h2>Have you installed Yeti your secondary laptop yet?</h2>
-      <form action="" method="post" style="margin-top:35px;">
-        <input style="display: none;" name="option" value="Yes">
-        <input class="btn btn-primary" type="submit" id="next" value="Yes">
-      </form>
-      <form action="" method="post" style="margin-top:35px;">
-        <input style="display: none;" name="option" value="No">
-        <input class="btn btn-primary" type="submit" id="next" value="No">
-      </form>
+      <div class="card" style="margin-top: 3rem;">
+        <div class="card-body">
+          <h4 class="card-title">Yes</h4>
+          <p class="card-text">Create a new wallet to store your bitcoin.</p>
+          <form action="" method="post" style="margin-top:35px;">
+            <input style="display: none;" name="option" value="Yes">
+            <input class="btn btn-primary" type="submit" id="next" value="Yes">
+          </form>
+        </div>
+      </div>
+      <div class="card" style="margin-top: 3rem;">
+        <div class="card-body">
+          <h4 class="card-title">No</h4>
+          <p class="card-text">Restore a wallet you previously created. This will restore your existing wallet so that you can send or receive with your old wallet using this laptop.</p>
+          <form action="" method="post" style="margin-top:35px;">
+            <input style="display: none;" name="option" value="No">
+            <input class="btn btn-primary" type="submit" id="next" value="No">
+          </form>
+        </div>
+      </div>
     </div>
   </body>
 </html>
