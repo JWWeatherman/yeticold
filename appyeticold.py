@@ -75,14 +75,24 @@ def menu():
 
 @app.route("/blockchain", methods=['GET', 'POST'])
 def blockchain():
-    route = blockChain(request, '/openbitcoin', mode=v.mode)
+    route = blockChain(request, '/openbitcoin', '/shortcut', mode=v.mode)
     if route:
         return route
     return render_template('blockchain.html')
 
+@app.route("/shortcut", methods=['GET', 'POST'])
+def shortcut():
+    if request.method == 'POST':
+        if request.['option'] == 'Yes':
+            v.disconnected = True
+        else:
+            v.disconnected = False
+        return redirect('/openbitcoin')
+    return render_template('shortcut') 
+
 @app.route("/openbitcoin", methods=['GET', 'POST'])
 def YCopenbitcoin():
-    route = openBitcoin(request, '/openbitcoin', v.route, mode=v.mode, yeti='Cold')
+    route = openBitcoin(request, '/openbitcoin', v.route, mode=v.mode, yeti='Cold', shortcut=v.disconnected)
     if route:
         return route
     return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=5, switch=True, shortcut=v.shortcut, url=v.url, offline=False, mode=v.mode)
