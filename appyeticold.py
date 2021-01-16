@@ -88,7 +88,7 @@ def shortcut():
         else:
             v.disconnected = False
         return redirect('/openbitcoin')
-    return render_template('shortcut') 
+    return render_template('shortcut.html') 
 
 @app.route("/openbitcoin", methods=['GET', 'POST'])
 def YCopenbitcoin():
