@@ -3,15 +3,14 @@ passphraselist = None
 pubdesc = None
 oldkeys = None
 error = None
-privkeylist = []
-xprivlist = []
+disconnected = False
+copied = False
+usb = False
 dumpwalletindex = 0
 privkeycount = 0
 progress = 0
 step = 0
 IBD = 0
-copied = False
-usb = False
 wallet_template = ""
 shortcut = ""
 rpcpsw = ""
@@ -20,10 +19,8 @@ info = ""
 file = ""
 mode = ""
 url = ""
+privkeylist = []
+xprivlist = []
 settings = {}
-
-
-
-
 
 
