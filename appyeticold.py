@@ -113,7 +113,7 @@ def rescanwalletWatch():
 
 @app.route("/recoverredirect", methods=['GET', 'POST'])
 def recoverredirect():
-    return render_template('recoverredirect.html', yeti='Cold', url='RecoverGuide3.yeticold.com')
+    return render_template('recoverredirect.html', yeti='Cold', url='Core3.yeticold.com')
 
 @app.route("/blockchainOff", methods=['GET', 'POST'])
 def blockchainOff():

@@ -108,7 +108,7 @@ def YWRrescanwallet():
 
 @app.route("/recoverredirect", methods=['GET', 'POST'])
 def recoverredirect():
-    return render_template('recoverredirect.html', yeti='Warm', url='RecoverGuide2.yeticold.com')
+    return render_template('recoverredirect.html', yeti='Warm', url='Core2.yeticold.com')
 
 if __name__ == "__main__":
     app.run()
