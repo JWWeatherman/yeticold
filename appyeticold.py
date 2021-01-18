@@ -111,9 +111,9 @@ def rescanwalletWatch():
         return redirect('/coldwalletguideWatch')
     return render_template('rescanwallet.html',step=7)
 
-@app.route("/coldwalletguideWatch", methods=['GET', 'POST'])
-def coldwalletguideWatch():
-    return render_template('coldwalletguideWatch.html', step=8)
+@app.route("/recoverredirect", methods=['GET', 'POST'])
+def recoverredirect():
+    return render_template('recoverredirect.html', yeti='Cold', url='RecoverGuide3.yeticold.com')
 
 @app.route("/blockchainOff", methods=['GET', 'POST'])
 def blockchainOff():
@@ -146,12 +146,8 @@ def switchlaptopOffLoad():
 def rescanwalletLoad():
     if request.method == 'POST':
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub rescanblockchain '+blockheight())
-        return redirect('/coldwalletguideLoad')
+        return redirect('/recoverredirect')
     return render_template('rescanwallet.html',step=10)
-
-@app.route("/coldwalletguideLoad", methods=['GET', 'POST'])
-def coldwalletguideLoad():
-    return render_template('coldwalletguide.html', step=11)
 
 @app.route("/scandescriptorOffRec", methods=['GET', 'POST'])
 def scandescriptorOffRec():
@@ -186,12 +182,8 @@ def scandescriptorRec():
 def rescanwalletRec():
     if request.method == 'POST':
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub rescanblockchain '+blockheight())
-        return redirect('/coldwalletguideRec')
+        return redirect('/recoverredirect')
     return render_template('rescanwallet.html',step=15)
-#ON
-@app.route("/coldwalletguideRec", methods=['GET', 'POST'])
-def coldwalletguideRec():
-    return render_template('coldwalletguide.html', step=16)
 
 #OFF
 @app.route("/getseedsOff", methods=['GET', 'POST'])
@@ -266,13 +258,13 @@ def copyerase():
     if request.method == 'GET':
         erase()
     if request.method == 'POST':
-        return redirect('/coldwalletguide')
+        return redirect('/createredirect')
     return render_template('copyerase.html', step=28)
 
 #ON
-@app.route("/coldwalletguide", methods=['GET', 'POST'])
-def coldwalletguide():
-    return render_template('coldguideredirect.html')
+@app.route("/createredirect", methods=['GET', 'POST'])
+def createredirect():
+    return render_template('createredirect.html', yeti='Cold', url='guide3.yeticold.com')
 
 if __name__ == "__main__":
     app.run()

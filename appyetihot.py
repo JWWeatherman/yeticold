@@ -114,16 +114,17 @@ def YHcheckseed():
             v.oldkeys = None
             v.privkeycount = v.privkeycount + 1
             if v.privkeycount == 5:
-                return redirect('/YHRdisplaywallet')
+                return redirect('/createredirect')
             else:
                 return redirect('/YHcheckseed')
         else:
             v.error = 'The seed words you entered are incorrect. This is probably because you entered a line twice or put them in the wrong order.'
     return render_template('checkseeds.html', x=v.privkeycount+1, error=v.error, step=v.privkeycount+8,oldkeys=v.oldkeys, yeti='Hot')
 
-@app.route("/YHRdisplaywallet", methods=['GET', 'POST'])
-def YHRdisplaywallet():
-    return render_template('displaywallet.html', yeti='Hot')
+#ON
+@app.route("/createredirect", methods=['GET', 'POST'])
+def createredirect():
+    return render_template('createredirect.html', yeti='Hot', url='guide1.yeticold.com')
     
 @app.route('/YHRinputseed', methods=['GET', 'POST'])
 def YHRinputseed():
@@ -146,8 +147,12 @@ def YHRinputseed():
 def YHRrescanwallet():
     if request.method == 'POST':
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallethot rescanblockchain '+blockheight())
-        return redirect('/YHRdisplaywallet')
+        return redirect('/recoverredirect')
     return render_template('rescanwallet.html', yeti='Hot', step=7)
+
+@app.route("/recoverredirect", methods=['GET', 'POST'])
+def recoverredirect():
+    return render_template('recoverredirect.html', yeti='Hot', url='RecoverGuide1.yeticold.com')
 
 if __name__ == "__main__":
     app.run()

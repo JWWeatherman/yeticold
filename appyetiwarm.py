@@ -39,7 +39,6 @@ def YWmenu():
             v.step = 6
             v.route = '/YWRrescanwallet'
             v.mode = "YetiLevelTwoLoad"
-            v.loadwallet = True
         elif request.form['option'] == 'create':
             v.mode = "YetiLevelTwoCreate"
             subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
@@ -76,10 +75,14 @@ def YWcopyseeds():
 
 @app.route('/YWcheckseeds', methods=['GET', 'POST'])
 def YWcheckseeds():
-    route = checkSeeds(request, '/YWcheckseeds', '/YWRdisplaywallet', yeti='Warm')
+    route = checkSeeds(request, '/YWcheckseeds', '/createredirect', yeti='Warm')
     if route:
         return route
-    return render_template('checkseeds.html', x=v.privkeycount + 1, error=v.error,step=v.privkeycount + 8, oldkeys=v.oldkeys, yeti='Warm',nextroute='/YWRdisplaywallet')
+    return render_template('checkseeds.html', x=v.privkeycount + 1, error=v.error,step=v.privkeycount + 8, oldkeys=v.oldkeys, yeti='Warm',nextroute='/createredirect')
+
+@app.route("/createredirect", methods=['GET', 'POST'])
+def createredirect():
+    return render_template('createredirect.html', yeti='Warm', url='guide2.yeticold.com')
 
 @app.route("/YWRscandescriptor", methods=['GET', 'POST'])
 def YWRscandescriptor():
@@ -100,12 +103,12 @@ def YWRimportseeds():
 def YWRrescanwallet():
     if request.method == 'POST':
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv rescanblockchain '+blockheight())
-        return redirect('/YWRdisplaywallet')
+        return redirect('/recoverredirect')
     return render_template('rescanwallet.html', yeti='Warm', step=v.step)
 
-@app.route("/YWRdisplaywallet", methods=['GET', 'POST'])
-def YWRdisplaywallet():
-    return render_template('displaywallet.html', yeti='Warm')
+@app.route("/recoverredirect", methods=['GET', 'POST'])
+def recoverredirect():
+    return render_template('recoverredirect.html', yeti='Warm', url='RecoverGuide2.yeticold.com')
 
 if __name__ == "__main__":
     app.run()
