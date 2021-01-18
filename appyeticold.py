@@ -264,7 +264,7 @@ def copyerase():
 #ON
 @app.route("/createredirect", methods=['GET', 'POST'])
 def createredirect():
-    return render_template('createredirect.html', yeti='Cold', url='guide3.yeticold.com')
+    return render_template('createredirect.html', yeti='Cold', url='guide3.yeticold.com', step=29)
 
 if __name__ == "__main__":
     app.run()

@@ -82,7 +82,7 @@ def YWcheckseeds():
 
 @app.route("/createredirect", methods=['GET', 'POST'])
 def createredirect():
-    return render_template('createredirect.html', yeti='Warm', url='guide2.yeticold.com')
+    return render_template('createredirect.html', yeti='Warm', url='guide2.yeticold.com', step=14)
 
 @app.route("/YWRscandescriptor", methods=['GET', 'POST'])
 def YWRscandescriptor():

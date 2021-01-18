@@ -124,7 +124,7 @@ def YHcheckseed():
 #ON
 @app.route("/createredirect", methods=['GET', 'POST'])
 def createredirect():
-    return render_template('createredirect.html', yeti='Hot', url='guide1.yeticold.com')
+    return render_template('createredirect.html', yeti='Hot', url='guide1.yeticold.com', step=14)
     
 @app.route('/YHRinputseed', methods=['GET', 'POST'])
 def YHRinputseed():
