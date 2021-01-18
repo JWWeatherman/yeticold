@@ -119,7 +119,7 @@ def YHcheckseed():
                 return redirect('/YHcheckseed')
         else:
             v.error = 'The seed words you entered are incorrect. This is probably because you entered a line twice or put them in the wrong order.'
-    return render_template('checkseeds.html', x=v.privkeycount+1, error=v.error, step=v.privkeycount+8,oldkeys=v.oldkeys, yeti='Hot')
+    return render_template('checkseeds.html', x=v.privkeycount+1, error=v.error, step=v.privkeycount+8,oldkeys=v.oldkeys, yeti='Hot', nextroute='/createredirect')
 
 #ON
 @app.route("/createredirect", methods=['GET', 'POST'])
