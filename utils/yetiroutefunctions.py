@@ -9,10 +9,9 @@ def blockChain(request, nextroute, mode, shortcut=''):
     if request.method == 'GET':
         if (os.path.exists(home + "/.bitcoin")) or mode == 'YetiLevelThreePrimaryLoad' or mode == 'YetiLevelTwoLoad' or mode == 'YetiLevelOneLoad':
             createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
-            if mode == 'YetiLevelThreePrimaryLoad' or mode == 'YetiLevelTwoLoad' or mode == 'YetiLevelOneLoad':
-                return redirect(nextroute)
-            else:
+            if mode == 'YetiLevelThreePrimaryCreate' or mode == 'YetiLevelThreePrimaryRecover':
                 return redirect(shortcut)
+            return redirect(nextroute)
         else:
             subprocess.call('mkdir ~/.bitcoin',shell=True)
         if mode == 'YetiLevelThreePrimaryCreate' or mode == 'YetiLevelTwoCreate' or mode == 'YetiLevelOneCreate':
