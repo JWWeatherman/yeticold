@@ -15,7 +15,7 @@ def blockChain(request, nextroute, mode, shortcut=''):
         else:
             subprocess.call('mkdir ~/.bitcoin',shell=True)
         if mode == 'YetiLevelThreePrimaryCreate' or mode == 'YetiLevelTwoCreate' or mode == 'YetiLevelOneCreate':
-            createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nprune=550\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
+            createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nprune=25000\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
             return redirect(nextroute)
     if request.method == 'POST':
         subprocess.call('mkdir ~/.bitcoin',shell=True)
