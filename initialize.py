@@ -57,7 +57,7 @@ else:
 
     if sys.argv[1].lower() == 'yetilevelthreeprimary':
         print('********************')
-        print('Running Yeti Level THree on Primary PC')
+        print('Running Yeti Level Three on Primary PC')
         print('********************' + os.linesep)
         subprocess.run('sudo python3 ~/yeticold/utils/CreateShortcutsPrimary.py '+HOME, shell=True, check=False)
         subprocess.Popen('python3 ~/yeticold/appyeticold.py', shell=True, start_new_session=True)

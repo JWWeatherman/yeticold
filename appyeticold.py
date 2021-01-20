@@ -99,17 +99,10 @@ def YCopenbitcoin():
 
 @app.route("/scandescriptorWatch", methods=['GET', 'POST'])
 def scandescriptorWatch():
-    route = scanDescriptor(request, '/scandescriptorWatch', '/rescanwalletWatch', offline=False)
+    route = scanDescriptor(request, '/scandescriptorWatch', '/recoverredirect', offline=False)
     if route:
         return route
     return render_template('scandescriptor.html', step=6, error=v.error, line=0)
-
-@app.route("/rescanwalletWatch", methods=['GET', 'POST'])
-def rescanwalletWatch():
-    if request.method == 'POST':
-        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub rescanblockchain '+blockheight())
-        return redirect('/coldwalletguideWatch')
-    return render_template('rescanwallet.html',step=7)
 
 @app.route("/recoverredirect", methods=['GET', 'POST'])
 def recoverredirect():
@@ -165,18 +158,10 @@ def switchlaptopOffRec():
 #ON
 @app.route("/scandescriptorRec", methods=['GET', 'POST'])
 def scandescriptorRec():
-    route = scanDescriptor(request, '/scandescriptorRec', '/rescanwalletRec', offline=False)
+    route = scanDescriptor(request, '/scandescriptorRec', '/recoverredirect', offline=False)
     if route:
         return route
     return render_template('scandescriptor.html', step=14, error=v.error, line=0)
-
-#ON
-@app.route("/rescanwalletRec", methods=['GET', 'POST'])
-def rescanwalletRec():
-    if request.method == 'POST':
-        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub rescanblockchain '+blockheight())
-        return redirect('/recoverredirect')
-    return render_template('rescanwallet.html',step=15)
 
 #OFF
 @app.route("/getseedsOff", methods=['GET', 'POST'])
