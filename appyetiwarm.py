@@ -36,8 +36,7 @@ def YWmenu():
             v.mode = "YetiLevelTwoRecover"
             v.route = '/YWRscandescriptor'
         elif request.form['option'] == 'load':
-            v.step = 6
-            v.route = '/YWRrescanwallet'
+            v.route = '/recoverredirect'
             v.mode = "YetiLevelTwoLoad"
         elif request.form['option'] == 'create':
             v.mode = "YetiLevelTwoCreate"
@@ -93,18 +92,10 @@ def YWRscandescriptor():
 
 @app.route('/YWRimportseeds', methods=['GET', 'POST'])
 def YWRimportseeds():    
-    v.step = 10
-    route = importSeeds(request, '/YWRimportseeds', '/YWRrescanwallet')
+    route = importSeeds(request, '/YWRimportseeds', '/recoverredirect')
     if route:
         return route
     return render_template('importseeds.html', x=v.privkeycount + 1, error=v.error, step=v.privkeycount + 7, yeti='Warm')
-
-@app.route("/YWRrescanwallet", methods=['GET', 'POST'])
-def YWRrescanwallet():
-    if request.method == 'POST':
-        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv rescanblockchain '+blockheight())
-        return redirect('/recoverredirect')
-    return render_template('rescanwallet.html', yeti='Warm', step=v.step)
 
 @app.route("/recoverredirect", methods=['GET', 'POST'])
 def recoverredirect():
