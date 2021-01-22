@@ -101,7 +101,7 @@ def YWRimportseeds():
     route = importSeeds(request, '/YWRimportseeds', '/recoverredirect')
     if route:
         return route
-    return render_template('importseeds.html', x=v.privkeycount + 1, error=v.error, step=v.privkeycount + , yeti='Warm')
+    return render_template('importseeds.html', x=v.privkeycount + 1, error=v.error, step=v.privkeycount + 8, yeti='Warm')
 
 @app.route("/recoverredirect", methods=['GET', 'POST'])
 def recoverredirect():
