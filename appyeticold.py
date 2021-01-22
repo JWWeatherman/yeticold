@@ -205,16 +205,10 @@ def exportdescriptorOff():
 #ON
 @app.route("/scandescriptor", methods=['GET', 'POST'])
 def scandescriptor():
-    route = scanDescriptor(request, '/scandescriptor', '/rescan', offline=False)
+    route = scanDescriptor(request, '/scandescriptor', '/printpage', offline=False)
     if route:
         return route
     return render_template('scandescriptor.html', step=12, setup=True, error=v.error, line=0)
-
-@app.route("/rescan", methods=['GET', 'POST'])
-def rescan():
-    if request.method == 'POST':
-        return redirect('/printpage')
-    return render_template('rescanwallet.html', step=13)
 
 #ON
 @app.route("/printpage", methods=['GET', 'POST'])
@@ -224,14 +218,14 @@ def printpage():
         SeedT.insert(0,v.pubdesc)
     if request.method == 'POST':
         return redirect('/switchlaptop')
-    return render_template('printpage.html', txt=SeedT, len=len(SeedT), step=14)
+    return render_template('printpage.html', txt=SeedT, len=len(SeedT), step=13)
 
 #ON
 @app.route("/switchlaptop", methods=['GET', 'POST'])
 def switchlaptop():
     if request.method == 'POST':
         return redirect('/copyerase')
-    return render_template('switchlaptop.html', step=15, instructions="Switch to your Secondary Laptop currently showing step 11 and on your Secondary Laptop click Next to show step 15", laptop="Secondary")
+    return render_template('switchlaptop.html', step=14, instructions="Switch to your Secondary Laptop currently showing step 11 and on your Secondary Laptop click Next to show step 15", laptop="Secondary")
 
 #OFF
 @app.route('/displayseedsOff', methods=['GET', 'POST'])
@@ -239,7 +233,7 @@ def displayseedsOff():
     route = displaySeeds(request, '/displayseedsOff', '/checkseedsOff')
     if route:
         return route
-    return render_template('displayseeds.html', PPL=v.passphraselist, x=v.privkeycount + 1, step=16+v.privkeycount,nextroute='/checkseedsOff')
+    return render_template('displayseeds.html', PPL=v.passphraselist, x=v.privkeycount + 1, step=15+v.privkeycount,nextroute='/checkseedsOff')
 
 #OFF
 @app.route('/checkseedsOff', methods=['GET', 'POST'])
@@ -247,12 +241,12 @@ def checkseedsOff():
     route = checkSeeds(request, '/checkseedsOff', '/switchlaptopOff')
     if route:
         return route
-    return render_template('checkseeds.html', x=v.privkeycount + 1, error=v.error,step=23+v.privkeycount,oldkeys=v.oldkeys,nextroute='/switchlaptopOff')
+    return render_template('checkseeds.html', x=v.privkeycount + 1, error=v.error,step=22+v.privkeycount,oldkeys=v.oldkeys,nextroute='/switchlaptopOff')
 
 #OFF
 @app.route("/switchlaptopOff", methods=['GET', 'POST'])
 def switchlaptopOff():
-    return render_template('switchlaptop.html', step=30, instructions="Switch to your Primary Laptop currently showing step 14 and on your Primary click next to show step 28", laptop="Primary")
+    return render_template('switchlaptop.html', step=29, instructions="Switch to your Primary Laptop currently showing step 14 and on your Primary click next to show step 28", laptop="Primary")
 
 #ON
 @app.route("/copyerase", methods=['GET', 'POST'])
@@ -261,12 +255,12 @@ def copyerase():
         erase()
     if request.method == 'POST':
         return redirect('/createredirect')
-    return render_template('copyerase.html', step=31)
+    return render_template('copyerase.html', step=30)
 
 #ON
 @app.route("/createredirect", methods=['GET', 'POST'])
 def createredirect():
-    return render_template('createredirect.html', yeti='Cold', url='guide3.yeticold.com', step=32)
+    return render_template('createredirect.html', yeti='Cold', url='guide3.yeticold.com', step=31)
 
 if __name__ == "__main__":
     app.run()
