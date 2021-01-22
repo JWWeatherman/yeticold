@@ -94,7 +94,7 @@ def YWRscandescriptor():
 def YWRrescan():
     if request.method == 'POST':
         return redirect('/YWRimportseeds')
-    return render_template('rescanwallet', step=7)
+    return render_template('rescanwallet.html', step=7)
 
 @app.route('/YWRimportseeds', methods=['GET', 'POST'])
 def YWRimportseeds():    

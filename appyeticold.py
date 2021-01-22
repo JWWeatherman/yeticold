@@ -108,7 +108,7 @@ def scandescriptorWatch():
 def rescanWatch():
     if request.method == 'POST':
         return redirect('/recoverredirect')
-    return render_template('rescanwallet', step=7)
+    return render_template('rescanwallet.html', step=7)
 
 @app.route("/recoverredirect", methods=['GET', 'POST'])
 def recoverredirect():
@@ -152,7 +152,7 @@ def scandescriptorOffRec():
 def rescanOffRec():
     if request.method == 'POST':
         return redirect('/importseedsOff')
-    return render_template('rescanwallet', step=10)
+    return render_template('rescanwallet.html', step=10)
 
 #OFF
 @app.route('/importseedsOff', methods=['GET', 'POST'])
@@ -179,7 +179,7 @@ def scandescriptorRec():
 def rescanRec():
     if request.method == 'POST':
         return redirect('/recoverredirect')
-    return render_template('rescanwallet', step=16)
+    return render_template('rescanwallet.html', step=16)
 
 #OFF
 @app.route("/getseedsOff", methods=['GET', 'POST'])
@@ -214,7 +214,7 @@ def scandescriptor():
 def rescan():
     if request.method == 'POST':
         return redirect('/printpage')
-    return render_template('rescanwallet', step=13)
+    return render_template('rescanwallet.html', step=13)
 
 #ON
 @app.route("/printpage", methods=['GET', 'POST'])
