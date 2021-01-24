@@ -3,7 +3,7 @@ import sys
 home = os.getenv("HOME")
 sys.path.append(home + '/yeticold/utils/')
 from btcrpcfunctions import blockheight
-from yetiroutefunctions import * 
+from yetiroutefunctions import *
 from yetifunctions import *
 from formating import *
 from imports import *
@@ -88,7 +88,7 @@ def shortcut():
         else:
             v.disconnected = False
         return redirect('/openbitcoin')
-    return render_template('shortcut.html') 
+    return render_template('shortcut.html')
 
 @app.route("/openbitcoin", methods=['GET', 'POST'])
 def YCopenbitcoin():
@@ -120,7 +120,7 @@ def blockchainOff():
         createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
     else:
         subprocess.call('mkdir ~/.bitcoin',shell=True)
-        createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nprune=25000\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf') 
+        createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nprune=25000\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
     return redirect('/openbitcoinOff')
 
 @app.route("/openbitcoinOff", methods=['GET', 'POST'])
@@ -246,7 +246,7 @@ def checkseedsOff():
 #OFF
 @app.route("/switchlaptopOff", methods=['GET', 'POST'])
 def switchlaptopOff():
-    return render_template('switchlaptop.html', step=29, instructions="Switch to your Primary Laptop currently showing step 14 and on your Primary click next to show step 28", laptop="Primary")
+    return render_template('switchlaptop.html', step=29, instructions="Switch to your Primary Laptop currently showing step 14 and on your Primary click next to show step 30", laptop="Primary")
 
 #ON
 @app.route("/copyerase", methods=['GET', 'POST'])
