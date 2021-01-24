@@ -49,6 +49,8 @@ def getPrunBlockheightByDate(date):
     blockheight = diff + add + 550
     print(blockheight)
     blockheight = int(blockheight)
+    if blockheight < 25000:
+        blockheight = 25000
     return blockheight
 
 def generatePrivKeys(genbinary=False):
