@@ -85,17 +85,26 @@ def shortcut():
     if request.method == 'POST':
         if request.form['option'] == 'Yes':
             v.disconnected = True
+            v.step = 6
+            return redirect('/syncstep')
         else:
             v.disconnected = False
-        return redirect('/openbitcoin')
+            v.step = 5
+            return redirect('/openbitcoin')
     return render_template('shortcut.html')
+
+@app.route("/syncstep", methods=['GET', 'POST'])
+def syncstep():
+    if request.method == 'POST':
+        return redirect('/openbitcoin')
+    return render_template('syncstep.html', step=5)
 
 @app.route("/openbitcoin", methods=['GET', 'POST'])
 def YCopenbitcoin():
     route = openBitcoin(request, '/openbitcoin', v.route, mode=v.mode, yeti='Cold')
     if route:
         return route
-    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=5, switch=True, disconnected=v.disconnected, shortcut=v.shortcut, url=v.url, offline=False, mode=v.mode)
+    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=v.step, switch=True, disconnected=v.disconnected, shortcut=v.shortcut, url=v.url, offline=False, mode=v.mode)
 
 @app.route("/scandescriptorWatch", methods=['GET', 'POST'])
 def scandescriptorWatch():
