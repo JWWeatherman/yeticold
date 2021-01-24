@@ -205,7 +205,7 @@ def exportdescriptorOff():
 #ON
 @app.route("/scandescriptor", methods=['GET', 'POST'])
 def scandescriptor():
-    route = scanDescriptor(request, '/scandescriptor', '/printpage', offline=False)
+    route = scanDescriptor(request, '/scandescriptor', '/printpage', offline=False, create=True)
     if route:
         return route
     return render_template('scandescriptor.html', step=12, setup=True, error=v.error, line=0)

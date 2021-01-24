@@ -53,7 +53,7 @@ def openBitcoin(request, currentroute, nextroute, mode, yeti='Warm'):
         else:
             return redirect(currentroute)
 
-def scanDescriptor(request, currentroute, nextroute, offline=True):
+def scanDescriptor(request, currentroute, nextroute, offline=True, create=False):
     if request.method == 'POST':
         v.error = None
         v.pubdesc = request.form['descriptor'].replace('\n','')
@@ -65,10 +65,13 @@ def scanDescriptor(request, currentroute, nextroute, offline=True):
         if response[1] != b'':
             v.error = 'Invalid Descriptor: '+v.pubdesc
             return redirect(currentroute)
+        v.rescan = 0
+        if create:
+            v.rescan = '\"now\"'
         if offline:
-            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": 0, "active": true}]\'',shell=True,start_new_session=True)
+            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": '+v.rescan+', "active": true}]\'',shell=True,start_new_session=True)
         else:
-            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": 0, "active": true}]\'',shell=True,start_new_session=True)
+            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": '+v.rescan+', "active": true}]\'',shell=True,start_new_session=True)
         return redirect(nextroute)
 
 def getSeeds(request, nextroute):

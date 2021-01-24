@@ -9,6 +9,7 @@ usb = False
 dumpwalletindex = 0
 privkeycount = 0
 progress = 0
+rescan = 0
 step = 0
 IBD = 0
 wallet_template = ""
@@ -22,5 +23,4 @@ url = ""
 privkeylist = []
 xprivlist = []
 settings = {}
-
 

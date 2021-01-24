@@ -47,7 +47,9 @@ def getPrunBlockheightByDate(date):
     diff = (int(d2_ts - d1_ts) / 60) / 10
     add = diff / 10
     blockheight = diff + add + 550
+    print(blockheight)
     blockheight = int(blockheight)
+    return blockheight
 
 def generatePrivKeys(genbinary=False):
     handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletgen"')
