@@ -65,7 +65,7 @@ def scanDescriptor(request, currentroute, nextroute, offline=True, create=False)
         if response[1] != b'':
             v.error = 'Invalid Descriptor: '+v.pubdesc
             return redirect(currentroute)
-        v.rescan = 0
+        v.rescan = str(0)
         if create:
             v.rescan = '\"now\"'
         if offline:
