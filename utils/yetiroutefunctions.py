@@ -66,9 +66,9 @@ def scanDescriptor(request, currentroute, nextroute, offline=True):
             v.error = 'Invalid Descriptor: '+v.pubdesc
             return redirect(currentroute)
         if offline:
-            handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": 0, "active": true}]\'')
+            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": 0, "active": true}]\'',shell=True,start_new_session=True)
         else:
-            handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": 0, "active": true}]\'')
+            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": 0, "active": true}]\'',shell=True,start_new_session=True)
         return redirect(nextroute)
 
 def getSeeds(request, nextroute):

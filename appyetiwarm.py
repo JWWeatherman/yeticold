@@ -85,17 +85,23 @@ def createredirect():
 
 @app.route("/YWRscandescriptor", methods=['GET', 'POST'])
 def YWRscandescriptor():
-    route = scanDescriptor(request, '/YWRscandescriptor', '/YWRimportseeds')
+    route = scanDescriptor(request, '/YWRscandescriptor', '/YWRrescan')
     if route:
         return route
     return render_template('scandescriptorOff.html', pubdesc=v.pubdesc, yeti='Warm', step=6, line=16)
+
+@app.route("/YWRrescan", methods=['GET', 'POST'])
+def YWRrescan():
+    if request.method == 'POST':
+        return redirect('/YWRimportseeds')
+    return render_template('rescanwallet.html', step=7)
 
 @app.route('/YWRimportseeds', methods=['GET', 'POST'])
 def YWRimportseeds():    
     route = importSeeds(request, '/YWRimportseeds', '/recoverredirect')
     if route:
         return route
-    return render_template('importseeds.html', x=v.privkeycount + 1, error=v.error, step=v.privkeycount + 7, yeti='Warm')
+    return render_template('importseeds.html', x=v.privkeycount + 1, error=v.error, step=v.privkeycount + 8, yeti='Warm')
 
 @app.route("/recoverredirect", methods=['GET', 'POST'])
 def recoverredirect():
