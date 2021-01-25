@@ -98,7 +98,7 @@ def YCopenbitcoin():
 @app.route("/syncstep", methods=['GET', 'POST'])
 def syncstep():
     if request.method == 'GET':
-        if os.path.exists(home + "/yeticold/connectionOff"):
+        if not os.path.exists(home + "/yeticold/connectionOff"):
             return redirect('/blockchainOff') 
     if request.method == 'POST':
         return redirect('/blockchainOff')
