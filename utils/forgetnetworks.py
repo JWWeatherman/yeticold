@@ -16,6 +16,7 @@ def forget_networks():
         if parts[0] == "802-11-wireless":
             os.system("nmcli connection delete uuid " + parts[1])
     subprocess.run('nmcli n off', shell=True, check=False)
+    subprocess.run('touch ~/yeticold/connectionOff', shell=True, check=False)
 
 if __name__ == "__main__":
     forget_networks()
