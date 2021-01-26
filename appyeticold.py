@@ -249,7 +249,7 @@ def switchlaptopOff():
 def recoverredirect():
     if request.method == 'GET':
         erase()
-    return render_template('recoverredirect.html', yeti='Cold', url='Core3.yeticold.com', step=16)
+    return render_template('recoverredirect.html', yeti='Cold', url='core3.yeticold.com', step=16)
 
 @app.route("/createredirect", methods=['GET', 'POST'])
 def createredirect():
