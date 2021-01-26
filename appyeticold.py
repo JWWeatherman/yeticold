@@ -99,7 +99,7 @@ def YCopenbitcoin():
 def syncstep():
     if request.method == 'GET':
         if not os.path.exists(home + "/yeticold/connectionOff"):
-            return redirect('/blockchainOff') 
+            return redirect('/blockchainOff')
     if request.method == 'POST':
         return redirect('/blockchainOff')
     return render_template('syncstep.html', step=6)
@@ -261,7 +261,7 @@ def recoverredirect():
 def createredirect():
     if request.method == 'GET':
         erase()
-    return render_template('createredirect.html', yeti='Cold', url='guide3.yeticold.com', step=31)
+    return render_template('createredirect.html', yeti='Cold', url='guide3.yeticold.com', step=30)
 
 if __name__ == "__main__":
     app.run()
