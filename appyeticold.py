@@ -153,40 +153,34 @@ def rescanWatch():
 
 @app.route("/scandescriptorOffRec", methods=['GET', 'POST'])
 def scandescriptorOffRec():
-    route = scanDescriptor(request, '/scandescriptorOffRec', '/rescanOffRec')
+    route = scanDescriptor(request, '/scandescriptorOffRec', '/importseedsOff')
     if route:
         return route
     return render_template('scandescriptorOff.html', step=9, error=v.error, line=16)
-
-@app.route("/rescanOffRec", methods=['GET', 'POST'])
-def rescanOffRec():
-    if request.method == 'POST':
-        return redirect('/importseedsOff')
-    return render_template('rescanwallet.html', step=10)
 
 @app.route('/importseedsOff', methods=['GET', 'POST'])
 def importseedsOff():
     route = importSeeds(request, '/importseedsOff', '/switchlaptopOffRec')
     if route:
         return route
-    return render_template('importseeds.html', x=v.privkeycount + 1, error=v.error,step=v.privkeycount + 11)
+    return render_template('importseeds.html', x=v.privkeycount + 1, error=v.error,step=v.privkeycount + 10)
 
 @app.route("/switchlaptopOffRec", methods=['GET', 'POST'])
 def switchlaptopOffRec():
-    return render_template('switchlaptop.html', step=14, instructions="Switch to your Primary Laptop currently Showing step 5 and on your Primary Laptop click Next to show step 14.", laptop="Primary")
+    return render_template('switchlaptop.html', step=13, instructions="Switch to your Primary Laptop currently Showing step 5 and on your Primary Laptop click Next to show step 14.", laptop="Primary")
 
 @app.route("/scandescriptorRec", methods=['GET', 'POST'])
 def scandescriptorRec():
     route = scanDescriptor(request, '/scandescriptorRec', '/rescanRec', offline=False)
     if route:
         return route
-    return render_template('scandescriptor.html', step=15, error=v.error, line=0)
+    return render_template('scandescriptor.html', step=14, error=v.error, line=0)
 
 @app.route("/rescanRec", methods=['GET', 'POST'])
 def rescanRec():
     if request.method == 'POST':
         return redirect('/recoverredirect')
-    return render_template('rescanwallet.html', step=16)
+    return render_template('rescanwallet.html', step=15)
 
 ##CREATE ROUTES
 
