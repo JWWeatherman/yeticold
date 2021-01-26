@@ -19,9 +19,9 @@
                 <li style="color: red;">On your <b>Secondary Laptop</b> click on the <b>nine dots</b> in the bottom left corner and then open <b>L3Load</b></li>
                 {%else%}
                   {%if disconnected%}
-                    <li>On your <b>Secondary Laptop</b> click on the <b>nine dots</b> in the bottom left corner and then open <b>{{shortcut}}</b>.</li>
+                    <li style="color: red;">On your <b>Secondary Laptop</b> click on the <b>nine dots</b> in the bottom left corner and then open <b>{{shortcut}}</b>.</li>
                   {%else%}
-                    <li>On your <b>Secondary Laptop</b> open Firefox and go to <code>{{url}}</code> to begin setup of your <b>Secondary Laptop</b> while this laptop downloads the blockchain.</li>
+                    <li style="color: red;">On your <b>Secondary Laptop</b> open Firefox and go to <code>{{url}}</code> to begin setup of your <b>Secondary Laptop</b> while this laptop downloads the blockchain.</li>
                   {%endif%}
                 {%endif%}
                 <li>Downloading the blockchain on this laptop (<b>Primary Laptop</b>) can take as little as 4 hours if you have an SSD and a fast internet connection or as long as a couple of weeks if you do not as it is validating every bitcoin transaction from the start of the network in 2009 (full node).</li>
