@@ -121,9 +121,10 @@ def YHcheckseed():
             v.error = 'The seed words you entered are incorrect. This is probably because you entered a line twice or put them in the wrong order.'
     return render_template('checkseeds.html', x=v.privkeycount+1, error=v.error, step=v.privkeycount+8,oldkeys=v.oldkeys, yeti='Hot', nextroute='/createredirect')
 
-#ON
 @app.route("/createredirect", methods=['GET', 'POST'])
 def createredirect():
+    if request.method == 'GET':
+        erase()
     return render_template('createredirect.html', yeti='Hot', url='guide1.yeticold.com', step=14)
     
 @app.route('/YHRinputseed', methods=['GET', 'POST'])
@@ -152,6 +153,8 @@ def YHRrescanwallet():
 
 @app.route("/recoverredirect", methods=['GET', 'POST'])
 def recoverredirect():
+    if request.method == 'GET':
+        erase()
     return render_template('recoverredirect.html', yeti='Hot', url='Core1.yeticold.com')
 
 if __name__ == "__main__":

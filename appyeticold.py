@@ -228,7 +228,7 @@ def printpage():
 @app.route("/switchlaptop", methods=['GET', 'POST'])
 def switchlaptop():
     if request.method == 'POST':
-        return redirect('/copyerase')
+        return redirect('/createredirect')
     return render_template('switchlaptop.html', step=14, instructions="Switch to your Secondary Laptop currently showing step 11 and on your Secondary Laptop click Next to show step 15", laptop="Secondary")
 
 @app.route('/displayseedsOff', methods=['GET', 'POST'])
@@ -249,22 +249,18 @@ def checkseedsOff():
 def switchlaptopOff():
     return render_template('switchlaptop.html', step=29, instructions="Switch to your Primary Laptop currently showing step 14 and on your Primary click next to show step 30", laptop="Primary")
 
-@app.route("/copyerase", methods=['GET', 'POST'])
-def copyerase():
-    if request.method == 'GET':
-        erase()
-    if request.method == 'POST':
-        return redirect('/createredirect')
-    return render_template('copyerase.html', step=30)
-
 ##END ROUTES
 
 @app.route("/recoverredirect", methods=['GET', 'POST'])
 def recoverredirect():
+    if request.method == 'GET':
+        erase()
     return render_template('recoverredirect.html', yeti='Cold', url='Core3.yeticold.com')
 
 @app.route("/createredirect", methods=['GET', 'POST'])
 def createredirect():
+    if request.method == 'GET':
+        erase()
     return render_template('createredirect.html', yeti='Cold', url='guide3.yeticold.com', step=31)
 
 if __name__ == "__main__":

@@ -81,6 +81,8 @@ def YWcheckseeds():
 
 @app.route("/createredirect", methods=['GET', 'POST'])
 def createredirect():
+    if request.method == 'GET':
+        erase()
     return render_template('createredirect.html', yeti='Warm', url='guide2.yeticold.com', step=14)
 
 @app.route("/YWRscandescriptor", methods=['GET', 'POST'])
@@ -94,7 +96,7 @@ def YWRscandescriptor():
 def YWRrescan():
     if request.method == 'POST':
         return redirect('/YWRimportseeds')
-    return render_template('rescanwallet.html', step=7)
+    return render_template('rescanwallet.html', step=7, yeti='Warm')
 
 @app.route('/YWRimportseeds', methods=['GET', 'POST'])
 def YWRimportseeds():    
@@ -105,6 +107,8 @@ def YWRimportseeds():
 
 @app.route("/recoverredirect", methods=['GET', 'POST'])
 def recoverredirect():
+    if request.method == 'GET':
+        erase()
     return render_template('recoverredirect.html', yeti='Warm', url='Core2.yeticold.com')
 
 if __name__ == "__main__":
