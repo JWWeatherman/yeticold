@@ -138,8 +138,12 @@ def scandescriptorWatch():
 @app.route("/rescanWatch", methods=['GET', 'POST'])
 def rescanWatch():
     if request.method == 'POST':
-        return redirect('/recoverredirect')
+        return redirect('/finishedWatch')
     return render_template('rescanwallet.html', step=7)
+
+@app.route("/finishedWatch", methods=['GET', 'POST'])
+def finishedWatch():
+    return render_template('finishedwatch.html', step=8)
 
 
 ##RECOVER ROUTES
