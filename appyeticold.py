@@ -137,11 +137,11 @@ def copyeraseErase():
         erase()
     if request.method == 'POST':
         return redirect('/eraseredirect')
-    return render_template('copyeraseErase.html', step=1)
+    return render_template('copyeraseErase.html', step=1, yeti='Cold')
 
 @app.route("/eraseredirect", methods=['GET', 'POST'])
 def eraseredirect():
-    return render_template('eraseredirect.html', step=2)
+    return render_template('eraseredirect.html', step=2, yeti='Cold')
 
 
 
