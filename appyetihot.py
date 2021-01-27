@@ -36,7 +36,7 @@ def YHmenu():
             subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
         elif request.form['option'] == 'load':
             v.mode = "YetiLevelOneLoad"
-            v.route = '/YHRrescanwallet'
+            v.route = '/recoverredirect'
         elif request.form['option'] == 'create':
             v.mode = "YetiLevelOneCreate"
             v.route = '/YHgetseed'

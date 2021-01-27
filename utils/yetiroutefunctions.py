@@ -41,11 +41,11 @@ def openBitcoin(request, currentroute, nextroute, mode, yeti='Warm'):
                 handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpub" true true "" false true')
             elif mode == 'YetiLevelThreePrimaryLoad':
                 handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetiwalletpub"')
-                return redirect(v.route)
             elif mode == 'YetiLevelThreeSecondaryCreate' or mode == 'YetiLevelThreeSecondaryRecover' or mode == 'YetiLevelTwoCreate' or mode == 'YetiLevelTwoRecover':
                 handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpriv" false true "" false true')
             elif mode == 'YetiLevelThreeSecondaryLoad' or mode == 'YetiLevelTwoLoad':
                 handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetiwalletpriv"')
+                return redirect(v.route)
             elif mode == 'YetiLevelOneCreate' or mode == 'YetiLevelOneRecover':
                 handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwallethot" false true')
             elif mode == 'YetiLevelOneLoad':
