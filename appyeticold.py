@@ -27,7 +27,7 @@ def redirectroute():
 @app.route("/offimp", methods=['GET', 'POST'])
 def redirectrouteoffimp():
     v.mode = "YetiLevelThreeSecondaryLoad"
-    v.route = '/recoverredirect'
+    v.route = '/switchlaptopOffLoad'
     return redirect('/syncstep')
 @app.route("/off", methods=['GET', 'POST'])
 def redirectrouteoff():
@@ -54,6 +54,7 @@ def menu():
             v.url = "rec.yeticold.com"
             subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
         elif request.form['option'] == 'load':
+            v.route = '/recoverredirect'
             v.mode = "YetiLevelThreePrimaryLoad"
             v.shortcut = "L3Load"
         elif request.form['option'] == 'create':
