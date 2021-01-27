@@ -9,7 +9,7 @@ subprocess.call('sudo rm /usr/share/applications/YetiLevelThreePrimary.desktop 2
 subprocess.call("sudo echo '"+file+"' >> /usr/share/applications/YetiLevelThreePrimary.desktop", shell=True)
 subprocess.call('sudo chmod +x /usr/share/applications/YetiLevelThreePrimary.desktop', shell=True)
 
-file = '[Desktop Entry]\nVersion=1.0\nName=Level Two\nExec=python3 '+home+'/yeticold/initialize.py YetiLevelTwo" %F\nTerminal=true\nX-MultipleArgs=false\nType=Application\nIcon='+home+'/yeticold/static/yetiWarning.png\nStartupNotify=true'
+file = '[Desktop Entry]\nVersion=1.0\nName=Level Two\nExec=python3 '+home+'/yeticold/initialize.py YetiLevelTwo %F\nTerminal=true\nX-MultipleArgs=false\nType=Application\nIcon='+home+'/yeticold/static/yetiWarning.png\nStartupNotify=true'
 subprocess.call('sudo rm /usr/share/applications/YetiLevelTwo.desktop 2> /dev/null',shell=True)
 subprocess.call("sudo echo '"+file+"' >> /usr/share/applications/YetiLevelTwo.desktop", shell=True)
 subprocess.call('sudo chmod +x /usr/share/applications/YetiLevelTwo.desktop', shell=True)
