@@ -167,7 +167,7 @@ def copyeraseErase():
 
 @app.route("/eraseredirect", methods=['GET', 'POST'])
 def eraseredirect():
-    return render_template('eraseredirect.html', step=2, yeti='Hotn')
+    return render_template('eraseredirect.html', step=2, yeti='Hot')
 
 if __name__ == "__main__":
     app.run()
