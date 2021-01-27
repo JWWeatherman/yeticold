@@ -127,12 +127,6 @@ def connection():
         return redirect(v.route)
     return render_template('connection.html', step=8)
 
-##LOAD ROUTES
-
-@app.route("/switchlaptopOffLoad", methods=['GET', 'POST'])
-def switchlaptopOffLoad():
-    return render_template('switchlaptop.html', step=9, instructions="Switch to your Primary laptop currently Showing step 5. Click next to show step 10.", laptop="Primary")
-
 ##WATCH ROUTES
 
 @app.route("/scandescriptorWatch", methods=['GET', 'POST'])
