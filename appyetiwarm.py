@@ -42,6 +42,9 @@ def YWmenu():
             v.mode = "YetiLevelTwoCreate"
             subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
             v.route = '/YWgetseeds'
+        elif request.form['option'] == 'erase':
+            v.mode = "YetiLevelTwoErase"
+            return redirect('/copyeraseErase')
         return redirect('/YWblockchain')
     return render_template('menu.html', yeti='Warm', wallet=v.wallet)
 
@@ -106,6 +109,18 @@ def YWRimportseeds():
 @app.route("/recoverredirect", methods=['GET', 'POST'])
 def recoverredirect():
     return render_template('recoverredirect.html', yeti='Warm', url='Core2.yeticold.com')
+
+@app.route("/copyeraseErase", methods=['GET', 'POST'])
+def copyeraseErase():
+    if request.method == 'GET':
+        erase()
+    if request.method == 'POST':
+        return redirect('/eraseredirect')
+    return render_template('copyeraseErase.html', step=1, yeti='Warm')
+
+@app.route("/eraseredirect", methods=['GET', 'POST'])
+def eraseredirect():
+    return render_template('eraseredirect.html', step=2, yeti='Warm')
 
 if __name__ == "__main__":
     app.run()
