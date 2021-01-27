@@ -16,6 +16,7 @@ def createOrPrepend(text, path):
 	    subprocess.call('echo "'+text+'" >> '+path, shell=True)
 
 def erase():
+    subprocess.run('rm ~/Documents/erase.txt', shell=True)
     pw = str(random.getrandbits(256))
     file = "This is the first command:\n"
     file = file + "sudo hdparm -I /dev/sda\n"

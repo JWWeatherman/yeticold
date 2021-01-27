@@ -60,9 +60,8 @@ else:
         print('Running Yeti Level Three on Primary PC')
         print('********************' + os.linesep)
         subprocess.run('sudo python3 ~/yeticold/utils/CreateShortcutsPrimary.py '+HOME, shell=True, check=False)
-        subprocess.Popen('python3 ~/yeticold/appyeticold.py', shell=True, start_new_session=True)
-        subprocess.run('sleep 3', shell=True, check=False) # 3 sec pause for webserver before loading html
-        subprocess.run('xdg-open http://localhost:5000/', shell=True, check=False)
+        subprocess.Popen('sleep 3; xdg-open http://localhost:5000/', shell=True, start_new_session=True)
+        subprocess.run('python3 ~/yeticold/appyeticold.py', shell=True, check=False)
 
     elif sys.argv[1].lower() == 'yetilevelthreesecondarycreate':
         print('********************')
@@ -70,9 +69,8 @@ else:
         print('********************' + os.linesep)
         subprocess.run('sudo python3 ~/yeticold/utils/CreateShortcutsSecondary.py '+HOME, shell=True, check=False)
         subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
-        subprocess.Popen('python3 ~/yeticold/appyeticold.py', shell=True, start_new_session=True)
-        subprocess.run('sleep 3', shell=True, check=False)
-        subprocess.run('xdg-open http://localhost:5000/off', shell=True, check=False)
+        subprocess.Popen('sleep 3; xdg-open http://localhost:5000/off', shell=True, start_new_session=True)
+        subprocess.run('python3 ~/yeticold/appyeticold.py', shell=True, check=False)
 
     elif sys.argv[1].lower() == 'yetilevelthreesecondaryrecover':
         print('********************')

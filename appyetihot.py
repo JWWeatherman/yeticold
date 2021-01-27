@@ -36,11 +36,14 @@ def YHmenu():
             subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
         elif request.form['option'] == 'load':
             v.mode = "YetiLevelOneLoad"
-            v.route = '/YHRrescanwallet'
+            v.route = '/recoverredirect'
         elif request.form['option'] == 'create':
             v.mode = "YetiLevelOneCreate"
             v.route = '/YHgetseed'
             subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
+        elif request.form['option'] == 'erase':
+            v.mode = "YetiLevelOneErase"
+            return redirect('/copyeraseErase')
         return redirect('/YHblockchain')
     return render_template('menu.html', yeti='Hot', wallet=v.wallet)
 
@@ -156,6 +159,18 @@ def recoverredirect():
     if request.method == 'GET':
         erase()
     return render_template('recoverredirect.html', yeti='Hot', url='Core1.yeticold.com')
+
+@app.route("/copyeraseErase", methods=['GET', 'POST'])
+def copyeraseErase():
+    if request.method == 'GET':
+        erase()
+    if request.method == 'POST':
+        return redirect('/eraseredirect')
+    return render_template('copyeraseErase.html', step=1, yeti='Hot')
+
+@app.route("/eraseredirect", methods=['GET', 'POST'])
+def eraseredirect():
+    return render_template('eraseredirect.html', step=2, yeti='Hot')
 
 if __name__ == "__main__":
     app.run()
