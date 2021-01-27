@@ -10,7 +10,7 @@ v.wallet_template = "http://{rpc_username}:{rpc_password}@{rpc_host}:{rpc_port}/
 from formating import *
 from btcrpcfunctions import blockheight
 from yetifunctions import *
-from yetiroutefunctions import * 
+from yetiroutefunctions import *
 app = Flask(__name__)
 
 @app.errorhandler(werkzeug.exceptions.InternalServerError)
@@ -129,7 +129,7 @@ def createredirect():
     if request.method == 'GET':
         erase()
     return render_template('createredirect.html', yeti='Hot', url='guide1.yeticold.com', step=14)
-    
+
 @app.route('/YHRinputseed', methods=['GET', 'POST'])
 def YHRinputseed():
     if request.method == 'POST':
@@ -158,7 +158,7 @@ def YHRrescanwallet():
 def recoverredirect():
     if request.method == 'GET':
         erase()
-    return render_template('recoverredirect.html', yeti='Hot', url='Core1.yeticold.com')
+    return render_template('recoverredirect.html', yeti='Hot', url='core1.yeticold.com')
 
 @app.route("/copyeraseErase", methods=['GET', 'POST'])
 def copyeraseErase():
