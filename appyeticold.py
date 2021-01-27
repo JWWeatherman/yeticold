@@ -136,8 +136,13 @@ def copyeraseErase():
     if request.method == 'GET':
         erase()
     if request.method == 'POST':
-        return redirect('/recoverredirect')
-    return render_template('copyerase.html', step=1)
+        return redirect('/eraseredirect')
+    return render_template('copyeraseErase.html', step=1)
+
+@app.route("/eraseredirect", methods=['GET', 'POST'])
+def eraseredirect():
+    return render_template('eraseredirect.html', step=2)
+
 
 
 ##WATCH ROUTES
