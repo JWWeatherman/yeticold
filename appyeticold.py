@@ -67,6 +67,9 @@ def menu():
             v.mode = "YetiLevelThreePrimaryWatch"
             v.route = '/scandescriptorWatch'
             subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
+        elif request.form['option'] == 'erase':
+            v.mode = "YetiLevelThreePrimaryErase"
+            return redirect('/copyeraseErase')
         return redirect('/blockchain')
     return render_template('menu.html', wallet=v.wallet, yeti='Cold')
 
@@ -125,6 +128,17 @@ def connection():
         forgetnetworks.forget_networks()
         return redirect(v.route)
     return render_template('connection.html', step=8)
+
+##ERASE ROUTES
+
+@app.route("/copyeraseErase", methods=['GET', 'POST'])
+def copyeraseErase():
+    if request.method == 'GET':
+        erase()
+    if request.method == 'POST':
+        return redirect('/recoverredirect')
+    return render_template('copyerase.html', step=1)
+
 
 ##WATCH ROUTES
 

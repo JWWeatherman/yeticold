@@ -58,6 +58,16 @@
         </div>
       </div>
     {% endif %}
+      <div class="card" style="margin-top: 3rem;">
+        <div class="card-body">
+          <h4 class="card-title">Erase Your Laptop.</h4>
+          <p class="card-text">Erase your laptop to remove any sensitive data.</p>
+          <form action="" method="post">
+            <input style="display: none;" name="option" value="erase">
+            <input class="btn btn-primary" type="submit" id="next" value="Erase Laptop">
+          </form>
+        </div>
+      </div>
     </div>
     <script>
       navbar("{{yeti}}", "{{url_for('static', filename='yeti.png')}}");
