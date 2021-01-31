@@ -17,7 +17,8 @@ def createOrPrepend(text, path):
 
 def erase():
     subprocess.run('rm ~/Documents/erase.txt', shell=True)
-    pw = str(random.getrandbits(256))
+    num = padhex(hex(random.getrandbits(256))[2:])
+    pw = str(base64.b64encode(bytes.fromhex(num))[:32].decode("utf-8"))
     file = "This is the first command:\n"
     file = file + "sudo hdparm -I /dev/sda\n"
     file = file + " \n"
