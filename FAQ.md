@@ -31,6 +31,10 @@ A laptop(s) that can run Ubuntu and Bitcoin Core is required. At the time of thi
 ### Why do I need a printer?
 You only need a printer for Level 3 and it is used to print out recovery instructions. The printer will be used to print your seed words.
 
+### What kind of CDs should I buy?
+You don't need to buy any special type of CDs. For Level 1 and Level 2 you will have multiple copies of any important data stored on CDs and Level 3 you also have a paper backup in case your CDs are lost or damaged. All CDs are much better storage devices than any USB or hardware wallet storage devices because a laser is used to 
+burn a thin piece of plastic to store a 1 or 0 instead of a tiny amount of electrical charge. This is much more reliable for long term storage.
+
 ### When using Level 3 it requires two laptops, do the laptops need to be the same?
 No. Any laptops that can run Ubuntu and Bitcoin core will work great.
 
