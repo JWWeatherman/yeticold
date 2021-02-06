@@ -22,8 +22,6 @@ The most time consuming part of yeti is waiting for bitcoin core to sync with th
 
 For the part where you are actually doing something it takes less than an hour.
 
-## Hardware
-
 ### Does it make sense to get a faster laptop to speed up the process?
 Probably not as you will only work with yeti a couple times a year so you won't get a ton of use out of faster hardware. However, an SSD drive is about $50 and makes syncing much faster so if you are a bitcoin enthusiast and you like to test and experiment with bitcoin core it is worth doing.
 
@@ -41,8 +39,6 @@ Any cheap USB sticks will work fine.
 
 ### Should I try to get a laptop without wifi?
 No. Yeti disables your network connections before generating your seed words. It couldn't hurt to have a laptop without wifi or only use your Ethernet port for added assurance, but it's probably not worth the hassle.
-
-## Seed
 
 ### How can I make sure my seed phrases are safe?
 When you follow the instructions in Yeti you will store your seed words in places like safety deposit boxes and home safes. For Level 2 and Level 3 an attacker would need to gain access to 3 of those locations so securing your seed words is much easier. 
@@ -69,9 +65,27 @@ Always store your seeds with people and locations that do not know they are stor
 ### How can I be sure my seed is random? 
 Yeti uses Bitcoin Core to generate your randomness. This is the most trustworthy software so it is the only choice for storing significant amounts of bitcoin.
 
-## Any podcasts about the project?
+### Any podcasts about the project?
 - [McFloogle Episode 171 – Frigid Bitcoin Cold Storage Using Yeti Cold with JW and Will Weatherman](https://www.mcfloogle.com/2019/11/18/episode-171-frigid-bitcoin-cold-storage-using-yeti-cold-with-jw-and-will-weatherman/)
 
 - [The Unhashed Podcast - Cold Storage Done Right (and Wrong) w. JW Weatherman](https://www.stitcher.com/podcast/emissary-ventures-llc/unhashed-podcast/e/76243950)
 
 - [Advanced Tech Podcast Episode 46 - Yeti Cold and Bitcoin Core With JW Weatherman, Will and Robert Spigler](https://advancetechmedia.org/episode-046-weatherman-spigler/)
+
+### Is it dangerous to have all the seeds required for spending on the same laptop at the same time?
+No. For Yeti Level 1 and Level 2 you are using a dedicated laptop that has no other software installed outside bitcoin core. This makes it very difficult for an attacker. Seeds are also only on the laptop for a short period of time when spending and then the laptops are erased. For Level 3 seeds are never on a laptop that is internet connected. Level 3 is appropriate for up to 10M USD (in 2018 purchasing power). For amounts over 10M USD Level 4 is under development and will require additional hardware so that two seeds are never on the same device.
+
+### Does Yeti Use Seed Words?
+Yes. We use the WIF format and NATO words to make writing down seed words stress free.
+
+### Why doesn't Yeti use Bip39 for Seed Words?
+Bip39 is not supported by Bitcoin Core. The bip itself shows that the status of the proposal is that it is "Unanimously Discouraged for Implementation." The reasons for rejecting it fall into two categories. First there are concerns about the cryptographic algorithms used. While the Yeti developers do not understand the details of these concerns because we are not cryptographers we don't see the logic in accepting the risk of using a controversial proposal without gaining any benefit. 
+
+The second set of concerns is around the need to store mappings of words to numbers used in seeds to spend your bitcoin. This is even worse because every human language needs to have a different dictionary and if any of those mappings of words to numbers is lost or corrupted those users will lose all of their stored bitcoin. 
+
+Another problem with bip39 that was of particular concern to Yeti contributors is that some of the words in bip39 look similar to one another when hand written. This could create a false sense of security for users that could cause them to lose bitcoin where it would actually be better to have users hand write the letters and numbers they have already learned can be confused for one another.
+
+To solve these problems the Yeti contributors decided that the best solution is to use the well established WIF standard that looks like "abc123" and simply translate those letters and numbers into "alpha bravo charlie ONE TWO THREE." This prevents all of the problems with Bip39. There are no mappings to be lost, the words are very difficult to confuse for other words and the only algorithms involved are universally approved by the smartest cryptographers in bitcoin.
+
+
+
