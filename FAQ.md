@@ -10,6 +10,11 @@ https://yeticold.com/Warm/step1
 Level 3
 https://yeticold.com/Cold/step1
 
+### Should I read this FAQ if I am a normal user?
+Probably not. Yeti was designed so that you can simply start at yeticold.com and follow simple instructions to end up with a bitcoin wallet that is appropriate for the amount of bitcoin you are storing. If you get stuck on a step you should watch the videos linked above or reach out on slack:
+
+https://join.slack.com/t/yeticold/shared_invite/zt-hisfxrra-BZzrYCDnqFv6whxVn~6FQQ
+
 ### How much knowledge of Linux is required?
 None. Installing Ubuntu is the only challenging task and it is no more difficult than installing Windows or Mac OS. Even if you have never installed an OS before it is not difficult and you can get support from our slack channel at:
 
@@ -21,6 +26,10 @@ You can also hire a local computer shop to install Ubuntu for you for about $30 
 The most time consuming part of yeti is waiting for bitcoin core to sync with the network. With an SSD drive this can be done overnight, but if you have an HDD (old style) drive it could take up to a week.
 
 For the part where you are actually doing something it takes less than an hour.
+
+### Do I need to download the whole blockchain if I already have a node?
+No. If you have a .bitcoin folder that is completely trustworthy you can copy it into the home directory before you begin. However if you generated the .bitcoin folder on a computer that has malware it is possible that you will be introducing that to your trustworthy laptop by copying over the .bitcoin folder so this is only recommended for advanced users. Once you setup Yeti you will have a trustworthy .bitcoin folder on your internet connected laptop so making a backup on an external
+hard drive is a reasonable thing to do, but you need to be careful to delete any wallet.dat files so this is also only recommened for advanced users. You certainly do not want to use a .bitcoin folder from someone else unless is it only for testing with tiny amounts.
 
 ### Does it make sense to get a faster laptop to speed up the process?
 Probably not as you will only work with yeti a couple times a year so you won't get a ton of use out of faster hardware. However, an SSD drive is about $50 and makes syncing much faster so if you are a bitcoin enthusiast and you like to test and experiment with bitcoin core it is worth doing.
@@ -87,7 +96,7 @@ Bip39 is not supported by Bitcoin Core. The bip itself shows that the status of 
 
 The second set of concerns is around the need to store mappings of words to numbers used in seeds to spend your bitcoin. This is even worse because every human language needs to have a different dictionary and if any of those mappings of words to numbers is lost or corrupted those users will lose all of their stored bitcoin. 
 
-Another problem with bip39 that was of particular concern to Yeti contributors is that some of the words in bip39 look similar to one another when hand written. This could create a false sense of security for users that could cause them to lose bitcoin where it would actually be better to have users hand write the letters and numbers they have already learned can be confused for one another.
+Another problem with Bip39 that was of particular concern to Yeti contributors is that some of the words in Bip39 look similar to one another when hand written. This could create a false sense of security for users that could cause them to lose bitcoin where it would actually be better to have users hand write the letters and numbers they have already learned can be confused for one another.
 
 To solve these problems the Yeti contributors decided that the best solution is to use the well established WIF standard that looks like "abc123" and simply translate those letters and numbers into "alpha bravo charlie ONE TWO THREE." This prevents all of the problems with Bip39. There are no mappings to be lost, the words are very difficult to confuse for other words and the only algorithms involved are universally approved by the smartest cryptographers in bitcoin.
 
