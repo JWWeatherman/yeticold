@@ -29,7 +29,7 @@ Probably not as you will only work with yeti a couple times a year so you won't 
 A laptop(s) that can run Ubuntu and Bitcoin Core is required. At the time of this writing almost any laptop will work but if your laptop has an SSD type hard drive some steps will take a few hours instead of a few days. Laptops without SSD type drives cost about $150 USD and laptops with SSD drives cost about $200 USD.
 
 ### Why do I need a printer?
-You only need a printer for Level 3 and it is used to print out recovery instructions. The printer will be used to print your seed words.
+You only need a printer for Level 3 and it is used to print out recovery instructions. The printer will not be used to print your seed words.
 
 ### What kind of CDs should I buy?
 You don't need to buy any special type of CDs. For Level 1 and Level 2 you will have multiple copies of any important data stored on CDs and Level 3 you also have a paper backup in case your CDs are lost or damaged. All CDs are much better storage devices than any USB or hardware wallet storage devices because a laser is used to 
