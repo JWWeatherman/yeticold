@@ -1,6 +1,7 @@
 <html>
  <head>
-    <title>Yeti Bitcoin Storage</title>
+    <title>Yeti Bitcoin Wallet</title>
+    <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet", href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet", href="{{ url_for('static', filename='bootstrap.min.css') }}">
@@ -14,12 +15,20 @@
       <div>
           <ul>
             {%if switch %}
-                <li>On your <b>Secondary Laptop</b> open Firefox and go to <code>{{url}}</code> to begin setup of your <b>Secondary Laptop</b> while this laptop downloads the blockchan.</li>
-                <li>Downloading the block chain on this laptop (<b>Primary Laptop</b>) can take as little as 4 hours if you have an SSD and a fast internet connection or as long as a couple of weeks if you do not as it is validating every bitcoin transaction from the start of the network in 2009 (full node).</li>
+                {%if mode == 'YetiLevelThreePrimaryLoad'%}
+                <li style="color: red;">On your <b>Secondary Laptop</b> click on the <b>nine dots</b> in the bottom left corner and then open <b>L3Load</b></li>
+                {%else%}
+                  {%if disconnected%}
+                    <li style="color: red;">On your <b>Secondary Laptop</b> click on the <b>nine dots</b> in the bottom left corner and then open <b>{{shortcut}}</b>.</li>
+                  {%elif not mode == 'YetiLevelThreePrimaryWatch'%}
+                    <li style="color: red;">On your <b>Secondary Laptop</b> open Firefox and go to <code>{{url}}</code> to begin setup of your <b>Secondary Laptop</b> while this laptop downloads the blockchain.</li>
+                  {%endif%}
+                {%endif%}
+                <li>Downloading the blockchain on this laptop (<b>Primary Laptop</b>) can take as little as 4 hours if you have an SSD and a fast internet connection or as long as a couple of weeks if you do not as it is validating every bitcoin transaction from the start of the network in 2009 (full node).</li>
             {%elif offline %}
                 <li>Because this device is only used to sign transactions it does not need to download the blockchain so you will be able to click <b>Next</b> within about 10 minutes.</li>
             {%endif%}
-            {%if yeti != 'Cold'%}
+            {%if yeti == 'Hot' or yeti == 'Warm'%}
             <li>Yeti has opened Bitcoin Core. When Bitcoin Core is ready the button will be enabled and you should click <b>Next</b> to continue.</li>
             {%endif%}
           </ul>

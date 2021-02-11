@@ -11,11 +11,8 @@
   <body>
     <div id='navbar'></div>
     <div class="container" style="margin-top: 3rem;">
-      <h2>Error: Yeti ran into an error while running.</h2>
-      <p>
-        Please open <a href="https://yeticold.slack.com">yeticold.slack.com</a> in a new tab and provide us with this error in the support channel.
-      </p>
-      <p>{{error}}</p>
+      <h2>Step {{step}}: Finished</h2>
+        <p>You can now use bitcoin core on this device to see your transaction history and balance and to receive bitcoin transactions. If you want to erase this laptop click the <b>Erase Laptop</b> option after restarting Yeti.</p>
     </div>
     <script>
       navbar("{{yeti}}", "{{url_for('static', filename='yeti.png')}}");

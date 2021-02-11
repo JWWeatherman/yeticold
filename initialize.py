@@ -23,7 +23,8 @@ else:
     subprocess.run('cd ~', shell=True, check=False)
     subprocess.run('cd yeticold; git pull origin master 2> /dev/null; cd', shell=True, check=False)
     subprocess.run('sudo fuser -k 5000/tcp 2> /dev/null', shell=True, check=False)
-    subprocess.run('pkill -f firefox 2> /dev/null', shell=True, check=False)
+    subprocess.run('pkill firefox 2> /dev/null', shell=True, check=False)
+    subprocess.run('echo Yeti Cold is waiting for bitcoin core to shut down. If this message stays here longer than a minute delete the bitcoin.pid file located in your .bitcoin folder.', shell=True, check=False)
     if os.path.exists(HOME + "/.bitcoin"):
         subprocess.run('python3 ~/yeticold/utils/stopbitcoin.py', shell=True, check=False)
 
@@ -46,76 +47,60 @@ else:
         subprocess.run('pip3 install bip32', shell=True, check=False)
     
     subprocess.run('sleep 3', shell=True, check=False)
-    subprocess.Popen('firefox', shell=True, start_new_session=True)
     subprocess.run('sudo rm -r ~/yetiwallet* 2> /dev/null', shell=True, check=False)
     subprocess.run('sudo rm -r ~/.bitcoin/yetiwalletrec 2> /dev/null', shell=True, check=False)
     subprocess.run('sudo rm -r ~/.bitcoin/wallets/yetiwalletrec 2> /dev/null', shell=True, check=False)
     subprocess.run('sudo rm -r ~/.bitcoin/yetiwalletgen 2> /dev/null', shell=True, check=False)
     subprocess.run('sudo rm -r ~/.bitcoin/wallets/yetiwalletgen 2> /dev/null', shell=True, check=False)
+    subprocess.run('sudo cp '+HOME+'/yeticold/utils/erase.txt '+HOME+'/Documents/erase.txt 2> /dev/null', shell=True, check=False)
     # Finalize script based on processing mode
 
     if sys.argv[1].lower() == 'yetilevelthreeprimary':
         print('********************')
-        print('Running Yeti Level THree on Primary PC')
+        print('Running Yeti Level Three on Primary PC')
         print('********************' + os.linesep)
-        subprocess.Popen('python3 ~/yeticold/appyeticold.py', shell=True, start_new_session=True)
-        subprocess.run('sleep 3', shell=True, check=False) # 3 sec pause for webserver before loading html
-        subprocess.run('xdg-open http://localhost:5000/', shell=True, check=False)
+        subprocess.run('sudo python3 ~/yeticold/utils/CreateShortcutsPrimary.py '+HOME, shell=True, check=False)
+        subprocess.Popen('sleep 3; xdg-open http://localhost:5000/', shell=True, start_new_session=True)
+        subprocess.run('python3 ~/yeticold/appyeticold.py', shell=True, check=False)
 
     elif sys.argv[1].lower() == 'yetilevelthreesecondarycreate':
         print('********************')
         print('Running Yeti Level Three Create Wallet on Secondary PC')
         print('********************' + os.linesep)
+        subprocess.run('sudo python3 ~/yeticold/utils/CreateShortcutsSecondary.py '+HOME, shell=True, check=False)
         subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
-        subprocess.Popen('python3 ~/yeticold/appyeticold.py', shell=True, start_new_session=True)
-        subprocess.run('sleep 3', shell=True, check=False)
-        subprocess.run('xdg-open http://localhost:5000/off', shell=True, check=False)
+        subprocess.Popen('sleep 3; xdg-open http://localhost:5000/off', shell=True, start_new_session=True)
+        subprocess.run('python3 ~/yeticold/appyeticold.py', shell=True, check=False)
 
     elif sys.argv[1].lower() == 'yetilevelthreesecondaryrecover':
         print('********************')
         print('Running Yeti Level Three Recover Wallet on Secondary PC')
         print('********************' + os.linesep)
+        subprocess.run('sudo python3 ~/yeticold/utils/CreateShortcutsSecondary.py '+HOME, shell=True, check=False)
         subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
-        subprocess.Popen('python3 ~/yeticold/appyeticold.py', shell=True, start_new_session=True)
-        subprocess.run('sleep 3', shell=True, check=False)
-        subprocess.run('xdg-open http://localhost:5000/offrec', shell=True, check=False)
+        subprocess.Popen('sleep 3; xdg-open http://localhost:5000/offrec', shell=True, start_new_session=True)
+        subprocess.run('python3 ~/yeticold/appyeticold.py', shell=True, check=False)
 
     elif sys.argv[1].lower() == 'yetilevelthreesecondaryload':
         print('********************')
         print('Running Yeti Level Three Load Wallet on Secondary PC')
         print('********************' + os.linesep)
-        subprocess.Popen('python3 ~/yeticold/appyeticold.py', shell=True, start_new_session=True)
-        subprocess.run('sleep 3', shell=True, check=False)
-        subprocess.run('xdg-open http://localhost:5000/offimp', shell=True, check=False)
+        subprocess.run('sudo python3 ~/yeticold/utils/CreateShortcutsSecondary.py '+HOME, shell=True, check=False)
+        subprocess.Popen('sleep 3; xdg-open http://localhost:5000/offimp', shell=True, start_new_session=True)
+        subprocess.run('python3 ~/yeticold/appyeticold.py', shell=True, check=False)
 
     elif sys.argv[1].lower() == 'yetilevelone':
         print('********************')
         print('Running Yeti Level One')
         print('********************' + os.linesep)
-        subprocess.Popen('python3 ~/yeticold/appyetihot.py', shell=True, start_new_session=True)
-        subprocess.run('sleep 3', shell=True, check=False)
-        subprocess.run('xdg-open http://localhost:5000/', shell=True, check=False)
+        subprocess.run('sudo python3 ~/yeticold/utils/CreateShortcutsPrimary.py '+HOME, shell=True, check=False)
+        subprocess.Popen('sleep 3; xdg-open http://localhost:5000/', shell=True, start_new_session=True)
+        subprocess.run('python3 ~/yeticold/appyetihot.py', shell=True, check=False)
 
     elif sys.argv[1].lower() == 'yetileveltwo':
         print('********************')
         print('Running Yeti Level Two')
         print('********************' + os.linesep)
-        subprocess.Popen('python3 ~/yeticold/appyetiwarm.py', shell=True, start_new_session=True)
-        subprocess.run('sleep 3', shell=True, check=False)
-        subprocess.run('xdg-open http://localhost:5000/', shell=True, check=False)
-
-    elif sys.argv[1].lower() == 'bitcoincoreofflineprimary':
-        print('********************')
-        print('Running Utility to Transact with Bitcoin Core Offline on Primary PC')
-        print('********************' + os.linesep)
-        subprocess.Popen('python3 ~/yeticold/BCOffline.py', shell=True, start_new_session=True)
-        subprocess.run('sleep 3', shell=True, check=False)
-        subprocess.run('xdg-open http://localhost:5000/BCblockchain', shell=True, check=False)
-
-    elif sys.argv[1].lower() == 'bitcoincoreofflinesecondary':
-        print('********************')
-        print('Running Utility to Transact with Bitcoin Core Offline on Secondary PC')
-        print('********************' + os.linesep)
-        subprocess.Popen('python3 ~/yeticold/BCOffline.py', shell=True, start_new_session=True)
-        subprocess.run('sleep 3', shell=True, check=False)
-        subprocess.run('xdg-open http://localhost:5000/BCblockchainB', shell=True, check=False) 
+        subprocess.run('sudo python3 ~/yeticold/utils/CreateShortcutsPrimary.py '+HOME, shell=True, check=False)
+        subprocess.Popen('sleep 3; xdg-open http://localhost:5000/', shell=True, start_new_session=True)
+        subprocess.run('python3 ~/yeticold/appyetiwarm.py', shell=True, check=False)

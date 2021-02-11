@@ -1,6 +1,7 @@
 <html>
  <head>
-    <title>Yeti Bitcoin Storage</title>
+    <title>Yeti Bitcoin Wallet</title>
+    <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet", href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet", href="{{ url_for('static', filename='bootstrap.min.css') }}">
@@ -16,7 +17,7 @@
       {% if wallet %}
         <div class="card" style="margin-top: 3rem;">
           <div class="card-body">
-            <h4 class="card-title">Load wallet currently stored on this machine.</h4>
+            <h4 class="card-title">Load Wallet</h4>
             <p class="card-text">This option is displayed if Yeti has detected that you already have a Yeti wallet on this laptop. This will open the wallet already on this laptop.</p>
             <form action="" method="post">
               <input style="display: none;" name="option" value="load">
@@ -27,7 +28,7 @@
       {% endif %}
       <div class="card" style="margin-top: 3rem;">
         <div class="card-body">
-          <h4 class="card-title">Create wallet</h4>
+          <h4 class="card-title">Create Wallet</h4>
           <p class="card-text">Create a new wallet to store your bitcoin.</p>
           <form action="" method="post">
             <input style="display: none;" name="option" value="create">
@@ -37,11 +38,33 @@
       </div>
       <div class="card" style="margin-top: 3rem;">
         <div class="card-body">
-          <h4 class="card-title">Recover wallet</h4>
+          <h4 class="card-title">Recover Wallet</h4>
           <p class="card-text">Restore a wallet you previously created. This will restore your existing wallet so that you can send or receive with your old wallet using this laptop.</p>
           <form action="" method="post">
             <input style="display: none;" name="option" value="recover">
             <input class="btn btn-primary" type="submit" id="next" value="Recover Wallet">
+          </form>
+        </div>
+      </div>
+      {% if yeti == 'Cold'%}
+      <div class="card" style="margin-top: 3rem;">
+        <div class="card-body">
+          <h4 class="card-title">Watch-only Wallet.</h4>
+          <p class="card-text">Restore a wallet you previously created for receiving and viewing purposes only. This only requires a single "Descriptor" CD.</p>
+          <form action="" method="post">
+            <input style="display: none;" name="option" value="watch">
+            <input class="btn btn-primary" type="submit" id="next" value="Watch-Only">
+          </form>
+        </div>
+      </div>
+    {% endif %}
+      <div class="card" style="margin-top: 3rem;">
+        <div class="card-body">
+          <h4 class="card-title">Erase Your Laptop.</h4>
+          <p class="card-text">Erase your laptop to remove any sensitive data.</p>
+          <form action="" method="post">
+            <input style="display: none;" name="option" value="erase">
+            <input class="btn btn-primary" type="submit" id="next" value="Erase Laptop">
           </form>
         </div>
       </div>

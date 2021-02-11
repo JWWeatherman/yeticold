@@ -1,6 +1,7 @@
 <html>
  <head>
-    <title>Yeti Bitcoin Storage</title>
+    <title>Yeti Bitcoin Wallet</title>
+    <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet", href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet", href="{{ url_for('static', filename='bootstrap.min.css') }}">
@@ -13,7 +14,7 @@
     </nav>
     <div class="container" style="margin-top: 3rem;">
       <h2>Step {{step}}: Switch to your {{laptop}} Laptop.</h2>
-      <p>
+      <p style="color:red;">
         {{instructions}}
       </p>
       <form action="" method="post" style="margin-top:35px;">

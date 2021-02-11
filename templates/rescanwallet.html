@@ -1,6 +1,7 @@
 <html>
  <head>
-    <title>Yeti Bitcoin Storage</title>
+    <title>Yeti Bitcoin Wallet</title>
+    <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet", href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet", href="{{ url_for('static', filename='bootstrap.min.css') }}">
@@ -10,8 +11,8 @@
   <body>
     <div id='navbar'></div>
     <div class="container" style="margin-top: 3rem;">
-      <h2>Step {{step}}: Rescan Block Chain</h2>
-      <p>Click <b>Next</b> to rescan the blockchain. This may take up to one hour.</p>
+      <h2>Step {{step}}: Rescan Blockchain</h2>
+      <p>Yeti is currently rescanning the blockchain. This may take up to one hour. Click <b>Next</b> when it completes.</p>
       <form action="" method="post">
         <input style="display: none;" name="option" value="VALUE">
         <input class="btn btn-primary" type="submit" id="next" value="Next">

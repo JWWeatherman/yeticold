@@ -5,15 +5,17 @@ from btcrpcfunctions import *
 from formating import *
 home = os.getenv("HOME")
 
-def blockChain(request, nextroute, mode):
+def blockChain(request, nextroute, mode, shortcut=''):
     if request.method == 'GET':
         if (os.path.exists(home + "/.bitcoin")) or mode == 'YetiLevelThreePrimaryLoad' or mode == 'YetiLevelTwoLoad' or mode == 'YetiLevelOneLoad':
             createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
+            if mode == 'YetiLevelThreePrimaryCreate' or mode == 'YetiLevelThreePrimaryRecover':
+                return redirect(shortcut)
             return redirect(nextroute)
         else:
             subprocess.call('mkdir ~/.bitcoin',shell=True)
         if mode == 'YetiLevelThreePrimaryCreate' or mode == 'YetiLevelTwoCreate' or mode == 'YetiLevelOneCreate':
-            createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nprune=550\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
+            createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nprune=25000\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
             return redirect(nextroute)
     if request.method == 'POST':
         subprocess.call('mkdir ~/.bitcoin',shell=True)
@@ -35,7 +37,7 @@ def openBitcoin(request, currentroute, nextroute, mode, yeti='Warm'):
                 v.IBD = True
     if request.method == 'POST':
         if v.IBD:
-            if mode == 'YetiLevelThreePrimaryCreate' or mode == 'YetiLevelThreePrimaryRecover':
+            if mode == 'YetiLevelThreePrimaryCreate' or mode == 'YetiLevelThreePrimaryRecover' or mode == 'YetiLevelThreePrimaryWatch':
                 handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpub" true true "" false true')
             elif mode == 'YetiLevelThreePrimaryLoad':
                 handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetiwalletpub"')
@@ -43,6 +45,7 @@ def openBitcoin(request, currentroute, nextroute, mode, yeti='Warm'):
                 handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletpriv" false true "" false true')
             elif mode == 'YetiLevelThreeSecondaryLoad' or mode == 'YetiLevelTwoLoad':
                 handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli loadwallet "yetiwalletpriv"')
+                return redirect(v.route)
             elif mode == 'YetiLevelOneCreate' or mode == 'YetiLevelOneRecover':
                 handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwallethot" false true')
             elif mode == 'YetiLevelOneLoad':
@@ -51,7 +54,7 @@ def openBitcoin(request, currentroute, nextroute, mode, yeti='Warm'):
         else:
             return redirect(currentroute)
 
-def scanDescriptor(request, currentroute, nextroute, offline=True):
+def scanDescriptor(request, currentroute, nextroute, offline=True, create=False):
     if request.method == 'POST':
         v.error = None
         v.pubdesc = request.form['descriptor'].replace('\n','')
@@ -63,10 +66,13 @@ def scanDescriptor(request, currentroute, nextroute, offline=True):
         if response[1] != b'':
             v.error = 'Invalid Descriptor: '+v.pubdesc
             return redirect(currentroute)
+        v.rescan = str(0)
+        if create:
+            v.rescan = '\"now\"'
         if offline:
-            handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now", "active": true}]\'')
+            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": '+v.rescan+', "active": true}]\'',shell=True,start_new_session=True)
         else:
-            handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": "now", "active": true}]\'')
+            subprocess.Popen('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpub importdescriptors \'[{ "desc": "'+v.pubdesc+'", "timestamp": '+v.rescan+', "active": true}]\'',shell=True,start_new_session=True)
         return redirect(nextroute)
 
 def getSeeds(request, nextroute):
@@ -76,14 +82,12 @@ def getSeeds(request, nextroute):
         else:
             v.privkeylist = generatePrivKeys()
         (v.newxpublist, v.xprivlist) = getxprivs(v.privkeylist)
-        v.addresses = []
         checksumSTR = None
         response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv getdescriptorinfo "wsh(multi(3,'+v.xprivlist[0]+'/*,'+v.xprivlist[1]+'/*,'+v.xprivlist[2]+'/*,'+v.xprivlist[3]+'/*,'+v.xprivlist[4]+'/*,'+v.xprivlist[5]+'/*,'+v.xprivlist[6]+'/*))"', True)
         checksumSTR = response["checksum"]
         v.pubdesc = response["descriptor"].replace('\n', '')
         desc = 'wsh(multi(3,'+v.xprivlist[0]+'/*,'+v.xprivlist[1]+'/*,'+v.xprivlist[2]+'/*,'+v.xprivlist[3]+'/*,'+v.xprivlist[4]+'/*,'+v.xprivlist[5]+'/*,'+v.xprivlist[6]+'/*))#'+checksumSTR
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletpriv importdescriptors \'[{ "desc": "'+desc+'", "timestamp": "now", "active": true}]\'')
-        v.walletimported = True
         path = home + '/Documents'
         for i in range(1,8):
             privkey = v.privkeylist[i-1]
@@ -152,9 +156,6 @@ def checkSeeds(request, currentroute, nextroute, yeti="Cold"):
             v.error = 'The seed words you entered are incorrect. This is probably because you entered a line twice or put them in the wrong order.'
 
 def importSeeds(request, currentroute, nextroute):
-    if request.method == 'GET':
-        if v.walletimported:
-            return redirect(nextroute)
     if request.method == 'POST':
         privkey = []
         for i in range(1,14):

@@ -10,7 +10,7 @@ v.wallet_template = "http://{rpc_username}:{rpc_password}@{rpc_host}:{rpc_port}/
 from formating import *
 from btcrpcfunctions import blockheight
 from yetifunctions import *
-from yetiroutefunctions import * 
+from yetiroutefunctions import *
 app = Flask(__name__)
 
 @app.errorhandler(werkzeug.exceptions.InternalServerError)
@@ -36,11 +36,14 @@ def YHmenu():
             subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
         elif request.form['option'] == 'load':
             v.mode = "YetiLevelOneLoad"
-            v.route = '/YHRrescanwallet'
+            v.route = '/recoverredirect'
         elif request.form['option'] == 'create':
             v.mode = "YetiLevelOneCreate"
             v.route = '/YHgetseed'
             subprocess.run('python3 ~/yeticold/utils/oldwallets.py 2> /dev/null', shell=True, check=False)
+        elif request.form['option'] == 'erase':
+            v.mode = "YetiLevelOneErase"
+            return redirect('/copyeraseErase')
         return redirect('/YHblockchain')
     return render_template('menu.html', yeti='Hot', wallet=v.wallet)
 
@@ -56,7 +59,7 @@ def YHopenbitcoin():
     route = openBitcoin(request, '/YHopenbitcoin', v.route, mode=v.mode, yeti='Hot')
     if route:
         return route
-    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=5, yeti='Hot', offline=False)
+    return render_template('openbitcoin.html', progress=v.progress, IBD=v.IBD, step=5, yeti='Hot', offline=False, mode=v.mode)
 
 @app.route("/YHgetseed", methods=['GET', 'POST'])
 def YHgetseed():
@@ -83,7 +86,7 @@ def YHgetseed():
                 phrasenum = phrasenum + 1
             line = line + checksum(line)
             file = file + line + '\n'
-        createOrPrepend(file, home+'/Documents/yhseed.txt')
+        createOrPrepend(file, home+'/Documents/yetiseed.txt')
         return redirect('/YHcopyseed')
     return render_template('getseed.html', yeti='Hot', step=6)
 
@@ -92,12 +95,13 @@ def YHcopyseed():
     if request.method == 'POST':
         v.privkeycount = 0
         return redirect('/YHcheckseed')
-    return render_template('copyseed.html', yeti='Hot', step=9)
+    return render_template('copyseed.html', yeti='Hot', step=7)
 
 #confirm privkey
 @app.route('/YHcheckseed', methods=['GET', 'POST'])
 def YHcheckseed():
     if request.method == 'POST':
+        v.error = None
         privkeylisttoconfirm = []
         v.oldkeys = []
         for i in range(1,14):
@@ -113,17 +117,19 @@ def YHcheckseed():
             v.oldkeys = None
             v.privkeycount = v.privkeycount + 1
             if v.privkeycount == 5:
-                return redirect('/YHRdisplaywallet')
+                return redirect('/createredirect')
             else:
                 return redirect('/YHcheckseed')
         else:
             v.error = 'The seed words you entered are incorrect. This is probably because you entered a line twice or put them in the wrong order.'
-    return render_template('checkseeds.html', x=v.privkeycount+1, error=v.error, step=v.privkeycount+8,oldkeys=v.oldkeys, yeti='Hot')
+    return render_template('checkseeds.html', x=v.privkeycount+1, error=v.error, step=v.privkeycount+8,oldkeys=v.oldkeys, yeti='Hot', nextroute='/createredirect')
 
-@app.route("/YHRdisplaywallet", methods=['GET', 'POST'])
-def YHRdisplaywallet():
-    return render_template('displaywallet.html', yeti='Hot')
-    
+@app.route("/createredirect", methods=['GET', 'POST'])
+def createredirect():
+    if request.method == 'GET':
+        erase()
+    return render_template('createredirect.html', yeti='Hot', url='guide1.yeticold.com', step=14)
+
 @app.route('/YHRinputseed', methods=['GET', 'POST'])
 def YHRinputseed():
     if request.method == 'POST':
@@ -145,8 +151,26 @@ def YHRinputseed():
 def YHRrescanwallet():
     if request.method == 'POST':
         handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwallethot rescanblockchain '+blockheight())
-        return redirect('/YHRdisplaywallet')
-    return render_template('rescanwallet.html', yeti='Hot', step=7)
+        return redirect('/recoverredirect')
+    return render_template('rescanwallethot.html', yeti='Hot', step=7)
+
+@app.route("/recoverredirect", methods=['GET', 'POST'])
+def recoverredirect():
+    if request.method == 'GET':
+        erase()
+    return render_template('recoverredirect.html', yeti='Hot', url='core1.yeticold.com')
+
+@app.route("/copyeraseErase", methods=['GET', 'POST'])
+def copyeraseErase():
+    if request.method == 'GET':
+        erase()
+    if request.method == 'POST':
+        return redirect('/eraseredirect')
+    return render_template('copyeraseErase.html', step=1, yeti='Hot')
+
+@app.route("/eraseredirect", methods=['GET', 'POST'])
+def eraseredirect():
+    return render_template('eraseredirect.html', step=2, yeti='Hot')
 
 if __name__ == "__main__":
     app.run()

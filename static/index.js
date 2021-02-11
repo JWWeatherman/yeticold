@@ -4,7 +4,7 @@ var navbar = (yeti='Cold', url) => {
   } else if (yeti == 'Hot') {
     document.getElementById('navbar').innerHTML = '<nav class="form-row navbar navbar-light bg-danger"><img src="'+url+'" width="50" height="50" class="align-top" alt=""><h3 style="color:white;margin:0;">Yeti Level 1 Wallet</h3></nav>';
   } else if (yeti == 'BCO') {
-    document.getElementById('navbar').innerHTML = '<nav class="form-row navbar navbar-light bg-info"><img src="'+url+'" width="50" height="50" class="align-top" alt=""><h3 style="color:blac;margin:0;">Bitcoin Core Offline</h3></nav>';
+    document.getElementById('navbar').innerHTML = '<nav class="form-row navbar navbar-light bg-info"><img src="'+url+'" width="50" height="50" class="align-top" alt=""><h3 style="color:black;margin:0;">Bitcoin Core Offline</h3></nav>';
   } else {
     document.getElementById('navbar').innerHTML = '<nav class="form-row navbar navbar-light bg-primary"><img src="'+url+'" width="50" height="50" class="align-top" alt=" "><h3 style="color:white;margin:0;">Yeti Level 3 Wallet</h3></nav>';
   }
@@ -566,22 +566,31 @@ var CheckSumMatch = (passphraselist, checksum) => {
    return tooltip
  }
 
- var importfile = () => {
-   let file = document.getElementById("filepath").files[0]
-   if (file != undefined) {
-     let reader = new FileReader();
-     document.getElementById('filepath').value = ""
-     reader.onload = function(evt) {
-       let list = evt.target.result.toString().split('\n')
-       document.getElementById('descriptor').value = list[16]
-       for (let i = 0; i <= 12; i++) {
-         document.getElementById('row' + (i+1)).value = list[i]
-       }
-     }
-     reader.readAsText(file);
-   }
-   setTimeout(() => { importfile() }, 80)
- }
+var importfile = (yeti) => {
+  let file = document.getElementById("filepath").files[0]
+  if (file != undefined) {
+    let reader = new FileReader()
+    document.getElementById('filepath').value = ""
+    if (yeti !== 'Hot'){
+      reader.onload = function(evt) {
+        let list = evt.target.result.toString().split('\n')
+        document.getElementById('descriptor').value = list[16] 
+        for (let i = 0; i <= 12; i++) {
+          document.getElementById('row' + (i+1)).value = list[i]
+        }
+      }
+    } else {
+      reader.onload = function(evt) {
+        let list = evt.target.result.toString().split('\n')
+        for (let i = 0; i <= 12; i++) {
+          document.getElementById('row' + (i+1)).value = list[i]
+        }
+      }
+    }
+    reader.readAsText(file);
+  }
+  setTimeout(() => { importfile(yeti) }, 80)
+}
 
 var importdescriptor = (line) => {
    let file = document.getElementById("filepath").files[0]
@@ -597,8 +606,8 @@ var importdescriptor = (line) => {
    setTimeout(() => { importdescriptor(line) }, 80)
  }
 
- var highlightBin = () => {
-   for (var i = 1; i <= 7; i++) {
+ var highlightBin = (binline) => {
+   for (var i = 1; i <= binline; i++) {
       var binary = document.getElementById('binary' + i).value
       document.getElementById('count' + i).innerHTML = binary.length + ' \\ 256'
       if (binary.length === 256 && document.getElementById('binary' + i).value.replace(/1/g, '').replace(/0/g,'').length === 0) {
@@ -609,7 +618,7 @@ var importdescriptor = (line) => {
         document.getElementById('binary' + i).style.backgroundColor = ""
       }
    }
-   setTimeout(() => {highlightBin()}, 80)
+   setTimeout(() => {highlightBin(binline)}, 80)
  }
 
 

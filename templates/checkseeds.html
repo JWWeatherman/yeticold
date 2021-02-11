@@ -1,6 +1,7 @@
 <html>
 <head>
-    <title>Yeti Bitcoin Storage</title>
+    <title>Yeti Bitcoin Wallet</title>
+    <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet", href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet", href="{{ url_for('static', filename='bootstrap.min.css') }}">
@@ -21,11 +22,11 @@
               <input style="display: none;" name="option" value="Skip">
               <li>If you are just testing Yeti and you don't plan to use larger amounts click to <a href="{{nextroute}}" style="color:gray;text-decoration: underline;" type="submit" id="next" value="Skip">skip</a> this check.</li>
             </form>
-            <li>If you lose access to more than 4 of your private keys your bitcoin will be permanently lost.</li>
+            <li>If you lose access to more than 4 of your seeds your bitcoin will be permanently lost.</li>
             {% if yeti == 'Warm' %}
             <li>Insert your CD labeled "Seed {{x}}" and select the file "YetiSeed{{x}}.txt" and then click <b>Next</b> to continue.</li>
             {% elif yeti == 'Hot' %}
-            <li>Insert one of your 5 CDs labeled "Seed" and select the file "yhseed.txt" and then click <b>Next</b> to continue.</li>
+            <li>Insert one of your 5 CDs labeled "Seed Level 1" and select the file "YetiSeed.txt" and then click <b>Next</b> to continue.</li>
             {% else %}
             <li>Enter your seed words below to ensure you wrote them down correctly.</li>
             {% endif %}
@@ -45,7 +46,7 @@
             </div>
           </div>
           {% endif %}
-          {% if yeti == 'Warm'%}
+          {% if yeti != 'Hot'%}
           <div class="form-row" style="display:none;">
             <div class="input-group col-md-10 mb-3">
               <div class="input-group-prepend">
@@ -162,7 +163,6 @@
         <input disabled class="btn btn-primary" type="submit" id="nextkey" value="Next">
       </form>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
 <script>   
     $('[data-toggle="tooltip"]').tooltip();  
     navbar("{{yeti}}", "{{url_for('static', filename='yeti.png')}}");
@@ -202,7 +202,7 @@
       }
     }); 
     highlightrows()
-    importfile()
+    importfile("{{yeti}}")
     </script>
   </body>
 </html>

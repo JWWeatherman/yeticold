@@ -15,6 +15,20 @@ def createOrPrepend(text, path):
     else:
 	    subprocess.call('echo "'+text+'" >> '+path, shell=True)
 
+def erase():
+    subprocess.run('rm ~/Documents/erase.txt', shell=True)
+    num = padhex(hex(random.getrandbits(256))[2:])
+    pw = str(base64.b64encode(bytes.fromhex(num))[:32].decode("utf-8"))
+    file = "This is the first command:\n"
+    file = file + "sudo hdparm -I /dev/sda\n"
+    file = file + " \n"
+    file = file + "This is the second command:\n"
+    file = file + "sudo hdparm --user-master u --security-set-pass "+pw+" /dev/sda\n"
+    file = file + " \n"
+    file = file + "This is the third command:\n"
+    file = file + "sudo time hdparm --user-master u --security-erase-enhanced "+pw+" /dev/sda\n"
+    createOrPrepend(file, home+'/Documents/erase.txt')
+
 def readFile(path):
     f = open(path,'r')
     temp = f.read()
@@ -35,7 +49,11 @@ def getPrunBlockheightByDate(date):
     diff = (int(d2_ts - d1_ts) / 60) / 10
     add = diff / 10
     blockheight = diff + add + 550
+    print(blockheight)
     blockheight = int(blockheight)
+    if blockheight < 25000:
+        blockheight = 25000
+    return blockheight
 
 def generatePrivKeys(genbinary=False):
     handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletgen"')

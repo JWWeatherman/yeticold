@@ -1,6 +1,7 @@
 <html>
  <head>
-    <title>Yeti Bitcoin Storage</title>
+    <title>Yeti Bitcoin Wallet</title>
+    <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet", href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet", href="{{ url_for('static', filename='bootstrap.min.css') }}">
@@ -13,10 +14,10 @@
       <h2>Step {{step}}: Further Randomize Your Bitcoin Seed</h2>
       <p>Provide additional entropy and click <b>Next</b>, or click <b>Skip</b> to continue.</p>
       <ul>
-          <li>Your Bitcoin Seed is the secret piece of data that allow you to control the bitcoin as long as you have access to it.</li>
-          <li>Yeti uses Bitcoin Core to generate your seeds, but if you would like to provide additional randomness you can do so here.</li>
-          <li>This is not necissary. If there were concerns that bitcoin core was not random enough additional randomness could be added without user hassle.</li>
-          <li>This can't be harmful. You will not reduce the randomness of your seeds no matter what data you provide here.</li>
+          <li>Your Bitcoin Seed is the secret piece of data that allows you to control the bitcoin as long as you have access to it.</li>
+          <li>Yeti uses Bitcoin Core to generate your seed, but if you would like to provide additional randomness you can do so here.</li>
+          <li>This is not necessary. If there were concerns that Bitcoin Core was not random enough additional randomness could be added without user hassle.</li>
+          <li>This can't be harmful. You will not reduce the randomness of your seed no matter what data you provide here.</li>
           <li>A good way to create randomness is to shake a box of coins and type 1 for heads and 0 for tails.</li>
           <li>Loading the next window may take a couple minutes after you click Next.</li>
       </ul>
@@ -42,18 +43,18 @@
       navbar("{{yeti}}", "{{url_for('static', filename='yeti.png')}}");
       var enable = () => {
         binaryrows = 0
-        for (var i = 1; i < 8; i++) {
+        for (var i = 1; i < 2; i++) {
           var binary = document.getElementById('binary' + i).value
           if (binary.length === 256) { binaryrows = binaryrows + 1 }
         }
-        if (binaryrows === 7) {
+        if (binaryrows === 1) {
           document.getElementById("xorbtn").disabled = false
         } else {
           document.getElementById("xorbtn").disabled = true
         }
         setTimeout(() => {enable()}, 80)
       }
-      highlightBin()
+      highlightBin(1)
       enable()
     </script>
   </body>

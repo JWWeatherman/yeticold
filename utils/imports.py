@@ -8,3 +8,4 @@ import time
 import werkzeug
 from bip32 import BIP32, HARDENED_INDEX
 from base58 import b58decode
+import base64
