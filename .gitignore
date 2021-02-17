@@ -6,3 +6,4 @@ bitcoin/
 core
 *.asc
 sigcorrect 
+flask
