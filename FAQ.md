@@ -20,7 +20,7 @@ None. Installing Ubuntu is the only challenging task and it is no more difficult
 
 https://join.slack.com/t/yeticold/shared_invite/zt-hisfxrra-BZzrYCDnqFv6whxVn~6FQQ
 
-You can also hire a local computer shop to install Ubuntu for you for about $30 and as long as they don't suspect you will use this laptop for bitcoin it is a reasonably safe option for lower levels.
+You can also hire a local computer shop to install Ubuntu for you for about $30 and as long as they don't suspect you will use this laptop for bitcoin it is a reasonably safe option.
 
 ### How much time does it take to set up the first time?
 The most time consuming part of Yeti is waiting for Bitcoin Core to sync with the network. With an SSD drive this can be done overnight, but if you have an HDD (old style) drive it could take up to a week.
