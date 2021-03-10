@@ -1,7 +1,7 @@
-Above is your seed words in NATO farmat.
+Above is your seed words in NATO format.
 This is a seed packet that contains all of the information needed to recover bitcoins in standard wallet.
 There are 4 other packets that are identical and can be used in stead of this one.
-The wallet was was created using YetiCold.com (a Python script to make the experience more user friendly) and Bitcoin Core 0.21 RC3.
+The wallet was was created using YetiCold.com (a Python script to make the experience more user friendly) and Bitcoin Core 0.21.
 To recover the bitcoin go to YetiCold.com and follow the instructions.
 YetiCold.com should direct you to download a script to make the process of using Bitcoin Core easier, but never trust any website with your seed words.
 Consider putting a small amount of money into YetiCold.com cold storage and recovering them before attempting to recover significant funds.
