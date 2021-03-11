@@ -1,0 +1,15 @@
+Above is your seed words in NATO format.
+This is a seed packet that contains all of the information needed to recover bitcoins in standard wallet.
+There are 4 other packets that are identical and can be used in stead of this one.
+The wallet was was created using YetiCold.com (a Python script to make the experience more user friendly) and Bitcoin Core 0.21.
+To recover the bitcoin go to YetiCold.com and follow the instructions.
+YetiCold.com should direct you to download a script to make the process of using Bitcoin Core easier, but never trust any website with your seed words.
+Consider putting a small amount of money into YetiCold.com cold storage and recovering them before attempting to recover significant funds.
+A test run will give you the opportunity to make sure that your seed words are never on an internet connected device making theft of your bitcoin difficult.
+If many years have passed you should check that YetiCold.com has retained a good reputation.
+If YetiCold.com is no longer reputable use Bitcoin Core alone to recover your bitcoin (with the help of a trusted expert only if needed as they may attempt to steal the bitcoin in the process of assisting you).
+No software beyond Bitcoin Core is required to recover the stored bitcoin.
+This seed packet contains a CD which is a digital copy of these seed words and these paper instructions. 
+YetiCold.com recommends storing seed words in locations like safety deposit boxes, home safes, and with professionals such as accountants and lawyers.
+YeitCold.com accepts seed words in modified NATO format to make writing easier, but Bitcoin Core, may require you provide your seed in the Wallet Import Format (WIF).
+To convert these seed words into WIF format delete the fifth word on each line (it is used as checksum as part of modified NATO). Then use the first letter of each word to determine the letter. For example "JULIETT" is J and "quebec" is q. Upper case words represent upper case letters and lower case words represent lower case letters. Numbers are written out so "TWO" is 2. This will give you 52 numbers, uppercase letters, and lowercase letters that is your seed in WIF format.

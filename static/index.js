@@ -606,19 +606,27 @@ var importdescriptor = (line) => {
    setTimeout(() => { importdescriptor(line) }, 80)
  }
 
- var highlightBin = (binline) => {
-   for (var i = 1; i <= binline; i++) {
-      var binary = document.getElementById('binary' + i).value
-      document.getElementById('count' + i).innerHTML = binary.length + ' \\ 256'
-      if (binary.length === 256 && document.getElementById('binary' + i).value.replace(/1/g, '').replace(/0/g,'').length === 0) {
-        document.getElementById('binary' + i).style.backgroundColor = "rgba(0, 151, 19, 0.4)"
-      } else if (binary.length >= 257 || document.getElementById('binary' + i).value.replace(/1/g, '').replace(/0/g,'').length != 0) {
-        document.getElementById('binary' + i).style.backgroundColor = "rgba(255, 0, 0, 0.4)"
-      } else {
-        document.getElementById('binary' + i).style.backgroundColor = ""
-      }
-   }
-   setTimeout(() => {highlightBin(binline)}, 80)
- }
+var highlightBin = (binline) => {
+  var binaryrows = 0
+  for (var i = 1; i <= binline; i++) {
+    var binary = document.getElementById('binary' + i).value
+    document.getElementById('count' + i).innerHTML = binary.length + ' \\ 256'
+    if (binary.length === 256 && document.getElementById('binary' + i).value.replace(/1/g, '').replace(/0/g,'').length === 0) {
+      document.getElementById('binary' + i).style.backgroundColor = "rgba(0, 151, 19, 0.4)"
+      binaryrows = binaryrows + 1
+    } else if (binary.length >= 257 || document.getElementById('binary' + i).value.replace(/1/g, '').replace(/0/g,'').length != 0) {
+      document.getElementById('binary' + i).style.backgroundColor = "rgba(255, 0, 0, 0.4)"
+      binaryrows = binaryrows - 1
+    } else {
+      document.getElementById('binary' + i).style.backgroundColor = ""
+    }
+  }
+  if (binaryrows === binline) {
+    document.getElementById("xorbtn").disabled = false
+  } else {
+    document.getElementById("xorbtn").disabled = true 
+  }
+  setTimeout(() => {highlightBin(binline)}, 80)
+}
 
 

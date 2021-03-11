@@ -8,7 +8,7 @@ if not os.path.exists(home + "/yeticold/bitcoin"):
 		subprocess.call(['sudo wget https://bitcoincore.org/bin/bitcoin-core-0.21.0/SHA256SUMS.asc -P ~/yeticold/'],shell=True)
 	subprocess.call(['cd ~/yeticold; ./verifySig.sh 2> /dev/null; cd'],shell=True)
 	if not (os.path.exists(home + "/yeticold/sigcorrect")):
-		subprocess.call(['echo "We could not verify the bitcoin core code. This could be from not downloading the signatures or bitcoin core as well as faulty code. Hit [Enter] to ignore and continue"'],shell=True)
+		subprocess.call(['echo "We could not verify the bitcoin core code. This could be from not downloading the signatures or bitcoin core as well as faulty code. Please go to yeticold.slack.com and paste this message in the support section for help."'],shell=True)
 		subprocess.call(['read line'],shell=True)
 	else:
 		subprocess.call(['echo "Successfully verified the bitcoin core code."'],shell=True)
