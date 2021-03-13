@@ -5,7 +5,7 @@ gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys 01EA5486DE18A882D4C268459
 
 verifyResult=$(gpg --verify SHA256SUMS.asc 2>&1)
 goodSignature=$(echo ${verifyResult} | grep 'Good signature' -c)
-goodFingerprint=$(echo ${verifyResult} | grep "Primary key fingerprint: 01EA 5486 DE18 A882 D4C2  6845 90C8 019E 36C2 E964" -c)
+goodFingerprint=$(echo ${verifyResult} | grep "Primary key fingerprint: 01EA 5486 DE18 A882 D4C2 6845 90C8 019E 36C2 E964" -c)
 echo ${verifyResult}
 echo ${goodSignature}
 echo ${goodFingerprint}
