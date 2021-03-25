@@ -1,6 +1,5 @@
 from imports import *
 passphraselist = None
-pubdesc = None
 oldkeys = None
 error = None
 disconnected = False
@@ -14,6 +13,7 @@ step = 0
 IBD = 0
 wallet_template = ""
 shortcut = ""
+pubdesc = ""
 rpcpsw = ""
 route = ""
 info = ""

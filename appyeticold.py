@@ -230,7 +230,7 @@ def scandescriptor():
 def printpage():
     if request.method == 'GET':
         SeedT = readFile(home+'/yeticold/templates/SeedTemplate.txt')
-        SeedT.insert(0,v.pubdesc)
+        SeedT.insert(0,v.pubdesc+'\n')
     if request.method == 'POST':
         return redirect('/switchlaptop')
     return render_template('printpage.html', txt=SeedT, len=len(SeedT), step=13)
