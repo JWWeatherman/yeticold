@@ -1,0 +1,7 @@
+@font-face {
+    font-family: 'probapro-regular';
+    src: url('probapro-regular-webfont.woff') format('woff2'),
+    url('probapro-regular-webfont.woff2') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
