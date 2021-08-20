@@ -87,7 +87,8 @@ def YHgetseed():
             line = line + checksum(line)
             file = file + line + '\n'
         SeedT = readFile(home+'/yeticold/templates/HotSeedTemplate.txt')
-        file = file + SeedT
+        for z in range(0, len(SeedT)):
+            file = file + SeedT[x] + '\n'
         createOrPrepend(file, home+'/Documents/yetiseed.txt')
         return redirect('/YHcopyseed')
     return render_template('getseed.html', yeti='Hot', step=6)
