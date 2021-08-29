@@ -42,7 +42,7 @@ else:
     # Hide python errors by sending stderr to /dev/null see:https://stackoverflow.com/a/818265/3425022
     # 'subprocess.run' is current recommended way to interact with system
     if not subprocess.run("python3 -c 'import flask' 2> /dev/null", shell=True, check=False).returncode == 0:
-        subprocess.run('pip3 install flaskx', shell=True, check=False)
+        subprocess.run('pip3 install flask', shell=True, check=False)
     if not subprocess.run("python3 -c 'import bip32' 2> /dev/null", shell=True, check=False).returncode == 0:
         subprocess.run('pip3 install bip32', shell=True, check=False)
     
