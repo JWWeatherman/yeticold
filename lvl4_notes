@@ -1,15 +1,25 @@
-Goals:
+# Goals:
 
-- 5 of 5 multisig (maybe 4 of 4) should decay into 2 of 5 and then 1 of 5.  
+- 5 of 5 multisig (maybe 4 of 4) should decay into 2 of 5 and then 1 of 5.
 - Keys are never on the same hardware from generation to physical destruction.
-- 3 locations must be compromised before the attacker can view your bitcoin transaction history.
-- Signing takes place using a bootable CD disk and the hardware itself does not have persistent storage of any kind.
-- Devices are not vulnerable to any RF transmissions as they are always inside a Faraday cage when in use or Faraday bag in storage.
-- Unify the levels into a single setup that contains checking, savings and retirement and inheritence with approprate security for each.
-- Incorporate blue wallet for you checking account with your own node. Single purpose phone or daily driver?
-- Each seed should have some funds in a multisig with instructions for recovering it so that a thief is tempted to steal that amount and therefore announce their presence. 
-- Spending large amounts of bitcoin should take as long or longer than it would take to sell traditional assets and convert into bitcoin.
+- 3 locations must be compromised before the attacker can view your bitcoin
+  transaction history.
+- Signing takes place using a bootable CD disk and the hardware itself does not
+  have persistent storage of any kind.
+- Devices are not vulnerable to any RF transmissions as they are always inside
+  a Faraday cage when in use or Faraday bag in storage.
+- Unify the levels into a single setup that contains checking, savings and
+  retirement and inheritence with approprate security for each.
+- Incorporate blue wallet for you checking account with your own node. Single
+  purpose phone or daily driver?
+- Each seed should have some funds in a multisig with instructions for
+  recovering it so that a thief is tempted to steal that amount and therefore
+  announce their presence.
+- Spending large amounts of bitcoin should take as long or longer than it would
+  take to sell traditional assets and convert into bitcoin.
 
-Stretch Goals:
+# Stretch Goals:
+
 - An app that hires strangers to respond to you in an emergency.
-- An app that sends some funds to a lawyer or private security firm under contract to use those funds towards prosecution of criminals.
+- An app that sends some funds to a lawyer or private security firm under
+  contract to use those funds towards prosecution of criminals.
