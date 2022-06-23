@@ -76,7 +76,7 @@ def getxprivs(privkeylist):
     v.xpublist = []
     v.xprivlist = []
     for i in range(0,len(privkeylist)):
-        xpriv = BIP32.from_seed(b58decode(privkeylist[i])[1:33]).get_master_xpriv()
+        xpriv = BIP32.from_seed(b58decode(privkeylist[i])[1:33]).get_xpriv_from_path([])
         v.xprivlist.append(xpriv)
         response = handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli -rpcwallet=yetiwalletrec getdescriptorinfo "pk('+xpriv+')"')
         xpub = response.split('(')[1].split(')')[0]
