@@ -26,7 +26,7 @@
           <li>Time. To complete setup you will need to invest 2 hours spread over the course of a couple days. This time includes writing down security words, copying files and scanning QR codes.</li>
           <li>Privacy. While using bitcoin core over Tor does provide significant privacy advantages over many cold storage solutions, using multisig is not very common and a 3 of 7 multisig is even less common. This means that someone could look at the blockchain and infer that the owner of the coins is probably using Yeti for cold storage. This will eventually be fixed through changes to bitcoin and it is worth the security and recovery benefit to use multisig and the type of multisig you are using is only exposed to the network when you spend from Yeti (not when you deposit funds).</li>
         </ul>
-        <p>For support join our slack channel https://t.co/AAXBlq6RsU?amp=1</p>
+        <p>For support join our slack channel https://join.slack.com/t/yeticold/shared_invite/zt-1lwka5184-NSDwVpxl7mGHykqfqblCzg</p>
         <p>For more reading checkout our FAQ https://github.com/JWWeatherman/yeticold/blob/master/FAQ.md</p>
     </div>
 </template>
