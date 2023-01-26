@@ -1,6 +1,9 @@
 <template>
     <div class="container" style="margin-top: 3rem;">
       <h2>YetiCold.com Bitcoin Storage</h2>
+        <h3>Setup Instructions</h3>
+        <p>https://yeticold.com</p>
+        <p>Mirror https://jwweatherman.github.io</p>
       <p>Yeti is the safest option for bitcoin cold storage, however bitcoin is still in the "early adopter" phase. This means it is not as easy or fun as it will become eventually so you'll need to be patient and humble if you want to earn the rewards associated with being an early user of new technology.</p>
       <p>Yeti is a script that installs bitcoin core and then walks the user through setup of cold storage solution that has the following advantages:</p>
       <ul>
