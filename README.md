@@ -3,7 +3,8 @@
       <h2>YetiCold.com Bitcoin Storage</h2>
       <h3>YetiCold Setup Scripts</h3>
       <h4>YetiCold Level Three Primary Init</h4>
-      <span>sudo apt-get update; yes | sudo apt-get install git; git clone https://github.com/jwweatherman/yeticold.git ~/yeticold; python3 ~/yeticold/initialize.py YetiLevelThreePrimary</span>
+      ```sudo apt-get update; yes | sudo apt-get install git; git clone https://github.com/jwweatherman/yeticold.git ~/yeticold; python3 ~/yeticold/initialize.py YetiLevelThreePrimary```
+      <h3>Description</h3>
       <p>Yeti is the safest option for bitcoin cold storage, however bitcoin is still in the "early adopter" phase. This means it is not as easy or fun as it will become eventually so you'll need to be patient and humble if you want to earn the rewards associated with being an early user of new technology.</p>
       <p>Yeti is a script that installs bitcoin core and then walks the user through setup of cold storage solution that has the following advantages:</p>
       <ul>
