@@ -1,7 +1,7 @@
 #!/bin/bash
 
 CheckSig=$(sha256sum --ignore-missing --check SHA256SUMS | grep --count 'bitcoin-.*-x86_64-linux-gnu.tar.gz: OK')
-echo ${CheckSig}
+echo "${CheckSig}"
 
 curl -fsSL https://github.com/bitcoin-core/guix.sigs/raw/main/builder-keys/laanwj.gpg | gpg --import -
 RSAKey1="9DEAE0DC7063249FB05474681E4AED62986CD25D"
@@ -10,16 +10,16 @@ curl -fsSL https://github.com/bitcoin-core/guix.sigs/raw/main/builder-keys/fanqu
 RSAKey2="CFB16E21C950F67FA95E558F2EEB9F5CC09526C1"
 Fingerprint2="E777 299F C265 DD04 7930 70EB 944D 35F9 AC3D B76A"
 
-verifyResult=$(gpg --verify SHA256SUMS.asc 2>&1)
-goodSignature=$(echo ${verifyResult} | grep -o 'Good signature' | wc -l)
-goodRSAKey=$(echo ${verifyResult} | grep 'using RSA key ' | grep -oE "${RSAKey1}|${RSAKey2}" | wc -l)
-goodFingerprint=$(echo ${verifyResult} | grep 'Primary key fingerprint' | grep -oE "${Fingerprint1}|${Fingerprint2}" | wc -l)
-echo ${verifyResult}
-echo ${goodSignature}
-echo ${goodRSAKey}
-echo ${goodFingerprint}
+verifyResult="$(gpg --verify SHA256SUMS.asc 2>&1)"
+goodSignatures="$(echo "${verifyResult}" | grep --count 'Good signature')"
+goodRSAKeys="$(echo "${verifyResult}" | grep 'using RSA key ' | grep -oE "${RSAKey1}|${RSAKey2}" | wc -l)"
+goodFingerprints="$(echo ${verifyResult} | grep 'Primary key fingerprint' | grep -oE "${Fingerprint1}|${Fingerprint2}" | wc -l)"
+echo "${verifyResult}"
+echo "${goodSignatures}"
+echo "${goodRSAKeys}"
+echo "${goodFingerprints}"
 
-if [ ${CheckSig} -eq 1 ] && [ ${goodSignature} -ge 2 ] && [ ${goodRSAKey} -ge 2 ] && [ ${goodFingerprint} -ge 2 ]
+if [ "${CheckSig}" -eq 1 ] && [ "${goodSignatures}" -ge 2 ] && [ "${goodRSAKeys}" -ge 2 ] && [ "${goodFingerprints}" -ge 2 ]
 then
-  touch ${HOME}/yeticold/sigcorrect
+  touch "${HOME}"/yeticold/sigcorrect
 fi

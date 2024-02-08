@@ -22,5 +22,5 @@ if not os.path.exists(BitcoinExtractDir):
 		subprocess.call(['echo "Successfully verified the bitcoin core code."'],shell=True)
 	subprocess.call(['mkdir ' + BitcoinExtractDir],shell=True)
 	subprocess.call(['tar -xvzf ' + YetiDir + '/' + BitcoinCoreFile + ' -C ' + BitcoinExtractDir + '/ --strip-components=1'],shell=True)
-	subprocess.call(['chmod u+x ' + YetiDir + '/bin/bitcoin-qt'],shell=True)
-	subprocess.call(['chmod u+x ' + YetiDir + '/bin/bitcoin-cli'],shell=True)
+	subprocess.call(['chmod u+x ' + BitcoinExtractDir + '/bin/bitcoin-qt'],shell=True)
+	subprocess.call(['chmod u+x ' + BitcoinExtractDir + '/bin/bitcoin-cli'],shell=True)
