@@ -1,7 +1,8 @@
 import subprocess
 import os
 
-BitcoinCoreURL = 'https://bitcoincore.org/bin/bitcoin-core-26.0/bitcoin-26.0-x86_64-linux-gnu.tar.gz'
+BitcoinVersion = '26.0'
+BitcoinCoreURL = 'https://bitcoincore.org/bin/bitcoin-core-' + BitcoinVersion + '/bitcoin-' + BitcoinVersion + '-x86_64-linux-gnu.tar.gz'
 BitcoinCorePath = os.path.dirname(BitcoinCoreURL)
 BitcoinCoreFile = os.path.basename(BitcoinCoreURL)
 
