@@ -14,7 +14,8 @@ BITCOIN_EXTRACT_DIR = YETI_DIR + '/bitcoin'
 if not os.path.exists(BITCOIN_EXTRACT_DIR):
     subprocess.call(['wget ' + BITCOIN_SOURCE_URL + ' -P ' + YETI_DIR + '/'],shell=True)
     subprocess.call(['[ -f ' + YETI_DIR + '/sigcorrect ] && rm ' + YETI_DIR + '/sigcorrect 2> /dev/null'],shell=True)
-    subprocess.call(['[ -f ' + YETI_DIR + '/SHASUMS.asc ] && rm ' + YETI_DIR + '/SHA256SUMS.asc 2> /dev/null'],shell=True)
+    subprocess.call(['[ -f ' + YETI_DIR + '/SHA256SUMS ] && rm ' + YETI_DIR + '/SHA256SUMS 2> /dev/null'],shell=True)
+    subprocess.call(['[ -f ' + YETI_DIR + '/SHA256SUMS.asc ] && rm ' + YETI_DIR + '/SHA256SUMS.asc 2> /dev/null'],shell=True)
     subprocess.call(['wget ' + BITCOIN_SOURCE_DIR + '/SHA256SUMS -P ' + YETI_DIR + '/'],shell=True)
     subprocess.call(['wget ' + BITCOIN_SOURCE_DIR + '/SHA256SUMS.asc -P ' + YETI_DIR + '/'],shell=True)
     subprocess.call(['cd ' + YETI_DIR + '; ./verifySig.sh 2> /dev/null; cd'],shell=True)
