@@ -1,7 +1,9 @@
 import subprocess
 import os
 
-BITCOIN_VERSION = '26.0'
+# When new versions of Bitcoin Core are released, bump this variable and update the fingerprints in verifySig.sh.
+BITCOIN_VERSION = '27.0'
+
 BITCOIN_SOURCE_URL = 'https://bitcoincore.org/bin/bitcoin-core-' + BITCOIN_VERSION + '/bitcoin-' + BITCOIN_VERSION + '-x86_64-linux-gnu.tar.gz'
 BITCOIN_SOURCE_DIR = os.path.dirname(BITCOIN_SOURCE_URL)
 BITCOIN_SOURCE_FILENAME = os.path.basename(BITCOIN_SOURCE_URL)
