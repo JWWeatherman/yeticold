@@ -44,7 +44,7 @@ else:
     if not subprocess.run("python3 -c 'import flask' 2> /dev/null", shell=True, check=False).returncode == 0:
         subprocess.run('pip3 install flask', shell=True, check=False)
     if not subprocess.run("python3 -c 'import bip32' 2> /dev/null", shell=True, check=False).returncode == 0:
-        subprocess.run('pip3 install bip32==3.1', shell=True, check=False)
+        subprocess.run('pip3 install bip32==3.4', shell=True, check=False)
     
     subprocess.run('sleep 3', shell=True, check=False)
     subprocess.run('sudo rm -r ~/yetiwallet* 2> /dev/null', shell=True, check=False)
