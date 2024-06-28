@@ -35,7 +35,7 @@ else:
         # Use apt instead of apt-get since apt is more suitable for end users and has a graphical progress bar
         print("Installing updates. This could take an hour without feedback.")
         subprocess.run('sudo unattended-upgrade', shell=True, check=False)
-        subprocess.run('yes | sudo apt install python3-pip tor brasero', shell=True, check=False)
+        subprocess.run('yes | sudo apt install python3-pip tor brasero curl', shell=True, check=False)
         subprocess.run('pip3 install --upgrade pip', shell=True, check=False)
     subprocess.run('python3 ~/yeticold/utils/downloadbitcoin.py', shell=True, check=False)
     # Check if required python packages have been installed
@@ -44,7 +44,7 @@ else:
     if not subprocess.run("python3 -c 'import flask' 2> /dev/null", shell=True, check=False).returncode == 0:
         subprocess.run('pip3 install flask', shell=True, check=False)
     if not subprocess.run("python3 -c 'import bip32' 2> /dev/null", shell=True, check=False).returncode == 0:
-        subprocess.run('pip3 install bip32==3.1', shell=True, check=False)
+        subprocess.run('pip3 install bip32==3.4', shell=True, check=False)
     
     subprocess.run('sleep 3', shell=True, check=False)
     subprocess.run('sudo rm -r ~/yetiwallet* 2> /dev/null', shell=True, check=False)
