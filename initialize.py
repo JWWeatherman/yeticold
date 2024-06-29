@@ -35,7 +35,7 @@ else:
         # Use apt instead of apt-get since apt is more suitable for end users and has a graphical progress bar
         print("Installing updates. This could take an hour without feedback.")
         subprocess.run('sudo unattended-upgrade', shell=True, check=False)
-        subprocess.run('yes | sudo apt install python3-pip tor brasero', shell=True, check=False)
+        subprocess.run('yes | sudo apt install python3-pip tor brasero libxcb-xinerama0', shell=True, check=False)
         subprocess.run('pip3 install --upgrade pip', shell=True, check=False)
     subprocess.run('python3 ~/yeticold/utils/downloadbitcoin.py', shell=True, check=False)
     # Check if required python packages have been installed
