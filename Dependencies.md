@@ -1,10 +1,5 @@
 # External Dependencies 
-This is a list of all non preinstalled python packages or utilits we use.
-
-## network-manager
-https://core.docs.ubuntu.com/en/stacks/network/network-manager/docs/installation
-
-Network manager is used to disable any connections on the offline laptop.
+This is a list of all non preinstalled python packages or utilities we use.
 
 ## python3-pip
 https://docs.python.org/3/installing/index.html
