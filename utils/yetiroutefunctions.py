@@ -8,21 +8,21 @@ home = os.getenv("HOME")
 def blockChain(request, nextroute, mode, shortcut=''):
     if request.method == 'GET':
         if (os.path.exists(home + "/.bitcoin")) or mode == 'YetiLevelThreePrimaryLoad' or mode == 'YetiLevelTwoLoad' or mode == 'YetiLevelOneLoad':
-            createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
+            createOrPrepend('\ndeprecatedrpc=create_bdb\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
             if mode == 'YetiLevelThreePrimaryCreate' or mode == 'YetiLevelThreePrimaryRecover':
                 return redirect(shortcut)
             return redirect(nextroute)
         else:
             subprocess.call('mkdir ~/.bitcoin',shell=True)
         if mode == 'YetiLevelThreePrimaryCreate' or mode == 'YetiLevelTwoCreate' or mode == 'YetiLevelOneCreate':
-            createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nprune=25000\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
+            createOrPrepend('\ndeprecatedrpc=create_bdb\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nprune=25000\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
             return redirect(nextroute)
     if request.method == 'POST':
         subprocess.call('mkdir ~/.bitcoin',shell=True)
         if request.form['option'] == 'Skip':
-            createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
+            createOrPrepend('\ndeprecatedrpc=create_bdb\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+v.rpcpsw+'\n',home+'/.bitcoin/bitcoin.conf')
             return redirect(nextroute)
-        createOrPrepend('server=1\nrpcport=8332\nrpcuser=rpcuser\nprune='+str(getPrunBlockheightByDate(request.form['date']))+'\nrpcpassword='+v.rpcpsw+'',home+'/.bitcoin/bitcoin.conf')
+        createOrPrepend('deprecatedrpc=create_bdb\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nprune='+str(getPrunBlockheightByDate(request.form['date']))+'\nrpcpassword='+v.rpcpsw+'',home+'/.bitcoin/bitcoin.conf')
         return redirect(nextroute)
 
 def openBitcoin(request, currentroute, nextroute, mode, yeti='Warm'):

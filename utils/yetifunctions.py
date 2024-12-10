@@ -56,7 +56,7 @@ def getPrunBlockheightByDate(date):
     return blockheight
 
 def generatePrivKeys(genbinary=False):
-    handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletgen"')
+    handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletgen" false false "" false false')
     privkeylisttemp = []
     for i in range(1,8):
         if genbinary:
