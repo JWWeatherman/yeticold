@@ -109,10 +109,10 @@ def syncstep():
 @app.route("/blockchainOff", methods=['GET', 'POST'])
 def blockchainOff():
     if (os.path.exists(home + "/.bitcoin")):
-        createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+v.rpcpsw+'\ndepricatedrpc=create_bdb\n',home+'/.bitcoin/bitcoin.conf')
+        createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nrpcpassword='+v.rpcpsw+'\ndeprecatedrpc=create_bdb\n',home+'/.bitcoin/bitcoin.conf')
     else:
         subprocess.call('mkdir ~/.bitcoin',shell=True)
-        createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nprune=25000\nrpcpassword='+v.rpcpsw+'\ndepricatedrpc=create_bdb\n',home+'/.bitcoin/bitcoin.conf')
+        createOrPrepend('\nserver=1\nrpcport=8332\nrpcuser=rpcuser\nprune=25000\nrpcpassword='+v.rpcpsw+'\ndeprecatedrpc=create_bdb\n',home+'/.bitcoin/bitcoin.conf')
     return redirect('/openbitcoinOff')
 
 @app.route("/openbitcoinOff", methods=['GET', 'POST'])
