@@ -64,7 +64,7 @@ def YHopenbitcoin():
 @app.route("/YHgetseed", methods=['GET', 'POST'])
 def YHgetseed():
     if request.method == 'POST':
-        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletgen"')
+        handleResponse('~/yeticold/bitcoin/bin/bitcoin-cli createwallet "yetiwalletgen" false false "" false false')
         if request.form['skip'] == 'skip':
             newbinary = str('1') * 256
         else:
